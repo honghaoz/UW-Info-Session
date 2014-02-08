@@ -20,9 +20,11 @@
 @property (nonatomic, readonly, copy) NSString *audience;
 @property (nonatomic, readonly, copy) NSString *programs;
 @property (nonatomic, readonly, copy) NSString *description;
-@property (nonatomic, readonly, unsafe_unretained) NSURL *logoImageURL;
+//@property (nonatomic, readonly, unsafe_unretained) NSURL *logoImageURL;
 
 - (instancetype)initWithAttributes:(NSDictionary *)attributes;
+
+//- (NSURL *)logoImageURL;
 
 + (NSURLSessionTask *)infoSessionsWithBlock:(void (^)(NSArray *sessions, NSError *error))block;
 

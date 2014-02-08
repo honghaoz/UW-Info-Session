@@ -12,6 +12,8 @@
 #import "InfoSession.h"
 #import "InfoSessionCell.h"
 
+#import "UIImageView+AFNetworking.h"
+
 @interface InfoSessionsViewController ()
 
 @property (nonatomic, strong) NSArray *infoSessions;
@@ -35,15 +37,12 @@
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    
-    // Left Bar Button
-    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityIndicatorView];
-    // Right Bar Button
+
+    // show refresh button
     //[[UIBarButtonItem appearance] setTintColor:[UIColor yellowColor]];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
+    
+    //reload data
     [self reload:nil];
 }
 
@@ -54,20 +53,25 @@
 }
 
 - (void)reload:(__unused id)sender {
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    //change right bar button to indicator
+    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:activityIndicatorView] animated:YES];
     
     NSURLSessionTask *task = [InfoSession infoSessionsWithBlock:^(NSArray *sessions, NSError *error) {
         if (!error) {
             self.infoSessions = sessions;
-            [self.tableView reloadData];
+            // reload TableView data
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            // scroll TableView to current date
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:40 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
         }
-        self.navigationItem.rightBarButtonItem.enabled = YES;
+        // restore right bar button to refresh button
+        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
     }];
     
     [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
-    
-    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *)self.navigationItem.leftBarButtonItem.customView;
     [activityIndicatorView setAnimatingWithStateOfTask:task];
+
 }
 
 #pragma mark - Table view data source
@@ -95,17 +99,32 @@
 {
     if (indexPath.section == 0) {
         InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InfoSessionCell"];
-        
-        InfoSession *infoSession = [self.infoSessions objectAtIndex:indexPath.row];
-        
-        cell.employer.text = infoSession.employer;
-        cell.location.text = infoSession.location;
-        cell.date.text = [NSString stringWithFormat:@"%@ %@ - %@", infoSession.date, infoSession.startTime, infoSession.endTime];
+        [self configureCell:cell withIndexPath:indexPath];
         return cell;
     } else {
         InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InfoSessionCell"];
         return cell;
     }
+}
+/**
+ *  Configure InfoSessionCell
+ *
+ *  @param cell      InfoSessionCell
+ *  @param indexPath IndexPath for the cell
+ */
+- (void)configureCell:(InfoSessionCell *)cell withIndexPath:(NSIndexPath *)indexPath {
+    InfoSession *infoSession = [self.infoSessions objectAtIndex:indexPath.row];
+    
+    cell.employer.text = infoSession.employer;
+    cell.location.text = infoSession.location;
+    cell.date.text = [NSString stringWithFormat:@"%@ %@ - %@", infoSession.date, infoSession.startTime, infoSession.endTime];
+//    [cell.logo setImageWithURL:infoSession.logoImageURL];
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self performSegueWithIdentifier:@"ShowDetail" sender:nil];
 }
 
 /*

@@ -24,7 +24,7 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 @property (nonatomic, readwrite, copy) NSString *audience;
 @property (nonatomic, readwrite, copy) NSString *programs;
 @property (nonatomic, readwrite, copy) NSString *description;
-@property (nonatomic, readwrite, unsafe_unretained) NSURL *logoImageURL;
+//@property (nonatomic, readwrite, copy) NSString *logoImageURLString;
 
 @end
 
@@ -51,8 +51,11 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 }
 
 + (NSURLSessionTask *)infoSessionsWithBlock:(void (^)(NSArray *sessions, NSError *error))block{
+    
     return [[AFUwaterlooApiClient sharedClient] GET:@"resources/infosessions.json" parameters:@{@"key" : apiKey} success:^(NSURLSessionDataTask * __unused task, id JSON) {
+        //response array from jason
         NSArray *infoSessionsFromResponse = [JSON valueForKeyPath:@"data"];
+        // new empty array to store infoSessions
         NSMutableArray *mutableInfoSessions = [NSMutableArray arrayWithCapacity:[infoSessionsFromResponse count]];
         for (NSDictionary *attributes in infoSessionsFromResponse) {
             InfoSession *infoSession = [[InfoSession alloc] initWithAttributes:attributes];
@@ -68,5 +71,9 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
         }
     }];
 }
+
+//- (NSURL *)logoImageURL {
+//    return [NSURL URLWithString:[NSString stringWithFormat:@"http://g.etfv.co/%@", self.website]];
+//}
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B19834918A618A60022A285 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19834818A618A60022A285 /* DetailViewController.m */; };
 		1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */; };
 		1B37450F18A5B163007CF08C /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3744FD18A5B163007CF08C /* AFHTTPRequestOperation.m */; };
 		1B37451018A5B163007CF08C /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3744FF18A5B163007CF08C /* AFHTTPRequestOperationManager.m */; };
@@ -54,6 +55,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1B19834718A618A60022A285 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ViewController/DetailViewController.h; sourceTree = "<group>"; };
+		1B19834818A618A60022A285 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController.m; path = ViewController/DetailViewController.m; sourceTree = "<group>"; };
 		1B3744F818A5A842007CF08C /* InfoSessionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InfoSessionsViewController.h; path = ViewController/InfoSessionsViewController.h; sourceTree = "<group>"; };
 		1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSessionsViewController.m; path = ViewController/InfoSessionsViewController.m; sourceTree = "<group>"; };
 		1B3744FC18A5B163007CF08C /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -252,6 +255,10 @@
 			children = (
 				1B3744F818A5A842007CF08C /* InfoSessionsViewController.h */,
 				1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */,
+				1B37453E18A5DB15007CF08C /* InfoSessionCell.h */,
+				1B37453F18A5DB15007CF08C /* InfoSessionCell.m */,
+				1B19834718A618A60022A285 /* DetailViewController.h */,
+				1B19834818A618A60022A285 /* DetailViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -303,11 +310,9 @@
 				1BD83AA318A59F1C00EDBB6D /* UWAppDelegate.h */,
 				1BD83AA418A59F1C00EDBB6D /* UWAppDelegate.m */,
 				1BD83AA618A59F1C00EDBB6D /* Main.storyboard */,
-				1B37453918A5BA3D007CF08C /* Controllers */,
 				1B37453D18A5D0D6007CF08C /* Networking Extensions */,
 				1B37453818A5BA2C007CF08C /* Models */,
-				1B37453E18A5DB15007CF08C /* InfoSessionCell.h */,
-				1B37453F18A5DB15007CF08C /* InfoSessionCell.m */,
+				1B37453918A5BA3D007CF08C /* Controllers */,
 				1BD83AAC18A59F1C00EDBB6D /* UWSecondViewController.h */,
 				1BD83AAD18A59F1C00EDBB6D /* UWSecondViewController.m */,
 				1BD83AAF18A59F1C00EDBB6D /* Images.xcassets */,
@@ -455,6 +460,7 @@
 				1B37452C18A5B169007CF08C /* UIImageView+AFNetworking.m in Sources */,
 				1B37450F18A5B163007CF08C /* AFHTTPRequestOperation.m in Sources */,
 				1B37453C18A5D0CE007CF08C /* AFUwaterlooApiClient.m in Sources */,
+				1B19834918A618A60022A285 /* DetailViewController.m in Sources */,
 				1B37452918A5B169007CF08C /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				1BD83AAE18A59F1C00EDBB6D /* UWSecondViewController.m in Sources */,
 				1B37452E18A5B169007CF08C /* UIWebView+AFNetworking.m in Sources */,

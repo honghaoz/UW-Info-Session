@@ -14,4 +14,6 @@
 @property (nonatomic, weak) IBOutlet UILabel *location;
 @property (nonatomic, weak) IBOutlet UILabel *date;
 
+//@property (nonatomic, strong) IBOutlet UIImageView *logo;
+
 @end
