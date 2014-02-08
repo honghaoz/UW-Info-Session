@@ -1,5 +1,5 @@
 //
-//  UWFirstViewController.h
+//  InfoSessionsViewController.h
 //  UW Info
 //
 //  Created by Zhang Honghao on 2/7/14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UWFirstViewController : UIViewController
+@interface InfoSessionsViewController : UITableViewController
 
 @end
