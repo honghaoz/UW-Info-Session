@@ -16,15 +16,17 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 
 @property (nonatomic, readwrite, assign) NSUInteger SessionId;
 @property (nonatomic, readwrite, copy) NSString *employer;
-@property (nonatomic, readwrite, copy) NSString *date;
-@property (nonatomic, readwrite, copy) NSString *startTime;
-@property (nonatomic, readwrite, copy) NSString *endTime;
+@property (nonatomic, readwrite, strong) NSDate *date;
+@property (nonatomic, readwrite, strong) NSDate *startTime;
+@property (nonatomic, readwrite, strong) NSDate *endTime;
 @property (nonatomic, readwrite, copy) NSString *location;
 @property (nonatomic, readwrite, copy) NSString *website;
 @property (nonatomic, readwrite, copy) NSString *audience;
 @property (nonatomic, readwrite, copy) NSString *programs;
 @property (nonatomic, readwrite, copy) NSString *description;
 //@property (nonatomic, readwrite, copy) NSString *logoImageURLString;
+
+@property (nonatomic, readwrite, assign) NSUInteger weekNum;
 
 @end
 
@@ -35,12 +37,27 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
     if (!self) {
         return nil;
     }
-    
     self.SessionId = (NSUInteger)[[attributes valueForKeyPath:@"id"] integerValue];
     self.employer = [attributes valueForKeyPath:@"employer"];
-    self.date = [attributes valueForKeyPath:@"date"];
-    self.startTime = [attributes valueForKeyPath:@"start_time"];
-    self.endTime = [attributes valueForKeyPath:@"end_time"];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    // set the locale to fix the formate to read and write;
+    NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    [dateFormatter setLocale:enUSPOSIXLocale];
+    // set timezone to EST
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+    
+    // set date format: September 5, 2013
+    [dateFormatter setDateFormat:@"MMMM d, y"];
+    
+    self.date = [dateFormatter dateFromString:[attributes valueForKeyPath:@"date"]];
+    // set time format: 1:00 PM, September 5, 2013
+    [dateFormatter setDateFormat:@"h:mm a, MMMM d, y"];
+    
+    self.startTime = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@, %@", [attributes valueForKeyPath:@"start_time"], [attributes valueForKeyPath:@"date"]]];
+    self.endTime = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@, %@", [attributes valueForKeyPath:@"end_time"], [attributes valueForKeyPath:@"date"]]];
+    
+    self.weekNum = [self getWeekNumbe:self.date];
+    
     self.location = [attributes valueForKeyPath:@"location"];
     self.website = [attributes valueForKeyPath:@"website"];
     self.audience = [attributes valueForKeyPath:@"audience"];
@@ -59,10 +76,15 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
         NSMutableArray *mutableInfoSessions = [NSMutableArray arrayWithCapacity:[infoSessionsFromResponse count]];
         for (NSDictionary *attributes in infoSessionsFromResponse) {
             InfoSession *infoSession = [[InfoSession alloc] initWithAttributes:attributes];
-            [mutableInfoSessions addObject:infoSession];
+            // if start time < end time or date is nil, do not add
+            if (!([infoSession.startTime compare:infoSession.endTime] != NSOrderedAscending || infoSession.date == nil)) {
+                [mutableInfoSessions addObject:infoSession];
+            }
         }
         
         if (block) {
+            // sorted info sessions in ascending order with start time
+            [mutableInfoSessions sortedArrayUsingSelector:@selector(compareTo:)];
             block([NSArray arrayWithArray:mutableInfoSessions], nil);
         }
     } failure:^(NSURLSessionDataTask *__unused task, NSError *error) {
@@ -72,8 +94,18 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
     }];
 }
 
+- (NSUInteger)getWeekNumbe:(NSDate *)date {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"w"];
+    return [[dateFormatter stringFromDate:date] intValue];
+}
+
 //- (NSURL *)logoImageURL {
 //    return [NSURL URLWithString:[NSString stringWithFormat:@"http://g.etfv.co/%@", self.website]];
 //}
+
+- (NSComparisonResult)compareTo:(InfoSession *)anotherInfoSession {
+    return [self.startTime compare:anotherInfoSession.startTime];
+}
 
 @end

@@ -28,6 +28,7 @@
 		1B37453718A5BA28007CF08C /* InfoSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37453618A5BA28007CF08C /* InfoSession.m */; };
 		1B37453C18A5D0CE007CF08C /* AFUwaterlooApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37453B18A5D0CE007CF08C /* AFUwaterlooApiClient.m */; };
 		1B37454018A5DB15007CF08C /* InfoSessionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37453F18A5DB15007CF08C /* InfoSessionCell.m */; };
+		1B39E55918A71E1900D82488 /* LoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B39E55818A71E1900D82488 /* LoadingCell.m */; };
 		1BD83A9518A59F1C00EDBB6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9418A59F1C00EDBB6D /* Foundation.framework */; };
 		1BD83A9718A59F1C00EDBB6D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9618A59F1C00EDBB6D /* CoreGraphics.framework */; };
 		1BD83A9918A59F1C00EDBB6D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9818A59F1C00EDBB6D /* UIKit.framework */; };
@@ -99,6 +100,8 @@
 		1B37453B18A5D0CE007CF08C /* AFUwaterlooApiClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFUwaterlooApiClient.m; sourceTree = "<group>"; };
 		1B37453E18A5DB15007CF08C /* InfoSessionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoSessionCell.h; sourceTree = "<group>"; };
 		1B37453F18A5DB15007CF08C /* InfoSessionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoSessionCell.m; sourceTree = "<group>"; };
+		1B39E55718A71E1900D82488 /* LoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingCell.h; sourceTree = "<group>"; };
+		1B39E55818A71E1900D82488 /* LoadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingCell.m; sourceTree = "<group>"; };
 		1BD83A9118A59F1C00EDBB6D /* UW Info.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UW Info.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BD83A9418A59F1C00EDBB6D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1BD83A9618A59F1C00EDBB6D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -257,6 +260,8 @@
 				1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */,
 				1B37453E18A5DB15007CF08C /* InfoSessionCell.h */,
 				1B37453F18A5DB15007CF08C /* InfoSessionCell.m */,
+				1B39E55718A71E1900D82488 /* LoadingCell.h */,
+				1B39E55818A71E1900D82488 /* LoadingCell.m */,
 				1B19834718A618A60022A285 /* DetailViewController.h */,
 				1B19834818A618A60022A285 /* DetailViewController.m */,
 			);
@@ -463,6 +468,7 @@
 				1B19834918A618A60022A285 /* DetailViewController.m in Sources */,
 				1B37452918A5B169007CF08C /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				1BD83AAE18A59F1C00EDBB6D /* UWSecondViewController.m in Sources */,
+				1B39E55918A71E1900D82488 /* LoadingCell.m in Sources */,
 				1B37452E18A5B169007CF08C /* UIWebView+AFNetworking.m in Sources */,
 				1B37451518A5B163007CF08C /* AFURLRequestSerialization.m in Sources */,
 				1B37451118A5B163007CF08C /* AFHTTPSessionManager.m in Sources */,

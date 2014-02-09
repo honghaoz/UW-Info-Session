@@ -13,11 +13,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="InfoSessionCell" rowHeight="72" id="UZG-kL-594" customClass="InfoSessionCell">
-                                <rect key="frame" x="0.0" y="22" width="320" height="72"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="InfoSessionCell" rowHeight="70" id="UZG-kL-594" customClass="InfoSessionCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UZG-kL-594" id="Py1-V9-Wn4">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="71"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="69"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Employer" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B4c-MD-WcE">
@@ -59,8 +59,35 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="date" destination="RRa-8o-JF0" id="LEh-va-EBG"/>
+                                    <outlet property="dateLabel" destination="Jkm-yw-qny" id="cGr-dO-bzW"/>
                                     <outlet property="employer" destination="B4c-MD-WcE" id="S47-1j-zG7"/>
                                     <outlet property="location" destination="IcB-Ec-tvk" id="WQU-Fb-JL8"/>
+                                    <outlet property="locationLabel" destination="cg5-ET-m0T" id="gYD-b2-piA"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LoadingCell" rowHeight="44" id="DQR-69-S4e" customClass="LoadingCell">
+                                <rect key="frame" x="0.0" y="156" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DQR-69-S4e" id="PsR-5N-8mA">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="zSI-EF-5Fk">
+                                            <rect key="frame" x="203" y="11" width="20" height="20"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </activityIndicatorView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Refreshing..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Unm-Zb-HCk">
+                                            <rect key="frame" x="92" y="11" width="137" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="loadingIndicator" destination="zSI-EF-5Fk" id="Yk7-MU-EVY"/>
+                                    <outlet property="loadingLabel" destination="Unm-Zb-HCk" id="Up1-DG-KGI"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -130,7 +157,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="VfY-af-hkU">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VfY-af-hkU" id="B9Q-tc-kBK">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
