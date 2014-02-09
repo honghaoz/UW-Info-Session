@@ -32,6 +32,13 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 
 @implementation InfoSession
 
+/**
+ *  Initiate an InfoSession instance
+ *
+ *  @param attributes NSDictionary from JSON
+ *
+ *  @return InfoSession instance
+ */
 - (instancetype)initWithAttributes:(NSDictionary *)attributes {
     self = [super init];
     if (!self) {
@@ -67,6 +74,13 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
     
 }
 
+/**
+ *  Initiate NSArray sessions.
+ *
+ *  @param block
+ *
+ *  @return
+ */
 + (NSURLSessionTask *)infoSessionsWithBlock:(void (^)(NSArray *sessions, NSError *error))block{
     
     return [[AFUwaterlooApiClient sharedClient] GET:@"resources/infosessions.json" parameters:@{@"key" : apiKey} success:^(NSURLSessionDataTask * __unused task, id JSON) {
@@ -94,6 +108,14 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
     }];
 }
 
+
+/**
+ *  Get the Week number of NSDate
+ *
+ *  @param date NSDate
+ *
+ *  @return NSUInteger
+ */
 - (NSUInteger)getWeekNumbe:(NSDate *)date {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"w"];
@@ -104,6 +126,13 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 //    return [NSURL URLWithString:[NSString stringWithFormat:@"http://g.etfv.co/%@", self.website]];
 //}
 
+/**
+ *  Compare to another inforsession, according startTime
+ *
+ *  @param anotherInfoSession InfoSession
+ *
+ *  @return NSComparisonResult
+ */
 - (NSComparisonResult)compareTo:(InfoSession *)anotherInfoSession {
     return [self.startTime compare:anotherInfoSession.startTime];
 }

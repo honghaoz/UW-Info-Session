@@ -14,6 +14,8 @@
 #import "LoadingCell.h"
 
 #import "UIImageView+AFNetworking.h"
+#import "DetailViewController.h"
+
 
 #define NSIntegerToString(i) [NSString stringWithFormat:@"%d", i]
 
@@ -35,6 +37,9 @@
     return self;
 }
 
+/**
+ *  initiate left & right bar buttons, reload data for the first time.
+ */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -60,22 +65,29 @@
     // Dispose of any resources that can be recreated.
 }
 
+/**
+ *  update data. send request to network and instance variables.
+ *
+ *  @param sender
+ */
 - (void)reload:(__unused id)sender {
     self.infoSessions = nil;
     self.infoSessionsDictionary = nil;
     [self.tableView reloadData];
+    [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
     //change right bar button to indicator
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:activityIndicatorView] animated:YES];
+//    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:activityIndicatorView] animated:YES];
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    self.navigationItem.leftBarButtonItem.enabled = NO;
     
     NSURLSessionTask *task = [InfoSession infoSessionsWithBlock:^(NSArray *sessions, NSError *error) {
         if (!error) {
             self.infoSessions = sessions;
             [self processInfoSessionsDictionary];
-            
+        
             // reload TableView data
             [self.tableView reloadData];
-            
             // scroll TableView to current date
             [self scrollToToday];
             
@@ -84,8 +96,11 @@
             
         }
         // restore right bar button to refresh button
-        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
+//        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
+        
+        self.navigationItem.rightBarButtonItem.enabled = YES;
         self.navigationItem.leftBarButtonItem.enabled = YES;
+        
     }];
     
     [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
@@ -121,6 +136,7 @@
     [dateFormatter setDateFormat:@"w"];
     return [[dateFormatter stringFromDate:date] intValue];
 }
+
 /**
  *  scroll to the row of today
  */
@@ -167,10 +183,35 @@
     }
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionNumToScroll] withRowAnimation:animation];
 }
+/**
+ *  get the array of infoSession according give section
+ *
+ *  @param section NSIndexPath
+ *
+ *  @return the corresponding array of infoSession
+ */
+- (NSArray *)getInfoSessionsAccordingSection:(NSUInteger)section {
+    NSInteger firstWeekNumber = [[self.infoSessions firstObject] weekNum];
+    NSArray *infoSessions = self.infoSessionsDictionary[NSIntegerToString(section + firstWeekNumber)];
+    return infoSessions;
+}
+
+/**
+ *  get the infoSession according given Indexpath
+ *
+ *  @param indexPath NSIndexPath
+ *
+ *  @return the corresponding InfoSession
+ */
+- (InfoSession *)getInfoSessionAccordingIndexPath:(NSIndexPath *)indexPath {
+    NSInteger firstWeekNumber = [[self.infoSessions firstObject] weekNum];
+    InfoSession *infoSession = self.infoSessionsDictionary[NSIntegerToString(indexPath.section + firstWeekNumber)][indexPath.row];
+    return infoSession;
+}
 
 #pragma mark - Table view data source
 /**
- *  @Return the title of sections.
+ *  @Return the title of sections. show week start date to end date
  */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (self.infoSessionsDictionary == nil) {
@@ -211,10 +252,11 @@
         
         return [NSString stringWithFormat:@"%@ - %@", beginDate, endDate];
     }
-    
 }
 
-// Return the number of sections.
+/**
+ *  Return the number of sections. the number of sessions in this week
+ */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.infoSessionsDictionary == nil) {
@@ -225,21 +267,30 @@
         return  lastWeekNumber - firstWeekNumber + 1;
     }
 }
-// Return the number of rows in the section.
+/**
+ *  Return the number of rows in the section.
+ *  if infosessionDictionary is nil, return 1 to show refreshing cell
+ *  if sessions in this week is 0, return 1 to show empty cell
+ */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    // refreshing cell
     if (self.infoSessionsDictionary == nil) {
         return 1;
     } else {
-        NSInteger firstWeekNumber = [[self.infoSessions firstObject] weekNum];
-        if ([self.infoSessionsDictionary[NSIntegerToString(section + firstWeekNumber)] count] == 0){
+        // no info sessions cell
+        if ([[self getInfoSessionsAccordingSection:section] count] == 0){
             return 1;
         } else {
-            return [self.infoSessionsDictionary[NSIntegerToString(section + firstWeekNumber)] count];
+            // info session cell
+            return [[self getInfoSessionsAccordingSection:section] count];
         }
     }
 }
 
+/**
+ *  configure different cell
+ */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.infoSessionsDictionary == nil) {
@@ -252,8 +303,7 @@
 
         return cell;
     } else {
-        NSInteger firstWeekNumber = [[self.infoSessions firstObject] weekNum];
-        if ([self.infoSessionsDictionary[NSIntegerToString(indexPath.section + firstWeekNumber)] count] == 0) {
+        if ([[self getInfoSessionsAccordingSection:indexPath.section] count] == 0) {
             LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
             cell.loadingIndicator.hidden = YES;
             cell.loadingLabel.text = @"No Info Sessions";
@@ -274,10 +324,9 @@
  *  @param indexPath IndexPath for the cell
  */
 - (void)configureCell:(InfoSessionCell *)cell withIndexPath:(NSIndexPath *)indexPath {
-    NSInteger firstWeekNumber = [[self.infoSessions firstObject] weekNum];
-    InfoSession *infoSession = self.infoSessionsDictionary[NSIntegerToString(indexPath.section + firstWeekNumber)][indexPath.row];
+    InfoSession *infoSession = [self getInfoSessionAccordingIndexPath:indexPath];
     
-    // if current time is befor start time, set dark blue
+    // if current time is befor start time, set dark (future sessions)
     if ([[NSDate date] compare:infoSession.startTime] == NSOrderedAscending) {
         [cell.employer setTextColor:[UIColor blackColor]];
         [cell.locationLabel setTextColor:[UIColor darkGrayColor]];
@@ -285,7 +334,7 @@
         [cell.dateLabel setTextColor:[UIColor darkGrayColor]];
         [cell.date setTextColor:[UIColor darkGrayColor]];
     }
-    // if current time is between start time and end time, set blue
+    // if current time is between start time and end time, set blue (ongoing sessions)
     else if ( ([infoSession.startTime compare:[NSDate date]] == NSOrderedAscending) && ([[NSDate date] compare:infoSession.endTime] == NSOrderedAscending) ){
         [cell.employer setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
         [cell.locationLabel setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
@@ -293,6 +342,7 @@
         [cell.dateLabel setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
         [cell.date setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
     }
+    // set light grey (past sessions)
     else {
         [cell.employer setTextColor: [UIColor lightGrayColor]];
         [cell.locationLabel setTextColor:[UIColor lightGrayColor]];
@@ -313,29 +363,46 @@
     cell.date.text = [NSString stringWithFormat:@"%@ - %@, %@", [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime], [dateFormatter stringFromDate:infoSession.date]];
 }
 
+/**
+ *  set different cell height for different cell
+ *
+ *  @param tableView tableView
+ *  @param indexPath indexPath
+ *
+ *  @return for LoadingCell, return 44.0f, for InfoSessionCell, return 70.0f
+ */
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // refreshing cell
     if (self.infoSessionsDictionary == nil) {
         return 44.0f;
     }
-    NSInteger firstWeekNumber = [[self.infoSessions firstObject] weekNum];
-    if ([self.infoSessionsDictionary[NSIntegerToString(indexPath.section + firstWeekNumber)] count] == 0) {
+    // no info session cell
+    if ([[self getInfoSessionsAccordingSection:indexPath.section] count] == 0) {
         return 44.0f;
     } else {
+        // info session cell
         return 70.0f;
     }
 }
 
 #pragma mark - Table view delegate
-
+/**
+ *  select row at indexPath
+ *
+ *  @param tableView tableView
+ *  @param indexPath indexPath
+ */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Refreshing cell
     if (self.infoSessionsDictionary == nil) {
         return;
     }
-    NSInteger firstWeekNumber = [[self.infoSessions firstObject] weekNum];
-    if ([self.infoSessionsDictionary[NSIntegerToString(indexPath.section + firstWeekNumber)] count] == 0) {
+    // No info session cell
+    if ([[self getInfoSessionsAccordingSection:indexPath.section] count] == 0) {
         return;
     } else {
-        [self performSegueWithIdentifier:@"ShowDetail" sender:nil];
+        // info session cells
+        [self performSegueWithIdentifier:@"ShowDetail" sender:[self getInfoSessionAccordingIndexPath:indexPath]];
     }
     
 }
@@ -346,38 +413,7 @@
 {
     // Return NO if you do not want the specified item to be editable.
     return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+} */
 
 
 #pragma mark - Navigation
@@ -387,16 +423,8 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    DetailViewController *controller = segue.destinationViewController;
+    controller.infoSession = sender;
 }
-//
-//- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
-//
-//    if ([sender isKindOfClass:[LoadingCell class]]) {
-//        NSLog(@"no");
-//        return NO;
-//    }
-//    NSLog(@"yes");
-//    return YES;
-//}
 
 @end

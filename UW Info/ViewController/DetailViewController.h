@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+@class InfoSession;
 
 @interface DetailViewController : UITableViewController
+
+@property (nonatomic, strong) InfoSession *infoSession;
 
 @end
