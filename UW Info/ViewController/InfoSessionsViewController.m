@@ -385,6 +385,14 @@
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 25.0f;
+}
+
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+//    return 30.0f;
+//}
+
 #pragma mark - Table view delegate
 /**
  *  select row at indexPath
@@ -406,6 +414,28 @@
     }
     
 }
+
+//- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+//{
+//    if([view isKindOfClass:[UITableViewHeaderFooterView class]]){
+//        
+//        UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView *) view;
+//        tableViewHeaderFooterView.textLabel.textColor = [UIColor blueColor];
+//    }
+//}
+
+//- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    //UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
+//    //[headerView setTintColor:[UIColor yellowColor]];
+//    //headerView.tintColor = [UIColor yellowColor];
+//    
+//    // if you have index/header text in your tableview change your index text color
+////    UITableViewHeaderFooterView *headerIndexText = (UITableViewHeaderFooterView *)view;
+//    //[headerView.textLabel setTextColor:[UIColor blackColor]];
+//    //[headerView setBackgroundColor:[UIColor yellowColor]];
+//    return headerView;
+//}
 
 /*
 // Override to support conditional editing of the table view.
