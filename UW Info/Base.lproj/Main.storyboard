@@ -137,8 +137,33 @@
                                     <outlet property="titleLabel" destination="x7z-TK-Het" id="cB2-Pk-azU"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DetailLinkCell" textLabel="Ycn-yG-c1X" detailTextLabel="WWu-Z0-jdN" rowHeight="42" style="IBUITableViewCellStyleValue1" id="Nkm-8X-06Y" customClass="DetailLinkCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DetailSwitchCell" rowHeight="42" id="uRr-tI-haU" customClass="DetailSwitchCell">
                                 <rect key="frame" x="0.0" y="161" width="320" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uRr-tI-haU" id="2Eh-Oe-KQB">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remind me" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="seA-Mo-rT6">
+                                            <rect key="frame" x="15" y="10" width="90" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="f2l-FA-L8p">
+                                            <rect key="frame" x="251" y="5" width="51" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </switch>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="remindLabel" destination="seA-Mo-rT6" id="cq8-6U-dY6"/>
+                                    <outlet property="remindSwitch" destination="f2l-FA-L8p" id="kML-BO-nF6"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DetailLinkCell" textLabel="Ycn-yG-c1X" detailTextLabel="WWu-Z0-jdN" rowHeight="42" style="IBUITableViewCellStyleValue1" id="Nkm-8X-06Y" customClass="DetailLinkCell">
+                                <rect key="frame" x="0.0" y="203" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nkm-8X-06Y" id="MSx-8k-Ayz">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="41"/>
@@ -165,7 +190,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DetailRSVPCell" rowHeight="42" id="KjC-Li-qOA" customClass="DetailRSVPCell">
-                                <rect key="frame" x="0.0" y="203" width="320" height="42"/>
+                                <rect key="frame" x="0.0" y="245" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KjC-Li-qOA" id="f9n-bT-wpc">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="41"/>
@@ -185,7 +210,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DetailDescriptionCell" rowHeight="93" id="58C-8F-joP" customClass="DetailDescriptionCell">
-                                <rect key="frame" x="0.0" y="245" width="320" height="93"/>
+                                <rect key="frame" x="0.0" y="287" width="320" height="93"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="58C-8F-joP" id="tDa-aU-Bhs">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="92"/>

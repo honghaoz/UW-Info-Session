@@ -11,6 +11,7 @@
 #import "DetailLinkCell.h"
 #import "DetailRSVPCell.h"
 #import "DetailDescriptionCell.h"
+#import "DetailSwitchCell.h"
 
 #import "InfoSession.h"
 
@@ -46,12 +47,18 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)didSwitchChange:(id)sender {
+    BOOL state = [sender isOn];
+    _infoSession.saved = state;
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 3;
+    return 4;
 }
 
 /**
@@ -67,8 +74,16 @@
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0: numberOfRows = 5; break;
-        case 1: numberOfRows = 4; break;
-        case 2: numberOfRows = 1; break;
+        case 1:{
+            if (_infoSession.saved == YES) {
+                numberOfRows = 2;
+            } else {
+                numberOfRows = 1;
+            }
+            break;
+        }
+        case 2: numberOfRows = 4; break;
+        case 3: numberOfRows = 1; break;
     }
     return numberOfRows;
 }
@@ -120,6 +135,26 @@
         }
     }
     else if (indexPath.section == 1) {
+        if (_infoSession.saved == YES) {
+            if (indexPath.row == 0) {
+                DetailSwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailSwitchCell"];
+                [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
+                [cell.remindSwitch setOn:YES animated:YES];
+                return cell;
+            } else if (indexPath.row == 1) {
+                DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
+                cell.titleLabel.text = @"Alarm";
+                cell.contentLabel.text = @"Mon, 2/10/14, 13:00";
+                return cell;
+            }
+        } else {
+            DetailSwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailSwitchCell"];
+            [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
+            [cell.remindSwitch setOn:NO animated:YES];
+            return cell;
+        }
+    }
+    else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
             DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
             cell.titleLabel.text = @"Website";
@@ -188,7 +223,7 @@
             return cell;
         }
     }
-    else if (indexPath.section == 2) {
+    else if (indexPath.section == 3) {
         if (indexPath.row == 0) {
             DetailDescriptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailDescriptionCell"];
             [cell.contentText setSelectable:YES];
@@ -244,7 +279,8 @@
                 case 3: height = 42.0f; break;
                 case 4: height = 42.0f; break;
             } break;
-        case 1:
+        case 1: height = 42.0f; break;
+        case 2:
             switch (indexPath.row) {
                 case 0: height = 42.0f; break;
                 case 1: {
@@ -293,7 +329,7 @@
                     break;
                 }
             } break;
-        case 2:
+        case 3:
             switch (indexPath.row) {
                 case 0: height = 100.0f; break;
             } break;

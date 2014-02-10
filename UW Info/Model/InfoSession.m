@@ -70,6 +70,8 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
     self.audience = [attributes valueForKeyPath:@"audience"];
     self.programs = [attributes valueForKeyPath:@"programs"];
     self.description = [attributes valueForKeyPath:@"description"];
+    
+    self.saved = NO;
     return self;
     
 }

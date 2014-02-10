@@ -22,6 +22,7 @@
 @property (nonatomic, readonly, copy) NSString *description;
 //@property (nonatomic, readonly, unsafe_unretained) NSURL *logoImageURL;
 @property (nonatomic, readonly, assign) NSUInteger weekNum;
+@property (nonatomic, assign) BOOL saved;
 
 - (instancetype)initWithAttributes:(NSDictionary *)attributes;
 
