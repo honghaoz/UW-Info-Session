@@ -150,9 +150,17 @@
             if ([_infoSession.programs length] <= 1) {
                 [cell.contentText setTextColor: [UIColor lightGrayColor]];
                 cell.contentText.text = @"No Programs Infomation";
+                // resize textView height
+                CGRect textViewFrame = cell.contentText.frame;
+                textViewFrame.size.height = 241.0f;
+                cell.contentText.frame = textViewFrame;
             } else {
                 [cell.contentText setTextColor: [UIColor blackColor]];
                 cell.contentText.text = _infoSession.programs;
+                // resize textView height
+                CGRect textViewFrame = cell.contentText.frame;
+                textViewFrame.size.height = 241.0f;
+                cell.contentText.frame = textViewFrame;
             }
             return cell;
         }
@@ -165,9 +173,17 @@
             if ([_infoSession.description length] <= 1) {
                 [cell.contentText setTextColor: [UIColor lightGrayColor]];
                 cell.contentText.text = @"No Descriptions";
+                // resize textView height
+                CGRect textViewFrame = cell.contentText.frame;
+                textViewFrame.size.height = 241.0f;
+                cell.contentText.frame = textViewFrame;
             } else {
                 [cell.contentText setTextColor: [UIColor blackColor]];
                 cell.contentText.text = _infoSession.description;
+                // resize textView height
+                CGRect textViewFrame = cell.contentText.frame;
+                textViewFrame.size.height = 241.0f;
+                cell.contentText.frame = textViewFrame;
             }
             return cell;
         }
@@ -181,6 +197,10 @@
             cell.titleLabel.text = @"Notes";
             [cell.contentText setTextColor: [UIColor blackColor]];
             cell.contentText.text = @"Taking some notes here!";
+            // resize textView height
+            CGRect textViewFrame = cell.contentText.frame;
+            textViewFrame.size.height = 241.0f;
+            cell.contentText.frame = textViewFrame;
             return cell;
         }
     }
