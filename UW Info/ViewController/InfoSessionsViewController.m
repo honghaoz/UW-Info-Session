@@ -17,7 +17,7 @@
 #import "DetailViewController.h"
 
 
-#define NSIntegerToString(i) [NSString stringWithFormat:@"%d", i]
+#define NSIntegerToString(i) [NSString stringWithFormat:@"%lu", (unsigned long)i]
 
 @interface InfoSessionsViewController ()
 
@@ -116,7 +116,7 @@
     for (InfoSession *eachSession in self.infoSessions) {
         // if key not exist
         if (self.infoSessionsDictionary[NSIntegerToString(eachSession.weekNum)] == nil) {
-            [self.infoSessionsDictionary setValue:[[NSMutableArray alloc] initWithObjects:eachSession, nil] forKey:[NSString  stringWithFormat:@"%d", eachSession.weekNum]];
+            [self.infoSessionsDictionary setValue:[[NSMutableArray alloc] initWithObjects:eachSession, nil] forKey:NSIntegerToString(eachSession.weekNum)];
         } else {
         // key exists
             [self.infoSessionsDictionary[NSIntegerToString(eachSession.weekNum)] addObject:eachSession];
