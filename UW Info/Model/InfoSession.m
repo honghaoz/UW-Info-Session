@@ -10,6 +10,8 @@
 #import "AFHTTPRequestOperation.h"
 #import "AFUwaterlooApiClient.h"
 
+#define MAX_NUM_OF_ALERTS 5
+
 const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 
 @interface InfoSession()
@@ -145,9 +147,23 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
     return [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:index], [[NSDate alloc] init]] forKeys:@[@"alertIndex", @"alertDate"]];
 }
 
-- (void)addOneAlert {
-    NSMutableDictionary *oneAlert = [self createNewAlertWithIndex:[self.alerts count]];
-    [self.alerts addObject:oneAlert];
+- (BOOL)addOneAlert {
+    if (![self alertsIsFull]) {
+        NSMutableDictionary *oneAlert = [self createNewAlertWithIndex:[self.alerts count]];
+        [self.alerts addObject:oneAlert];
+        return YES;
+    } else {
+        return NO;
+    }
+    
+}
+
+- (BOOL)alertsIsFull {
+    if ([self.alerts count] < MAX_NUM_OF_ALERTS) {
+        return NO;
+    } else {
+        return YES;
+    }
 }
 
 @end

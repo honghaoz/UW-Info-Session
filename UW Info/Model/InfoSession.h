@@ -25,8 +25,6 @@
 
 @property (nonatomic, assign) BOOL alertIsOn;
 @property (nonatomic, strong) NSMutableArray *alerts;
-//@property (nonatomic, strong) NSMutableDictionary *alert1st;
-//@property (nonatomic, strong) NSMutableDictionary *alert2nd;
 
 @property (nonatomic, copy) NSString *note;
 
@@ -36,6 +34,7 @@
 
 + (NSURLSessionTask *)infoSessionsWithBlock:(void (^)(NSArray *sessions, NSError *error))block;
 
-- (void)addOneAlert;
+- (BOOL)addOneAlert;
+- (BOOL)alertsIsFull;
 
 @end

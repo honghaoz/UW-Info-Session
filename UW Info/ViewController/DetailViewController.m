@@ -132,9 +132,21 @@
     switch (section) {
         case 0: numberOfRows = 5; break;
         case 1:{
+            // if switch is ON
             if (_infoSession.alertIsOn == YES) {
-                numberOfRows = 1 + [_infoSession.alerts count] + 1;
-            } else {
+                // if # of alerts is not full, show "add more alert" row
+                if (![_infoSession alertsIsFull]) {
+                    NSLog(@"not full");
+                    numberOfRows = 1 + [_infoSession.alerts count] + 1;
+                }
+                // if # of alerts is full, do not show "add more alert" row
+                else {
+                    NSLog(@"full");
+                    numberOfRows = 1 + [_infoSession.alerts count];
+                }
+            }
+            // if switch is OFF
+            else {
                 numberOfRows = 1;
             }
             break;
@@ -197,24 +209,29 @@
     }
     else if (indexPath.section == 1) {
         if (_infoSession.alertIsOn == YES) {
+            // the alert switch row
             if (indexPath.row == 0) {
                 DetailSwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailSwitchCell"];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
                 [cell.remindSwitch setOn:YES animated:YES];
                 return cell;
-            } else if (indexPath.row == [_infoSession.alerts count] + 1) {
+            }
+            // the last row, add more alert
+            else if (indexPath.row == [_infoSession.alerts count] + 1) {
                 LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddAlertCell"];
                 cell.loadingLabel.text = @"Add more alert";
                 return cell;
-            } else {
+            }
+            // alert item rows
+            else {
                 DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
                 
                 NSMutableDictionary *theAlert = _infoSession.alerts[indexPath.row - 1];
                 
                 cell.titleLabel.text = @"Alert";
-                NSLog(@"%@", [theAlert[@"alertIndex"] stringValue]);
+//                NSLog(@"%@", [theAlert[@"alertIndex"] stringValue]);
                 cell.contentLabel.text = _infoSessionModel.alertIndexDictionary[[theAlert[@"alertIndex"] stringValue]];
                 return cell;
             }
@@ -428,15 +445,17 @@
             [self performSegueWithIdentifier:@"ShowAlert" sender:nil];
         } else if (indexPath.row == [_infoSession.alerts count] + 1) {
             [_infoSession addOneAlert];
-//            
-//            NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:3 inSection:1];
-//            NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
-//            [self.tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
             
-//            NSMutableArray *indexPathArray = [[NSMutableArray alloc] init];
-//            [indexPathArray addObject:[NSIndexPath indexPathForRow:0 inSection:indexPath.section]];
-//            [self.tableView reloadRowsAtIndexPaths:indexPathArray withRowAnimation:UITableViewRowAnimationAutomatic];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+            NSMutableArray *indexPathToInsert = [[NSMutableArray alloc] init];
+            [indexPathToInsert addObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]];
+            if (![_infoSession alertsIsFull]) {
+                // add new alert item and need to insert this new row
+                [self.tableView insertRowsAtIndexPaths:indexPathToInsert withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+            else {
+                // add new alert item and need to insert this new row, if alerts is full, replace the "add" row
+                [self.tableView reloadRowsAtIndexPaths:indexPathToInsert withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
         }
     }
 }
