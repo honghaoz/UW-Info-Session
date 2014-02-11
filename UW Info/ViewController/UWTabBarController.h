@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DetailViewController.h"
 
-@interface UWTabBarController : UITabBarController
+@interface UWTabBarController : UITabBarController //<DetailViewControllerDelegate>
+
+@property (nonatomic, strong) InfoSessionModel *infoSessionModel;
 
 @end

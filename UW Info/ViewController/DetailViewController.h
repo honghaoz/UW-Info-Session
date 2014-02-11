@@ -9,10 +9,21 @@
 #import <UIKit/UIKit.h>
 @class InfoSession;
 @class InfoSessionModel;
+@class DetailViewController;
+
+//@protocol DetailViewControllerDelegate <NSObject>
+//
+//- (void)detailViewController:(DetailViewController *)detailController didAddInfoSession:(InfoSession *)infoSession;
+//
+//@end
 
 @interface DetailViewController : UITableViewController
 
 @property (nonatomic, strong) InfoSession *infoSession;
 @property (nonatomic, strong) InfoSessionModel *infoSessionModel;
+
+@property (nonatomic, weak) UITabBarController *tabBarController;
+
+//@property (nonatomic, weak) UITabBarController <DetailViewControllerDelegate> *delegate;
 
 @end

@@ -276,10 +276,10 @@
             </objects>
             <point key="canvasLocation" x="653" y="-175"/>
         </scene>
-        <!--Table View Controller - My Info Sessions-->
+        <!--My Info View Controller - My Info Sessions-->
         <scene sceneID="cOf-af-iOY">
             <objects>
-                <tableViewController id="Qxe-gJ-UM1" sceneMemberID="viewController">
+                <tableViewController id="Qxe-gJ-UM1" customClass="MyInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="0qZ-75-Osh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -344,10 +344,10 @@
             </objects>
             <point key="canvasLocation" x="653" y="498"/>
         </scene>
-        <!--Table View Controller - Info Session Search-->
+        <!--Search View Controller - Info Session Search-->
         <scene sceneID="a86-3u-dg9">
             <objects>
-                <tableViewController id="Tp9-sp-LWC" sceneMemberID="viewController">
+                <tableViewController id="Tp9-sp-LWC" customClass="SearchViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="W6P-ko-c0U">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

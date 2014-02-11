@@ -59,9 +59,40 @@
 - (IBAction)addToMyInfo:(id)sender {
     [_infoSessionModel.myInfoSessions addObject:_infoSession];
     [_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.myInfoSessionsDictionary withInfoSessions:_infoSessionModel.myInfoSessions];
-    [self.navigationController popViewControllerAnimated:NO];
+//    dispatch_queue_t q = dispatch_queue_create("com.honghaoz", NULL);
+//    dispatch_sync(q, ^ {
+    
+//    [UIView  beginAnimations:nil context:NULL];
+//    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//    [UIView setAnimationDuration:0.75];
+//    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.navigationController.view cache:NO];
+//    [UIView commitAnimations];
+//    
+//    [UIView beginAnimations:nil context:NULL];
+//    [UIView setAnimationDelay:0.375];
+//    [self.navigationController popViewControllerAnimated:NO];
+//    [UIView commitAnimations];
+    
+    
+//    [UIView animateWithDuration:0.75
+//                     animations:^{
+//                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//                         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.navigationController.view cache:NO];
+//                        
+//                     }];
+//    [self.navigationController popViewControllerAnimated:NO];
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    [[_tabBarController.viewControllers[1] tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel.myInfoSessions count])];
+    
+//    });
+//    dispatch_sync(q, ^{
+        //[self.delegate detailViewController:self didAddInfoSession:_infoSession];
+//    });
+    
+    //[self.delegate detailViewController:self didAddInfoSession:_infoSession];
     //[self.tabBarController setSelectedIndex:10];
-    NSLog(@"%i", [self.tabBarController.viewControllers count]);
+    //NSLog(@"%i", [self.tabBarController.viewControllers count]);
 //    UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:0];
 //    [navController popToRootViewControllerAnimated:YES];
 }

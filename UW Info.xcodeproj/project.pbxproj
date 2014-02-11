@@ -29,13 +29,14 @@
 		1B37453C18A5D0CE007CF08C /* AFUwaterlooApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37453B18A5D0CE007CF08C /* AFUwaterlooApiClient.m */; };
 		1B717E5F18A7F7DC00E20A29 /* DetailLinkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E5E18A7F7DC00E20A29 /* DetailLinkCell.m */; };
 		1B717E6518A809F900E20A29 /* DetailRSVPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E6418A809F900E20A29 /* DetailRSVPCell.m */; };
-		1B717E6818A80A4100E20A29 /* UWSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E6718A80A4100E20A29 /* UWSecondViewController.m */; };
 		1B717E6D18A80A7A00E20A29 /* InfoSessionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E6A18A80A7A00E20A29 /* InfoSessionCell.m */; };
 		1B717E6E18A80A7A00E20A29 /* LoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E6C18A80A7A00E20A29 /* LoadingCell.m */; };
 		1B717E7118A80B8200E20A29 /* DetailDescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E7018A80B8200E20A29 /* DetailDescriptionCell.m */; };
 		1B717E7618A8294600E20A29 /* DetailNormalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E7518A8294600E20A29 /* DetailNormalCell.m */; };
 		1BAD97E618A98F65006F4546 /* InfoSessionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97E518A98F65006F4546 /* InfoSessionModel.m */; };
 		1BAD97E918A9CAE2006F4546 /* UWTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */; };
+		1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */; };
+		1BAD97F218A9DF30006F4546 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97F118A9DF30006F4546 /* SearchViewController.m */; };
 		1BD83A9518A59F1C00EDBB6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9418A59F1C00EDBB6D /* Foundation.framework */; };
 		1BD83A9718A59F1C00EDBB6D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9618A59F1C00EDBB6D /* CoreGraphics.framework */; };
 		1BD83A9918A59F1C00EDBB6D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9818A59F1C00EDBB6D /* UIKit.framework */; };
@@ -109,8 +110,6 @@
 		1B717E5E18A7F7DC00E20A29 /* DetailLinkCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailLinkCell.m; path = TableViewCell/DetailLinkCell.m; sourceTree = "<group>"; };
 		1B717E6318A809F900E20A29 /* DetailRSVPCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailRSVPCell.h; path = TableViewCell/DetailRSVPCell.h; sourceTree = "<group>"; };
 		1B717E6418A809F900E20A29 /* DetailRSVPCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailRSVPCell.m; path = TableViewCell/DetailRSVPCell.m; sourceTree = "<group>"; };
-		1B717E6618A80A4100E20A29 /* UWSecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWSecondViewController.h; path = ViewController/UWSecondViewController.h; sourceTree = "<group>"; };
-		1B717E6718A80A4100E20A29 /* UWSecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWSecondViewController.m; path = ViewController/UWSecondViewController.m; sourceTree = "<group>"; };
 		1B717E6918A80A7A00E20A29 /* InfoSessionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InfoSessionCell.h; path = TableViewCell/InfoSessionCell.h; sourceTree = "<group>"; };
 		1B717E6A18A80A7A00E20A29 /* InfoSessionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSessionCell.m; path = TableViewCell/InfoSessionCell.m; sourceTree = "<group>"; };
 		1B717E6B18A80A7A00E20A29 /* LoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoadingCell.h; path = TableViewCell/LoadingCell.h; sourceTree = "<group>"; };
@@ -123,6 +122,10 @@
 		1BAD97E518A98F65006F4546 /* InfoSessionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSessionModel.m; path = Model/InfoSessionModel.m; sourceTree = "<group>"; };
 		1BAD97E718A9CAE2006F4546 /* UWTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWTabBarController.h; path = ViewController/UWTabBarController.h; sourceTree = "<group>"; };
 		1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWTabBarController.m; path = ViewController/UWTabBarController.m; sourceTree = "<group>"; };
+		1BAD97ED18A9DEF6006F4546 /* MyInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyInfoViewController.h; path = ViewController/MyInfoViewController.h; sourceTree = "<group>"; };
+		1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyInfoViewController.m; path = ViewController/MyInfoViewController.m; sourceTree = "<group>"; };
+		1BAD97F018A9DF30006F4546 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchViewController.h; path = ViewController/SearchViewController.h; sourceTree = "<group>"; };
+		1BAD97F118A9DF30006F4546 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = ViewController/SearchViewController.m; sourceTree = "<group>"; };
 		1BD83A9118A59F1C00EDBB6D /* UW Info.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UW Info.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BD83A9418A59F1C00EDBB6D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1BD83A9618A59F1C00EDBB6D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -283,8 +286,6 @@
 				1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */,
 				1B717E7218A8140E00E20A29 /* InfoSessionsViewController */,
 				1B717E7318A8142A00E20A29 /* DetailViewController */,
-				1B717E6618A80A4100E20A29 /* UWSecondViewController.h */,
-				1B717E6718A80A4100E20A29 /* UWSecondViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -327,6 +328,10 @@
 				1B717E7018A80B8200E20A29 /* DetailDescriptionCell.m */,
 				1BF0542118A93ECC005C04B2 /* DetailSwitchCell.h */,
 				1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */,
+				1BAD97ED18A9DEF6006F4546 /* MyInfoViewController.h */,
+				1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */,
+				1BAD97F018A9DF30006F4546 /* SearchViewController.h */,
+				1BAD97F118A9DF30006F4546 /* SearchViewController.m */,
 			);
 			name = DetailViewController;
 			sourceTree = "<group>";
@@ -511,6 +516,7 @@
 				1BAD97E618A98F65006F4546 /* InfoSessionModel.m in Sources */,
 				1B37451318A5B163007CF08C /* AFSecurityPolicy.m in Sources */,
 				1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */,
+				1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */,
 				1BF0542318A93ECC005C04B2 /* DetailSwitchCell.m in Sources */,
 				1B37451018A5B163007CF08C /* AFHTTPRequestOperationManager.m in Sources */,
 				1B37453718A5BA28007CF08C /* InfoSession.m in Sources */,
@@ -524,7 +530,7 @@
 				1B19834918A618A60022A285 /* DetailViewController.m in Sources */,
 				1B717E7118A80B8200E20A29 /* DetailDescriptionCell.m in Sources */,
 				1B37452918A5B169007CF08C /* UIActivityIndicatorView+AFNetworking.m in Sources */,
-				1B717E6818A80A4100E20A29 /* UWSecondViewController.m in Sources */,
+				1BAD97F218A9DF30006F4546 /* SearchViewController.m in Sources */,
 				1B717E5F18A7F7DC00E20A29 /* DetailLinkCell.m in Sources */,
 				1B717E6518A809F900E20A29 /* DetailRSVPCell.m in Sources */,
 				1B717E6D18A80A7A00E20A29 /* InfoSessionCell.m in Sources */,

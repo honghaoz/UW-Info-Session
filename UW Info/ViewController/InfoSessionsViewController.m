@@ -42,6 +42,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"InfoSession viewDidLoad");
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -444,6 +445,8 @@
     DetailViewController *controller = segue.destinationViewController;
     controller.infoSession = sender[0];
     controller.infoSessionModel = sender[1];
+    controller.tabBarController = _tabBarController;
+    //controller.delegate = (UITabBarController <DetailViewControllerDelegate> *)self.tabBarController;
 }
 
 @end
