@@ -22,12 +22,20 @@
 @property (nonatomic, readonly, copy) NSString *description;
 //@property (nonatomic, readonly, unsafe_unretained) NSURL *logoImageURL;
 @property (nonatomic, readonly, assign) NSUInteger weekNum;
-@property (nonatomic, assign) BOOL saved;
+
+@property (nonatomic, assign) BOOL alertIsOn;
+@property (nonatomic, strong) NSMutableArray *alerts;
+//@property (nonatomic, strong) NSMutableDictionary *alert1st;
+//@property (nonatomic, strong) NSMutableDictionary *alert2nd;
+
+@property (nonatomic, copy) NSString *note;
 
 - (instancetype)initWithAttributes:(NSDictionary *)attributes;
 
 //- (NSURL *)logoImageURL;
 
 + (NSURLSessionTask *)infoSessionsWithBlock:(void (^)(NSArray *sessions, NSError *error))block;
+
+- (void)addOneAlert;
 
 @end

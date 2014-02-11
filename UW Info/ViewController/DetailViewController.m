@@ -16,7 +16,11 @@
 #import "InfoSession.h"
 #import "InfoSessionModel.h"
 
+#import "AlertViewController.h"
 #import "MyInfoViewController.h"
+
+#import "LoadingCell.h"
+
 
 @interface DetailViewController ()
 
@@ -54,7 +58,7 @@
 
 - (void)didSwitchChange:(id)sender {
     BOOL state = [sender isOn];
-    _infoSession.saved = state;
+    _infoSession.alertIsOn = state;
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
@@ -128,8 +132,8 @@
     switch (section) {
         case 0: numberOfRows = 5; break;
         case 1:{
-            if (_infoSession.saved == YES) {
-                numberOfRows = 2;
+            if (_infoSession.alertIsOn == YES) {
+                numberOfRows = 1 + [_infoSession.alerts count] + 1;
             } else {
                 numberOfRows = 1;
             }
@@ -192,18 +196,26 @@
         }
     }
     else if (indexPath.section == 1) {
-        if (_infoSession.saved == YES) {
+        if (_infoSession.alertIsOn == YES) {
             if (indexPath.row == 0) {
                 DetailSwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailSwitchCell"];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
                 [cell.remindSwitch setOn:YES animated:YES];
                 return cell;
-            } else if (indexPath.row == 1) {
+            } else if (indexPath.row == [_infoSession.alerts count] + 1) {
+                LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddAlertCell"];
+                cell.loadingLabel.text = @"Add more alert";
+                return cell;
+            } else {
                 DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-                cell.titleLabel.text = @"Alarm";
-                cell.contentLabel.text = @"Mon, 2/10/14, 13:00";
+                
+                NSMutableDictionary *theAlert = _infoSession.alerts[indexPath.row - 1];
+                
+                cell.titleLabel.text = @"Alert";
+                NSLog(@"%@", [theAlert[@"alertIndex"] stringValue]);
+                cell.contentLabel.text = _infoSessionModel.alertIndexDictionary[[theAlert[@"alertIndex"] stringValue]];
                 return cell;
             }
         } else {
@@ -411,7 +423,22 @@
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    if (indexPath.section == 1) {
+        if (1 <= indexPath.row && indexPath.row <= [_infoSession.alerts count]) {
+            [self performSegueWithIdentifier:@"ShowAlert" sender:nil];
+        } else if (indexPath.row == [_infoSession.alerts count] + 1) {
+            [_infoSession addOneAlert];
+//            
+//            NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:3 inSection:1];
+//            NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
+//            [self.tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
+            
+//            NSMutableArray *indexPathArray = [[NSMutableArray alloc] init];
+//            [indexPathArray addObject:[NSIndexPath indexPathForRow:0 inSection:indexPath.section]];
+//            [self.tableView reloadRowsAtIndexPaths:indexPathArray withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+    }
 }
 
 
@@ -454,16 +481,15 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    //DetailViewController *controller = segue.destinationViewController;
 }
 
- */
+
 
 @end

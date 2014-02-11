@@ -71,7 +71,9 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
     self.programs = [attributes valueForKeyPath:@"programs"];
     self.description = [attributes valueForKeyPath:@"description"];
     
-    self.saved = NO;
+    NSMutableDictionary *oneAlert = [self createNewAlertWithIndex:0];
+    self.alerts = [[NSMutableArray alloc] initWithObjects:oneAlert, nil];
+//    self.alert2nd = [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithBool:NO], [NSNumber numberWithInt:2],[[NSDate alloc] init]] forKeys:@[@"isOn", @"alertIndex", @"alertDate"]];
     return self;
     
 }
@@ -137,6 +139,15 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
  */
 - (NSComparisonResult)compareTo:(InfoSession *)anotherInfoSession {
     return [self.startTime compare:anotherInfoSession.startTime];
+}
+
+- (NSMutableDictionary *)createNewAlertWithIndex:(NSInteger)index {
+    return [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:index], [[NSDate alloc] init]] forKeys:@[@"alertIndex", @"alertDate"]];
+}
+
+- (void)addOneAlert {
+    NSMutableDictionary *oneAlert = [self createNewAlertWithIndex:[self.alerts count]];
+    [self.alerts addObject:oneAlert];
 }
 
 @end

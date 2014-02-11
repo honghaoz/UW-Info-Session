@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1B19834918A618A60022A285 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19834818A618A60022A285 /* DetailViewController.m */; };
+		1B2076EB18AAA65100FE7088 /* AlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2076EA18AAA65100FE7088 /* AlertViewController.m */; };
 		1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */; };
 		1B37450F18A5B163007CF08C /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3744FD18A5B163007CF08C /* AFHTTPRequestOperation.m */; };
 		1B37451018A5B163007CF08C /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3744FF18A5B163007CF08C /* AFHTTPRequestOperationManager.m */; };
@@ -66,6 +67,8 @@
 /* Begin PBXFileReference section */
 		1B19834718A618A60022A285 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ViewController/DetailViewController.h; sourceTree = "<group>"; };
 		1B19834818A618A60022A285 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController.m; path = ViewController/DetailViewController.m; sourceTree = "<group>"; };
+		1B2076E918AAA65100FE7088 /* AlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertViewController.h; sourceTree = "<group>"; };
+		1B2076EA18AAA65100FE7088 /* AlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertViewController.m; sourceTree = "<group>"; };
 		1B3744F818A5A842007CF08C /* InfoSessionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InfoSessionsViewController.h; path = ViewController/InfoSessionsViewController.h; sourceTree = "<group>"; };
 		1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSessionsViewController.m; path = ViewController/InfoSessionsViewController.m; sourceTree = "<group>"; };
 		1B3744FC18A5B163007CF08C /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -171,6 +174,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B2076E718AAA56E00FE7088 /* MyInfoViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1BAD97ED18A9DEF6006F4546 /* MyInfoViewController.h */,
+				1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */,
+			);
+			name = MyInfoViewController;
+			sourceTree = "<group>";
+		};
+		1B2076E818AAA58500FE7088 /* SearchViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1BAD97F018A9DF30006F4546 /* SearchViewController.h */,
+				1BAD97F118A9DF30006F4546 /* SearchViewController.m */,
+			);
+			name = SearchViewController;
+			sourceTree = "<group>";
+		};
+		1B2076EC18AAA67000FE7088 /* AlertViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1B2076E918AAA65100FE7088 /* AlertViewController.h */,
+				1B2076EA18AAA65100FE7088 /* AlertViewController.m */,
+			);
+			name = AlertViewController;
+			sourceTree = "<group>";
+		};
 		1B3744FB18A5B163007CF08C /* AFNetworking */ = {
 			isa = PBXGroup;
 			children = (
@@ -286,6 +316,9 @@
 				1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */,
 				1B717E7218A8140E00E20A29 /* InfoSessionsViewController */,
 				1B717E7318A8142A00E20A29 /* DetailViewController */,
+				1B2076EC18AAA67000FE7088 /* AlertViewController */,
+				1B2076E718AAA56E00FE7088 /* MyInfoViewController */,
+				1B2076E818AAA58500FE7088 /* SearchViewController */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -328,10 +361,6 @@
 				1B717E7018A80B8200E20A29 /* DetailDescriptionCell.m */,
 				1BF0542118A93ECC005C04B2 /* DetailSwitchCell.h */,
 				1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */,
-				1BAD97ED18A9DEF6006F4546 /* MyInfoViewController.h */,
-				1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */,
-				1BAD97F018A9DF30006F4546 /* SearchViewController.h */,
-				1BAD97F118A9DF30006F4546 /* SearchViewController.m */,
 			);
 			name = DetailViewController;
 			sourceTree = "<group>";
@@ -530,6 +559,7 @@
 				1B19834918A618A60022A285 /* DetailViewController.m in Sources */,
 				1B717E7118A80B8200E20A29 /* DetailDescriptionCell.m in Sources */,
 				1B37452918A5B169007CF08C /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				1B2076EB18AAA65100FE7088 /* AlertViewController.m in Sources */,
 				1BAD97F218A9DF30006F4546 /* SearchViewController.m in Sources */,
 				1B717E5F18A7F7DC00E20A29 /* DetailLinkCell.m in Sources */,
 				1B717E6518A809F900E20A29 /* DetailRSVPCell.m in Sources */,

@@ -11,6 +11,6 @@
 
 @interface UWTabBarController : UITabBarController //<DetailViewControllerDelegate>
 
-@property (nonatomic, strong) InfoSessionModel *infoSessionModel;
+//@property (nonatomic, strong) InfoSessionModel *infoSessionModel;
 
 @end
