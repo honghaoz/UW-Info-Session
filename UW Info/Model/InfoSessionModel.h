@@ -16,5 +16,6 @@
 @property (nonatomic, strong) NSMutableDictionary *myInfoSessionsDictionary;
 
 -(void)processInfoSessionsDictionary:(NSDictionary *)dictionary withInfoSessions:(NSArray *)array;
+- (void)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array;
 
 @end

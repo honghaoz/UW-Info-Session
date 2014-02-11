@@ -53,4 +53,27 @@
     }
 }
 
+- (void)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array {
+    NSComparator comparator = ^(InfoSession *info1, InfoSession *info2) {
+        return [info1.startTime compare:info2.startTime];
+    };
+    
+    NSUInteger newIndex = [array indexOfObject:infoSession
+                                 inSortedRange:(NSRange){0, [array count]}
+                                       options:NSBinarySearchingInsertionIndex
+                               usingComparator:comparator];
+    
+    [array insertObject:infoSession atIndex:newIndex];
+}
+
+/**
+ *  Compare to another inforsession, according startTime
+ *
+ *  @param anotherInfoSession InfoSession
+ *
+ *  @return NSComparisonResult
+ */
+- (NSComparisonResult)compareTo:(InfoSession *)anotherInfoSession {
+    return [self.startTime compare:anotherInfoSession.startTime];
+}
 @end

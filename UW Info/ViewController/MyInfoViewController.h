@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+@class InfoSessionModel;
 
 @interface MyInfoViewController : UITableViewController
+
+@property (nonatomic, strong) InfoSessionModel *infoSessionModel;
 
 @end

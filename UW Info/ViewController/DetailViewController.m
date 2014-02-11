@@ -16,6 +16,8 @@
 #import "InfoSession.h"
 #import "InfoSessionModel.h"
 
+#import "MyInfoViewController.h"
+
 @interface DetailViewController ()
 
 - (IBAction)addToMyInfo:(id)sender;
@@ -57,8 +59,11 @@
 }
 
 - (IBAction)addToMyInfo:(id)sender {
-    [_infoSessionModel.myInfoSessions addObject:_infoSession];
-    [_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.myInfoSessionsDictionary withInfoSessions:_infoSessionModel.myInfoSessions];
+    [_infoSessionModel addInfoSessionInOrder:_infoSession to:_infoSessionModel.myInfoSessions];
+    //[_infoSessionModel.myInfoSessions addObject:_infoSession];
+    
+    //[_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.myInfoSessionsDictionary withInfoSessions:_infoSessionModel.myInfoSessions];
+    
 //    dispatch_queue_t q = dispatch_queue_create("com.honghaoz", NULL);
 //    dispatch_sync(q, ^ {
     
@@ -83,7 +88,11 @@
 //    [self.navigationController popViewControllerAnimated:NO];
     
     [self.navigationController popViewControllerAnimated:YES];
-    [[_tabBarController.viewControllers[1] tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel.myInfoSessions count])];
+    UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
+    [[navigation tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel.myInfoSessions count])];
+    
+    MyInfoViewController *myInfoViewController = (MyInfoViewController *)navigation.topViewController;
+    myInfoViewController.infoSessionModel = _infoSessionModel;
     
 //    });
 //    dispatch_sync(q, ^{

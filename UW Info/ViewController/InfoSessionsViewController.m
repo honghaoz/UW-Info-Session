@@ -203,7 +203,7 @@
  */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (_infoSessionModel.infoSessionsDictionary == nil) {
+    if ([_infoSessionModel.infoSessionsDictionary count] == 0) {
         return 1;
     } else {
         NSInteger firstWeekNumber = [[_infoSessionModel.infoSessions firstObject] weekNum];
@@ -216,7 +216,7 @@
  *  @Return the title of sections. show week start date to end date
  */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (_infoSessionModel.infoSessionsDictionary == nil) {
+    if ([_infoSessionModel.infoSessionsDictionary count] == 0) {
         return @"Refreshing...";
     } else {
         InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
@@ -264,7 +264,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // refreshing cell
-    if (_infoSessionModel.infoSessionsDictionary == nil) {
+    if ([_infoSessionModel.infoSessionsDictionary count] == 0) {
         return 1;
     } else {
         // no info sessions cell
@@ -282,7 +282,7 @@
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_infoSessionModel.infoSessionsDictionary == nil) {
+    if ([_infoSessionModel.infoSessionsDictionary count] == 0) {
         LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
         cell.loadingIndicator.hidden = NO;
         [cell.loadingIndicator startAnimating];
@@ -362,7 +362,7 @@
  */
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // refreshing cell
-    if (_infoSessionModel.infoSessionsDictionary == nil) {
+    if ([_infoSessionModel.infoSessionsDictionary count] == 0) {
         return 44.0f;
     }
     // no info session cell
@@ -391,7 +391,7 @@
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Refreshing cell
-    if (_infoSessionModel.infoSessionsDictionary == nil) {
+    if ([_infoSessionModel.infoSessionsDictionary count] == 0) {
         return;
     }
     // No info session cell

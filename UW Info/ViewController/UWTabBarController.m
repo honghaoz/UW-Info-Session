@@ -36,6 +36,9 @@
     UINavigationController *navigationController = [self.viewControllers objectAtIndex:0];
     InfoSessionsViewController *infoSessionViewController = (InfoSessionsViewController *)navigationController.topViewController;
     infoSessionViewController.tabBarController = self;
+    //[self setSelectedIndex:1];
+    //[self setSelectedIndex:2];
+    //[self setSelectedIndex:0];
 }
 
 - (void)didReceiveMemoryWarning
