@@ -34,6 +34,8 @@
 		1B717E6E18A80A7A00E20A29 /* LoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E6C18A80A7A00E20A29 /* LoadingCell.m */; };
 		1B717E7118A80B8200E20A29 /* DetailDescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E7018A80B8200E20A29 /* DetailDescriptionCell.m */; };
 		1B717E7618A8294600E20A29 /* DetailNormalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E7518A8294600E20A29 /* DetailNormalCell.m */; };
+		1BAD97E618A98F65006F4546 /* InfoSessionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97E518A98F65006F4546 /* InfoSessionModel.m */; };
+		1BAD97E918A9CAE2006F4546 /* UWTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */; };
 		1BD83A9518A59F1C00EDBB6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9418A59F1C00EDBB6D /* Foundation.framework */; };
 		1BD83A9718A59F1C00EDBB6D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9618A59F1C00EDBB6D /* CoreGraphics.framework */; };
 		1BD83A9918A59F1C00EDBB6D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9818A59F1C00EDBB6D /* UIKit.framework */; };
@@ -117,6 +119,10 @@
 		1B717E7018A80B8200E20A29 /* DetailDescriptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailDescriptionCell.m; path = TableViewCell/DetailDescriptionCell.m; sourceTree = "<group>"; };
 		1B717E7418A8294600E20A29 /* DetailNormalCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailNormalCell.h; path = TableViewCell/DetailNormalCell.h; sourceTree = "<group>"; };
 		1B717E7518A8294600E20A29 /* DetailNormalCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailNormalCell.m; path = TableViewCell/DetailNormalCell.m; sourceTree = "<group>"; };
+		1BAD97E418A98F65006F4546 /* InfoSessionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InfoSessionModel.h; path = Model/InfoSessionModel.h; sourceTree = "<group>"; };
+		1BAD97E518A98F65006F4546 /* InfoSessionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSessionModel.m; path = Model/InfoSessionModel.m; sourceTree = "<group>"; };
+		1BAD97E718A9CAE2006F4546 /* UWTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWTabBarController.h; path = ViewController/UWTabBarController.h; sourceTree = "<group>"; };
+		1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWTabBarController.m; path = ViewController/UWTabBarController.m; sourceTree = "<group>"; };
 		1BD83A9118A59F1C00EDBB6D /* UW Info.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UW Info.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BD83A9418A59F1C00EDBB6D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1BD83A9618A59F1C00EDBB6D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -264,6 +270,8 @@
 			children = (
 				1B37453518A5BA28007CF08C /* InfoSession.h */,
 				1B37453618A5BA28007CF08C /* InfoSession.m */,
+				1BAD97E418A98F65006F4546 /* InfoSessionModel.h */,
+				1BAD97E518A98F65006F4546 /* InfoSessionModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -271,6 +279,8 @@
 		1B37453918A5BA3D007CF08C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1BAD97E718A9CAE2006F4546 /* UWTabBarController.h */,
+				1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */,
 				1B717E7218A8140E00E20A29 /* InfoSessionsViewController */,
 				1B717E7318A8142A00E20A29 /* DetailViewController */,
 				1B717E6618A80A4100E20A29 /* UWSecondViewController.h */,
@@ -498,12 +508,14 @@
 				1B37452B18A5B169007CF08C /* UIButton+AFNetworking.m in Sources */,
 				1B37452A18A5B169007CF08C /* UIAlertView+AFNetworking.m in Sources */,
 				1BD83AA518A59F1C00EDBB6D /* UWAppDelegate.m in Sources */,
+				1BAD97E618A98F65006F4546 /* InfoSessionModel.m in Sources */,
 				1B37451318A5B163007CF08C /* AFSecurityPolicy.m in Sources */,
 				1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */,
 				1BF0542318A93ECC005C04B2 /* DetailSwitchCell.m in Sources */,
 				1B37451018A5B163007CF08C /* AFHTTPRequestOperationManager.m in Sources */,
 				1B37453718A5BA28007CF08C /* InfoSession.m in Sources */,
 				1B37451418A5B163007CF08C /* AFURLConnectionOperation.m in Sources */,
+				1BAD97E918A9CAE2006F4546 /* UWTabBarController.m in Sources */,
 				1B717E7618A8294600E20A29 /* DetailNormalCell.m in Sources */,
 				1B37452C18A5B169007CF08C /* UIImageView+AFNetworking.m in Sources */,
 				1B717E6E18A80A7A00E20A29 /* LoadingCell.m in Sources */,

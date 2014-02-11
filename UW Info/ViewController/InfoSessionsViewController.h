@@ -10,4 +10,6 @@
 
 @interface InfoSessionsViewController : UITableViewController
 
+@property (nonatomic, weak) UITabBarController *tabBarController;
+
 @end

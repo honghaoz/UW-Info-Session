@@ -14,8 +14,11 @@
 #import "DetailSwitchCell.h"
 
 #import "InfoSession.h"
+#import "InfoSessionModel.h"
 
 @interface DetailViewController ()
+
+- (IBAction)addToMyInfo:(id)sender;
 
 @end
 
@@ -51,6 +54,16 @@
     BOOL state = [sender isOn];
     _infoSession.saved = state;
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (IBAction)addToMyInfo:(id)sender {
+    [_infoSessionModel.myInfoSessions addObject:_infoSession];
+    [_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.myInfoSessionsDictionary withInfoSessions:_infoSessionModel.myInfoSessions];
+    [self.navigationController popViewControllerAnimated:NO];
+    //[self.tabBarController setSelectedIndex:10];
+    NSLog(@"%i", [self.tabBarController.viewControllers count]);
+//    UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:0];
+//    [navController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark - Table view data source
@@ -93,14 +106,15 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             DetailNormalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Employer";
             cell.contentLabel.text = _infoSession.employer;
             return cell;
         }
         else if (indexPath.row == 1) {
             DetailNormalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Date";
-            //
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"MMMM d, y"];
             cell.contentLabel.text = [dateFormatter stringFromDate:_infoSession.date];
@@ -108,6 +122,7 @@
         }
         else if (indexPath.row == 2) {
             DetailNormalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Time";
             NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
             [timeFormatter setDateFormat:@"h:mm a"];
@@ -116,6 +131,7 @@
         }
         else if (indexPath.row == 3) {
             DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             [cell.contentLabel setFont:[UIFont systemFontOfSize:16]];
             cell.titleLabel.text = @"Location";
             if ([_infoSession.website length] <= 1) {
@@ -130,6 +146,7 @@
         }
         else if (indexPath.row == 4) {
             DetailRSVPCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailRSVPCell"];
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             cell.contentLabel.text = @"Tap here to RSVP.";
             return cell;
         }
@@ -138,17 +155,20 @@
         if (_infoSession.saved == YES) {
             if (indexPath.row == 0) {
                 DetailSwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailSwitchCell"];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
                 [cell.remindSwitch setOn:YES animated:YES];
                 return cell;
             } else if (indexPath.row == 1) {
                 DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
                 cell.titleLabel.text = @"Alarm";
                 cell.contentLabel.text = @"Mon, 2/10/14, 13:00";
                 return cell;
             }
         } else {
             DetailSwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailSwitchCell"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
             [cell.remindSwitch setOn:NO animated:YES];
             return cell;
@@ -157,6 +177,7 @@
     else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
             DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             cell.titleLabel.text = @"Website";
             if ([_infoSession.website length] <= 7) {
                 [cell.contentLabel setFont:[UIFont systemFontOfSize:16]];
@@ -172,12 +193,14 @@
         }
         else if (indexPath.row == 1){
             DetailNormalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Students";
             cell.contentLabel.text = _infoSession.audience;
             return cell;
         }
         else if (indexPath.row == 2) {
             DetailDescriptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailDescriptionCell"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.contentText setSelectable:YES];
             [cell.contentText setFont:[UIFont systemFontOfSize:15]];
             [cell.contentText setSelectable:NO];
@@ -201,6 +224,7 @@
         }
         else if (indexPath.row == 3) {
             DetailDescriptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailDescriptionCell"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.contentText setSelectable:YES];
             [cell.contentText setFont:[UIFont systemFontOfSize:15]];
             [cell.contentText setSelectable:NO];
@@ -226,6 +250,7 @@
     else if (indexPath.section == 3) {
         if (indexPath.row == 0) {
             DetailDescriptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailDescriptionCell"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.contentText setSelectable:YES];
             [cell.contentText setEditable:YES];
             [cell.contentText setFont:[UIFont systemFontOfSize:15]];
@@ -336,6 +361,19 @@
     }
     return height;
 }
+
+#pragma mark - Table view delegate
+/**
+ *  select row at indexPath
+ *
+ *  @param tableView tableView
+ *  @param indexPath indexPath
+ */
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+}
+
 
 /*
 // Override to support conditional editing of the table view.

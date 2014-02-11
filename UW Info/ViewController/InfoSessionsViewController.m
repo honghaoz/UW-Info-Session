@@ -9,20 +9,19 @@
 #import "InfoSessionsViewController.h"
 #import "UIActivityIndicatorView+AFNetworking.h"
 #import "UIAlertView+AFNetworking.h"
+#import "UIImageView+AFNetworking.h"
+
 #import "InfoSession.h"
 #import "InfoSessionCell.h"
 #import "LoadingCell.h"
 
-#import "UIImageView+AFNetworking.h"
+
 #import "DetailViewController.h"
-
-
-#define NSIntegerToString(i) [NSString stringWithFormat:@"%lu", (unsigned long)i]
+#import "InfoSessionModel.h"
 
 @interface InfoSessionsViewController ()
 
-@property (nonatomic, strong) NSArray *infoSessions;
-@property (nonatomic, strong) NSDictionary *infoSessionsDictionary;
+@property (nonatomic, strong) InfoSessionModel *infoSessionModel;
 
 @end
 
@@ -55,6 +54,9 @@
     self.navigationItem.leftBarButtonItem = anotherButton;
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
+    // initiate infoSessionModel
+    _infoSessionModel = [[InfoSessionModel alloc] init];
+    
     //reload data
     [self reload:nil];
 }
@@ -71,8 +73,8 @@
  *  @param sender
  */
 - (void)reload:(__unused id)sender {
-    self.infoSessions = nil;
-    self.infoSessionsDictionary = nil;
+    _infoSessionModel.infoSessions = nil;
+    _infoSessionModel.infoSessionsDictionary = nil;
     [self.tableView reloadData];
     [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
     //change right bar button to indicator
@@ -83,9 +85,10 @@
     
     NSURLSessionTask *task = [InfoSession infoSessionsWithBlock:^(NSArray *sessions, NSError *error) {
         if (!error) {
-            self.infoSessions = sessions;
-            [self processInfoSessionsDictionary];
-        
+            // initiate infoSessionModel
+            _infoSessionModel.infoSessions = sessions;
+            [_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.infoSessionsDictionary withInfoSessions:_infoSessionModel.infoSessions];
+            
             // reload TableView data
             [self.tableView reloadData];
             // scroll TableView to current date
@@ -108,23 +111,6 @@
 }
 
 /**
- *  To be called after self.infoSessions is initiated. 
- *  initiated self.infoSessionsDictionary with key: weekNum, value: corronsponding infoSession
- */
--(void)processInfoSessionsDictionary {
-    self.infoSessionsDictionary = [[NSMutableDictionary alloc] init];
-    for (InfoSession *eachSession in self.infoSessions) {
-        // if key not exist
-        if (self.infoSessionsDictionary[NSIntegerToString(eachSession.weekNum)] == nil) {
-            [self.infoSessionsDictionary setValue:[[NSMutableArray alloc] initWithObjects:eachSession, nil] forKey:NSIntegerToString(eachSession.weekNum)];
-        } else {
-        // key exists
-            [self.infoSessionsDictionary[NSIntegerToString(eachSession.weekNum)] addObject:eachSession];
-        }
-    }
-}
-
-/**
  *  Get the week number of NSDate
  *
  *  @param date NSDate
@@ -142,11 +128,11 @@
  */
 - (void)scrollToToday {
     // scroll TableView to current date
-    InfoSession *firstInfoSession = [self.infoSessions firstObject];
+    InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
     NSUInteger currentWeekNum = [self getWeekNumbe:[NSDate date]];
     NSUInteger sectionNumToScroll = currentWeekNum - [firstInfoSession weekNum];
     
-    NSArray *infoSessionsOfCurrentWeek = self.infoSessionsDictionary[NSIntegerToString(currentWeekNum)];
+    NSArray *infoSessionsOfCurrentWeek = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(currentWeekNum)];
     NSInteger rowNumToScroll = -1;
     for (InfoSession *eachCell in infoSessionsOfCurrentWeek) {
         if ([[NSDate date] compare:eachCell.startTime] == NSOrderedDescending ) {
@@ -178,7 +164,7 @@
 - (void)reloadSection:(NSUInteger)sectionToScroll WithAnimation:(UITableViewRowAnimation)animation {
     NSUInteger sectionNumToScroll = sectionToScroll;
     if (sectionToScroll == -1) {
-        InfoSession *firstInfoSession = [self.infoSessions firstObject];
+        InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
         sectionNumToScroll = [self getWeekNumbe:[NSDate date]] - [firstInfoSession weekNum];
     }
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionNumToScroll] withRowAnimation:animation];
@@ -191,8 +177,8 @@
  *  @return the corresponding array of infoSession
  */
 - (NSArray *)getInfoSessionsAccordingSection:(NSUInteger)section {
-    NSInteger firstWeekNumber = [[self.infoSessions firstObject] weekNum];
-    NSArray *infoSessions = self.infoSessionsDictionary[NSIntegerToString(section + firstWeekNumber)];
+    NSInteger firstWeekNumber = [[_infoSessionModel.infoSessions firstObject] weekNum];
+    NSArray *infoSessions = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(section + firstWeekNumber)];
     return infoSessions;
 }
 
@@ -204,23 +190,38 @@
  *  @return the corresponding InfoSession
  */
 - (InfoSession *)getInfoSessionAccordingIndexPath:(NSIndexPath *)indexPath {
-    NSInteger firstWeekNumber = [[self.infoSessions firstObject] weekNum];
-    InfoSession *infoSession = self.infoSessionsDictionary[NSIntegerToString(indexPath.section + firstWeekNumber)][indexPath.row];
+    NSInteger firstWeekNumber = [[_infoSessionModel.infoSessions firstObject] weekNum];
+    InfoSession *infoSession = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(indexPath.section + firstWeekNumber)][indexPath.row];
     return infoSession;
 }
 
 #pragma mark - Table view data source
+
+/**
+ *  Return the number of sections. the number of sessions in this week
+ */
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (_infoSessionModel.infoSessionsDictionary == nil) {
+        return 1;
+    } else {
+        NSInteger firstWeekNumber = [[_infoSessionModel.infoSessions firstObject] weekNum];
+        NSInteger lastWeekNumber = [[_infoSessionModel.infoSessions lastObject] weekNum];
+        return  lastWeekNumber - firstWeekNumber + 1;
+    }
+}
+
 /**
  *  @Return the title of sections. show week start date to end date
  */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (self.infoSessionsDictionary == nil) {
+    if (_infoSessionModel.infoSessionsDictionary == nil) {
         return @"Refreshing...";
     } else {
-        InfoSession *firstInfoSession = [self.infoSessions firstObject];
+        InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
         NSUInteger weekNum = section + [firstInfoSession weekNum];
         
-        NSArray *infoSessionsOfThisWeek = self.infoSessionsDictionary[NSIntegerToString(weekNum)];
+        NSArray *infoSessionsOfThisWeek = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(weekNum)];
         NSDate *dateOfFirstObjectOfThisWeek;
         if (infoSessionsOfThisWeek == nil) {
             dateOfFirstObjectOfThisWeek = [NSDate date];
@@ -255,19 +256,6 @@
 }
 
 /**
- *  Return the number of sections. the number of sessions in this week
- */
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    if (self.infoSessionsDictionary == nil) {
-        return 1;
-    } else {
-        NSInteger firstWeekNumber = [[self.infoSessions firstObject] weekNum];
-        NSInteger lastWeekNumber = [[self.infoSessions lastObject] weekNum];
-        return  lastWeekNumber - firstWeekNumber + 1;
-    }
-}
-/**
  *  Return the number of rows in the section.
  *  if infosessionDictionary is nil, return 1 to show refreshing cell
  *  if sessions in this week is 0, return 1 to show empty cell
@@ -275,7 +263,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // refreshing cell
-    if (self.infoSessionsDictionary == nil) {
+    if (_infoSessionModel.infoSessionsDictionary == nil) {
         return 1;
     } else {
         // no info sessions cell
@@ -293,7 +281,7 @@
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.infoSessionsDictionary == nil) {
+    if (_infoSessionModel.infoSessionsDictionary == nil) {
         LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
         cell.loadingIndicator.hidden = NO;
         [cell.loadingIndicator startAnimating];
@@ -373,7 +361,7 @@
  */
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // refreshing cell
-    if (self.infoSessionsDictionary == nil) {
+    if (_infoSessionModel.infoSessionsDictionary == nil) {
         return 44.0f;
     }
     // no info session cell
@@ -402,7 +390,7 @@
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Refreshing cell
-    if (self.infoSessionsDictionary == nil) {
+    if (_infoSessionModel.infoSessionsDictionary == nil) {
         return;
     }
     // No info session cell
@@ -410,7 +398,7 @@
         return;
     } else {
         // info session cells
-        [self performSegueWithIdentifier:@"ShowDetail" sender:[self getInfoSessionAccordingIndexPath:indexPath]];
+        [self performSegueWithIdentifier:@"ShowDetail" sender:[[NSArray alloc] initWithObjects:[self getInfoSessionAccordingIndexPath:indexPath], _infoSessionModel, nil]];
     }
     
 }
@@ -454,7 +442,8 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     DetailViewController *controller = segue.destinationViewController;
-    controller.infoSession = sender;
+    controller.infoSession = sender[0];
+    controller.infoSessionModel = sender[1];
 }
 
 @end
