@@ -136,12 +136,10 @@
             if (_infoSession.alertIsOn == YES) {
                 // if # of alerts is not full, show "add more alert" row
                 if (![_infoSession alertsIsFull]) {
-                    NSLog(@"not full");
                     numberOfRows = 1 + [_infoSession.alerts count] + 1;
                 }
                 // if # of alerts is full, do not show "add more alert" row
                 else {
-                    NSLog(@"full");
                     numberOfRows = 1 + [_infoSession.alerts count];
                 }
             }
@@ -227,12 +225,11 @@
             else {
                 DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-                
+            
                 NSMutableDictionary *theAlert = _infoSession.alerts[indexPath.row - 1];
                 
-                cell.titleLabel.text = @"Alert";
-//                NSLog(@"%@", [theAlert[@"alertIndex"] stringValue]);
-                cell.contentLabel.text = _infoSessionModel.alertIndexDictionary[[theAlert[@"alertIndex"] stringValue]];
+                cell.titleLabel.text = [_infoSessionModel getAlertSequence:theAlert[@"alertChoice"]];
+                cell.contentLabel.text = [_infoSessionModel getAlertDescription:theAlert[@"alertChoice"]];
                 return cell;
             }
         } else {
@@ -440,10 +437,14 @@
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    // select alert section
     if (indexPath.section == 1) {
+        // select alert setting rows
         if (1 <= indexPath.row && indexPath.row <= [_infoSession.alerts count]) {
-            [self performSegueWithIdentifier:@"ShowAlert" sender:nil];
-        } else if (indexPath.row == [_infoSession.alerts count] + 1) {
+            [self performSegueWithIdentifier:@"ShowAlert" sender:indexPath];
+        }
+        // select "add more alert" row
+        else if (indexPath.row == [_infoSession.alerts count] + 1) {
             [_infoSession addOneAlert];
             
             NSMutableArray *indexPathToInsert = [[NSMutableArray alloc] init];
@@ -506,7 +507,11 @@
 // In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    //DetailViewController *controller = segue.destinationViewController;
+    AlertViewController *controller = segue.destinationViewController;
+    controller.infoSession = self.infoSession;
+    controller.infoSessionModel = self.infoSessionModel;
+    NSIndexPath *choosedIndexPath = sender;
+    controller.alertIndexOfAlertArray =choosedIndexPath.row - 1;
 }
 
 

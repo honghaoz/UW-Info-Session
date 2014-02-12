@@ -14,6 +14,9 @@
 
 @property (nonatomic, strong) InfoSession *infoSession;
 @property (nonatomic, strong) InfoSessionModel *infoSessionModel;
-@property (nonatomic, strong) NSArray *alertChoices;
+@property (nonatomic, assign) NSInteger alertIndexOfAlertArray;
+
+@property (nonatomic, assign) NSInteger checkRow;
+@property (nonatomic, strong) NSMutableArray *alertChoices;
 
 @end

@@ -7,6 +7,8 @@
 //
 
 #import "AlertViewController.h"
+#import "InfoSession.h"
+#import "InfoSessionModel.h"
 
 @interface AlertViewController ()
 
@@ -26,21 +28,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    _alertChoices = [[NSArray alloc] initWithObjects:@"At time of event",
-                                                     @"5 minutes before",
-                                                     @"15 minutes before",
-                                                     @"30 minutes before",
-                                                     @"1 hour before",
-                                                     @"2 hours before",
-                                                     @"1 day before",
-                                                     @"2 days before",
-                                                     @"1 week before", nil];
+    // initiated alertChoices
+    _alertChoices = [[NSMutableArray alloc] initWithCapacity:[_infoSessionModel.alertChoiceDictionary count]];
+    NSMutableArray *allKeys = [[_infoSessionModel.alertChoiceDictionary allKeys] mutableCopy];
+    [allKeys sortUsingComparator:^(NSString *key1, NSString *key2) {
+        return [key1 compare:key2];
+    }];
+    for (NSString *key in allKeys) {
+        [_alertChoices addObject:[_infoSessionModel.alertChoiceDictionary objectForKey:key]];
+    }
+    
+    NSMutableDictionary *theAlert = _infoSession.alerts[_alertIndexOfAlertArray];
+    _checkRow = [theAlert[@"alertChoice"] integerValue];
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,59 +68,27 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     cell.textLabel.text = _alertChoices[indexPath.row];
-    //cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    
+    if (_checkRow == indexPath.row) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+#pragma mark - Table view delegate method
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    // set check mark to new selected row
+    UITableViewCell *checkedCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_checkRow inSection:0]];
+    checkedCell.accessoryType = UITableViewCellAccessoryNone;
+    UITableViewCell *newlyCheckedCell = [tableView cellForRowAtIndexPath:indexPath];
+    newlyCheckedCell.accessoryType = UITableViewCellAccessoryCheckmark;
+    
+    // set choosed alert choice to infosession.alerts
+    [_infoSession setAlertChoiceForAlertDictionaryAtIndex:_alertIndexOfAlertArray newChoice:indexPath.row];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 @end

@@ -10,6 +10,7 @@
 
 @interface InfoSession : NSObject
 
+//attribute that not changed
 @property (nonatomic, readonly, assign) NSUInteger SessionId;
 @property (nonatomic, readonly, copy) NSString *employer;
 @property (nonatomic, readonly, strong) NSDate *date;
@@ -23,9 +24,12 @@
 //@property (nonatomic, readonly, unsafe_unretained) NSURL *logoImageURL;
 @property (nonatomic, readonly, assign) NSUInteger weekNum;
 
+
+// alerts related attributes
 @property (nonatomic, assign) BOOL alertIsOn;
 @property (nonatomic, strong) NSMutableArray *alerts;
 
+// other attributes
 @property (nonatomic, copy) NSString *note;
 
 - (instancetype)initWithAttributes:(NSDictionary *)attributes;
@@ -36,5 +40,8 @@
 
 - (BOOL)addOneAlert;
 - (BOOL)alertsIsFull;
+
+- (id)getValueFromAlertDictionaryAtIndex:(NSInteger)index ForKey:(NSString *)key;
+- (void)setAlertChoiceForAlertDictionaryAtIndex:(NSInteger)index newChoice:(NSInteger)alertChoice;
 
 @end

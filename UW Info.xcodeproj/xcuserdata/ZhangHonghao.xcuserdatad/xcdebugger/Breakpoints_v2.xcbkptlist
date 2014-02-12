@@ -184,11 +184,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/Model/InfoSessionModel.m"
-            timestampString = "413841648.842939"
+            timestampString = "413872583.58382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
             landmarkName = "-processInfoSessionsDictionary:withInfoSessions:"
             landmarkType = "5">
          </BreakpointContent>

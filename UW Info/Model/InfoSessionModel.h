@@ -15,9 +15,12 @@
 @property (nonatomic, strong) NSMutableArray *myInfoSessions;
 @property (nonatomic, strong) NSMutableDictionary *myInfoSessionsDictionary;
 
-@property (nonatomic, strong) NSDictionary *alertIndexDictionary;
+@property (nonatomic, strong) NSDictionary *alertChoiceDictionary;
+@property (nonatomic, strong) NSDictionary *alertSequenceDictionary;
 
 - (void)processInfoSessionsDictionary:(NSDictionary *)dictionary withInfoSessions:(NSArray *)array;
 - (void)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array;
 
+- (NSString *)getAlertDescription:(NSNumber *)alertChoice;
+- (NSString *)getAlertSequence:(NSNumber *)alertChoice;
 @end

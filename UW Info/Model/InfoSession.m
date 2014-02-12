@@ -73,9 +73,8 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
     self.programs = [attributes valueForKeyPath:@"programs"];
     self.description = [attributes valueForKeyPath:@"description"];
     
-    NSMutableDictionary *oneAlert = [self createNewAlertWithIndex:0];
+    NSMutableDictionary *oneAlert = [self createNewAlertDictionaryWithChoice:1];
     self.alerts = [[NSMutableArray alloc] initWithObjects:oneAlert, nil];
-//    self.alert2nd = [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithBool:NO], [NSNumber numberWithInt:2],[[NSDate alloc] init]] forKeys:@[@"isOn", @"alertIndex", @"alertDate"]];
     return self;
     
 }
@@ -132,6 +131,7 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 //    return [NSURL URLWithString:[NSString stringWithFormat:@"http://g.etfv.co/%@", self.website]];
 //}
 
+
 /**
  *  Compare to another inforsession, according startTime
  *
@@ -143,13 +143,14 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
     return [self.startTime compare:anotherInfoSession.startTime];
 }
 
-- (NSMutableDictionary *)createNewAlertWithIndex:(NSInteger)index {
-    return [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:index], [[NSDate alloc] init]] forKeys:@[@"alertIndex", @"alertDate"]];
+
+- (NSMutableDictionary *)createNewAlertDictionaryWithChoice:(NSInteger)choice {
+    return [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:choice], [[NSDate alloc] init]] forKeys:@[@"alertChoice", @"alertDate"]];
 }
 
 - (BOOL)addOneAlert {
     if (![self alertsIsFull]) {
-        NSMutableDictionary *oneAlert = [self createNewAlertWithIndex:[self.alerts count]];
+        NSMutableDictionary *oneAlert = [self createNewAlertDictionaryWithChoice:[self.alerts count] + 1];
         [self.alerts addObject:oneAlert];
         return YES;
     } else {
@@ -164,6 +165,16 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
     } else {
         return YES;
     }
+}
+
+- (id)getValueFromAlertDictionaryAtIndex:(NSInteger)index ForKey:(NSString *)key{
+    NSMutableDictionary *theAlert = self.alerts[index];
+    return theAlert[key];
+}
+
+- (void)setAlertChoiceForAlertDictionaryAtIndex:(NSInteger)index newChoice:(NSInteger)alertChoice {
+    NSMutableDictionary *theAlert = self.alerts[index];
+    theAlert[@"alertChoice"] = [NSNumber numberWithInteger:alertChoice];
 }
 
 @end
