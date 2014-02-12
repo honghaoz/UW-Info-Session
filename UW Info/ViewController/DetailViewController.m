@@ -21,8 +21,13 @@
 
 #import "LoadingCell.h"
 
+#import <EventKit/EventKit.h>
+#import <EventKitUI/EventKitUI.h>
 
-@interface DetailViewController ()
+@interface DetailViewController () <EKEventEditViewDelegate>
+
+@property (nonatomic, strong) EKEventStore *eventStore;
+@property (nonatomic, strong) EKCalendar *defaultCalendar;
 
 - (IBAction)addToMyInfo:(id)sender;
 
@@ -44,7 +49,7 @@
     [super viewDidLoad];
     self.title = @"Details";
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Download"] style:UIBarButtonItemStyleBordered target:self action:@selector(addToMyInfo:)];
-    UIBarButtonItem *calButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Calendar"] style:UIBarButtonItemStylePlain target:self action:@selector(addToMyInfo:)];
+    UIBarButtonItem *calButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Calendar"] style:UIBarButtonItemStylePlain target:self action:@selector(addToCalendar:)];
     [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:addButton, calButton, nil]];
     
     // Uncomment the following line to preserve selection between presentations.
@@ -112,6 +117,80 @@
     //NSLog(@"%i", [self.tabBarController.viewControllers count]);
 //    UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:0];
 //    [navController popToRootViewControllerAnimated:YES];
+}
+
+- (void)addToCalendar:(id)sender {
+    if (self.eventStore == nil) {
+        self.eventStore = [[EKEventStore alloc] init];
+    }
+    // Check whether we are authorized to access Calendar
+    [self checkEventStoreAccessForCalendar];
+    
+    // Create an instance of EKEventEditViewController
+	EKEventEditViewController *addController = [[EKEventEditViewController alloc] init];
+	
+	// Set addController's event store to the current event store
+	addController.eventStore = self.eventStore;
+    addController.editViewDelegate = self;
+    [self presentViewController:addController animated:YES completion:nil];
+}
+
+// Check the authorization status of our application for Calendar
+-(void)checkEventStoreAccessForCalendar
+{
+    EKAuthorizationStatus status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
+    
+    switch (status)
+    {
+            // Update our UI if the user has granted access to their Calendar
+        case EKAuthorizationStatusAuthorized: [self accessGrantedForCalendar];
+            break;
+            // Prompt the user for access to Calendar if there is no definitive answer
+        case EKAuthorizationStatusNotDetermined: [self requestCalendarAccess];
+            break;
+            // Display a message if the user has denied or restricted access to Calendar
+        case EKAuthorizationStatusDenied:
+        case EKAuthorizationStatusRestricted:
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Privacy Warning" message:@"Permission was not granted for Calendar"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+// Prompt the user for access to their Calendar
+-(void)requestCalendarAccess
+{
+    [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error)
+     {
+         if (granted)
+         {
+             DetailViewController * __weak weakSelf = self;
+             // Let's ensure that our code will be executed from the main queue
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 // The user has granted access to their Calendar; let's populate our UI with all events occuring in the next 24 hours.
+                 [weakSelf accessGrantedForCalendar];
+             });
+         }
+     }];
+}
+
+// This method is called when the user has granted permission to Calendar
+-(void)accessGrantedForCalendar
+{
+    // Let's get the default calendar associated with our event store
+    self.defaultCalendar = self.eventStore.defaultCalendarForNewEvents;
+}
+
+- (void)eventEditViewController:(EKEventEditViewController *)controller
+		  didCompleteWithAction:(EKEventEditViewAction)action {
+    
 }
 
 #pragma mark - Table view data source

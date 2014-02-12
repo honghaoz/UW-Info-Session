@@ -28,6 +28,8 @@
 		1B37452E18A5B169007CF08C /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37452718A5B169007CF08C /* UIWebView+AFNetworking.m */; };
 		1B37453718A5BA28007CF08C /* InfoSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37453618A5BA28007CF08C /* InfoSession.m */; };
 		1B37453C18A5D0CE007CF08C /* AFUwaterlooApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37453B18A5D0CE007CF08C /* AFUwaterlooApiClient.m */; };
+		1B6F54C618AC218600D3DD47 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6F54C518AC218600D3DD47 /* EventKit.framework */; };
+		1B6F54C818AC219000D3DD47 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6F54C718AC219000D3DD47 /* EventKitUI.framework */; };
 		1B717E5F18A7F7DC00E20A29 /* DetailLinkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E5E18A7F7DC00E20A29 /* DetailLinkCell.m */; };
 		1B717E6518A809F900E20A29 /* DetailRSVPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E6418A809F900E20A29 /* DetailRSVPCell.m */; };
 		1B717E6D18A80A7A00E20A29 /* InfoSessionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E6A18A80A7A00E20A29 /* InfoSessionCell.m */; };
@@ -109,6 +111,8 @@
 		1B37453618A5BA28007CF08C /* InfoSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSession.m; path = Model/InfoSession.m; sourceTree = "<group>"; };
 		1B37453A18A5D0CE007CF08C /* AFUwaterlooApiClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFUwaterlooApiClient.h; sourceTree = "<group>"; };
 		1B37453B18A5D0CE007CF08C /* AFUwaterlooApiClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFUwaterlooApiClient.m; sourceTree = "<group>"; };
+		1B6F54C518AC218600D3DD47 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		1B6F54C718AC219000D3DD47 /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		1B717E5D18A7F7DC00E20A29 /* DetailLinkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailLinkCell.h; path = TableViewCell/DetailLinkCell.h; sourceTree = "<group>"; };
 		1B717E5E18A7F7DC00E20A29 /* DetailLinkCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailLinkCell.m; path = TableViewCell/DetailLinkCell.m; sourceTree = "<group>"; };
 		1B717E6318A809F900E20A29 /* DetailRSVPCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailRSVPCell.h; path = TableViewCell/DetailRSVPCell.h; sourceTree = "<group>"; };
@@ -155,6 +159,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B6F54C818AC219000D3DD47 /* EventKitUI.framework in Frameworks */,
+				1B6F54C618AC218600D3DD47 /* EventKit.framework in Frameworks */,
 				1BD83A9718A59F1C00EDBB6D /* CoreGraphics.framework in Frameworks */,
 				1BD83A9918A59F1C00EDBB6D /* UIKit.framework in Frameworks */,
 				1BD83A9518A59F1C00EDBB6D /* Foundation.framework in Frameworks */,
@@ -388,6 +394,8 @@
 		1BD83A9318A59F1C00EDBB6D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1B6F54C718AC219000D3DD47 /* EventKitUI.framework */,
+				1B6F54C518AC218600D3DD47 /* EventKit.framework */,
 				1BD83A9418A59F1C00EDBB6D /* Foundation.framework */,
 				1BD83A9618A59F1C00EDBB6D /* CoreGraphics.framework */,
 				1BD83A9818A59F1C00EDBB6D /* UIKit.framework */,
