@@ -89,7 +89,6 @@
     [_infoSession setAlertChoiceForAlertDictionaryAtIndex:_alertIndex newChoice:indexPath.row];
     
     [self.navigationController popViewControllerAnimated:YES];
-    NSLog(@"return alertIndex = %i", _alertIndex);
     [self.delegate alertViewController:self didSelectAlertChoice:_alertIndex];
 }
 

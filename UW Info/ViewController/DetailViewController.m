@@ -43,6 +43,10 @@
 {
     [super viewDidLoad];
     self.title = @"Details";
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Download"] style:UIBarButtonItemStyleBordered target:self action:@selector(addToMyInfo:)];
+    UIBarButtonItem *calButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Calendar"] style:UIBarButtonItemStylePlain target:self action:@selector(addToMyInfo:)];
+    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:addButton, calButton, nil]];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -513,7 +517,6 @@
     controller.infoSessionModel = self.infoSessionModel;
     NSIndexPath *choosedIndexPath = sender;
     controller.alertIndex =choosedIndexPath.row - 1;
-    NSLog(@"pass alertIndex = %i", choosedIndexPath.row - 1);
     controller.delegate = self;
 }
 
@@ -531,7 +534,7 @@
             // reload rows below
             [indexPathToReload removeAllObjects];
             NSInteger numberOfRows = [self.tableView numberOfRowsInSection:1];
-            for (int i = alertIndex + 1; i < numberOfRows; i++) {
+            for (NSInteger i = alertIndex + 1; i < numberOfRows; i++) {
                 [indexPathToReload addObject:[NSIndexPath indexPathForRow:i inSection:1]];
             }
             [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationFade];
@@ -546,7 +549,7 @@
         // if one row is deleted, then need to reload this row to last row of this section
         if ([_infoSession isRemovedAfterRefreshingAlerts]) {
             NSInteger numberOfRows = [self.tableView numberOfRowsInSection:1];
-            for (int i = alertIndex + 1; i < numberOfRows; i++) {
+            for (NSInteger i = alertIndex + 1; i < numberOfRows; i++) {
                 [indexPathToReload addObject:[NSIndexPath indexPathForRow:i inSection:1]];
             }
             [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationAutomatic];

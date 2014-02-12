@@ -57,10 +57,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0 ){
-        NSLog(@"RETUN 1");
         return 1;
     } else {
-        NSLog(@"RETUN !!!!1");
         return [_infoSessionModel.myInfoSessions count];
     };
 }
@@ -68,7 +66,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
-        NSLog(@"NO INGO");
         LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EmptyCell"];
         //cell.loadingIndicator.hidden = YES;
         //cell.loadingLabel.text = @"No Info Session Saved";
@@ -76,7 +73,6 @@
         //[cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
         return cell;
     } else {
-        NSLog(@"INFO");
         InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InfoSessionCell"];
         [self configureCell:cell withIndexPath:indexPath];
         return cell;
