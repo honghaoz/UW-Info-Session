@@ -224,11 +224,12 @@
             // alert item rows
             else {
                 DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
+                [cell.contentLabel setTextColor: [UIColor blackColor]];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             
                 NSMutableDictionary *theAlert = _infoSession.alerts[indexPath.row - 1];
                 
-                cell.titleLabel.text = [_infoSessionModel getAlertSequence:theAlert[@"alertChoice"]];
+                cell.titleLabel.text = [_infoSessionModel getAlertSequence:[NSNumber numberWithInteger:indexPath.row]];
                 cell.contentLabel.text = [_infoSessionModel getAlertDescription:theAlert[@"alertChoice"]];
                 return cell;
             }
@@ -451,11 +452,11 @@
             [indexPathToInsert addObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]];
             if (![_infoSession alertsIsFull]) {
                 // add new alert item and need to insert this new row
-                [self.tableView insertRowsAtIndexPaths:indexPathToInsert withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView insertRowsAtIndexPaths:indexPathToInsert withRowAnimation:UITableViewRowAnimationBottom];
             }
             else {
                 // add new alert item and need to insert this new row, if alerts is full, replace the "add" row
-                [self.tableView reloadRowsAtIndexPaths:indexPathToInsert withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView reloadRowsAtIndexPaths:indexPathToInsert withRowAnimation:UITableViewRowAnimationBottom];
             }
         }
     }
@@ -511,9 +512,51 @@
     controller.infoSession = self.infoSession;
     controller.infoSessionModel = self.infoSessionModel;
     NSIndexPath *choosedIndexPath = sender;
-    controller.alertIndexOfAlertArray =choosedIndexPath.row - 1;
+    controller.alertIndex =choosedIndexPath.row - 1;
+    NSLog(@"pass alertIndex = %i", choosedIndexPath.row - 1);
+    controller.delegate = self;
 }
 
+#pragma mark - AlertViewController Delegate method
 
+- (void)alertViewController:(AlertViewController *)alertController didSelectAlertChoice:(NSInteger)alertIndex{
+    // if before refreshing alerts, alerts list is not full, then either delete row or reload row,
+    // the last row: "add more row" doesn't disappear
+    if (![_infoSession alertsIsFull]) {
+        NSMutableArray *indexPathToReload = [[NSMutableArray alloc] init];
+        if ([_infoSession isRemovedAfterRefreshingAlerts]) {
+            // delete this row
+            [indexPathToReload addObject:[NSIndexPath indexPathForRow:alertIndex + 1 inSection:1]];
+            [self.tableView deleteRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationLeft];
+            // reload rows below
+            [indexPathToReload removeAllObjects];
+            NSInteger numberOfRows = [self.tableView numberOfRowsInSection:1];
+            for (int i = alertIndex + 1; i < numberOfRows; i++) {
+                [indexPathToReload addObject:[NSIndexPath indexPathForRow:i inSection:1]];
+            }
+            [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationFade];
+        } else {
+            [indexPathToReload addObject:[NSIndexPath indexPathForRow:alertIndex + 1 inSection:1]];
+            [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+    }
+    // if before refreshing alerts, alerts list is full
+    else {
+        NSMutableArray *indexPathToReload = [[NSMutableArray alloc] init];
+        // if one row is deleted, then need to reload this row to last row of this section
+        if ([_infoSession isRemovedAfterRefreshingAlerts]) {
+            NSInteger numberOfRows = [self.tableView numberOfRowsInSection:1];
+            for (int i = alertIndex + 1; i < numberOfRows; i++) {
+                [indexPathToReload addObject:[NSIndexPath indexPathForRow:i inSection:1]];
+            }
+            [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        // if no row is deleted, just reload this row.
+        else {
+            [indexPathToReload addObject:[NSIndexPath indexPathForRow:alertIndex + 1 inSection:1]];
+            [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+    }
+}
 
 @end

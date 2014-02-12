@@ -38,7 +38,7 @@
         [_alertChoices addObject:[_infoSessionModel.alertChoiceDictionary objectForKey:key]];
     }
     
-    NSMutableDictionary *theAlert = _infoSession.alerts[_alertIndexOfAlertArray];
+    NSMutableDictionary *theAlert = _infoSession.alerts[_alertIndex];
     _checkRow = [theAlert[@"alertChoice"] integerValue];
 }
 
@@ -86,9 +86,11 @@
     newlyCheckedCell.accessoryType = UITableViewCellAccessoryCheckmark;
     
     // set choosed alert choice to infosession.alerts
-    [_infoSession setAlertChoiceForAlertDictionaryAtIndex:_alertIndexOfAlertArray newChoice:indexPath.row];
+    [_infoSession setAlertChoiceForAlertDictionaryAtIndex:_alertIndex newChoice:indexPath.row];
     
     [self.navigationController popViewControllerAnimated:YES];
+    NSLog(@"return alertIndex = %i", _alertIndex);
+    [self.delegate alertViewController:self didSelectAlertChoice:_alertIndex];
 }
 
 @end

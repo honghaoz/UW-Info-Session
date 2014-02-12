@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AlertViewController.h"
 @class InfoSession;
 @class InfoSessionModel;
 @class DetailViewController;
@@ -17,7 +18,7 @@
 //
 //@end
 
-@interface DetailViewController : UITableViewController
+@interface DetailViewController : UITableViewController <AlertViewControllerDelegate>
 
 @property (nonatomic, strong) InfoSession *infoSession;
 @property (nonatomic, strong) InfoSessionModel *infoSessionModel;

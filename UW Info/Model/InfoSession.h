@@ -44,4 +44,11 @@
 - (id)getValueFromAlertDictionaryAtIndex:(NSInteger)index ForKey:(NSString *)key;
 - (void)setAlertChoiceForAlertDictionaryAtIndex:(NSInteger)index newChoice:(NSInteger)alertChoice;
 
+/**
+ *  refreshAlertArray, if some alert(NSDictionary) is set alertChoice to 0 : None,
+ *  remove this alert and return true;
+ *  @return if removed return true.
+ */
+- (BOOL)isRemovedAfterRefreshingAlerts;
+
 @end

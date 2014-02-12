@@ -177,4 +177,19 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
     theAlert[@"alertChoice"] = [NSNumber numberWithInteger:alertChoice];
 }
 
+- (BOOL)isRemovedAfterRefreshingAlerts {
+    BOOL isRemoved = NO;
+    for (int i = 0; i < [self.alerts count]; i++) {
+        NSMutableDictionary *theAlert = self.alerts[i];
+        NSNumber *alertChoice = theAlert[@"alertChoice"];
+        if ([alertChoice integerValue] == 0) {
+            NSLog(@"removed");
+            [self.alerts removeObjectAtIndex:i];
+            i--;
+            isRemoved = YES;
+        }
+    }
+    return isRemoved;
+}
+
 @end
