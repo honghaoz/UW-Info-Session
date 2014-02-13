@@ -9,10 +9,14 @@
 #import "InfoSession.h"
 #import "AFHTTPRequestOperation.h"
 #import "AFUwaterlooApiClient.h"
+#import "InfoSessionModel.h"
+
 
 #define MAX_NUM_OF_ALERTS 5
 
 const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
+
+static NSDictionary *alertIntervalDictionary;
 
 @interface InfoSession()
 
@@ -33,6 +37,15 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 @end
 
 @implementation InfoSession
+
++ (NSDictionary *)alertIntervalDictionary {
+    if (alertIntervalDictionary == nil) {
+        alertIntervalDictionary = [[NSDictionary alloc] initWithObjects:[[NSArray alloc] initWithObjects:@"0", @"0", @"-300", @"-900", @"-1800", @"-3600", @"-7200", @"-86400", @"-172800", @"-604800", nil] forKeys:[[NSArray alloc] initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil]];
+        return alertIntervalDictionary;
+    } else {
+        return alertIntervalDictionary;
+    }
+}
 
 /**
  *  Initiate an InfoSession instance
@@ -73,6 +86,7 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
     self.programs = [attributes valueForKeyPath:@"programs"];
     self.description = [attributes valueForKeyPath:@"description"];
     
+    self.alertIsOn = NO;
     NSMutableDictionary *oneAlert = [self createNewAlertDictionaryWithChoice:1];
     self.alerts = [[NSMutableArray alloc] initWithObjects:oneAlert, nil];
     return self;
@@ -145,7 +159,7 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 
 
 - (NSMutableDictionary *)createNewAlertDictionaryWithChoice:(NSInteger)choice {
-    return [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:choice], [[NSDate alloc] init]] forKeys:@[@"alertChoice", @"alertDate"]];
+    return [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:choice],[NSNumber numberWithDouble:[[InfoSession alertIntervalDictionary][NSIntegerToString(choice)] doubleValue]]] forKeys:@[@"alertChoice", @"alertInterval"]];
 }
 
 - (BOOL)addOneAlert {
@@ -182,6 +196,9 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
     for (int i = 0; i < [self.alerts count]; i++) {
         NSMutableDictionary *theAlert = self.alerts[i];
         NSNumber *alertChoice = theAlert[@"alertChoice"];
+        
+        theAlert[@"alertInterval"] = [NSNumber numberWithDouble:[[InfoSession alertIntervalDictionary][NSIntegerToString([alertChoice integerValue])] doubleValue]];
+        
         if ([alertChoice integerValue] == 0) {
             [self.alerts removeObjectAtIndex:i];
             i--;
@@ -189,6 +206,18 @@ const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
         }
     }
     return isRemoved;
+}
+
+- (NSArray *)getEKAlarms {
+    if (self.alertIsOn) {
+        NSMutableArray *ekalerms = [[NSMutableArray alloc] init];
+        for (NSMutableDictionary *eachAlert in self.alerts) {
+            NSLog(@"offset %f", [eachAlert[@"alertInterval"] doubleValue]);
+            [ekalerms addObject:[EKAlarm alarmWithRelativeOffset:[eachAlert[@"alertInterval"] doubleValue]]];
+        }
+        return ekalerms;
+    }
+    return nil;
 }
 
 @end

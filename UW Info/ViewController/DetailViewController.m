@@ -119,6 +119,8 @@
 //    [navController popToRootViewControllerAnimated:YES];
 }
 
+#pragma mark - Calendar related
+
 - (void)addToCalendar:(id)sender {
     if (self.eventStore == nil) {
         self.eventStore = [[EKEventStore alloc] init];
@@ -131,6 +133,28 @@
 	
 	// Set addController's event store to the current event store
 	addController.eventStore = self.eventStore;
+    EKEvent *event = [EKEvent eventWithEventStore:self.eventStore];
+    if (_infoSession.calendarEvent == nil) {
+        [event setTitle:_infoSession.employer];
+        [event setLocation:_infoSession.location];
+        [event setStartDate:_infoSession.startTime];
+        [event setEndDate:_infoSession.endTime];
+        [event setAlarms:[_infoSession getEKAlarms]];
+        [event setURL:[NSURL URLWithString:_infoSession.website]];
+        [event setNotes:_infoSession.note];
+        
+        [event setCalendar:self.defaultCalendar];
+    } else {
+        if ([_infoSession.calendarEvent refresh]) {
+            NSLog(@"event refresh successfully");
+            event = _infoSession.calendarEvent;
+        } else {
+            event = _infoSession.calendarEvent;
+            NSLog(@"event refresh failed");
+        }
+        
+    }
+    addController.event = event;
     addController.editViewDelegate = self;
     [self presentViewController:addController animated:YES completion:nil];
 }
@@ -152,7 +176,7 @@
         case EKAuthorizationStatusDenied:
         case EKAuthorizationStatusRestricted:
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Privacy Warning" message:@"Permission was not granted for Calendar"
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Privacy Warning" message:@"Permission was not granted for Calendar.\nWithout permission, no info session can be added."
                                                            delegate:nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil];
@@ -189,8 +213,22 @@
 }
 
 - (void)eventEditViewController:(EKEventEditViewController *)controller
-		  didCompleteWithAction:(EKEventEditViewAction)action {
-    
+          didCompleteWithAction:(EKEventEditViewAction)action {
+    if (action == EKEventEditViewActionCanceled) {
+         NSLog(@"Canceled edit");
+    }
+    else if (action == EKEventEditViewActionSaved) {
+        NSLog(@"Finished edited");
+        NSLog(@"calendarId: %@", [controller.event.calendar calendarIdentifier]);
+        NSLog(@"eventId: %@", [controller.event eventIdentifier]);
+        _infoSession.calendarEvent = controller.event;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeChanged:) name:EKEventStoreChangedNotification object:self.eventStore];
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)storeChanged:(id)sender {
+    NSLog(@"changed@@@");
 }
 
 #pragma mark - Table view data source

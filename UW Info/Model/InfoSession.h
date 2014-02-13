@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <EventKit/EventKit.h>
+#import <EventKitUI/EventKitUI.h>
 
 @interface InfoSession : NSObject
 
@@ -26,8 +28,12 @@
 
 
 // alerts related attributes
++ (NSDictionary *) alertIntervalDictionary;
 @property (nonatomic, assign) BOOL alertIsOn;
 @property (nonatomic, strong) NSMutableArray *alerts;
+
+// calendar EKEvent
+@property (nonatomic, strong) EKEvent *calendarEvent;
 
 // other attributes
 @property (nonatomic, copy) NSString *note;
@@ -50,5 +56,6 @@
  *  @return if removed return true.
  */
 - (BOOL)isRemovedAfterRefreshingAlerts;
+- (NSArray *)getEKAlarms;
 
 @end

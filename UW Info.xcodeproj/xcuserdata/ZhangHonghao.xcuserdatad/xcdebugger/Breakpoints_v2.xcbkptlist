@@ -184,11 +184,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/Model/InfoSessionModel.m"
-            timestampString = "413872583.58382"
+            timestampString = "413951742.716484"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
             landmarkName = "-processInfoSessionsDictionary:withInfoSessions:"
             landmarkType = "5">
          </BreakpointContent>
@@ -328,11 +328,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/Model/InfoSession.m"
-            timestampString = "413879787.856319"
+            timestampString = "413952161.409524"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "181"
-            endingLineNumber = "181"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
             landmarkName = "-isRemovedAfterRefreshingAlerts"
             landmarkType = "5">
          </BreakpointContent>
@@ -344,12 +344,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/Model/InfoSession.m"
-            timestampString = "413879898.142639"
+            timestampString = "413952161.409524"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
             landmarkName = "-getValueFromAlertDictionaryAtIndex:ForKey:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UW Info/Model/InfoSession.m"
+            timestampString = "413952615.296507"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "208"
+            endingLineNumber = "208"
+            landmarkName = "-isRemovedAfterRefreshingAlerts"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

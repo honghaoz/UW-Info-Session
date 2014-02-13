@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSMutableDictionary *myInfoSessionsDictionary;
 
 @property (nonatomic, strong) NSDictionary *alertChoiceDictionary;
+//@property (nonatomic, strong) NSDictionary *alertIntervalDictionary;
 @property (nonatomic, strong) NSDictionary *alertSequenceDictionary;
 
 - (void)processInfoSessionsDictionary:(NSDictionary *)dictionary withInfoSessions:(NSArray *)array;
