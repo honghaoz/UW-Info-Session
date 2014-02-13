@@ -29,13 +29,13 @@
 {
     [super viewDidLoad];
     // initiated alertChoices
-    _alertChoices = [[NSMutableArray alloc] initWithCapacity:[_infoSessionModel.alertChoiceDictionary count]];
-    NSMutableArray *allKeys = [[_infoSessionModel.alertChoiceDictionary allKeys] mutableCopy];
+    _alertChoices = [[NSMutableArray alloc] initWithCapacity:[[InfoSession alertChoiceDictionary] count]];
+    NSMutableArray *allKeys = [[[InfoSession alertChoiceDictionary] allKeys] mutableCopy];
     [allKeys sortUsingComparator:^(NSString *key1, NSString *key2) {
         return [key1 compare:key2];
     }];
     for (NSString *key in allKeys) {
-        [_alertChoices addObject:[_infoSessionModel.alertChoiceDictionary objectForKey:key]];
+        [_alertChoices addObject:[[InfoSession alertChoiceDictionary] objectForKey:key]];
     }
     
     NSMutableDictionary *theAlert = _infoSession.alerts[_alertIndex];

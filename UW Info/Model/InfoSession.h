@@ -28,7 +28,13 @@
 
 
 // alerts related attributes
+// Dictionary of alerts description, interval and sequence
++ (NSDictionary *) alertChoiceDictionary;
++ (NSString *)getAlertDescription:(NSNumber *)alertChoice;
 + (NSDictionary *) alertIntervalDictionary;
++ (NSDictionary *) alertSequenceDictionary;
++ (NSString *)getAlertSequence:(NSNumber *)alertChoice;
+
 @property (nonatomic, assign) BOOL alertIsOn;
 @property (nonatomic, strong) NSMutableArray *alerts;
 
@@ -38,24 +44,21 @@
 // other attributes
 @property (nonatomic, copy) NSString *note;
 
+
+
 - (instancetype)initWithAttributes:(NSDictionary *)attributes;
 
 //- (NSURL *)logoImageURL;
-
 + (NSURLSessionTask *)infoSessionsWithBlock:(void (^)(NSArray *sessions, NSError *error))block;
 
+// alerts related methods
 - (BOOL)addOneAlert;
 - (BOOL)alertsIsFull;
 
 - (id)getValueFromAlertDictionaryAtIndex:(NSInteger)index ForKey:(NSString *)key;
 - (void)setAlertChoiceForAlertDictionaryAtIndex:(NSInteger)index newChoice:(NSInteger)alertChoice;
 
-/**
- *  refreshAlertArray, if some alert(NSDictionary) is set alertChoice to 0 : None,
- *  remove this alert and return true;
- *  @return if removed return true.
- */
 - (BOOL)isRemovedAfterRefreshingAlerts;
+// calendar alerts
 - (NSArray *)getEKAlarms;
-
 @end

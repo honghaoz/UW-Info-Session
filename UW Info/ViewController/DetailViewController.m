@@ -45,15 +45,14 @@
 {
     [super viewDidLoad];
     self.title = @"Details";
+    
+    // initiate the right buttons
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Download"] style:UIBarButtonItemStyleBordered target:self action:@selector(addToMyInfo:)];
     UIBarButtonItem *calButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Calendar"] style:UIBarButtonItemStylePlain target:self action:@selector(addToCalendar:)];
     [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:addButton, calButton, nil]];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
@@ -62,12 +61,23 @@
     // Dispose of any resources that can be recreated.
 }
 
+/**
+ *  Alert Switch is change
+ *
+ *  @param sender UISwitch
+ */
 - (void)didSwitchChange:(id)sender {
     BOOL state = [sender isOn];
     _infoSession.alertIsOn = state;
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
+
+/**
+ *  Add to my info sessions button
+ *
+ *  @param sender Button "Add"
+ */
 - (IBAction)addToMyInfo:(id)sender {
     [_infoSessionModel addInfoSessionInOrder:_infoSession to:_infoSessionModel.myInfoSessions];
     //[_infoSessionModel.myInfoSessions addObject:_infoSession];
@@ -117,7 +127,11 @@
 }
 
 #pragma mark - Calendar related
-
+/**
+ *  Calendar button is taped
+ *
+ *  @param sender calendar button
+ */
 - (void)addToCalendar:(id)sender {
     if (_infoSessionModel.eventStore == nil) {
         _infoSessionModel.eventStore = [[EKEventStore alloc] init];
@@ -130,9 +144,11 @@
 	
 	// Set addController's event store to the current event store
 	addController.eventStore = _infoSessionModel.eventStore;
+    
+    // creat a new event
     EKEvent *event = [EKEvent eventWithEventStore:_infoSessionModel.eventStore];
+    // if infosession's event is nil or refresh failed (means this event is deleted)
     if (_infoSession.ekEvent == nil || ![_infoSession.ekEvent refresh]) {
-        NSLog(@"event refresh failed");
         [event setTitle:_infoSession.employer];
         [event setLocation:_infoSession.location];
         [event setStartDate:_infoSession.startTime];
@@ -143,9 +159,8 @@
         
         [event setCalendar:_infoSessionModel.defaultCalendar];
     }
-    
+    // infosession's event already exists
     else {
-        NSLog(@"event refresh successfully");
         event = _infoSession.ekEvent;
     }
     
@@ -154,7 +169,9 @@
     [self presentViewController:addController animated:YES completion:nil];
 }
 
-// Check the authorization status of our application for Calendar
+/**
+ *  Check the authorization status of our application for Calendar
+ */
 -(void)checkEventStoreAccessForCalendar
 {
     EKAuthorizationStatus status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
@@ -183,7 +200,9 @@
     }
 }
 
-// Prompt the user for access to their Calendar
+/**
+ *  Prompt the user for access to their Calendar
+ */
 -(void)requestCalendarAccess
 {
     [_infoSessionModel.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error)
@@ -200,13 +219,21 @@
      }];
 }
 
-// This method is called when the user has granted permission to Calendar
+/**
+ *  This method is called when the user has granted permission to Calendar
+ */
 -(void)accessGrantedForCalendar
 {
     // Let's get the default calendar associated with our event store
     _infoSessionModel.defaultCalendar = _infoSessionModel.eventStore.defaultCalendarForNewEvents;
 }
 
+/**
+ *  EventEditViewController delegate method
+ *
+ *  @param controller EKEventEditViewController
+ *  @param action     this
+ */
 - (void)eventEditViewController:(EKEventEditViewController *)controller
           didCompleteWithAction:(EKEventEditViewAction)action {
     if (action == EKEventEditViewActionCanceled) {
@@ -214,8 +241,8 @@
     }
     else if (action == EKEventEditViewActionSaved) {
         NSLog(@"Saved edited");
-        NSLog(@"calendarId: %@", [controller.event.calendar calendarIdentifier]);
-        NSLog(@"eventId: %@", [controller.event eventIdentifier]);
+//        NSLog(@"calendarId: %@", [controller.event.calendar calendarIdentifier]);
+//        NSLog(@"eventId: %@", [controller.event eventIdentifier]);
         _infoSession.ekEvent = controller.event;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeChanged:) name:EKEventStoreChangedNotification object:_infoSessionModel.eventStore];
     } else if (action == EKEventEditViewActionDeleted) {
@@ -225,8 +252,13 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+/**
+ *  Notification Handler, used handle eventStore is changed
+ *
+ *  @param sender Send?
+ */
 -(void)storeChanged:(id)sender {
-    NSLog(@"changed@@@");
+    NSLog(@"event store changed");
 }
 
 #pragma mark - Table view data source
@@ -348,8 +380,8 @@
             
                 NSMutableDictionary *theAlert = _infoSession.alerts[indexPath.row - 1];
                 
-                cell.titleLabel.text = [_infoSessionModel getAlertSequence:[NSNumber numberWithInteger:indexPath.row]];
-                cell.contentLabel.text = [_infoSessionModel getAlertDescription:theAlert[@"alertChoice"]];
+                cell.titleLabel.text = [InfoSession getAlertSequence:[NSNumber numberWithInteger:indexPath.row]];
+                cell.contentLabel.text = [InfoSession getAlertDescription:theAlert[@"alertChoice"]];
                 return cell;
             }
         } else {
@@ -636,7 +668,12 @@
 }
 
 #pragma mark - AlertViewController Delegate method
-
+/**
+ *  Used for handling alert section rows reloading.
+ *
+ *  @param alertController AlertViewController instance
+ *  @param alertIndex      the index of the selected alert
+ */
 - (void)alertViewController:(AlertViewController *)alertController didSelectAlertChoice:(NSInteger)alertIndex{
     // if before refreshing alerts, alerts list is not full, then either delete row or reload row,
     // the last row: "add more row" doesn't disappear

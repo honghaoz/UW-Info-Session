@@ -12,17 +12,16 @@
 
 -(id)init {
     if ((self = [super init])) {
-        // init alert description dictionary: used for show e.g. "5 minutes befor"
-        _alertChoiceDictionary = [[NSDictionary alloc] initWithObjects:[[NSArray alloc] initWithObjects:@"None", @"At time of event", @"5 minutes before", @"15 minutes before", @"30 minutes before", @"1 hour before", @"2 hours before", @"1 day before", @"2 days before", @"1 week before", nil] forKeys:[[NSArray alloc] initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil]];
         
-//        _alertIntervalDictionary = [[NSDictionary alloc] initWithObjects:[[NSArray alloc] initWithObjects:@"None", @"0", @"300", @"900", @"1800", @"3600", @"7200", @"86400", @"172800", @"604800", nil] forKeys:[[NSArray alloc] initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil]];
-        
-        // init alert sequence dictionary: used for show e.g. "Second Alert"
-        _alertSequenceDictionary = [[NSDictionary alloc] initWithObjects:[[NSArray alloc] initWithObjects:@"Alert", @"Second Alert", @"Third Alert", @"Fourth Alert", @"Fifth Alert", @"Sixth Alert", @"Seventh Alert",nil] forKeys:[[NSArray alloc] initWithObjects:@"1", @"2", @"3", @"4", @"5", @"6", @"7", nil]];
     }
     return self;
 }
 
+/**
+ *  Get method, lazy initiation
+ *
+ *  @return return the array of user saved info sessions
+ */
 -(NSMutableArray *)myInfoSessions {
     if (_myInfoSessions == nil) {
         _myInfoSessions = [[NSMutableArray alloc] init];
@@ -31,6 +30,7 @@
         return _myInfoSessions;
     }
 }
+
 
 -(NSMutableDictionary *)myInfoSessionsDictionary {
     if (_myInfoSessionsDictionary == nil) {
@@ -66,6 +66,12 @@
     }
 }
 
+/**
+ *  Add a new InfoSession instance to the array in order, start time in ascending
+ *
+ *  @param infoSession the InfoSession to be added
+ *  @param array       the Array add to.
+ */
 - (void)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array {
     // check whether this infoSession exist in array
     NSInteger existIndex = -1;
@@ -92,21 +98,4 @@
     }
 }
 
-- (NSString *)getAlertDescription:(NSNumber *)alertChoice {
-    return _alertChoiceDictionary[[alertChoice stringValue]];
-}
-- (NSString *)getAlertSequence:(NSNumber *)alertChoice {
-    return _alertSequenceDictionary[[alertChoice stringValue]];
-}
-
-///**
-// *  Compare to another inforsession, according startTime
-// *
-// *  @param anotherInfoSession InfoSession
-// *
-// *  @return NSComparisonResult
-// */
-//- (NSComparisonResult)compareTo:(InfoSession *)anotherInfoSession {
-//    return [self.startTime compare:anotherInfoSession.startTime];
-//}
 @end

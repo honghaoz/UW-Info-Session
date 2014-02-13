@@ -42,11 +42,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
     // show refresh button
     //[[UIBarButtonItem appearance] setTintColor:[UIColor yellowColor]];
+    
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
     
     UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain
@@ -117,7 +115,7 @@
  *
  *  @return NSUInteger, week number of the date
  */
-- (NSUInteger)getWeekNumbe:(NSDate *)date {
+- (NSUInteger)getWeekNumber:(NSDate *)date {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"w"];
     return [[dateFormatter stringFromDate:date] intValue];
@@ -129,7 +127,7 @@
 - (void)scrollToToday {
     // scroll TableView to current date
     InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
-    NSUInteger currentWeekNum = [self getWeekNumbe:[NSDate date]];
+    NSUInteger currentWeekNum = [self getWeekNumber:[NSDate date]];
     NSUInteger sectionNumToScroll = currentWeekNum - [firstInfoSession weekNum];
     
     NSArray *infoSessionsOfCurrentWeek = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(currentWeekNum)];
@@ -153,46 +151,6 @@
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:rowNumToScroll inSection:sectionNumToScroll] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     // reload current
     [self reloadSection:sectionNumToScroll WithAnimation:UITableViewRowAnimationNone];
-}
-
-/**
- *  reload one section with animation
- *
- *  @param sectionToScroll section number that want to reload, if -1, then calculate in this method
- *  @param animation       UITableViewRowAnimation
- */
-- (void)reloadSection:(NSUInteger)sectionToScroll WithAnimation:(UITableViewRowAnimation)animation {
-    NSUInteger sectionNumToScroll = sectionToScroll;
-    if (sectionToScroll == -1) {
-        InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
-        sectionNumToScroll = [self getWeekNumbe:[NSDate date]] - [firstInfoSession weekNum];
-    }
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionNumToScroll] withRowAnimation:animation];
-}
-/**
- *  get the array of infoSession according give section
- *
- *  @param section NSIndexPath
- *
- *  @return the corresponding array of infoSession
- */
-- (NSArray *)getInfoSessionsAccordingSection:(NSUInteger)section {
-    NSInteger firstWeekNumber = [[_infoSessionModel.infoSessions firstObject] weekNum];
-    NSArray *infoSessions = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(section + firstWeekNumber)];
-    return infoSessions;
-}
-
-/**
- *  get the infoSession according given Indexpath
- *
- *  @param indexPath NSIndexPath
- *
- *  @return the corresponding InfoSession
- */
-- (InfoSession *)getInfoSessionAccordingIndexPath:(NSIndexPath *)indexPath {
-    NSInteger firstWeekNumber = [[_infoSessionModel.infoSessions firstObject] weekNum];
-    InfoSession *infoSession = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(indexPath.section + firstWeekNumber)][indexPath.row];
-    return infoSession;
 }
 
 #pragma mark - Table view data source
@@ -377,9 +335,45 @@
     return 25.0f;
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-//    return 30.0f;
-//}
+/**
+ *  reload one section with animation
+ *
+ *  @param sectionToScroll section number that want to reload, if -1, then calculate in this method
+ *  @param animation       UITableViewRowAnimation
+ */
+- (void)reloadSection:(NSUInteger)sectionToScroll WithAnimation:(UITableViewRowAnimation)animation {
+    NSUInteger sectionNumToScroll = sectionToScroll;
+    if (sectionToScroll == -1) {
+        InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
+        sectionNumToScroll = [self getWeekNumber:[NSDate date]] - [firstInfoSession weekNum];
+    }
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionNumToScroll] withRowAnimation:animation];
+}
+/**
+ *  get the array of infoSession according give section
+ *
+ *  @param section NSIndexPath
+ *
+ *  @return the corresponding array of infoSession
+ */
+- (NSArray *)getInfoSessionsAccordingSection:(NSUInteger)section {
+    NSInteger firstWeekNumber = [[_infoSessionModel.infoSessions firstObject] weekNum];
+    NSArray *infoSessions = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(section + firstWeekNumber)];
+    return infoSessions;
+}
+
+/**
+ *  get the infoSession according given Indexpath
+ *
+ *  @param indexPath NSIndexPath
+ *
+ *  @return the corresponding InfoSession
+ */
+- (InfoSession *)getInfoSessionAccordingIndexPath:(NSIndexPath *)indexPath {
+    NSInteger firstWeekNumber = [[_infoSessionModel.infoSessions firstObject] weekNum];
+    InfoSession *infoSession = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(indexPath.section + firstWeekNumber)][indexPath.row];
+    return infoSession;
+}
 
 #pragma mark - Table view delegate
 /**
@@ -445,7 +439,6 @@
     controller.infoSession = sender[0];
     controller.infoSessionModel = sender[1];
     controller.tabBarController = _tabBarController;
-    //controller.delegate = (UITabBarController <DetailViewControllerDelegate> *)self.tabBarController;
 }
 
 @end

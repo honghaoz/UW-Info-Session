@@ -10,21 +10,19 @@
 
 @interface InfoSessionModel : InfoSession
 
+// info sessions data retrived from api
 @property (nonatomic, strong) NSArray *infoSessions;
 @property (nonatomic, strong) NSMutableDictionary *infoSessionsDictionary;
+
+// user saved info sessions
 @property (nonatomic, strong) NSMutableArray *myInfoSessions;
 @property (nonatomic, strong) NSMutableDictionary *myInfoSessionsDictionary;
 
-@property (nonatomic, strong) NSDictionary *alertChoiceDictionary;
-//@property (nonatomic, strong) NSDictionary *alertIntervalDictionary;
-@property (nonatomic, strong) NSDictionary *alertSequenceDictionary;
-
+// Used for manage calendar event, only initiate once!
 @property (nonatomic, strong) EKEventStore *eventStore;
 @property (nonatomic, strong) EKCalendar *defaultCalendar;
 
 - (void)processInfoSessionsDictionary:(NSDictionary *)dictionary withInfoSessions:(NSArray *)array;
 - (void)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array;
 
-- (NSString *)getAlertDescription:(NSNumber *)alertChoice;
-- (NSString *)getAlertSequence:(NSNumber *)alertChoice;
 @end

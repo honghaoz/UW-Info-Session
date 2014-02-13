@@ -16,7 +16,9 @@
 
 const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 
+static NSDictionary *alertChoiceDictionary;
 static NSDictionary *alertIntervalDictionary;
+static NSDictionary *alertSequenceDictionary;
 
 @interface InfoSession()
 
@@ -38,6 +40,20 @@ static NSDictionary *alertIntervalDictionary;
 
 @implementation InfoSession
 
+// Dictionary of alerts description, interval and sequence
++ (NSDictionary *)alertChoiceDictionary {
+    if (alertChoiceDictionary == nil) {
+        alertChoiceDictionary = [[NSDictionary alloc] initWithObjects:[[NSArray alloc] initWithObjects:@"None", @"At time of event", @"5 minutes before", @"15 minutes before", @"30 minutes before", @"1 hour before", @"2 hours before", @"1 day before", @"2 days before", @"1 week before", nil] forKeys:[[NSArray alloc] initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil]];
+        return alertChoiceDictionary;
+    } else {
+        return alertChoiceDictionary;
+    }
+}
+
++ (NSString *)getAlertDescription:(NSNumber *)alertChoice {
+    return [InfoSession alertChoiceDictionary][[alertChoice stringValue]];
+}
+
 + (NSDictionary *)alertIntervalDictionary {
     if (alertIntervalDictionary == nil) {
         alertIntervalDictionary = [[NSDictionary alloc] initWithObjects:[[NSArray alloc] initWithObjects:@"0", @"0", @"-300", @"-900", @"-1800", @"-3600", @"-7200", @"-86400", @"-172800", @"-604800", nil] forKeys:[[NSArray alloc] initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil]];
@@ -45,6 +61,19 @@ static NSDictionary *alertIntervalDictionary;
     } else {
         return alertIntervalDictionary;
     }
+}
+
++ (NSDictionary *)alertSequenceDictionary {
+    if (alertSequenceDictionary == nil) {
+        alertSequenceDictionary = [[NSDictionary alloc] initWithObjects:[[NSArray alloc] initWithObjects:@"Alert", @"Second Alert", @"Third Alert", @"Fourth Alert", @"Fifth Alert", @"Sixth Alert", @"Seventh Alert",nil] forKeys:[[NSArray alloc] initWithObjects:@"1", @"2", @"3", @"4", @"5", @"6", @"7", nil]];
+        return alertSequenceDictionary;
+    } else {
+        return alertSequenceDictionary;
+    }
+}
+
++ (NSString *)getAlertSequence:(NSNumber *)alertChoice {
+    return [InfoSession alertSequenceDictionary][[alertChoice stringValue]];
 }
 
 /**
@@ -78,7 +107,7 @@ static NSDictionary *alertIntervalDictionary;
     self.startTime = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@, %@", [attributes valueForKeyPath:@"start_time"], [attributes valueForKeyPath:@"date"]]];
     self.endTime = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@, %@", [attributes valueForKeyPath:@"end_time"], [attributes valueForKeyPath:@"date"]]];
     
-    self.weekNum = [self getWeekNumbe:self.date];
+    self.weekNum = [self getWeekNumber:self.date];
     
     self.location = [attributes valueForKeyPath:@"location"];
     self.website = [attributes valueForKeyPath:@"website"];
@@ -135,7 +164,7 @@ static NSDictionary *alertIntervalDictionary;
  *
  *  @return NSUInteger
  */
-- (NSUInteger)getWeekNumbe:(NSDate *)date {
+- (NSUInteger)getWeekNumber:(NSDate *)date {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"w"];
     return [[dateFormatter stringFromDate:date] intValue];
@@ -157,11 +186,22 @@ static NSDictionary *alertIntervalDictionary;
     return [self.startTime compare:anotherInfoSession.startTime];
 }
 
-
+/**
+ *  Create new alert Dictionary, which is an elements of self.alerts
+ *
+ *  @param choice alertChoice, to match the alertChoiceDictionary
+ *
+ *  @return return the a new alertDictionary
+ */
 - (NSMutableDictionary *)createNewAlertDictionaryWithChoice:(NSInteger)choice {
     return [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:choice],[NSNumber numberWithDouble:[[InfoSession alertIntervalDictionary][NSIntegerToString(choice)] doubleValue]]] forKeys:@[@"alertChoice", @"alertInterval"]];
 }
 
+/**
+ *  Add a new alert Dictionary to self.alerts
+ *
+ *  @return if self.alerts if full, return false, otherwise, true
+ */
 - (BOOL)addOneAlert {
     if (![self alertsIsFull]) {
         NSMutableDictionary *oneAlert = [self createNewAlertDictionaryWithChoice:[self.alerts count] + 1];
@@ -173,6 +213,11 @@ static NSDictionary *alertIntervalDictionary;
     
 }
 
+/**
+ *  check whether self.alerts is full
+ *
+ *  @return ture - self.alerts is full, false, otherwise
+ */
 - (BOOL)alertsIsFull {
     if ([self.alerts count] < MAX_NUM_OF_ALERTS) {
         return NO;
@@ -181,16 +226,35 @@ static NSDictionary *alertIntervalDictionary;
     }
 }
 
+/**
+ *  Use index in self.alerts and key to get the value store in the alertDictionary
+ *
+ *  @param index index in self.alerts
+ *  @param key   key in alertDictionary
+ *
+ *  @return value for that key
+ */
 - (id)getValueFromAlertDictionaryAtIndex:(NSInteger)index ForKey:(NSString *)key{
     NSMutableDictionary *theAlert = self.alerts[index];
     return theAlert[key];
 }
 
+/**
+ *  Set the alertChoice for the alertDictionary at the index of self.alerts
+ *
+ *  @param index       index in self.alerts
+ *  @param alertChoice the choice want to change to.
+ */
 - (void)setAlertChoiceForAlertDictionaryAtIndex:(NSInteger)index newChoice:(NSInteger)alertChoice {
     NSMutableDictionary *theAlert = self.alerts[index];
     theAlert[@"alertChoice"] = [NSNumber numberWithInteger:alertChoice];
 }
 
+/**
+ *  refreshAlertArray, if some alert(NSDictionary) is set alertChoice to 0 : None,
+ *  remove this alert and return true;
+ *  @return if removed return true.
+ */
 - (BOOL)isRemovedAfterRefreshingAlerts {
     BOOL isRemoved = NO;
     for (int i = 0; i < [self.alerts count]; i++) {
@@ -208,14 +272,19 @@ static NSDictionary *alertIntervalDictionary;
     return isRemoved;
 }
 
+/**
+ *  Get an array of EKAlarm, used for set calendar event's alerts
+ *
+ *  @return an array of EKAlarm from self.alerts
+ */
 - (NSArray *)getEKAlarms {
     if (self.alertIsOn) {
-        NSMutableArray *ekalerms = [[NSMutableArray alloc] init];
+        NSMutableArray *ekalarms = [[NSMutableArray alloc] init];
         for (NSMutableDictionary *eachAlert in self.alerts) {
             NSLog(@"offset %f", [eachAlert[@"alertInterval"] doubleValue]);
-            [ekalerms addObject:[EKAlarm alarmWithRelativeOffset:[eachAlert[@"alertInterval"] doubleValue]]];
+            [ekalarms addObject:[EKAlarm alarmWithRelativeOffset:[eachAlert[@"alertInterval"] doubleValue]]];
         }
-        return ekalerms;
+        return ekalarms;
     }
     return nil;
 }
