@@ -15,6 +15,7 @@
 #define MAX_NUM_OF_ALERTS 5
 
 const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
+const NSString *apiKey1 =  @"913034dae16d7233dd1683713cbb4721";
 
 static NSDictionary *alertChoiceDictionary;
 static NSDictionary *alertIntervalDictionary;
