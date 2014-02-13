@@ -589,8 +589,13 @@
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section == 0) {
+        if (indexPath.row == 3) {
+            [self performSegueWithIdentifier:@"ShowMap" sender:nil];
+        }
+    }
     // select alert section
-    if (indexPath.section == 1) {
+    else if (indexPath.section == 1) {
         // select alert setting rows
         if (1 <= indexPath.row && indexPath.row <= [_infoSession.alerts count]) {
             [self performSegueWithIdentifier:@"ShowAlert" sender:indexPath];
@@ -659,12 +664,16 @@
 // In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    AlertViewController *controller = segue.destinationViewController;
-    controller.infoSession = self.infoSession;
-    controller.infoSessionModel = self.infoSessionModel;
-    NSIndexPath *choosedIndexPath = sender;
-    controller.alertIndex =choosedIndexPath.row - 1;
-    controller.delegate = self;
+    if ([segue.identifier isEqualToString:@"ShowAlert"]) {
+        AlertViewController *controller = segue.destinationViewController;
+        controller.infoSession = self.infoSession;
+        controller.infoSessionModel = self.infoSessionModel;
+        NSIndexPath *choosedIndexPath = sender;
+        controller.alertIndex =choosedIndexPath.row - 1;
+        controller.delegate = self;
+    } else if ([segue.identifier isEqualToString:@"ShowMap"]) {
+        NSLog(@"show map");
+    }
 }
 
 #pragma mark - AlertViewController Delegate method
@@ -680,16 +689,20 @@
     if (![_infoSession alertsIsFull]) {
         NSMutableArray *indexPathToReload = [[NSMutableArray alloc] init];
         if ([_infoSession isRemovedAfterRefreshingAlerts]) {
-            // delete this row
-            [indexPathToReload addObject:[NSIndexPath indexPathForRow:alertIndex + 1 inSection:1]];
-            [self.tableView deleteRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationLeft];
-            // reload rows below
-            [indexPathToReload removeAllObjects];
-            NSInteger numberOfRows = [self.tableView numberOfRowsInSection:1];
-            for (NSInteger i = alertIndex + 1; i < numberOfRows; i++) {
-                [indexPathToReload addObject:[NSIndexPath indexPathForRow:i inSection:1]];
+            if (_infoSession.alertIsOn == NO) {
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+            } else {
+                // delete this row
+                [indexPathToReload addObject:[NSIndexPath indexPathForRow:alertIndex + 1 inSection:1]];
+                [self.tableView deleteRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationLeft];
+                // reload rows below
+                [indexPathToReload removeAllObjects];
+                NSInteger numberOfRows = [self.tableView numberOfRowsInSection:1];
+                for (NSInteger i = alertIndex + 1; i < numberOfRows; i++) {
+                    [indexPathToReload addObject:[NSIndexPath indexPathForRow:i inSection:1]];
+                }
+                [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationFade];
             }
-            [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationFade];
         } else {
             [indexPathToReload addObject:[NSIndexPath indexPathForRow:alertIndex + 1 inSection:1]];
             [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationAutomatic];

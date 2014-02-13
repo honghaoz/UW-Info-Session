@@ -392,7 +392,7 @@
         return;
     } else {
         // info session cells
-        [self performSegueWithIdentifier:@"ShowDetail" sender:[[NSArray alloc] initWithObjects:[self getInfoSessionAccordingIndexPath:indexPath], _infoSessionModel, nil]];
+        [self performSegueWithIdentifier:@"ShowDetailFromInfoSessions" sender:[[NSArray alloc] initWithObjects:[self getInfoSessionAccordingIndexPath:indexPath], _infoSessionModel, nil]];
     }
     
 }

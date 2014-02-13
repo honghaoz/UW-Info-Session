@@ -269,6 +269,9 @@ static NSDictionary *alertSequenceDictionary;
             isRemoved = YES;
         }
     }
+    if ([self.alerts count] == 0) {
+        self.alertIsOn = NO;
+    }
     return isRemoved;
 }
 

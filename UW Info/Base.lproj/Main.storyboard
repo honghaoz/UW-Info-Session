@@ -94,7 +94,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Info Sessions" id="xlf-2q-PhG"/>
                     <connections>
-                        <segue destination="B2h-A1-by6" kind="push" identifier="ShowDetail" id="EvK-Ps-maJ"/>
+                        <segue destination="B2h-A1-by6" kind="push" identifier="ShowDetailFromInfoSessions" id="EvK-Ps-maJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bKT-eX-e6U" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -275,11 +275,13 @@
                     </navigationItem>
                     <connections>
                         <segue destination="DIK-bN-vYf" kind="push" identifier="ShowAlert" id="NfE-dc-Md4"/>
+                        <segue destination="hCC-Hs-1Uc" kind="push" identifier="ShowMap" id="jhe-L1-pwH"/>
+                        <segue destination="zPO-5m-yj7" kind="push" identifier="ShowWeb" id="rqo-sE-CMY"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jqe-Ay-CNk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1607" y="-175"/>
+            <point key="canvasLocation" x="1661" y="171"/>
         </scene>
         <!--Alert View Controller - Info Session Alert-->
         <scene sceneID="nO8-fF-3Px">
@@ -317,7 +319,34 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WsJ-xU-scT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2060" y="-175"/>
+            <point key="canvasLocation" x="2244" y="-161"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Kwe-Bb-HUw">
+            <objects>
+                <viewController id="hCC-Hs-1Uc" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vlN-UK-wuk">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" minimumZoomScale="0.0" id="hxb-3z-W16">
+                                <rect key="frame" x="-1650" y="-1275" width="3300" height="2550"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="PCA-aP-0OV">
+                                        <rect key="frame" x="0.0" y="0.0" width="6280" height="4646"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                </subviews>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="qVk-7Q-sRZ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yuu-dS-cZJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2244" y="550"/>
         </scene>
         <!--Navigation Controller - Info sessions-->
         <scene sceneID="A8V-g9-rVo">
@@ -425,6 +454,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="My Info Sessions" id="93M-R1-Iv9"/>
+                    <connections>
+                        <segue destination="B2h-A1-by6" kind="push" identifier="ShowDetailFromMyInfoSessions" id="fT1-AS-H6Z"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lDG-Rq-Xys" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -523,6 +555,21 @@
             </objects>
             <point key="canvasLocation" x="1139" y="1282"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="b7F-In-erZ">
+            <objects>
+                <viewController id="zPO-5m-yj7" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Zk0-9S-SC1">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="63m-DN-qro"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pzg-h5-snm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1809" y="1016"/>
+        </scene>
         <!--Navigation Controller - Search-->
         <scene sceneID="9Gh-fn-zYy">
             <objects>
@@ -553,4 +600,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="fT1-AS-H6Z"/>
+    </inferredMetricsTieBreakers>
 </document>
