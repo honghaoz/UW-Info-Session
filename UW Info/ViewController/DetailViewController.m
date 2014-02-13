@@ -26,9 +26,6 @@
 
 @interface DetailViewController () <EKEventEditViewDelegate>
 
-@property (nonatomic, strong) EKEventStore *eventStore;
-@property (nonatomic, strong) EKCalendar *defaultCalendar;
-
 - (IBAction)addToMyInfo:(id)sender;
 
 @end
@@ -122,8 +119,8 @@
 #pragma mark - Calendar related
 
 - (void)addToCalendar:(id)sender {
-    if (self.eventStore == nil) {
-        self.eventStore = [[EKEventStore alloc] init];
+    if (_infoSessionModel.eventStore == nil) {
+        _infoSessionModel.eventStore = [[EKEventStore alloc] init];
     }
     // Check whether we are authorized to access Calendar
     [self checkEventStoreAccessForCalendar];
@@ -132,9 +129,10 @@
 	EKEventEditViewController *addController = [[EKEventEditViewController alloc] init];
 	
 	// Set addController's event store to the current event store
-	addController.eventStore = self.eventStore;
-    EKEvent *event = [EKEvent eventWithEventStore:self.eventStore];
-    if (_infoSession.calendarEvent == nil) {
+	addController.eventStore = _infoSessionModel.eventStore;
+    EKEvent *event = [EKEvent eventWithEventStore:_infoSessionModel.eventStore];
+    if (_infoSession.ekEvent == nil || ![_infoSession.ekEvent refresh]) {
+        NSLog(@"event refresh failed");
         [event setTitle:_infoSession.employer];
         [event setLocation:_infoSession.location];
         [event setStartDate:_infoSession.startTime];
@@ -143,17 +141,14 @@
         [event setURL:[NSURL URLWithString:_infoSession.website]];
         [event setNotes:_infoSession.note];
         
-        [event setCalendar:self.defaultCalendar];
-    } else {
-        if ([_infoSession.calendarEvent refresh]) {
-            NSLog(@"event refresh successfully");
-            event = _infoSession.calendarEvent;
-        } else {
-            event = _infoSession.calendarEvent;
-            NSLog(@"event refresh failed");
-        }
-        
+        [event setCalendar:_infoSessionModel.defaultCalendar];
     }
+    
+    else {
+        NSLog(@"event refresh successfully");
+        event = _infoSession.ekEvent;
+    }
+    
     addController.event = event;
     addController.editViewDelegate = self;
     [self presentViewController:addController animated:YES completion:nil];
@@ -191,7 +186,7 @@
 // Prompt the user for access to their Calendar
 -(void)requestCalendarAccess
 {
-    [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error)
+    [_infoSessionModel.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error)
      {
          if (granted)
          {
@@ -209,7 +204,7 @@
 -(void)accessGrantedForCalendar
 {
     // Let's get the default calendar associated with our event store
-    self.defaultCalendar = self.eventStore.defaultCalendarForNewEvents;
+    _infoSessionModel.defaultCalendar = _infoSessionModel.eventStore.defaultCalendarForNewEvents;
 }
 
 - (void)eventEditViewController:(EKEventEditViewController *)controller
@@ -218,11 +213,14 @@
          NSLog(@"Canceled edit");
     }
     else if (action == EKEventEditViewActionSaved) {
-        NSLog(@"Finished edited");
+        NSLog(@"Saved edited");
         NSLog(@"calendarId: %@", [controller.event.calendar calendarIdentifier]);
         NSLog(@"eventId: %@", [controller.event eventIdentifier]);
-        _infoSession.calendarEvent = controller.event;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeChanged:) name:EKEventStoreChangedNotification object:self.eventStore];
+        _infoSession.ekEvent = controller.event;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeChanged:) name:EKEventStoreChangedNotification object:_infoSessionModel.eventStore];
+    } else if (action == EKEventEditViewActionDeleted) {
+        _infoSession.ekEvent = nil;
+        NSLog(@"Deleted edited");
     }
     [self dismissViewControllerAnimated:YES completion:nil];
 }

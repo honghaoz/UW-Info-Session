@@ -33,7 +33,7 @@
 @property (nonatomic, strong) NSMutableArray *alerts;
 
 // calendar EKEvent
-@property (nonatomic, strong) EKEvent *calendarEvent;
+@property (nonatomic, strong) EKEvent *ekEvent;
 
 // other attributes
 @property (nonatomic, copy) NSString *note;

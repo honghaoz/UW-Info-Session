@@ -19,6 +19,9 @@
 //@property (nonatomic, strong) NSDictionary *alertIntervalDictionary;
 @property (nonatomic, strong) NSDictionary *alertSequenceDictionary;
 
+@property (nonatomic, strong) EKEventStore *eventStore;
+@property (nonatomic, strong) EKCalendar *defaultCalendar;
+
 - (void)processInfoSessionsDictionary:(NSDictionary *)dictionary withInfoSessions:(NSArray *)array;
 - (void)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array;
 
