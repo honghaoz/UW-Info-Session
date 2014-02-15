@@ -15,7 +15,9 @@
 
 @end
 
-@implementation MyInfoViewController
+@implementation MyInfoViewController {
+    UIRefreshControl *refreshControl;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -34,6 +36,8 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(reloadTable) forControlEvents:UIControlEventValueChanged];
     [self reloadTable];
 }
 
@@ -46,6 +50,8 @@
 - (void)reloadTable {
     [self.tableView reloadData];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    // end refreshControl
+    [self.refreshControl endRefreshing];
 }
 
 #pragma mark - Table view data source

@@ -8,6 +8,7 @@
 
 #import "InfoSessionsViewController.h"
 #import "UIActivityIndicatorView+AFNetworking.h"
+#import "UIRefreshControl+AFNetworking.h"
 #import "UIAlertView+AFNetworking.h"
 #import "UIImageView+AFNetworking.h"
 
@@ -25,7 +26,9 @@
 
 @end
 
-@implementation InfoSessionsViewController
+@implementation InfoSessionsViewController {
+    UIRefreshControl *refreshControl;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -57,6 +60,9 @@
     
     //reload data
     [self reload:nil];
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(reload:) forControlEvents:UIControlEventValueChanged];
+    //self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull down to reload data"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -71,10 +77,13 @@
  *  @param sender
  */
 - (void)reload:(__unused id)sender {
+    // end refreshControl
+    [self.refreshControl endRefreshing];
     _infoSessionModel.infoSessions = nil;
     _infoSessionModel.infoSessionsDictionary = nil;
     [self.tableView reloadData];
     [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
+    
     //change right bar button to indicator
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 //    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:activityIndicatorView] animated:YES];
@@ -94,6 +103,8 @@
             
             // reload sections animations
             [self reloadSection:-1 WithAnimation:UITableViewRowAnimationBottom];
+            // end refreshControl
+            [self.refreshControl endRefreshing];
             
         }
         // restore right bar button to refresh button
@@ -105,6 +116,7 @@
     }];
     
     [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+    //[self.refreshControl setRefreshingWithStateOfTask:task];
     [activityIndicatorView setAnimatingWithStateOfTask:task];
 }
 
