@@ -14,7 +14,7 @@
 
 @implementation MapViewController {
     UILabel *showOrigin;
-    BOOL tabBarisHidden;
+    BOOL barIsHidden;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -54,7 +54,7 @@
     
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hidTopAndBottom:)];
-    [self.imageView addGestureRecognizer:tapGesture];
+    [self.scrollView addGestureRecognizer:tapGesture];
     
     //[self.imageView addSubview:showOrigin];
     
@@ -77,19 +77,20 @@
     [self.scrollView setContentOffset:CGPointMake(0, 0) animated:NO];
     //}];
     //[self.scrollView scrollRectToVisible:CGRectMake(0, 0, 500, 0) animated:YES];
-    self->tabBarisHidden = NO;
+    self->barIsHidden = NO;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear");
-    [self.imageView setImage:nil];
+    //[self.imageView setImage:nil];
     //self.imageView = nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     NSLog(@"viewWillDisappear");
+    //[self.imageView setImage:[UIImage imageNamed:@"map_colour300.png"]];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -116,7 +117,9 @@
 }
 
 -(void) hidTopAndBottom:(UITapGestureRecognizer *)sender {
-    [self.navigationController setNavigationBarHidden:!self.navigationController.navigationBarHidden animated:YES];
+    //UINavigationControllerHideShowBarDuration = 0.5;
+    //[self.navigationController setNavigationBarHidden:!self.navigationController.navigationBarHidden animated:YES];
+    
     
 //    [UINavigationBar beginAnimations:@"NavBarFade" context:nil];
 //    self.navigationController.navigationBar.alpha = 1;
@@ -127,18 +130,37 @@
 //    [UINavigationBar commitAnimations];
     
 //    [self.tabBarController.tabBar setHidden:!self.tabBarController.tabBar.hidden];
-    if (self->tabBarisHidden) {
+    
+    if (self->barIsHidden) {
         NSLog(@"hidden -> show");
+        //[self showStatusBar:YES];
+        self->barIsHidden = NO;
+        [self showNavigationBar:self.navigationController];
         [self showTabBar:self.tabBarController];
-        self->tabBarisHidden = NO;
+        
     } else {
         NSLog(@"show -> hidden");
+        //[self showStatusBar:NO];
+        self->barIsHidden = YES;
+        [self hideNavigationBar:self.navigationController];
         [self hideTabBar:self.tabBarController];
-        self->tabBarisHidden = YES;
+        
     }
 }
 
-// Method implementations
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;//barIsHidden;
+}
+
+- (void)updateStatusBar{
+    [UIView animateWithDuration:0.5 animations:^{
+        [self setNeedsStatusBarAppearanceUpdate];
+    }];
+}
+
+
+// HideTabBar animated
 - (void) hideTabBar:(UITabBarController *) tabbarcontroller
 {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -149,6 +171,10 @@
     if(  UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) )
     {
         fHeight = screenRect.size.width;
+    }
+    
+    for(UIView *view in self.navigationController.view.subviews) {
+        NSLog(@"%@", NSStringFromClass(view.class));
     }
     
     for(UIView *view in tabbarcontroller.view.subviews)
@@ -164,6 +190,28 @@
         }
     }
     [UIView commitAnimations];
+//    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+//        CGRect screenRect = [[UIScreen mainScreen] bounds];
+//        float fHeight = screenRect.size.height;
+//        if( UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) )
+//        {
+//            fHeight = screenRect.size.width;
+//        }
+//        
+//        for(UIView *view in tabbarcontroller.view.subviews)
+//        {
+//            //NSLog(@"%@", NSStringFromClass(view.class));
+//            if([view isKindOfClass:[UITabBar class]])
+//            {
+//                [view setFrame:CGRectMake(view.frame.origin.x, fHeight, view.frame.size.width, view.frame.size.height)];
+//            }
+//            else
+//            {
+//                [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, fHeight)];
+//                view.backgroundColor = [UIColor yellowColor];
+//            }
+//        }
+//    }completion:nil];
 }
 
 - (void) showTabBar:(UITabBarController *) tabbarcontroller
@@ -189,6 +237,74 @@
             [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, fHeight)];
         }
     }
+    [UIView commitAnimations];
+
+}
+
+- (void) hideNavigationBar:(UINavigationController *) navigationController
+{
+//    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    
+//    [UIView beginAnimations:nil context:NULL];
+//    [UIView setAnimationDuration:0.5];
+////    float fHeight = screenRect.size.height;
+////    if(  UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) )
+////    {
+////        fHeight = screenRect.size.width;
+////    }
+//    UINavigationBar *naviBar = navigationController.view.subviews[1];
+//    
+//    [naviBar setFrame:CGRectMake(naviBar.frame.origin.x, -naviBar.frame.size.height, naviBar.frame.size.width, naviBar.frame.size.height)];
+//    
+////    for(UIView *view in navigationController.view.subviews)
+////    {
+////        if([view isKindOfClass:[UINavigationBar class]])
+////        {
+////            [view setFrame:CGRectMake(view.frame.origin.x, -view.frame.size.height, view.frame.size.width, view.frame.size.height)];
+////        }
+//////        else
+//////        {
+//////            [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, fHeight)];
+//////        }
+////    }
+//    [UIView commitAnimations];
+    [self updateStatusBar];
+    
+    UINavigationBar *naviBar = navigationController.view.subviews[1];
+    [UIView animateWithDuration:0.5 animations:^{
+        [naviBar setFrame:CGRectMake(naviBar.frame.origin.x, -naviBar.frame.size.height, naviBar.frame.size.width, naviBar.frame.size.height)];
+    }completion:^(BOOL finished){
+        ;
+    }];
+}
+
+- (void) showNavigationBar:(UINavigationController *) navigationController
+{
+    
+//    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    [self updateStatusBar];
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.5];
+//    float fHeight = screenRect.size.height;
+//    if(  UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) )
+//    {
+//        fHeight = screenRect.size.width;
+//    }
+    UINavigationBar *naviBar = navigationController.view.subviews[1];
+    
+    [naviBar setFrame:CGRectMake(naviBar.frame.origin.x, 20.0f, naviBar.frame.size.width, naviBar.frame.size.height)];
+    
+//    for(UIView *view in navigationController.view.subviews)
+//    {
+//        if([view isKindOfClass:[UINavigationBar class]])
+//        {
+//            [view setFrame:CGRectMake(view.frame.origin.x, 20.0f, view.frame.size.width, view.frame.size.height)];
+//        }
+////        else
+////        {
+////            [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, fHeight)];
+////        }
+//    }
     [UIView commitAnimations];
 }
 @end
