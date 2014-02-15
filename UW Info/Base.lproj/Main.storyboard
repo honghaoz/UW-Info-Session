@@ -333,24 +333,26 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="PCA-aP-0OV">
-                                        <rect key="frame" x="0.0" y="0.0" width="3300" height="2656"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="wXN-F3-WnX">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <gestureRecognizers/>
                                     </imageView>
                                 </subviews>
+                                <gestureRecognizers/>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="qVk-7Q-sRZ"/>
                     <connections>
-                        <outlet property="imageView" destination="PCA-aP-0OV" id="SfA-nR-RKX"/>
+                        <outlet property="imageView" destination="wXN-F3-WnX" id="Ty6-iZ-vJ9"/>
                         <outlet property="scrollView" destination="hxb-3z-W16" id="pjm-PM-8L5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yuu-dS-cZJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2244" y="550"/>
+            <point key="canvasLocation" x="2262" y="513"/>
         </scene>
         <!--Navigation Controller - Info sessions-->
         <scene sceneID="A8V-g9-rVo">

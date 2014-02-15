@@ -98,4 +98,14 @@
     }
 }
 
+-(NSString*)documentsDirectory{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    return documentsDirectory;
+}
+
+-(NSString*)dataFilePath:(NSString *)fileName{
+    return [[self documentsDirectory] stringByAppendingPathComponent:fileName];
+}
+
 @end
