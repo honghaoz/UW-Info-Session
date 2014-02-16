@@ -45,6 +45,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0 green:179/255.0 blue:134/255.0 alpha:1];
+    
+    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:0.9]];
+    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    //[self.tableView setBackgroundColor:[UIColor blackColor]];
+    
     // show refresh button
     //[[UIBarButtonItem appearance] setTintColor:[UIColor yellowColor]];
     
@@ -284,13 +290,15 @@
 - (void)configureCell:(InfoSessionCell *)cell withIndexPath:(NSIndexPath *)indexPath {
     InfoSession *infoSession = [self getInfoSessionAccordingIndexPath:indexPath];
     
+    [cell setBackgroundColor:[UIColor blackColor]];
+    
     // if current time is befor start time, set dark (future sessions)
     if ([[NSDate date] compare:infoSession.startTime] == NSOrderedAscending) {
-        [cell.employer setTextColor:[UIColor blackColor]];
-        [cell.locationLabel setTextColor:[UIColor darkGrayColor]];
-        [cell.location setTextColor:[UIColor darkGrayColor]];
-        [cell.dateLabel setTextColor:[UIColor darkGrayColor]];
-        [cell.date setTextColor:[UIColor darkGrayColor]];
+        [cell.employer setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+        [cell.locationLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+        [cell.location setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+        [cell.dateLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+        [cell.date setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
     }
     // if current time is between start time and end time, set blue (ongoing sessions)
     else if ( ([infoSession.startTime compare:[NSDate date]] == NSOrderedAscending) && ([[NSDate date] compare:infoSession.endTime] == NSOrderedAscending) ){
@@ -302,13 +310,40 @@
     }
     // set light grey (past sessions)
     else {
-        [cell.employer setTextColor: [UIColor lightGrayColor]];
-        [cell.locationLabel setTextColor:[UIColor lightGrayColor]];
-        [cell.location setTextColor:[UIColor lightGrayColor]];
-        [cell.dateLabel setTextColor:[UIColor lightGrayColor]];
-        [cell.date setTextColor:[UIColor lightGrayColor]];
-
+        [cell.employer setTextColor: [UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+        [cell.locationLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+        [cell.location setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+        [cell.dateLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+        [cell.date setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+        
     }
+
+    
+//    // if current time is befor start time, set dark (future sessions)
+//    if ([[NSDate date] compare:infoSession.startTime] == NSOrderedAscending) {
+//        [cell.employer setTextColor:[UIColor blackColor]];
+//        [cell.locationLabel setTextColor:[UIColor darkGrayColor]];
+//        [cell.location setTextColor:[UIColor darkGrayColor]];
+//        [cell.dateLabel setTextColor:[UIColor darkGrayColor]];
+//        [cell.date setTextColor:[UIColor darkGrayColor]];
+//    }
+//    // if current time is between start time and end time, set blue (ongoing sessions)
+//    else if ( ([infoSession.startTime compare:[NSDate date]] == NSOrderedAscending) && ([[NSDate date] compare:infoSession.endTime] == NSOrderedAscending) ){
+//        [cell.employer setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
+//        [cell.locationLabel setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
+//        [cell.location setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
+//        [cell.dateLabel setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
+//        [cell.date setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
+//    }
+//    // set light grey (past sessions)
+//    else {
+//        [cell.employer setTextColor: [UIColor lightGrayColor]];
+//        [cell.locationLabel setTextColor:[UIColor lightGrayColor]];
+//        [cell.location setTextColor:[UIColor lightGrayColor]];
+//        [cell.dateLabel setTextColor:[UIColor lightGrayColor]];
+//        [cell.date setTextColor:[UIColor lightGrayColor]];
+//
+//    }
     
     cell.employer.text = infoSession.employer;
     cell.location.text = infoSession.location;
