@@ -24,6 +24,9 @@
 #import <EventKit/EventKit.h>
 #import <EventKitUI/EventKitUI.h>
 
+#import "UWTabBarController.h"
+#import "MapViewController.h"
+
 @interface DetailViewController () <EKEventEditViewDelegate>
 
 - (IBAction)addToMyInfo:(id)sender;
@@ -50,6 +53,8 @@
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Download"] style:UIBarButtonItemStyleBordered target:self action:@selector(addToMyInfo:)];
     UIBarButtonItem *calButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Calendar"] style:UIBarButtonItemStylePlain target:self action:@selector(addToCalendar:)];
     [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:addButton, calButton, nil]];
+    
+    [self.tabBarController showTabBar];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -658,24 +663,6 @@
 }
 */
 
-
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"ShowAlert"]) {
-        AlertViewController *controller = segue.destinationViewController;
-        controller.infoSession = self.infoSession;
-        controller.infoSessionModel = self.infoSessionModel;
-        NSIndexPath *choosedIndexPath = sender;
-        controller.alertIndex =choosedIndexPath.row - 1;
-        controller.delegate = self;
-    } else if ([segue.identifier isEqualToString:@"ShowMap"]) {
-        NSLog(@"show map");
-    }
-}
-
 #pragma mark - AlertViewController Delegate method
 /**
  *  Used for handling alert section rows reloading.
@@ -724,6 +711,26 @@
             [indexPathToReload addObject:[NSIndexPath indexPathForRow:alertIndex + 1 inSection:1]];
             [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationAutomatic];
         }
+    }
+}
+
+#pragma mark - Navigation
+
+// In a story board-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"ShowAlert"]) {
+        AlertViewController *controller = segue.destinationViewController;
+        controller.infoSession = self.infoSession;
+        controller.infoSessionModel = self.infoSessionModel;
+        NSIndexPath *choosedIndexPath = sender;
+        controller.alertIndex =choosedIndexPath.row - 1;
+        controller.delegate = self;
+    } else if ([segue.identifier isEqualToString:@"ShowMap"]) {
+        MapViewController *controller = segue.destinationViewController;
+        controller.tabBarController = _tabBarController;
+        controller.infoSessionModel = _infoSessionModel;
+        NSLog(@"show map");
     }
 }
 

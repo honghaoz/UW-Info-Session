@@ -12,7 +12,7 @@
 
 -(id)init {
     if ((self = [super init])) {
-        
+        [self handleFirstTime];
     }
     return self;
 }
@@ -98,14 +98,34 @@
     }
 }
 
--(NSString*)documentsDirectory{
++ (NSString*)documentsDirectory{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     return documentsDirectory;
 }
 
--(NSString*)dataFilePath:(NSString *)fileName{
++ (NSString*)dataFilePath:(NSString *)fileName{
     return [[self documentsDirectory] stringByAppendingPathComponent:fileName];
+}
+
++ (void)saveMap {
+    NSData *pngData = UIImagePNGRepresentation([UIImage imageNamed:@"map_colour300.png"]);
+    [pngData writeToFile:[self dataFilePath:@"uw_map.png"] atomically:YES];
+}
+
++ (UIImage *)loadMap {
+    NSData *pngData = [NSData dataWithContentsOfFile:[self dataFilePath:@"uw_map.png"]];
+    return [UIImage imageWithData:pngData];
+}
+
+- (void)handleFirstTime {
+    NSLog([[NSUserDefaults standardUserDefaults] boolForKey:@"hasRun"] ? @"Has Run" : @"Run For The First Time");
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasRun"]) {
+        // for the first time, save map to local documents directory
+        [InfoSessionModel saveMap];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasRun"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 @end

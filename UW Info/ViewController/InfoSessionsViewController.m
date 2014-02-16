@@ -20,14 +20,19 @@
 #import "DetailViewController.h"
 #import "InfoSessionModel.h"
 
+#import "UWTabBarController.h"
+
 @interface InfoSessionsViewController ()
 
 @property (nonatomic, strong) InfoSessionModel *infoSessionModel;
+@property (nonatomic, strong) UIButton *termSelection;
 
 @end
 
 @implementation InfoSessionsViewController {
     UIRefreshControl *refreshControl;
+    CGFloat startContentOffset;
+    CGFloat lastContentOffset;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -47,7 +52,7 @@
     [super viewDidLoad];
     //self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0 green:179/255.0 blue:134/255.0 alpha:1];
     
-    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:0.9]];
+    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1.0]];
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     //[self.tableView setBackgroundColor:[UIColor blackColor]];
     
@@ -60,6 +65,22 @@
                                                                      target:self action:@selector(scrollToToday)];
     self.navigationItem.leftBarButtonItem = anotherButton;
     self.navigationItem.leftBarButtonItem.enabled = NO;
+    
+    // init menu button (term selection)
+//    self.termSelection = [[UIButton alloc] initWithFrame:CGRectMake([[UIScreen mainScreen] bounds].size.width / 2.0 , 60.0, 60, 30)];
+    
+//    self.termSelection = [[UIButton alloc] initWithFrame:CGRectMake(30, 10, 190, 44)];
+//    [self.termSelection setTitle:@"ASDASDASDASD" forState:UIControlStateNormal];
+//    [self.termSelection setTitle:@"tap!" forState:UIControlStateSelected];
+//    [self.termSelection setUserInteractionEnabled:YES];
+//    [self.termSelection setBackgroundColor:[UIColor blueColor]];
+//    //[self.termSelection setSelected:YES];
+//     [self.navigationController.navigationBar addSubview:self.termSelection];
+
+//    showOrigin =[[UILabel alloc] initWithFrame:(CGRectMake(10, 70, 190, 44))];
+//    [self.view addSubview:showOrigin];
+//    showOrigin.text = @"(%i, %i)";
+//    [showOrigin setBackgroundColor:[UIColor yellowColor]];
     
     // initiate infoSessionModel
     _infoSessionModel = [[InfoSessionModel alloc] init];
@@ -183,7 +204,7 @@
     } else {
         NSInteger firstWeekNumber = [[_infoSessionModel.infoSessions firstObject] weekNum];
         NSInteger lastWeekNumber = [[_infoSessionModel.infoSessions lastObject] weekNum];
-        return  lastWeekNumber - firstWeekNumber + 1;
+        return  lastWeekNumber - firstWeekNumber + 2;// add one "No more info sessions"
     }
 }
 
@@ -193,7 +214,11 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if ([_infoSessionModel.infoSessionsDictionary count] == 0) {
         return @"Refreshing...";
-    } else {
+    }
+    else if (section == [self numberOfSectionsInTableView:tableView] - 1) {
+        return @"No more info sessions";
+    }
+    else {
         InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
         NSUInteger weekNum = section + [firstInfoSession weekNum];
         
@@ -239,16 +264,14 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // refreshing cell
-    if ([_infoSessionModel.infoSessionsDictionary count] == 0) {
+    if (([_infoSessionModel.infoSessionsDictionary count] == 0) ||
+        (section == [self numberOfSectionsInTableView:tableView] - 1) ||
+        ([[self getInfoSessionsAccordingSection:section] count] == 0)) {
         return 1;
-    } else {
-        // no info sessions cell
-        if ([[self getInfoSessionsAccordingSection:section] count] == 0){
-            return 1;
-        } else {
-            // info session cell
-            return [[self getInfoSessionsAccordingSection:section] count];
-        }
+    }
+    else {
+        // info session cell
+        return [[self getInfoSessionsAccordingSection:section] count];
     }
 }
 
@@ -261,16 +284,25 @@
         LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
         cell.loadingIndicator.hidden = NO;
         [cell.loadingIndicator startAnimating];
-        cell.loadingLabel.text = @"Refreshing...";
+        cell.loadingLabel.text = @"      Refreshing...";
         [cell.loadingLabel setTextAlignment:NSTextAlignmentLeft];
         [cell.loadingLabel setTextColor:[UIColor darkGrayColor]];
 
         return cell;
-    } else {
+    }
+    else if (indexPath.section == [self numberOfSectionsInTableView:tableView] - 1) {
+        LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
+        cell.loadingIndicator.hidden = YES;
+        cell.loadingLabel.text = @"No more info sessions";
+        [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
+        [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
+        return cell;
+    }
+    else {
         if ([[self getInfoSessionsAccordingSection:indexPath.section] count] == 0) {
             LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
             cell.loadingIndicator.hidden = YES;
-            cell.loadingLabel.text = @"No Info Sessions";
+            cell.loadingLabel.text = @"No info sessions";
             [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
             [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
             return cell;
@@ -290,42 +322,15 @@
 - (void)configureCell:(InfoSessionCell *)cell withIndexPath:(NSIndexPath *)indexPath {
     InfoSession *infoSession = [self getInfoSessionAccordingIndexPath:indexPath];
     
-    [cell setBackgroundColor:[UIColor blackColor]];
-    
-    // if current time is befor start time, set dark (future sessions)
-    if ([[NSDate date] compare:infoSession.startTime] == NSOrderedAscending) {
-        [cell.employer setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-        [cell.locationLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-        [cell.location setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-        [cell.dateLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-        [cell.date setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-    }
-    // if current time is between start time and end time, set blue (ongoing sessions)
-    else if ( ([infoSession.startTime compare:[NSDate date]] == NSOrderedAscending) && ([[NSDate date] compare:infoSession.endTime] == NSOrderedAscending) ){
-        [cell.employer setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-        [cell.locationLabel setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-        [cell.location setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-        [cell.dateLabel setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-        [cell.date setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-    }
-    // set light grey (past sessions)
-    else {
-        [cell.employer setTextColor: [UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-        [cell.locationLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-        [cell.location setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-        [cell.dateLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-        [cell.date setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-        
-    }
-
-    
+//    [cell setBackgroundColor:[UIColor blackColor]];
+//    
 //    // if current time is befor start time, set dark (future sessions)
 //    if ([[NSDate date] compare:infoSession.startTime] == NSOrderedAscending) {
-//        [cell.employer setTextColor:[UIColor blackColor]];
-//        [cell.locationLabel setTextColor:[UIColor darkGrayColor]];
-//        [cell.location setTextColor:[UIColor darkGrayColor]];
-//        [cell.dateLabel setTextColor:[UIColor darkGrayColor]];
-//        [cell.date setTextColor:[UIColor darkGrayColor]];
+//        [cell.employer setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+//        [cell.locationLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+//        [cell.location setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+//        [cell.dateLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+//        [cell.date setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
 //    }
 //    // if current time is between start time and end time, set blue (ongoing sessions)
 //    else if ( ([infoSession.startTime compare:[NSDate date]] == NSOrderedAscending) && ([[NSDate date] compare:infoSession.endTime] == NSOrderedAscending) ){
@@ -337,13 +342,40 @@
 //    }
 //    // set light grey (past sessions)
 //    else {
-//        [cell.employer setTextColor: [UIColor lightGrayColor]];
-//        [cell.locationLabel setTextColor:[UIColor lightGrayColor]];
-//        [cell.location setTextColor:[UIColor lightGrayColor]];
-//        [cell.dateLabel setTextColor:[UIColor lightGrayColor]];
-//        [cell.date setTextColor:[UIColor lightGrayColor]];
-//
+//        [cell.employer setTextColor: [UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+//        [cell.locationLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+//        [cell.location setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+//        [cell.dateLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+//        [cell.date setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
+//    
 //    }
+
+    
+    // if current time is befor start time, set dark (future sessions)
+    if ([[NSDate date] compare:infoSession.startTime] == NSOrderedAscending) {
+        [cell.employer setTextColor:[UIColor blackColor]];
+        [cell.locationLabel setTextColor:[UIColor darkGrayColor]];
+        [cell.location setTextColor:[UIColor darkGrayColor]];
+        [cell.dateLabel setTextColor:[UIColor darkGrayColor]];
+        [cell.date setTextColor:[UIColor darkGrayColor]];
+    }
+    // if current time is between start time and end time, set blue (ongoing sessions)
+    else if ( ([infoSession.startTime compare:[NSDate date]] == NSOrderedAscending) && ([[NSDate date] compare:infoSession.endTime] == NSOrderedAscending) ){
+        [cell.employer setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
+        [cell.locationLabel setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
+        [cell.location setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
+        [cell.dateLabel setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
+        [cell.date setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
+    }
+    // set light grey (past sessions)
+    else {
+        [cell.employer setTextColor: [UIColor lightGrayColor]];
+        [cell.locationLabel setTextColor:[UIColor lightGrayColor]];
+        [cell.location setTextColor:[UIColor lightGrayColor]];
+        [cell.dateLabel setTextColor:[UIColor lightGrayColor]];
+        [cell.date setTextColor:[UIColor lightGrayColor]];
+
+    }
     
     cell.employer.text = infoSession.employer;
     cell.location.text = infoSession.location;
@@ -365,20 +397,22 @@
  *  @return for LoadingCell, return 44.0f, for InfoSessionCell, return 70.0f
  */
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // refreshing cell
-    if ([_infoSessionModel.infoSessionsDictionary count] == 0) {
+    // refreshing cell // no more info sessions // no info session cell
+    if (([_infoSessionModel.infoSessionsDictionary count] == 0) ||
+        (indexPath.section == [self numberOfSectionsInTableView:tableView] - 1) ||
+        ([[self getInfoSessionsAccordingSection:indexPath.section] count] == 0)) {
         return 44.0f;
-    }
-    // no info session cell
-    if ([[self getInfoSessionsAccordingSection:indexPath.section] count] == 0) {
-        return 44.0f;
-    } else {
+    }else {
         // info session cell
         return 70.0f;
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    // refreshing cell
+    if ([_infoSessionModel.infoSessionsDictionary count] == 0 || section == [self numberOfSectionsInTableView:tableView] - 1) {
+        return 0.0f;
+    }
     return 25.0f;
 }
 
@@ -473,6 +507,45 @@
     // Return NO if you do not want the specified item to be editable.
     return YES;
 } */
+
+#pragma mark - Set Hide When Scroll
+
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+//    NSLog(@"scrollViewWillBeginDragging");
+//    startContentOffset = lastContentOffset = scrollView.contentOffset.y;
+//}
+
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+//    NSLog(@"scrollViewDidEndDragging");
+//}
+//
+//- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+//    NSLog(@"scrollViewDidScrollToTop");
+//}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    //NSLog(@"scrollViewDidScroll");
+    CGFloat currentOffset = scrollView.contentOffset.y;
+    CGFloat differenceFromStart = startContentOffset - currentOffset;
+    CGFloat differenceFromLast = lastContentOffset - currentOffset;
+    //NSLog(@"current: %0.0f, start: %0.0f, last: %0.0f", currentOffset, startContentOffset, lastContentOffset);
+    lastContentOffset = currentOffset;
+    
+    // start < current, scroll down
+    if((differenceFromStart) < 0)
+    {
+        // scroll up
+        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+            [self.tabBarController hideTabBar];
+    }
+    // start > current, scroll up
+    else {
+        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+            [self.tabBarController showTabBar];
+    }
+}
+
+
 
 
 #pragma mark - Navigation

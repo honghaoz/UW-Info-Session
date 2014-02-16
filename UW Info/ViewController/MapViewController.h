@@ -7,10 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+@class InfoSessionModel;
+@class UWTabBarController;
 
 @interface MapViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
+
+@property (nonatomic, weak) UWTabBarController *tabBarController;
+
+@property (nonatomic, strong) InfoSessionModel *infoSessionModel;
 
 @end

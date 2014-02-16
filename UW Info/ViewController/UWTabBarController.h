@@ -13,4 +13,9 @@
 
 //@property (nonatomic, strong) InfoSessionModel *infoSessionModel;
 
+@property (nonatomic, assign) BOOL isHidden;
+
+- (void) hideTabBar;
+- (void) showTabBar;
+
 @end

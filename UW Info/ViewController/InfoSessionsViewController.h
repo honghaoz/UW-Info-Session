@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+@class UWTabBarController;
 
 @interface InfoSessionsViewController : UITableViewController
 
-@property (nonatomic, weak) UITabBarController *tabBarController;
+@property (nonatomic, weak) UWTabBarController *tabBarController;
 
 @end

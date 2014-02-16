@@ -25,4 +25,8 @@
 - (void)processInfoSessionsDictionary:(NSDictionary *)dictionary withInfoSessions:(NSArray *)array;
 - (void)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array;
 
++ (NSString*)documentsDirectory;;
++ (NSString*)dataFilePath:(NSString *)fileName;
++ (void)saveMap;
++ (UIImage *)loadMap;
 @end

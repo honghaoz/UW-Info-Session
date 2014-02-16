@@ -7,6 +7,8 @@
 //
 
 #import "MapViewController.h"
+#import "InfoSessionModel.h"
+#import "UWTabBarController.h"
 
 @interface MapViewController () <UIScrollViewAccessibilityDelegate, UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
@@ -38,9 +40,15 @@
     showOrigin.text = @"(%i, %i)";
     [showOrigin setBackgroundColor:[UIColor yellowColor]];
     
+//    UIButton *button =  [[UIButton alloc] initWithFrame:CGRectMake(30, 70, 190, 44)];
+//    [button setTitle:@"ASDASDASDASD" forState:UIControlStateNormal];
+//    [self.view addSubview:button];
+    
     
     // set imageView
-    UIImage *map = [UIImage imageNamed:@"map_colour300.png"];
+//    UIImage *map = [UIImage imageNamed:@"map_colour300.png"];
+    //[InfoSessionModel saveMap];
+    UIImage *map = [InfoSessionModel loadMap];
     [self.imageView setFrame:(CGRectMake(0, 0, map.size.width, map.size.height))];
     [self.imageView setImage:map];
     [self.imageView setUserInteractionEnabled:YES];
@@ -138,7 +146,7 @@
          {
              [self.navigationController.navigationBar setAlpha:1.0];
              //[self.navigationController.toolbar setAlpha:alpha];
-             [self showTabBar:self.tabBarController];
+             [_tabBarController showTabBar];
 
          } completion:^(BOOL finished)
          {
@@ -156,76 +164,12 @@
          {
              [self.navigationController.navigationBar setAlpha:0.0];
              //[self.navigationController.toolbar setAlpha:alpha];
-             [self hideTabBar:self.tabBarController];
+             [_tabBarController hideTabBar];
          } completion:^(BOOL finished)
          {
              
          }];
     }
-}
-
-/**
- *  Hide tabbarcontroller
- *
- *  @param tabbarcontroller
- */
-- (void) hideTabBar:(UITabBarController *) tabbarcontroller
-{
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3];
-    float fHeight = screenRect.size.height;
-    if(  UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) )
-    {
-        fHeight = screenRect.size.width;
-    }
-    
-    for(UIView *view in tabbarcontroller.view.subviews)
-    {
-        if([view isKindOfClass:[UITabBar class]])
-        {
-            [view setFrame:CGRectMake(view.frame.origin.x, fHeight, view.frame.size.width, view.frame.size.height)];
-        }
-        else
-        {
-            [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, fHeight)];
-            view.backgroundColor = [UIColor blackColor];
-        }
-    }
-    [UIView commitAnimations];
-}
-
-/**
- *  Show tabbarcontroller
- *
- *  @param tabbarcontroller
- */
-- (void) showTabBar:(UITabBarController *) tabbarcontroller
-{
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    float fHeight = screenRect.size.height - tabbarcontroller.tabBar.frame.size.height;
-    
-    if(  UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) )
-    {
-        fHeight = screenRect.size.width - tabbarcontroller.tabBar.frame.size.height;
-    }
-    
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3];
-    for(UIView *view in tabbarcontroller.view.subviews)
-    {
-        if([view isKindOfClass:[UITabBar class]])
-        {
-            [view setFrame:CGRectMake(view.frame.origin.x, fHeight, view.frame.size.width, view.frame.size.height)];
-        }
-        else
-        {
-            [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, fHeight)];
-        }
-    }
-    [UIView commitAnimations];
-
 }
 
 #pragma mark - Zoom methods

@@ -11,6 +11,7 @@
 @class InfoSession;
 @class InfoSessionModel;
 @class DetailViewController;
+@class UWTabBarController;
 
 //@protocol DetailViewControllerDelegate <NSObject>
 //
@@ -23,7 +24,7 @@
 @property (nonatomic, strong) InfoSession *infoSession;
 @property (nonatomic, strong) InfoSessionModel *infoSessionModel;
 
-@property (nonatomic, weak) UITabBarController *tabBarController;
+@property (nonatomic, weak) UWTabBarController *tabBarController;
 
 //@property (nonatomic, weak) UITabBarController <DetailViewControllerDelegate> *delegate;
 
