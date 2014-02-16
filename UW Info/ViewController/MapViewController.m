@@ -29,6 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    // set title
     self.title = @"Map of UWaterloo";
     
     // show origin label
@@ -38,6 +39,7 @@
     [showOrigin setBackgroundColor:[UIColor yellowColor]];
     
     
+    // set imageView
     UIImage *map = [UIImage imageNamed:@"map_colour300.png"];
     [self.imageView setFrame:(CGRectMake(0, 0, map.size.width, map.size.height))];
     [self.imageView setImage:map];
@@ -50,25 +52,33 @@
 //    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hidTopAndBottom:)];
 //    [self.scrollView addGestureRecognizer:tapGesture];
     
-    UITapGestureRecognizer *singleTap;
-    singleTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(screenTapped)];
-    [singleTap setNumberOfTapsRequired:1];
-    [singleTap setDelegate:self];
-    [self.scrollView addGestureRecognizer:singleTap];
-    
     //[self.imageView addSubview:showOrigin];
     
     [self.scrollView setDelegate:self];
     [self.scrollView setFrame:[[UIScreen mainScreen] bounds]];
     [self.scrollView setContentSize:self.imageView.frame.size];
+
     
+    
+    
+    
+    UITapGestureRecognizer *doubleTap;
+    doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+    [doubleTap setNumberOfTapsRequired:2];
+    [self.scrollView addGestureRecognizer:doubleTap];
+    
+    UITapGestureRecognizer *singleTap;
+    singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap)];
+    [singleTap setNumberOfTapsRequired:1];
+    //[singleTap setDelegate:self];
+    [singleTap requireGestureRecognizerToFail:doubleTap];
+    [self.scrollView addGestureRecognizer:singleTap];
     
     [self.scrollView setScrollEnabled:YES];
     [self.scrollView setUserInteractionEnabled:YES];
-    
     [self.scrollView setMaximumZoomScale:1.0];
     [self.scrollView setMinimumZoomScale:0.3];
-    
+    // ??
     [self.scrollView setAutoresizesSubviews:YES];
     
     [self.scrollView setZoomScale:0.4 animated:NO];
@@ -105,42 +115,55 @@
     NSLog(@"scrollView Did End Scrolling Animation");
 }
 
-- (void)screenTapped
-{
-    CGFloat alpha = 0.0;
-    
-    if (self.navigationController.navigationBar.alpha < 1.0)
-        alpha = 1.0;
-    
-    //Toggle visible/hidden status bar.
-    //This will only work if the Info.plist file is updated with two additional entries
-    //"View controller-based status bar appearance" set to NO and "Status bar is initially hidden" set to YES or NO
-    //Hiding the status bar turns the gesture shortcuts for Notification Center and Control Center into 2 step gestures
-    [[UIApplication sharedApplication]setStatusBarHidden:![[UIApplication sharedApplication]isStatusBarHidden] withAnimation:UIStatusBarAnimationSlide];
-    
-    [UIView animateWithDuration:0.5 animations:^
-     {
-         [self.navigationController.navigationBar setAlpha:alpha];
-         //[self.navigationController.toolbar setAlpha:alpha];
-         if (self->barIsHidden) {
-             NSLog(@"hidden -> show");
-             //[self showStatusBar:YES];
-             self->barIsHidden = NO;
-             [self showTabBar:self.tabBarController];
-             
-         } else {
-             NSLog(@"show -> hidden");
-             //[self showStatusBar:NO];
-             self->barIsHidden = YES;
-             [self hideTabBar:self.tabBarController];
-         }
+#pragma mark - tap method
 
-     } completion:^(BOOL finished)
-     {
-         
-     }];
+- (void)handleSingleTap
+{
+    NSLog(@"single tap");
     
+    //    //Toggle visible/hidden status bar.
+    //    //This will only work if the Info.plist file is updated with two additional entries
+    //    //"View controller-based status bar appearance" set to NO and "Status bar is initially hidden" set to YES or NO
+    //    //Hiding the status bar turns the gesture shortcuts for Notification Center and Control Center into 2 step gestures
+    
+    // hidden -> show
+    if (self->barIsHidden) {
+        //NSLog(@"hidden -> show");
+        //[self showStatusBar:YES];
+        self->barIsHidden = NO;
+        
+        //    [[UIApplication sharedApplication]setStatusBarHidden:![[UIApplication sharedApplication]isStatusBarHidden] withAnimation:UIStatusBarAnimationSlide];
+        [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        [UIView animateWithDuration:0.5 animations:^
+         {
+             [self.navigationController.navigationBar setAlpha:1.0];
+             //[self.navigationController.toolbar setAlpha:alpha];
+             [self showTabBar:self.tabBarController];
+
+         } completion:^(BOOL finished)
+         {
+             
+         }];
+    }
+    // show -> hidden
+    else {
+        //NSLog(@"show -> hidden");
+        //[self showStatusBar:NO];
+        self->barIsHidden = YES;
+        
+        [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        [UIView animateWithDuration:0.5 animations:^
+         {
+             [self.navigationController.navigationBar setAlpha:0.0];
+             //[self.navigationController.toolbar setAlpha:alpha];
+             [self hideTabBar:self.tabBarController];
+         } completion:^(BOOL finished)
+         {
+             
+         }];
+    }
 }
+
 /**
  *  Hide tabbarcontroller
  *
@@ -205,25 +228,57 @@
 
 }
 
-//- (void) hideNavigationBar:(UINavigationController *) navigationController
+#pragma mark - Zoom methods
+
+- (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center {
+    
+    CGRect zoomRect;
+    
+    zoomRect.size.height = [self.imageView frame].size.height / scale;
+    zoomRect.size.width  = [self.imageView frame].size.width  / scale;
+    
+    center = [self.imageView convertPoint:center fromView:self.scrollView];
+    
+    zoomRect.origin.x = center.x - ((zoomRect.size.width / 2.0));
+    zoomRect.origin.y = center.y - ((zoomRect.size.height / 2.0));
+    
+    return zoomRect;
+}
+
+- (void)handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer {
+    NSLog(@"doubletaped");
+    float newScale = [self.scrollView zoomScale] * 8.0;
+    
+    if (self.scrollView.zoomScale > self.scrollView.minimumZoomScale)
+    {
+        [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
+    }
+    else
+    {
+        CGRect zoomRect = [self zoomRectForScale:newScale
+                                      withCenter:[gestureRecognizer locationInView:gestureRecognizer.view]];
+        [self.scrollView zoomToRect:zoomRect animated:YES];
+    }
+    
+}
+
+//- (void)handleDoubleTap:(UIGestureRecognizer *)gesture
 //{
-//    UINavigationBar *naviBar = navigationController.view.subviews[1];
-//    [UIView animateWithDuration:0.5 animations:^{
-//        [naviBar setFrame:CGRectMake(naviBar.frame.origin.x, -naviBar.frame.size.height, naviBar.frame.size.width, naviBar.frame.size.height)];
-//    }completion:^(BOOL finished){
-//        ;
-//    }];
+//    float newScale = self.scrollView.zoomScale * 1.5;
+//    CGRect zoomRect = [self zoomRectForScale:newScale withCenter:[gesture locationInView:gesture.view]];
+//    [self.scrollView zoomToRect:zoomRect animated:YES];
 //}
 //
-//- (void) showNavigationBar:(UINavigationController *) navigationController
+//- (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center
 //{
+//    CGRect zoomRect;
+//    zoomRect.size.height = self.scrollView.frame.size.height / scale;
+//    zoomRect.size.width  = self.scrollView.frame.size.width  / scale;
 //    
-//    [UIView beginAnimations:nil context:NULL];
-//    [UIView setAnimationDuration:0.5];
-//    UINavigationBar *naviBar = navigationController.view.subviews[1];
+//    center = [self.imageView convertPoint:center fromView:self.scrollView];
 //    
-//    [naviBar setFrame:CGRectMake(naviBar.frame.origin.x, 20.0f, naviBar.frame.size.width, naviBar.frame.size.height)];
-//    
-//    [UIView commitAnimations];
+//    zoomRect.origin.x = center.x - (zoomRect.size.width  / 2.0);
+//    zoomRect.origin.y = center.y - (zoomRect.size.height / 2.0);
+//    return zoomRect;
 //}
 @end
