@@ -77,7 +77,7 @@
  */
 - (void) hideTabBar{
     if (!self.isHidden) {
-        
+        NSLog(@"hide tabbar");
         self.isHidden = YES;
         CGRect screenRect = [[UIScreen mainScreen] bounds];
         
@@ -112,6 +112,7 @@
  */
 - (void) showTabBar {
     if (self.isHidden) {
+        NSLog(@"show tabbar");
         self.isHidden = NO;
         CGRect screenRect = [[UIScreen mainScreen] bounds];
         float fHeight = screenRect.size.height - self.tabBar.frame.size.height;

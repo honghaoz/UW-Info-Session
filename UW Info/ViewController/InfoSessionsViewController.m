@@ -33,6 +33,7 @@
     UIRefreshControl *refreshControl;
     CGFloat startContentOffset;
     CGFloat lastContentOffset;
+    CGFloat previousScrollViewYOffset;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -288,7 +289,6 @@
         cell.loadingLabel.text = @"      Refreshing...";
         [cell.loadingLabel setTextAlignment:NSTextAlignmentLeft];
         [cell.loadingLabel setTextColor:[UIColor darkGrayColor]];
-
         return cell;
     }
     else if (indexPath.section == [self numberOfSectionsInTableView:tableView] - 1) {
@@ -516,16 +516,8 @@
     startContentOffset = lastContentOffset = scrollView.contentOffset.y;
 }
 
-//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-//    NSLog(@"scrollViewDidEndDragging");
-//}
-//
-//- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
-//    NSLog(@"scrollViewDidScrollToTop");
-//}
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    //NSLog(@"scrollViewDidScroll");
+ 
     CGFloat currentOffset = scrollView.contentOffset.y;
     CGFloat differenceFromStart = startContentOffset - currentOffset;
     CGFloat differenceFromLast = lastContentOffset - currentOffset;
@@ -536,7 +528,7 @@
     if((differenceFromStart) < 0)
     {
         // scroll up
-        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+        if(scrollView.isTracking && (abs(differenceFromLast)>1) && ![self isBottomRowisVisible])
             [self.tabBarController hideTabBar];
     }
     // start > current, scroll up
@@ -544,10 +536,111 @@
         if(scrollView.isTracking && (abs(differenceFromLast)>1))
             [self.tabBarController showTabBar];
     }
+    
+    CGRect bounds = scrollView.bounds;
+    CGSize size = scrollView.contentSize;
+    UIEdgeInsets inset = scrollView.contentInset;
+    float y = currentOffset + bounds.size.height - inset.bottom;
+    float h = size.height;
+    // NSLog(@"offset: %f", offset.y);
+    // NSLog(@"content.height: %f", size.height);
+    // NSLog(@"bounds.height: %f", bounds.size.height);
+    // NSLog(@"inset.top: %f", inset.top);
+    // NSLog(@"inset.bottom: %f", inset.bottom);
+    // NSLog(@"pos: %f of %f", y, h);
+    
+    float reload_distance = 0;
+    if(y > h + reload_distance) {
+        //NSLog(@"load more rows");
+        // bottom row reached, show tabbar
+        [self.tabBarController showTabBar];
+    }
+//    if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height))
+//        [self.tabBarController showTabBar];
 }
 
+-(BOOL)isBottomRowisVisible {
+    NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+    for (NSIndexPath *index in indexPaths) {
+        if (index.section == [self numberOfSectionsInTableView:self.tableView] - 1 && index.row == 0) {
+            return YES;
+        }
+    }
+    return NO;
+}
 
+// ios7 facebook like fade navigation bar
 
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+//{
+//    CGRect frame = self.navigationController.navigationBar.frame;
+//    CGFloat size = frame.size.height - 21;
+//    CGFloat framePercentageHidden = ((20 - frame.origin.y) / (frame.size.height - 1));
+//    CGFloat scrollOffset = scrollView.contentOffset.y;
+//    CGFloat scrollDiff = scrollOffset - previousScrollViewYOffset;
+//    CGFloat scrollHeight = scrollView.frame.size.height;
+//    CGFloat scrollContentSizeHeight = scrollView.contentSize.height + scrollView.contentInset.bottom;
+//    
+//    if (scrollOffset <= -scrollView.contentInset.top) {
+//        frame.origin.y = 20;
+//    } else if ((scrollOffset + scrollHeight) >= scrollContentSizeHeight) {
+//        frame.origin.y = -size;
+//    } else {
+//        frame.origin.y = MIN(20, MAX(-size, frame.origin.y - scrollDiff));
+////        frame.origin.y = MIN(20,
+////                             MAX(-size, frame.origin.y -
+////                                 (frame.size.height * (scrollDiff / scrollHeight))));
+//    }
+//    
+//    [self.navigationController.navigationBar setFrame:frame];
+//    [self updateBarButtonItems:(1 - framePercentageHidden)];
+//    previousScrollViewYOffset = scrollOffset;
+//}
+//
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+//{
+//    [self stoppedScrolling];
+//}
+//
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView
+//                  willDecelerate:(BOOL)decelerate
+//{
+//    if (!decelerate) {
+//        [self stoppedScrolling];
+//    }
+//}
+//
+//- (void)stoppedScrolling
+//{
+//    CGRect frame = self.navigationController.navigationBar.frame;
+//    if (frame.origin.y < 20) {
+//        [self animateNavBarTo:-(frame.size.height - 21)];
+//    }
+//}
+//
+//- (void)updateBarButtonItems:(CGFloat)alpha
+//{
+//    [self.navigationItem.leftBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem* item, NSUInteger i, BOOL *stop) {
+//        item.customView.alpha = alpha;
+//    }];
+//    [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem* item, NSUInteger i, BOOL *stop) {
+//        item.customView.alpha = alpha;
+//    }];
+//    self.navigationItem.titleView.alpha = alpha;
+//    self.navigationController.navigationBar.tintColor = [self.navigationController.navigationBar.tintColor colorWithAlphaComponent:alpha];
+//    ((UIView*)[[self.navigationController.navigationBar subviews] objectAtIndex:1]).alpha = alpha;
+//}
+//
+//- (void)animateNavBarTo:(CGFloat)y
+//{
+//    [UIView animateWithDuration:0.2 animations:^{
+//        CGRect frame = self.navigationController.navigationBar.frame;
+//        CGFloat alpha = (frame.origin.y >= y ? 0 : 1);
+//        frame.origin.y = y;
+//        [self.navigationController.navigationBar setFrame:frame];
+//        [self updateBarButtonItems:alpha];
+//    }];
+//}
 
 #pragma mark - Navigation
 
