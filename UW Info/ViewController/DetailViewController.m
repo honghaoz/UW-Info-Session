@@ -421,15 +421,22 @@
         if (indexPath.row == 0) {
             DetailDescriptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailDescriptionCell"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.titleLabel.text = @"Notes";
             [cell.contentText setSelectable:YES];
             [cell.contentText setEditable:YES];
             [cell.contentText setFont:[UIFont systemFontOfSize:15]];
-            cell.titleLabel.text = @"Notes";
-            [cell.contentText setTextColor: [UIColor blackColor]];
-            cell.contentText.text = _infoSession.note;
+            
+            if (_infoSession.note == nil || [_infoSession.note length] == 0) {
+                cell.contentText.text = @"Take some notes here.";
+                [cell.contentText setTextColor: [UIColor lightGrayColor]];
+            } else {
+                cell.contentText.text = _infoSession.note;
+                [cell.contentText setTextColor: [UIColor blackColor]];
+
+            }
             // resize textView height
             CGRect textViewFrame = cell.contentText.frame;
-            textViewFrame.size.height = 241.0f;
+            textViewFrame.size.height = 2000.0f; // make sure note's height is very large
             cell.contentText.frame = textViewFrame;
             
             self.noteCell = cell;
@@ -531,7 +538,11 @@
             switch (indexPath.row) {
                 case 0: {
                     UITextView *calculationView = [[UITextView alloc] init];
-                    [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:_infoSession.note]];
+                    if (_infoSession.note == nil || [_infoSession.note length] == 0) {
+                        [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:@"Take some notes here."]];
+                    } else {
+                        [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:_infoSession.note]];
+                    }
                     [calculationView setFont:[UIFont systemFontOfSize:15]];
                     CGSize size = [calculationView sizeThatFits:CGSizeMake(280.0f, FLT_MAX)];
                     
@@ -582,11 +593,7 @@
     }
     // select note section
     else if (indexPath.section == 3) {
-        NSLog(@"select note");
-//        DetailDescriptionCell *noteCell = (DetailDescriptionCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
         [self.noteCell.contentText becomeFirstResponder];
-//        _infoSession.note = @"asjdklasjdkljaskldjaskljdlkasjdklsjdlkasjdlkasjdklsjdklasjdklasjdlkajsdlkjasldkjaslkdjaslkdjklasdjklasjdklsadjklasjdklasd";
-        
     }
 }
 
@@ -636,12 +643,21 @@
     _infoSession.note = [textView.text stringByReplacingCharactersInRange:range withString:text];
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
+    [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell:self.noteCell] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     return YES;
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
     _infoSession.note = textView.text;
-    NSLog(@"finishe editing: %@", _infoSession.note);
+    //NSLog(@"finishe editing: %@", _infoSession.note);
+}
+
+- (void) textViewDidBeginEditing:(UITextView *)textView {
+    NSLog(@"begin editing");
+    if (_infoSession.note == nil || [_infoSession.note length] == 0) {
+        textView.text = @"";
+    }
+    [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell:self.noteCell] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 
@@ -726,6 +742,9 @@
         return;
     }
     [self.noteCell.contentText resignFirstResponder];
+    NSMutableArray *indexPathToReload = [[NSMutableArray alloc] init];
+    [indexPathToReload addObject:[NSIndexPath indexPathForRow:0 inSection:3]];
+    [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark - UIScrollView Delegate method
@@ -736,6 +755,9 @@
  */
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     [self.noteCell.contentText resignFirstResponder];
+    NSMutableArray *indexPathToReload = [[NSMutableArray alloc] init];
+    [indexPathToReload addObject:[NSIndexPath indexPathForRow:0 inSection:3]];
+    [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark - AlertViewController Delegate method

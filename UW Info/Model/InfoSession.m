@@ -116,7 +116,7 @@ static NSDictionary *alertSequenceDictionary;
     self.programs = [attributes valueForKeyPath:@"programs"];
     self.description = [attributes valueForKeyPath:@"description"];
     
-    self.note = @"Taking some notes here.";
+    //self.note = @"Taking some notes here.";
     
     self.alertIsOn = NO;
     NSMutableDictionary *oneAlert = [self createNewAlertDictionaryWithChoice:1];
