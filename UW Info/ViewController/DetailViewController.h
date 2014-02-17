@@ -12,6 +12,7 @@
 @class InfoSessionModel;
 @class DetailViewController;
 @class UWTabBarController;
+@class DetailDescriptionCell;
 
 //@protocol DetailViewControllerDelegate <NSObject>
 //
@@ -19,10 +20,11 @@
 //
 //@end
 
-@interface DetailViewController : UITableViewController <AlertViewControllerDelegate>
+@interface DetailViewController : UITableViewController <AlertViewControllerDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) InfoSession *infoSession;
 @property (nonatomic, strong) InfoSessionModel *infoSessionModel;
+@property (nonatomic, weak) DetailDescriptionCell *noteCell;
 
 @property (nonatomic, weak) UWTabBarController *tabBarController;
 

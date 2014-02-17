@@ -54,6 +54,14 @@
     UIBarButtonItem *calButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Calendar"] style:UIBarButtonItemStylePlain target:self action:@selector(addToCalendar:)];
     [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:addButton, calButton, nil]];
     
+    // set tap gesture to resgin first responser
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
+    gestureRecognizer.cancelsTouchesInView = NO;
+    [self.tableView addGestureRecognizer:gestureRecognizer];
+    
+    // set notification for entering background
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    
     [self.tabBarController showTabBar];
     
     // Uncomment the following line to preserve selection between presentations.
@@ -66,69 +74,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-/**
- *  Alert Switch is change
- *
- *  @param sender UISwitch
- */
-- (void)didSwitchChange:(id)sender {
-    BOOL state = [sender isOn];
-    _infoSession.alertIsOn = state;
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
-}
-
-
-/**
- *  Add to my info sessions button
- *
- *  @param sender Button "Add"
- */
-- (IBAction)addToMyInfo:(id)sender {
-    [_infoSessionModel addInfoSessionInOrder:_infoSession to:_infoSessionModel.myInfoSessions];
-    //[_infoSessionModel.myInfoSessions addObject:_infoSession];
-    
-    //[_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.myInfoSessionsDictionary withInfoSessions:_infoSessionModel.myInfoSessions];
-    
-//    dispatch_queue_t q = dispatch_queue_create("com.honghaoz", NULL);
-//    dispatch_sync(q, ^ {
-    
-//    [UIView  beginAnimations:nil context:NULL];
-//    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-//    [UIView setAnimationDuration:0.75];
-//    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.navigationController.view cache:NO];
-//    [UIView commitAnimations];
-//    
-//    [UIView beginAnimations:nil context:NULL];
-//    [UIView setAnimationDelay:0.375];
-//    [self.navigationController popViewControllerAnimated:NO];
-//    [UIView commitAnimations];
-    
-    
-//    [UIView animateWithDuration:0.75
-//                     animations:^{
-//                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-//                         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.navigationController.view cache:NO];
-//                        
-//                     }];
-//    [self.navigationController popViewControllerAnimated:NO];
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
-    [[navigation tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel.myInfoSessions count])];
-    
-    MyInfoViewController *myInfoViewController = (MyInfoViewController *)navigation.topViewController;
-    myInfoViewController.infoSessionModel = _infoSessionModel;
-    
-//    });
-//    dispatch_sync(q, ^{
-        //[self.delegate detailViewController:self didAddInfoSession:_infoSession];
-//    });
-    
-    //[self.delegate detailViewController:self didAddInfoSession:_infoSession];
-    //[self.tabBarController setSelectedIndex:10];
-    //NSLog(@"%i", [self.tabBarController.viewControllers count]);
-//    UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:0];
-//    [navController popToRootViewControllerAnimated:YES];
+- (void) applicationDidEnterBackground {
+    [self.noteCell.contentText resignFirstResponder];
 }
 
 #pragma mark - Calendar related
@@ -479,11 +426,14 @@
             [cell.contentText setFont:[UIFont systemFontOfSize:15]];
             cell.titleLabel.text = @"Notes";
             [cell.contentText setTextColor: [UIColor blackColor]];
-            cell.contentText.text = @"Taking some notes here!";
+            cell.contentText.text = _infoSession.note;
             // resize textView height
             CGRect textViewFrame = cell.contentText.frame;
             textViewFrame.size.height = 241.0f;
             cell.contentText.frame = textViewFrame;
+            
+            self.noteCell = cell;
+            [self.noteCell.contentText setDelegate:self];
             return cell;
         }
     }
@@ -579,7 +529,16 @@
             } break;
         case 3:
             switch (indexPath.row) {
-                case 0: height = 100.0f; break;
+                case 0: {
+                    UITextView *calculationView = [[UITextView alloc] init];
+                    [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:_infoSession.note]];
+                    [calculationView setFont:[UIFont systemFontOfSize:15]];
+                    CGSize size = [calculationView sizeThatFits:CGSizeMake(280.0f, FLT_MAX)];
+                    
+                    height = size.height + 45.0f;
+                    
+                    break;
+                }
             } break;
     }
     return height;
@@ -620,6 +579,14 @@
                 [self.tableView reloadRowsAtIndexPaths:indexPathToInsert withRowAnimation:UITableViewRowAnimationBottom];
             }
         }
+    }
+    // select note section
+    else if (indexPath.section == 3) {
+        NSLog(@"select note");
+//        DetailDescriptionCell *noteCell = (DetailDescriptionCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+        [self.noteCell.contentText becomeFirstResponder];
+//        _infoSession.note = @"asjdklasjdkljaskldjaskljdlkasjdklsjdlkasjdlkasjdklsjdklasjdklasjdlkajsdlkjasldkjaslkdjaslkdjklasdjklasjdklsadjklasjdklasd";
+        
     }
 }
 
@@ -662,6 +629,114 @@
     return YES;
 }
 */
+
+#pragma mark - UITextView Delegate methods
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    _infoSession.note = [textView.text stringByReplacingCharactersInRange:range withString:text];
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+    return YES;
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+    _infoSession.note = textView.text;
+    NSLog(@"finishe editing: %@", _infoSession.note);
+}
+
+
+#pragma mark - other methods
+
+/**
+ *  Alert Switch is change
+ *
+ *  @param sender UISwitch
+ */
+- (void)didSwitchChange:(id)sender {
+    BOOL state = [sender isOn];
+    _infoSession.alertIsOn = state;
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+
+/**
+ *  Add to my info sessions button
+ *
+ *  @param sender Button "Add"
+ */
+- (IBAction)addToMyInfo:(id)sender {
+    [_infoSessionModel addInfoSessionInOrder:_infoSession to:_infoSessionModel.myInfoSessions];
+    //[_infoSessionModel.myInfoSessions addObject:_infoSession];
+    
+    //[_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.myInfoSessionsDictionary withInfoSessions:_infoSessionModel.myInfoSessions];
+    
+    //    dispatch_queue_t q = dispatch_queue_create("com.honghaoz", NULL);
+    //    dispatch_sync(q, ^ {
+    
+    //    [UIView  beginAnimations:nil context:NULL];
+    //    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    //    [UIView setAnimationDuration:0.75];
+    //    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.navigationController.view cache:NO];
+    //    [UIView commitAnimations];
+    //
+    //    [UIView beginAnimations:nil context:NULL];
+    //    [UIView setAnimationDelay:0.375];
+    //    [self.navigationController popViewControllerAnimated:NO];
+    //    [UIView commitAnimations];
+    
+    
+    //    [UIView animateWithDuration:0.75
+    //                     animations:^{
+    //                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    //                         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.navigationController.view cache:NO];
+    //
+    //                     }];
+    //    [self.navigationController popViewControllerAnimated:NO];
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
+    [[navigation tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel.myInfoSessions count])];
+    
+    MyInfoViewController *myInfoViewController = (MyInfoViewController *)navigation.topViewController;
+    myInfoViewController.infoSessionModel = _infoSessionModel;
+    
+    //    });
+    //    dispatch_sync(q, ^{
+    //[self.delegate detailViewController:self didAddInfoSession:_infoSession];
+    //    });
+    
+    //[self.delegate detailViewController:self didAddInfoSession:_infoSession];
+    //[self.tabBarController setSelectedIndex:10];
+    //NSLog(@"%i", [self.tabBarController.viewControllers count]);
+    //    UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:0];
+    //    [navController popToRootViewControllerAnimated:YES];
+}
+
+
+/**
+ *  Tap gesture tatget method, resgin FirstResponder
+ *
+ *  @param gestureRecognizer gestureRecognizer
+ */
+- (void)hideKeyboard: (UIGestureRecognizer *)gestureRecognizer {
+    CGPoint point = [gestureRecognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
+    
+    if (indexPath != nil && indexPath.section == 3 && indexPath.row == 0) {
+        return;
+    }
+    [self.noteCell.contentText resignFirstResponder];
+}
+
+#pragma mark - UIScrollView Delegate method
+/**
+ *  Resgin FirstResponder
+ *
+ *  @param scrollView scrollView
+ */
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.noteCell.contentText resignFirstResponder];
+}
 
 #pragma mark - AlertViewController Delegate method
 /**

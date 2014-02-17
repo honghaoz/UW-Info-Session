@@ -249,7 +249,7 @@
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <string key="text">123456789012345678901234567890123abcdefghijklmnopqrstuvwxyzaaaaaaaaaaABCDEFG123456789012345678901234567890123abcdefghijklmnopqrstuvwxyzaaaaaaaaaaABCDEFG123456789012345678901234567890123abcdefghijklmnopqrstuvwxyzaaaaaaaaaaABCDEFG123456789012345678901234567890123abcdefghijklmnopqrstuvwxyzaaaaaaaaaaABCDEFG123456789012345678901234567890123abcdefghijklmnopqrstuvwxyzaaaaaaaaaaABCDEFG123456789012345678901234567890123abcdefghijklmnopqrstuvwxyzaaaaaaaaaaABCDEFG</string>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                                         </textView>
                                     </subviews>

@@ -77,6 +77,7 @@
  */
 - (void) hideTabBar{
     if (!self.isHidden) {
+        
         self.isHidden = YES;
         CGRect screenRect = [[UIScreen mainScreen] bounds];
         

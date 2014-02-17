@@ -82,6 +82,7 @@
 //    showOrigin.text = @"(%i, %i)";
 //    [showOrigin setBackgroundColor:[UIColor yellowColor]];
     
+    
     // initiate infoSessionModel
     _infoSessionModel = [[InfoSessionModel alloc] init];
     
@@ -510,10 +511,10 @@
 
 #pragma mark - Set Hide When Scroll
 
-//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-//    NSLog(@"scrollViewWillBeginDragging");
-//    startContentOffset = lastContentOffset = scrollView.contentOffset.y;
-//}
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    //NSLog(@"scrollViewWillBeginDragging");
+    startContentOffset = lastContentOffset = scrollView.contentOffset.y;
+}
 
 //- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
 //    NSLog(@"scrollViewDidEndDragging");
