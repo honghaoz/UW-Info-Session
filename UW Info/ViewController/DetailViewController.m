@@ -641,6 +641,7 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     _infoSession.note = [textView.text stringByReplacingCharactersInRange:range withString:text];
+    [self.noteCell.contentText setTextColor: [UIColor blackColor]];
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
     [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell:self.noteCell] atScrollPosition:UITableViewScrollPositionBottom animated:YES];

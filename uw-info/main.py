@@ -138,7 +138,7 @@ def renderResponse(listOfMonths):
             #logging.info("audience: %s" % session["audience"])
             session["programs"] = unicode(others[i][1], errors = 'ignore')
             #logging.info("programs: %s" % session["programs"])
-            session["description"] = unicode(others[i][2].replace('</p>', ''), errors = 'ignore')
+            session["description"] = unicode(others[i][2].replace('</p>', '').replace('<br/>', '\n'), errors = 'ignore')
             #logging.info("description: %s" % session["description"])
             sessions.append(session)
 
