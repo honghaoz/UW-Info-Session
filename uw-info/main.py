@@ -89,25 +89,25 @@ def renderResponse(listOfMonths):
         logging.info(month)
         # find all the fields individually. note the order matters.
         ids = get_ids(html)
-        logging.info("ids: %s" % len(ids))
+        #logging.info("ids: %s" % len(ids))
 
         employers = get_by_label("Employer:", html)
-        logging.info("employers: %s" % len(employers))
+        #logging.info("employers: %s" % len(employers))
 
         dates = get_by_label("Date:", html)
-        logging.info("dates: %s" % len(dates))
+        #logging.info("dates: %s" % len(dates))
 
         times = map(parse_time, get_by_label("Time:", html))
-        logging.info("times: %s" % len(times))
+        #logging.info("times: %s" % len(times))
 
         locations = get_by_label("Location:", html)
-        logging.info("locations: %s" % len(locations))
+        #logging.info("locations: %s" % len(locations))
 
         websites = map(parse_link, get_by_label("Web Site:", html))
-        logging.info("websites: %s" % len(websites))
+        #logging.info("websites: %s" % len(websites))
 
         others = get_others(html)
-        logging.info("others: %s" % len(others))
+        #logging.info("others: %s" % len(others))
 
         # make sure each session has all the required fields
         if not (len(employers) == len(dates) == len(times) == len(locations) == len(websites) == len(others)):

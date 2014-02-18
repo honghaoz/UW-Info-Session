@@ -527,9 +527,9 @@
                     CGSize size = [calculationView sizeThatFits:CGSizeMake(280.0f, FLT_MAX)];
                     //NSLog(_infoSession.programs);
                     if (size.height > 240) {
-                        height = 240.0f + 55.0f;
+                        height = 240.0f + 60.0f;
                     } else {
-                        height = size.height + 45.0f;
+                        height = size.height + 50.0f;
                     }
                     break;
                 }
@@ -546,7 +546,7 @@
                     [calculationView setFont:[UIFont systemFontOfSize:15]];
                     CGSize size = [calculationView sizeThatFits:CGSizeMake(280.0f, FLT_MAX)];
                     
-                    height = size.height + 45.0f;
+                    height = size.height + 50.0f;
                     
                     break;
                 }
