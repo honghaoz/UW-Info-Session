@@ -162,12 +162,20 @@ def renderResponse(listOfMonths):
 class JsonOneMonth(BasicHandler):
     """json format one month"""
     def get(self, monthId):
-        self.write(json.dumps(renderResponse([monthId])))
+        key = self.request.get("key")
+        if key == '77881122':
+            self.write(json.dumps(renderResponse([monthId])))
+        else:
+            self.write(json.dumps(renderResponse([])))
 
 class Json(BasicHandler):
     """json format"""
     def get(self):
-        self.write(json.dumps(renderResponse(["2014Jan", "2014Feb", "2014Mar"])))
+        key = self.request.get("key")
+        if key == '77881122':
+            self.write(json.dumps(renderResponse(["2014Jan", "2014Feb", "2014Mar"])))
+        else:
+            self.write(json.dumps(renderResponse([])))
         
 
 
