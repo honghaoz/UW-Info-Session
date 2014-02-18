@@ -173,6 +173,7 @@ class Json(BasicHandler):
     def get(self):
         key = self.request.get("key")
         if key == '77881122':
+            self.response.headers["Content-Type"] = "application/json"
             self.write(json.dumps(renderResponse(["2014Jan", "2014Feb", "2014Mar"])))
         else:
             self.write(json.dumps(renderResponse([])))

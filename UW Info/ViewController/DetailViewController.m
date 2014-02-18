@@ -291,7 +291,7 @@
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             [cell.contentLabel setFont:[UIFont systemFontOfSize:16]];
             cell.titleLabel.text = @"Location";
-            if ([_infoSession.website length] <= 1) {
+            if ([_infoSession.location length] <= 1) {
                 [cell.contentLabel setTextColor: [UIColor lightGrayColor]];
                 cell.contentLabel.text = @"No Location Provided";
                 return cell;
