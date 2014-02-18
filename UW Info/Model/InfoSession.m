@@ -92,6 +92,15 @@ static NSDictionary *alertSequenceDictionary;
     }
     self.SessionId = (NSUInteger)[[attributes valueForKeyPath:@"id"] integerValue];
     self.employer = [attributes valueForKeyPath:@"employer"];
+    
+    NSString *cancelledString = @"CANCELLED";
+    // is employer's name contains @"CANCELLED", then this info session is cancelled.
+    if ([self.employer rangeOfString:cancelledString].location == NSNotFound) {
+        self.isCancelled = NO;
+    } else {
+        self.isCancelled = YES;
+    }
+    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     // set the locale to fix the formate to read and write;
     NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];

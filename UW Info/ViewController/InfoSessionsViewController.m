@@ -377,16 +377,23 @@
         [cell.date setTextColor:[UIColor lightGrayColor]];
 
     }
-    
-    cell.employer.text = infoSession.employer;
-    cell.location.text = infoSession.location;
-    
+    NSMutableAttributedString *employerString = [[NSMutableAttributedString alloc] initWithString:infoSession.employer];
+    NSMutableAttributedString *locationString = [[NSMutableAttributedString alloc] initWithString:infoSession.location];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MMM d, y"];
     [timeFormatter setDateFormat:@"h:mm a"];
-
-    cell.date.text = [NSString stringWithFormat:@"%@ - %@, %@", [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime], [dateFormatter stringFromDate:infoSession.date]];
+    
+    NSString *dateNSString = [NSString stringWithFormat:@"%@ - %@, %@", [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime], [dateFormatter stringFromDate:infoSession.date]];
+    NSMutableAttributedString *dateString = [[NSMutableAttributedString alloc] initWithString:dateNSString];
+    if (infoSession.isCancelled) {
+        [employerString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [employerString length])];
+        [locationString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [locationString length])];
+        [dateString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [dateString length])];
+    }
+    [cell.employer setAttributedText:employerString];
+    [cell.location setAttributedText:locationString];
+    [cell.date setAttributedText:dateString];
 }
 
 /**

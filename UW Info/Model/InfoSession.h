@@ -26,6 +26,8 @@
 //@property (nonatomic, readonly, unsafe_unretained) NSURL *logoImageURL;
 @property (nonatomic, readonly, assign) NSUInteger weekNum;
 
+@property (nonatomic, assign) BOOL isCancelled;
+
 
 // alerts related attributes
 // Dictionary of alerts description, interval and sequence
