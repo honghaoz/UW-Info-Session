@@ -174,8 +174,7 @@ class Json(BasicHandler):
         key = self.request.get("key")
         if key == '77881122':
             self.response.headers["Content-Type"] = "application/json"
-            response = urllib2.urlopen("http://uw-info1.appspot.com/infosessions.json?key=77881122").read()
-            self.write(response)
+            self.write(json.dumps(renderResponse(["2014Jan", "2014Feb", "2014Mar"])))
         else:
             self.write(json.dumps(renderResponse([])))
         

@@ -10,6 +10,7 @@
 #import "InfoSessionCell.h"
 #import "InfoSessionModel.h"
 #import "LoadingCell.h"
+#import "DetailViewController.h"
 
 @interface MyInfoViewController ()
 
@@ -36,6 +37,10 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    NSLog(@"MyInfoVC DidLoad");
+    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
+    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(reloadTable) forControlEvents:UIControlEventValueChanged];
     [self reloadTable];
@@ -119,16 +124,33 @@
         [cell.date setTextColor:[UIColor lightGrayColor]];
         
     }
-    
-    cell.employer.text = infoSession.employer;
-    cell.location.text = infoSession.location;
-    
+//    
+//    cell.employer.text = infoSession.employer;
+//    cell.location.text = infoSession.location;
+//    
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"MMM d, y"];
+//    [timeFormatter setDateFormat:@"h:mm a"];
+//    
+//    cell.date.text = [NSString stringWithFormat:@"%@ - %@, %@", [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime], [dateFormatter stringFromDate:infoSession.date]];
+    NSMutableAttributedString *employerString = [[NSMutableAttributedString alloc] initWithString:infoSession.employer];
+    NSMutableAttributedString *locationString = [[NSMutableAttributedString alloc] initWithString:infoSession.location];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MMM d, y"];
     [timeFormatter setDateFormat:@"h:mm a"];
     
-    cell.date.text = [NSString stringWithFormat:@"%@ - %@, %@", [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime], [dateFormatter stringFromDate:infoSession.date]];
+    NSString *dateNSString = [NSString stringWithFormat:@"%@ - %@, %@", [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime], [dateFormatter stringFromDate:infoSession.date]];
+    NSMutableAttributedString *dateString = [[NSMutableAttributedString alloc] initWithString:dateNSString];
+    if (infoSession.isCancelled) {
+        [employerString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [employerString length])];
+        [locationString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [locationString length])];
+        [dateString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [dateString length])];
+    }
+    [cell.employer setAttributedText:employerString];
+    [cell.location setAttributedText:locationString];
+    [cell.date setAttributedText:dateString];
 }
 
 /**
@@ -147,6 +169,18 @@
         // info session cell
         return 70.0f;
     }
+}
+
+
+/**
+ *  select row at indexPath
+ *
+ *  @param tableView tableView
+ *  @param indexPath indexPath
+ */
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self performSegueWithIdentifier:@"ShowDetailFromMyInfoSessions" sender:[[NSArray alloc] initWithObjects:_infoSessionModel.myInfoSessions[indexPath.row], _infoSessionModel, nil]];
+    
 }
 
 /*
@@ -188,16 +222,18 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    DetailViewController *controller = segue.destinationViewController;
+    controller.infoSession = sender[0];
+    controller.infoSessionModel = sender[1];
+    controller.tabBarController = _tabBarController;
+
 }
 
- */
 
 @end

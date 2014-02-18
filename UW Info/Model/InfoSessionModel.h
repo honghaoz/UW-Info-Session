@@ -16,7 +16,7 @@
 
 // user saved info sessions
 @property (nonatomic, strong) NSMutableArray *myInfoSessions;
-@property (nonatomic, strong) NSMutableDictionary *myInfoSessionsDictionary;
+//@property (nonatomic, strong) NSMutableDictionary *myInfoSessionsDictionary;
 
 // Used for manage calendar event, only initiate once!
 @property (nonatomic, strong) EKEventStore *eventStore;
@@ -29,4 +29,5 @@
 + (NSString*)dataFilePath:(NSString *)fileName;
 + (void)saveMap;
 + (UIImage *)loadMap;
+
 @end

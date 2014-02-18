@@ -14,8 +14,8 @@
 
 #define MAX_NUM_OF_ALERTS 5
 
-const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
-const NSString *apiKey1 =  @"913034dae16d7233dd1683713cbb4721";
+//const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
+//const NSString *apiKey1 =  @"913034dae16d7233dd1683713cbb4721";
 const NSString *myApiKey = @"77881122";
 
 static NSDictionary *alertChoiceDictionary;
@@ -79,6 +79,42 @@ static NSDictionary *alertSequenceDictionary;
 }
 
 /**
+ *  Initiate NSArray sessions.
+ *
+ *  @param block
+ *
+ *  @return
+ */
++ (NSURLSessionTask *)infoSessionsWithBlock:(void (^)(NSArray *sessions, NSError *error))block{
+    
+    return [[AFUwaterlooApiClient sharedClient] GET:@"infosessions.json" parameters:@{@"key" : myApiKey} success:^(NSURLSessionDataTask * __unused task, id JSON) {
+        //response array from jason
+        NSArray *infoSessionsFromResponse = [JSON valueForKeyPath:@"data"];
+        // new empty array to store infoSessions
+        NSMutableArray *mutableInfoSessions = [NSMutableArray arrayWithCapacity:[infoSessionsFromResponse count]];
+        for (NSDictionary *attributes in infoSessionsFromResponse) {
+            InfoSession *infoSession = [[InfoSession alloc] initWithAttributes:attributes];
+            // if start time < end time or date is nil, do not add
+            if (!([infoSession.startTime compare:infoSession.endTime] != NSOrderedAscending
+                  || infoSession.date == nil
+                  || [infoSession.employer length] == 0)) {
+                [mutableInfoSessions addObject:infoSession];
+            }
+        }
+        
+        if (block) {
+            // sorted info sessions in ascending order with start time
+            [mutableInfoSessions sortedArrayUsingSelector:@selector(compareTo:)];
+            block([NSArray arrayWithArray:mutableInfoSessions], nil);
+        }
+    } failure:^(NSURLSessionDataTask *__unused task, NSError *error) {
+        if (block) {
+            block([NSArray array], error);
+        }
+    }];
+}
+
+/**
  *  Initiate an InfoSession instance
  *
  *  @param attributes NSDictionary from JSON
@@ -133,42 +169,6 @@ static NSDictionary *alertSequenceDictionary;
     self.alerts = [[NSMutableArray alloc] initWithObjects:oneAlert, nil];
     return self;
     
-}
-
-/**
- *  Initiate NSArray sessions.
- *
- *  @param block
- *
- *  @return
- */
-+ (NSURLSessionTask *)infoSessionsWithBlock:(void (^)(NSArray *sessions, NSError *error))block{
-    
-    return [[AFUwaterlooApiClient sharedClient] GET:@"infosessions.json" parameters:@{@"key" : myApiKey} success:^(NSURLSessionDataTask * __unused task, id JSON) {
-        //response array from jason
-        NSArray *infoSessionsFromResponse = [JSON valueForKeyPath:@"data"];
-        // new empty array to store infoSessions
-        NSMutableArray *mutableInfoSessions = [NSMutableArray arrayWithCapacity:[infoSessionsFromResponse count]];
-        for (NSDictionary *attributes in infoSessionsFromResponse) {
-            InfoSession *infoSession = [[InfoSession alloc] initWithAttributes:attributes];
-            // if start time < end time or date is nil, do not add
-            if (!([infoSession.startTime compare:infoSession.endTime] != NSOrderedAscending
-                  || infoSession.date == nil
-                  || [infoSession.employer length] == 0)) {
-                [mutableInfoSessions addObject:infoSession];
-            }
-        }
-        
-        if (block) {
-            // sorted info sessions in ascending order with start time
-            [mutableInfoSessions sortedArrayUsingSelector:@selector(compareTo:)];
-            block([NSArray arrayWithArray:mutableInfoSessions], nil);
-        }
-    } failure:^(NSURLSessionDataTask *__unused task, NSError *error) {
-        if (block) {
-            block([NSArray array], error);
-        }
-    }];
 }
 
 

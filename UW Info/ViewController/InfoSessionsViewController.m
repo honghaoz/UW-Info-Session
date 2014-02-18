@@ -51,10 +51,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"InfoSessionVC DidLoad");
     //self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0 green:179/255.0 blue:134/255.0 alpha:1];
     
     [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    // black
+    //[UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1]
+    // yellow
+    //[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]
+    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
     //[self.tableView setBackgroundColor:[UIColor blackColor]];
     
     // show refresh button
@@ -62,9 +67,9 @@
     
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
     
-    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain
+    UIBarButtonItem *todayButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain
                                                                      target:self action:@selector(scrollToToday)];
-    self.navigationItem.leftBarButtonItem = anotherButton;
+    self.navigationItem.leftBarButtonItem = todayButton;
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
     // init menu button (term selection)
@@ -191,7 +196,7 @@
     // scroll!
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:rowNumToScroll inSection:sectionNumToScroll] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     // reload current
-    [self reloadSection:sectionNumToScroll WithAnimation:UITableViewRowAnimationNone];
+    [self reloadSection:sectionNumToScroll WithAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark - Table view data source

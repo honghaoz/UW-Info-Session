@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 @class InfoSessionModel;
+@class UWTabBarController;
 
 @interface MyInfoViewController : UITableViewController
 
 @property (nonatomic, strong) InfoSessionModel *infoSessionModel;
+
+@property (nonatomic, weak) UWTabBarController *tabBarController;
+
+- (void)reloadTable;
 
 @end

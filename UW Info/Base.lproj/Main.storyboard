@@ -319,7 +319,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WsJ-xU-scT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2244" y="-161"/>
+            <point key="canvasLocation" x="2196" y="891"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="Kwe-Bb-HUw">
@@ -352,7 +352,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yuu-dS-cZJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2262" y="513"/>
+            <point key="canvasLocation" x="2196" y="-587"/>
         </scene>
         <!--Navigation Controller - Info sessions-->
         <scene sceneID="A8V-g9-rVo">
@@ -492,7 +492,7 @@
         <scene sceneID="MXo-gj-2uf">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="R6T-l0-TWx" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="My Info Sessions" image="Bookmarks" id="Z7h-1E-pvt"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="My Info Sessions" image="Bookmarks" id="Z7h-1E-pvt"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="js0-b5-dhf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -574,13 +574,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pzg-h5-snm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1809" y="1016"/>
+            <point key="canvasLocation" x="2196" y="171"/>
         </scene>
         <!--Navigation Controller - Search-->
         <scene sceneID="9Gh-fn-zYy">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Fu4-Gl-xdH" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Search" image="Search" id="Fwo-oy-0ys"/>
+                    <tabBarItem key="tabBarItem" tag="2" title="Search" image="Search" id="Fwo-oy-0ys"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="8Js-2P-Wmi">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -607,6 +607,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="EvK-Ps-maJ"/>
+        <segue reference="fT1-AS-H6Z"/>
     </inferredMetricsTieBreakers>
 </document>

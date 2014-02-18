@@ -9,6 +9,7 @@
 #import "UWTabBarController.h"
 #import "InfoSessionsViewController.h"
 #import "MyInfoViewController.h"
+#import "SearchViewController.h"
 
 @interface UWTabBarController ()
 
@@ -28,20 +29,44 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    NSLog(@"UWTabbar viweDidLoad");
 //    [self.tabBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:0.9]];
     
      //[UIColor colorWithRed:0/255.0 green:213/255.0 blue:161/255.0 alpha:1]];
-    self.tabBar.tintColor = [UIColor blackColor];
-	// Do any additional setup after loading the view.
-    self.isHidden = NO;
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    UITabBar *tabBar = self.tabBar;
+    [tabBar setBarStyle:UIBarStyleBlackOpaque];
+    [tabBar setBackgroundColor:[UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1]];
+    //[UIColor colorWithRed:0.26 green:0.28 blue:0.33 alpha:1]
+    UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
+    UITabBarItem *item1 = [tabBar.items objectAtIndex:1];
+    UITabBarItem *item2 = [tabBar.items objectAtIndex:2];
+    [item0 setSelectedImage:[UIImage imageNamed:@"List-selected"]];
+    [item1 setSelectedImage:[UIImage imageNamed:@"Bookmarks-selected"]];
+    [item2 setSelectedImage:[UIImage imageNamed:@"Search-selected"]];
+    
+    self.tabBar.tintColor = [UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0];
+	// Do any additional setup after loading the view.
+    self.isHidden = NO;
+    
+    // initiate three VC in tabbarController
     UINavigationController *navigationController = [self.viewControllers objectAtIndex:0];
-    InfoSessionsViewController *infoSessionViewController = (InfoSessionsViewController *)navigationController.topViewController;
-    infoSessionViewController.tabBarController = self;
+    _infoSessionsViewController = (InfoSessionsViewController *)navigationController.topViewController;
+    _infoSessionsViewController.tabBarController = self;
+    
+    navigationController = [self.viewControllers objectAtIndex:1];
+    _myInfoViewController = (MyInfoViewController *)navigationController.topViewController;
+     _myInfoViewController.tabBarController = self;
+    
+    navigationController = [self.viewControllers objectAtIndex:2];
+    _searchViewController = (SearchViewController *)navigationController.topViewController;
+     _searchViewController.tabBarController = self;
+    
     //[self setSelectedIndex:1];
     //[self setSelectedIndex:2];
     //[self setSelectedIndex:0];
@@ -54,7 +79,14 @@
 }
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
-    NSLog(@"tap");
+    if (item.tag == 0) {
+        NSLog(@"tap 0");
+    } else if (item.tag == 1) {
+        NSLog(@"tap 1");
+        [_myInfoViewController reloadTable];
+    } else {
+        NSLog(@"tap 2");
+    }
     //[item setBadgeValue:@"1"];
     //[self tabBarItem]
 }

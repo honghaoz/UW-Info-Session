@@ -283,10 +283,10 @@
 		1B37453918A5BA3D007CF08C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1B717E7218A8140E00E20A29 /* InfoSessionsViewController */,
-				1B717E7318A8142A00E20A29 /* DetailViewController */,
 				1BAD97E718A9CAE2006F4546 /* UWTabBarController.h */,
 				1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */,
+				1B717E7218A8140E00E20A29 /* InfoSessionsViewController */,
+				1B717E7318A8142A00E20A29 /* DetailViewController */,
 				1B2076E718AAA56E00FE7088 /* MyInfoViewController */,
 				1B2076E818AAA58500FE7088 /* SearchViewController */,
 			);

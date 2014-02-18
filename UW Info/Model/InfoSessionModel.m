@@ -12,6 +12,7 @@
 
 -(id)init {
     if ((self = [super init])) {
+        NSLog(@"InfoSessionModel Initiated!");
         [self handleFirstTime];
     }
     return self;
@@ -24,6 +25,7 @@
  */
 -(NSMutableArray *)myInfoSessions {
     if (_myInfoSessions == nil) {
+        NSLog(@"myInfoSessions initiated!");
         _myInfoSessions = [[NSMutableArray alloc] init];
         return _myInfoSessions;
     } else {
@@ -32,14 +34,14 @@
 }
 
 
--(NSMutableDictionary *)myInfoSessionsDictionary {
-    if (_myInfoSessionsDictionary == nil) {
-        _myInfoSessionsDictionary = [[NSMutableDictionary alloc] init];
-        return _myInfoSessionsDictionary;
-    } else {
-        return _myInfoSessionsDictionary;
-    }
-}
+//-(NSMutableDictionary *)myInfoSessionsDictionary {
+//    if (_myInfoSessionsDictionary == nil) {
+//        _myInfoSessionsDictionary = [[NSMutableDictionary alloc] init];
+//        return _myInfoSessionsDictionary;
+//    } else {
+//        return _myInfoSessionsDictionary;
+//    }
+//}
 
 -(NSMutableDictionary *)infoSessionsDictionary {
     if (_infoSessionsDictionary == nil) {

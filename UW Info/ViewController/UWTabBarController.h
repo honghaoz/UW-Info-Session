@@ -7,11 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DetailViewController.h"
+@class InfoSessionsViewController;
+@class MyInfoViewController;
+@class SearchViewController;
 
 @interface UWTabBarController : UITabBarController //<DetailViewControllerDelegate>
 
 //@property (nonatomic, strong) InfoSessionModel *infoSessionModel;
+@property (nonatomic, strong) InfoSessionsViewController *infoSessionsViewController;
+@property (nonatomic, strong) MyInfoViewController *myInfoViewController;
+@property (nonatomic, strong) SearchViewController *searchViewController;
 
 @property (nonatomic, assign) BOOL isHidden;
 

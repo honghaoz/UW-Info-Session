@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class UWTabBarController;
 @interface SearchViewController : UITableViewController
+
+@property (nonatomic, weak) UWTabBarController *tabBarController;
 
 @end
