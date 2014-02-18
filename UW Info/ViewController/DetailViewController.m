@@ -27,6 +27,8 @@
 #import "UWTabBarController.h"
 #import "MapViewController.h"
 
+#import "ProgressHUD.h"
+
 @interface DetailViewController () <EKEventEditViewDelegate>
 
 - (IBAction)addToMyInfo:(id)sender;
@@ -94,6 +96,9 @@
     // Create an instance of EKEventEditViewController
 	EKEventEditViewController *addController = [[EKEventEditViewController alloc] init];
 	
+    [addController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
+    addController.navigationBar.tintColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
+    
 	// Set addController's event store to the current event store
 	addController.eventStore = _infoSessionModel.eventStore;
     
@@ -682,7 +687,9 @@
  *  @param sender Button "Add"
  */
 - (IBAction)addToMyInfo:(id)sender {
+    [ProgressHUD showSuccess:@"Added to \nMy Info Sessions" Interacton:YES];
     [_infoSessionModel addInfoSessionInOrder:_infoSession to:_infoSessionModel.myInfoSessions];
+    
     //[_infoSessionModel.myInfoSessions addObject:_infoSession];
     
     //[_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.myInfoSessionsDictionary withInfoSessions:_infoSessionModel.myInfoSessions];
@@ -710,9 +717,47 @@
     //                     }];
     //    [self.navigationController popViewControllerAnimated:NO];
     
-    [self.navigationController popViewControllerAnimated:YES];
+    //[self.navigationController popViewControllerAnimated:YES];
     UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
-    [[navigation tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel.myInfoSessions count])];
+    
+    
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        [[navigation tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel.myInfoSessions count])];
+        
+        
+////        [navigation tabBarItem].image = [UIImage imageNamed:@"List"];
+//        UIImageView *addImageView = [[UIImageView alloc] initWithFrame:CGRectMake(147, 7, 25, 23)];
+//        addImageView.image = [[UIImage imageNamed:@"Bookmarks-selected"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+//        
+//        [addImageView setTintColor:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
+//        //[addImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+//        
+//        [UIView animateWithDuration:0.5
+//                         animations:^
+//         {
+//             [self.tabBarController.tabBar addSubview:addImageView];
+//             //move right
+//             addImageView.center = CGPointMake(addImageView.center.x +2, addImageView.center.y +2);
+//         }
+//                         completion:^(BOOL completed)
+//         {
+//             
+//             if (completed)
+//             {
+//                 //completed move right..now move left
+//                 [UIView animateWithDuration:1
+//                                  animations:^
+//                  {
+//                      addImageView.center = CGPointMake(addImageView.center.x -2, addImageView.center.y -2);
+//                  }];
+//                 [addImageView removeFromSuperview];
+//             }
+//         }];
+    }completion:^(BOOL finished) {
+        [[navigation tabBarItem] setBadgeValue:nil];
+    }];
+    
     
     MyInfoViewController *myInfoViewController = (MyInfoViewController *)navigation.topViewController;
     myInfoViewController.infoSessionModel = _infoSessionModel;

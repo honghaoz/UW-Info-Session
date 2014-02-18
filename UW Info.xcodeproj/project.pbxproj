@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1B19834918A618A60022A285 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19834818A618A60022A285 /* DetailViewController.m */; };
+		1B2040B918B3F75300C72D51 /* ProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1B2040B618B3F75300C72D51 /* ProgressHUD.bundle */; };
+		1B2040BA18B3F75300C72D51 /* ProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2040B818B3F75300C72D51 /* ProgressHUD.m */; };
 		1B2076EB18AAA65100FE7088 /* AlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2076EA18AAA65100FE7088 /* AlertViewController.m */; };
 		1B2F746718AF66190042322B /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F745518AF66190042322B /* AFHTTPRequestOperation.m */; };
 		1B2F746818AF66190042322B /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F745718AF66190042322B /* AFHTTPRequestOperationManager.m */; };
@@ -73,6 +75,9 @@
 /* Begin PBXFileReference section */
 		1B19834718A618A60022A285 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ViewController/DetailViewController.h; sourceTree = "<group>"; };
 		1B19834818A618A60022A285 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController.m; path = ViewController/DetailViewController.m; sourceTree = "<group>"; };
+		1B2040B618B3F75300C72D51 /* ProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ProgressHUD.bundle; sourceTree = "<group>"; };
+		1B2040B718B3F75300C72D51 /* ProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressHUD.h; sourceTree = "<group>"; };
+		1B2040B818B3F75300C72D51 /* ProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressHUD.m; sourceTree = "<group>"; };
 		1B2076E918AAA65100FE7088 /* AlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertViewController.h; sourceTree = "<group>"; };
 		1B2076EA18AAA65100FE7088 /* AlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertViewController.m; sourceTree = "<group>"; };
 		1B2F745418AF66190042322B /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -190,6 +195,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B2040B518B3F75300C72D51 /* ProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				1B2040B618B3F75300C72D51 /* ProgressHUD.bundle */,
+				1B2040B718B3F75300C72D51 /* ProgressHUD.h */,
+				1B2040B818B3F75300C72D51 /* ProgressHUD.m */,
+			);
+			path = ProgressHUD;
+			sourceTree = "<group>";
+		};
 		1B2076E718AAA56E00FE7088 /* MyInfoViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -351,6 +366,7 @@
 			children = (
 				1B4DD55018AC8625009B0214 /* map_colour300.png */,
 				1B4DD55118AC8625009B0214 /* map_colour600.png */,
+				1B2040B518B3F75300C72D51 /* ProgressHUD */,
 				1BD83A9A18A59F1C00EDBB6D /* UW Info */,
 				1BD83ABC18A59F1D00EDBB6D /* UW InfoTests */,
 				1BD83A9318A59F1C00EDBB6D /* Frameworks */,
@@ -505,6 +521,7 @@
 			files = (
 				1B4DD55218AC8625009B0214 /* map_colour300.png in Resources */,
 				1BD83AB018A59F1C00EDBB6D /* Images.xcassets in Resources */,
+				1B2040B918B3F75300C72D51 /* ProgressHUD.bundle in Resources */,
 				1BD83A9F18A59F1C00EDBB6D /* InfoPlist.strings in Resources */,
 				1B4DD55318AC8625009B0214 /* map_colour600.png in Resources */,
 				1BD83AA818A59F1C00EDBB6D /* Main.storyboard in Resources */,
@@ -534,6 +551,7 @@
 				1B2F746B18AF66190042322B /* AFSecurityPolicy.m in Sources */,
 				1B2F748518AF66210042322B /* UIButton+AFNetworking.m in Sources */,
 				1B2F748318AF66210042322B /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				1B2040BA18B3F75300C72D51 /* ProgressHUD.m in Sources */,
 				1B2F748718AF66210042322B /* UIProgressView+AFNetworking.m in Sources */,
 				1BF0542318A93ECC005C04B2 /* DetailSwitchCell.m in Sources */,
 				1B2F746918AF66190042322B /* AFHTTPSessionManager.m in Sources */,
