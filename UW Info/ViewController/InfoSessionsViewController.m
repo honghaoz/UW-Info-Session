@@ -53,7 +53,7 @@
     [super viewDidLoad];
     //self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0 green:179/255.0 blue:134/255.0 alpha:1];
     
-    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1.0]];
+    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     //[self.tableView setBackgroundColor:[UIColor blackColor]];
     
