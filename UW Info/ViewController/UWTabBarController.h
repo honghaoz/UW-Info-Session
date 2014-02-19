@@ -10,6 +10,7 @@
 @class InfoSessionsViewController;
 @class MyInfoViewController;
 @class SearchViewController;
+@class DetailViewController;
 
 @interface UWTabBarController : UITabBarController //<DetailViewControllerDelegate>
 
@@ -17,6 +18,7 @@
 @property (nonatomic, strong) InfoSessionsViewController *infoSessionsViewController;
 @property (nonatomic, strong) MyInfoViewController *myInfoViewController;
 @property (nonatomic, strong) SearchViewController *searchViewController;
+@property (nonatomic, strong) DetailViewController *detailViewController;
 
 @property (nonatomic, assign) BOOL isHidden;
 

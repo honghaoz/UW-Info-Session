@@ -49,6 +49,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"InfoSessionVC DidLoad");
     self.title = @"Details";
     
     [self backupInfoSession];
@@ -75,12 +76,18 @@
     // self.clearsSelectionOnViewWillAppear = NO;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    _performedNavigation = @"";
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    if ([self.infoSessionBackup isChangedCompareTo:self.infoSession]) {
-        [self addToMyInfo:nil];
+    if ([_performedNavigation isEqualToString:@""]) {
+        if ([self.infoSessionBackup isChangedCompareTo:self.infoSession]) {
+            [self addToMyInfo:nil];
+        }
     }
-    
 }
 
 - (void)didReceiveMemoryWarning
@@ -688,9 +695,11 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (alertView.tag == 0 && buttonIndex == 0) {
+        _performedNavigation = @"OpenRSVPLink";
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=%@&mode=on", [NSString stringWithFormat:@"%d", _infoSession.SessionId]]]];
     }
     else if (alertView.tag == 1 && buttonIndex == 0) {
+        _performedNavigation = @"OpenWebsiteLink";
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_infoSession.website]];
     }
 }
@@ -788,12 +797,15 @@
     } else if (addResult == UWAdded) {
         [self backupInfoSession];
         UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
-        [[navigation tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel countFutureInfoSessions:_infoSessionModel.myInfoSessions])];
         
         MyInfoViewController *myInfoViewController = (MyInfoViewController *)navigation.topViewController;
         myInfoViewController.infoSessionModel = _infoSessionModel;
         
-        [self animateSnapshotOfView:self.view toTab:navigation];
+        [UIView animateWithDuration:0.2 animations:^{
+            [self animateSnapshotOfView:self.view.window toTab:navigation];
+        }completion:^(BOOL finished) {
+           [[navigation tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel countFutureInfoSessions:_infoSessionModel.myInfoSessions])];
+        }];
     }
     
     
@@ -851,6 +863,35 @@
     //    [navController popToRootViewControllerAnimated:YES];
 }
 
+
+//- (UIImage *)imageRepresentationOfView:(UIView *)view {
+//    CGSize imageSize = [view frame].size; BOOL imageIsOpaque = [view isOpaque];
+//    CGFloat imageScale = 0.0; // automatically set to scale factor of main screen
+//    UIGraphicsBeginImageContextWithOptions(imageSize, imageIsOpaque, imageScale); CALayer * drawingLayer = [view layer];
+//    [drawingLayer renderInContext:UIGraphicsGetCurrentContext()];
+//    UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    return image;
+//}
+//
+//- (CGRect)approximateFrameForTabBarItemAtIndex:(NSUInteger)barItemIndex  inTabBar:(UITabBar *)tabBar {
+//    CGFloat barMidX = CGRectGetMidX([tabBar frame]);
+//    CGSize barItemSize = CGSizeMake(80.0, 45.0);
+//    CGFloat distanceBetweenBarItems = 110.0;
+//    CGFloat barItemX = barItemIndex*distanceBetweenBarItems + barItemSize.width*0.5;
+//    CGFloat totalBarItemsWidth = ([tabBar.items count]-1)*distanceBetweenBarItems + barItemSize.width;
+//    barItemX += barMidX - round(totalBarItemsWidth*0.5);
+//    return CGRectMake(barItemX, CGRectGetMinY([tabBar frame]), 30.0, barItemSize.height);
+//}
+//
+//- (CGFloat)scaleFactorForView:(UIView *)view toFitInSize:(CGSize)size { CGFloat viewWidth = CGRectGetWidth([view frame]); CGFloat viewHeight = CGRectGetHeight([view frame]);  CGFloat viewAspect = viewWidth/viewHeight; CGFloat sizeAspect = size.width/size.height;  if (viewAspect > sizeAspect) { return MIN(1.0, (size.width/viewWidth)); } else { return MIN(1.0, (size.height/viewHeight)); } }
+
+/**
+ *  Magic animation!!! Capture the current screen and drop to tabbar
+ *
+ *  @param view          the UIView want to drop
+ *  @param navController the destination tabbar navigationController
+ */
 - (void)animateSnapshotOfView:(UIView *)view toTab:(UINavigationController *)navController
 {
     NSUInteger targetTabIndex = [self.tabBarController.viewControllers indexOfObject:navController];
@@ -861,10 +902,19 @@
     targetPoint = [self.view.window convertPoint:targetPoint fromView:self.tabBarController.tabBar.superview];
     
     UIGraphicsBeginImageContext(view.frame.size);
+    
+    //NSLog(@"view.frame: %@, %@", NSStringFromCGPoint(view.frame.origin), NSStringFromCGSize(view.frame.size));
+    //NSLog(@"view.bounds: %@, %@", NSStringFromCGPoint(view.bounds.origin), NSStringFromCGSize(view.bounds.size));
+    
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    //NSLog(@"image.size: %@", NSStringFromCGSize(image.size));
+    
+    //UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+    
     UIGraphicsEndImageContext();
     CGRect frame = [self.view.window convertRect:view.frame fromView:view.superview];
+    
     CALayer *imageLayer = [CALayer layer];
     imageLayer.contents = (id)image.CGImage;
     imageLayer.opaque = NO;
@@ -995,6 +1045,8 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"ShowAlert"]) {
+        _performedNavigation = @"ShowAlert";
+        
         AlertViewController *controller = segue.destinationViewController;
         controller.infoSession = self.infoSession;
         controller.infoSessionModel = self.infoSessionModel;
@@ -1002,6 +1054,7 @@
         controller.alertIndex =choosedIndexPath.row - 1;
         controller.delegate = self;
     } else if ([segue.identifier isEqualToString:@"ShowMap"]) {
+        _performedNavigation = @"ShowMap";
         MapViewController *controller = segue.destinationViewController;
         controller.tabBarController = _tabBarController;
         controller.infoSessionModel = _infoSessionModel;

@@ -662,6 +662,7 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     DetailViewController *controller = segue.destinationViewController;
+    _tabBarController.detailViewController = controller;
     controller.infoSession = sender[0];
     controller.infoSessionModel = sender[1];
     controller.tabBarController = _tabBarController;

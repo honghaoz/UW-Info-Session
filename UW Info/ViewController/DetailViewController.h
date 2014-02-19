@@ -28,6 +28,7 @@
 @property (nonatomic, weak) DetailDescriptionCell *noteCell;
 
 @property (nonatomic, weak) UWTabBarController *tabBarController;
+@property (nonatomic, copy) NSString *performedNavigation;
 
 //@property (nonatomic, weak) UITabBarController <DetailViewControllerDelegate> *delegate;
 

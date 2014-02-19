@@ -10,6 +10,7 @@
 #import "InfoSessionsViewController.h"
 #import "MyInfoViewController.h"
 #import "SearchViewController.h"
+#import "DetailViewController.h"
 
 @interface UWTabBarController ()
 
@@ -80,7 +81,9 @@
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
     if (item.tag == 0) {
+        
     } else if (item.tag == 1) {
+        _detailViewController.performedNavigation = @"Open Tabbar2";
         [_myInfoViewController reloadTable];
     } else {
     }
