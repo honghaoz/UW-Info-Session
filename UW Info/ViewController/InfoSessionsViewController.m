@@ -111,6 +111,7 @@
  *  @param sender
  */
 - (void)reload:(__unused id)sender {
+    NSLog(@"reload data");
     // end refreshControl
     [self.refreshControl endRefreshing];
     _infoSessionModel.infoSessions = nil;
@@ -486,7 +487,7 @@
         return;
     } else {
         // info session cells
-        [self performSegueWithIdentifier:@"ShowDetailFromInfoSessions" sender:[[NSArray alloc] initWithObjects:[self getInfoSessionAccordingIndexPath:indexPath], _infoSessionModel, nil]];
+        [self performSegueWithIdentifier:@"ShowDetailFromInfoSessions" sender:[[NSArray alloc] initWithObjects:@"InfoSessionsViewController", [self getInfoSessionAccordingIndexPath:indexPath], _infoSessionModel, nil]];
     }
     
 }
@@ -663,8 +664,9 @@
     // Pass the selected object to the new view controller.
     DetailViewController *controller = segue.destinationViewController;
     _tabBarController.detailViewController = controller;
-    controller.infoSession = sender[0];
-    controller.infoSessionModel = sender[1];
+    controller.caller = sender[0];
+    controller.infoSession = sender[1];
+    controller.infoSessionModel = sender[2];
     controller.tabBarController = _tabBarController;
 }
 

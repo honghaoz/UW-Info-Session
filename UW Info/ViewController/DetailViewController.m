@@ -35,7 +35,9 @@
 
 @end
 
-@implementation DetailViewController
+@implementation DetailViewController {
+    BOOL openedMyInfo;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -49,13 +51,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"InfoSessionVC DidLoad");
+    NSLog(@"DetailVC DidLoad");
     self.title = @"Details";
     
-    [self backupInfoSession];
+    // if caller is Info
+    if ([_caller isEqualToString:@"InfoSessionsViewController"]) {
+        NSInteger existIndex = [InfoSessionModel findInfoSession:_infoSession in:_infoSessionModel.myInfoSessions];
+        openedMyInfo = NO;
+        if (existIndex != -1) {
+            NSLog(@"opened myInfo");
+            _infoSession = _infoSessionModel.myInfoSessions[existIndex];
+            openedMyInfo = YES;
+        }
+    } else {
+        openedMyInfo = YES;
+    }
     
-//    UIBarButtonItem *todayButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:nil];
-//    self.navigationItem.leftBarButtonItem = todayButton;
+    [self backupInfoSession];
     
     // initiate the right buttons
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Download"] style:UIBarButtonItemStyleBordered target:self action:@selector(addToMyInfo:)];
@@ -79,10 +91,12 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     _performedNavigation = @"";
+    [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    NSLog(@"preformedNavigation: %@", _performedNavigation);
     if ([_performedNavigation isEqualToString:@""]) {
         if ([self.infoSessionBackup isChangedCompareTo:self.infoSession]) {
             [self addToMyInfo:nil];
@@ -111,18 +125,8 @@
         _infoSessionModel.eventStore = [[EKEventStore alloc] init];
     }
     // Check whether we are authorized to access Calendar
-//    NSInteger eventStoreAccessStatus =
     [self checkEventStoreAccessForCalendar];
     
-//    if (eventStoreAccessStatus == EKAuthorizationStatusAuthorized) {
-//        [self showEventEditViewController];
-//    }
-//    else if (eventStoreAccessStatus == EKAuthorizationStatusNotDetermined) {
-//        ;
-//    }
-//    else {
-//        ;
-//    }
 }
 
 - (void)showEventEditViewController {
@@ -788,26 +792,52 @@
  *  @param sender Button "Add"
  */
 - (IBAction)addToMyInfo:(id)sender {
-    //[ProgressHUD setAnimationDelay:0.1];
-    //[ProgressHUD showSuccess:@"Added to \nMy Info Sessions" Interacton:YES];
-    UW addResult = [_infoSessionModel addInfoSessionInOrder:[_infoSession copy] to:_infoSessionModel.myInfoSessions];
-    if (addResult == UWReplaced) {
-        [ProgressHUD showSuccess:@"Modified successfully!" Interacton:YES];
-        [self backupInfoSession];
-    } else if (addResult == UWAdded) {
-        [self backupInfoSession];
-        UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
-        
-        MyInfoViewController *myInfoViewController = (MyInfoViewController *)navigation.topViewController;
-        myInfoViewController.infoSessionModel = _infoSessionModel;
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            [self animateSnapshotOfView:self.view.window toTab:navigation];
-        }completion:^(BOOL finished) {
-           [[navigation tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel countFutureInfoSessions:_infoSessionModel.myInfoSessions])];
-        }];
-    }
+    NSLog(@"addToMyInfo called");
+    UW addResult = UWNonthing;
     
+    // this case is first time open an infosession from InfoSessionsVC
+    // only this situation, openedMyInfo == NO
+    if ([_caller isEqualToString:@"InfoSessionsViewController"] && openedMyInfo == NO) {
+        addResult = [InfoSessionModel addInfoSessionInOrder:[_infoSession copy] to:_infoSessionModel.myInfoSessions];
+        // if first time to add, the below if statement must be true!
+        if (addResult == UWAdded) {
+            NSLog(@"added!");
+            [self backupInfoSession];
+            UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
+            
+            MyInfoViewController *myInfoViewController = (MyInfoViewController *)navigation.topViewController;
+            myInfoViewController.infoSessionModel = _infoSessionModel;
+            
+            [UIView animateWithDuration:0.2 animations:^{
+                [self animateSnapshotOfView:self.view.window toTab:navigation];
+            }completion:^(BOOL finished) {
+                [[navigation tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel countFutureInfoSessions:_infoSessionModel.myInfoSessions])];
+                // if added, replace _infoSession to the added infoSession in myInfoSession
+                NSInteger existIndex = [InfoSessionModel findInfoSession:_infoSession in:_infoSessionModel.myInfoSessions];
+                _infoSession = _infoSessionModel.myInfoSessions[existIndex];
+                // reload tabale
+                [self.tableView reloadData];
+                // at this time, the data from myInfo, so set YES
+                openedMyInfo = YES;
+            }];
+        }
+    }
+    else if (openedMyInfo == YES) {
+        // if opend saved one, then detect whether some changes made.
+        if ([_infoSessionBackup isChangedCompareTo:_infoSession]) {
+            [ProgressHUD showSuccess:@"Modified successfully!" Interacton:YES];
+            [self backupInfoSession];
+        }
+    }
+}
+
+//    
+//    if (addResult == UWReplaced) {
+//        NSLog(@"replaced!");
+//        [ProgressHUD showSuccess:@"Modified successfully!" Interacton:YES];
+//
+//    } else
+//    
     
 //    CALayer * layerToThrow = [CALayer layer]; [layerToThrow setFrame:[viewToThrow frame]]; UIImage * viewContentImage = [self imageRepresentationOfView:viewToThrow]; [layerToThrow setContents:(id)[viewContentImage CGImage]]; [[[self view] layer] insertSublayer:layerToThrow above:[viewToThrow layer]];
     
@@ -861,8 +891,8 @@
     //NSLog(@"%i", [self.tabBarController.viewControllers count]);
     //    UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:0];
     //    [navController popToRootViewControllerAnimated:YES];
-}
-
+//}
+//
 
 //- (UIImage *)imageRepresentationOfView:(UIView *)view {
 //    CGSize imageSize = [view frame].size; BOOL imageIsOpaque = [view isOpaque];

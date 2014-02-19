@@ -30,7 +30,8 @@ typedef NS_ENUM(NSUInteger, UW){
 
 - (void)processInfoSessionsDictionary:(NSDictionary *)dictionary withInfoSessions:(NSArray *)array;
 
-- (UW)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array;
++ (NSInteger)findInfoSession:(InfoSession *)infoSession in:(NSMutableArray *)array;
++ (UW)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array;
 
 + (NSString*)documentsDirectory;;
 + (NSString*)dataFilePath:(NSString *)fileName;

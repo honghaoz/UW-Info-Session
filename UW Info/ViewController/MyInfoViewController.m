@@ -179,7 +179,7 @@
  *  @param indexPath indexPath
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self performSegueWithIdentifier:@"ShowDetailFromMyInfoSessions" sender:[[NSArray alloc] initWithObjects:_infoSessionModel.myInfoSessions[indexPath.row], _infoSessionModel, nil]];
+    [self performSegueWithIdentifier:@"ShowDetailFromMyInfoSessions" sender:[[NSArray alloc] initWithObjects:@"MyInfoViewController", _infoSessionModel.myInfoSessions[indexPath.row], _infoSessionModel, nil]];
     
 }
 
@@ -229,8 +229,9 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     DetailViewController *controller = segue.destinationViewController;
-    controller.infoSession = sender[0];
-    controller.infoSessionModel = sender[1];
+    controller.caller = sender[0];
+    controller.infoSession = sender[1];
+    controller.infoSessionModel = sender[2];
     controller.tabBarController = _tabBarController;
 
 }

@@ -81,11 +81,13 @@
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
     if (item.tag == 0) {
-        
+        _detailViewController.performedNavigation = @"Open Tabbar1";
+        [_infoSessionsViewController scrollToToday];
     } else if (item.tag == 1) {
         _detailViewController.performedNavigation = @"Open Tabbar2";
         [_myInfoViewController reloadTable];
     } else {
+        _detailViewController.performedNavigation = @"Open Tabbar3";
     }
     //[item setBadgeValue:@"1"];
     //[self tabBarItem]

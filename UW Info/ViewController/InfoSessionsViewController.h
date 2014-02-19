@@ -13,4 +13,6 @@
 
 @property (nonatomic, weak) UWTabBarController *tabBarController;
 
+- (void)scrollToToday;
+
 @end

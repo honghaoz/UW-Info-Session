@@ -67,15 +67,15 @@
         }
     }
 }
-
 /**
- *  Add a new InfoSession instance to the array in order, start time in ascending
+ *  check whether this infoSession exist in array
  *
- *  @param infoSession the InfoSession to be added
- *  @param array       the Array add to.
+ *  @param infoSession an InfoSession instance
+ *  @param array       array of InfoSessions
+ *
+ *  @return -1, if not found, else, return index
  */
-- (UW)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array {
-    // check whether this infoSession exist in array
++ (NSInteger)findInfoSession:(InfoSession *)infoSession in:(NSMutableArray *)array {
     NSInteger existIndex = -1;
     for (int i = 0; i < [array count]; i++) {
         InfoSession *eachInfoSession = [array objectAtIndex:i];
@@ -83,6 +83,17 @@
             existIndex = i;
         }
     }
+    return existIndex;
+}
+
+/**
+ *  Add a new InfoSession instance to the array in order, start time in ascending
+ *
+ *  @param infoSession the InfoSession to be added
+ *  @param array       the Array add to.
+ */
++ (UW)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array {
+    NSInteger existIndex = [InfoSessionModel findInfoSession:infoSession in:array];
     // if doesn't exist
     if (existIndex == -1) {
         NSComparator comparator = ^(InfoSession *info1, InfoSession *info2) {
@@ -99,6 +110,9 @@
     }
     // else exist
     else {
+        NSLog(@"copied: %i", [infoSession.alerts count]);
+        
+        
         // check whether information is changed
         // changed
         if ([[array objectAtIndex:existIndex] isChangedCompareTo:infoSession]) {
