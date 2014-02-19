@@ -7,6 +7,11 @@
 //
 
 #import "InfoSession.h"
+typedef NS_ENUM(NSUInteger, UW){
+    UWAdded,
+    UWReplaced,
+    UWNonthing
+};
 
 @interface InfoSessionModel : InfoSession
 
@@ -22,12 +27,17 @@
 @property (nonatomic, strong) EKEventStore *eventStore;
 @property (nonatomic, strong) EKCalendar *defaultCalendar;
 
+
 - (void)processInfoSessionsDictionary:(NSDictionary *)dictionary withInfoSessions:(NSArray *)array;
-- (void)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array;
+
+- (UW)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array;
 
 + (NSString*)documentsDirectory;;
 + (NSString*)dataFilePath:(NSString *)fileName;
 + (void)saveMap;
 + (UIImage *)loadMap;
+
+
+- (NSInteger)countFutureInfoSessions:(NSArray *)infosessions;
 
 @end

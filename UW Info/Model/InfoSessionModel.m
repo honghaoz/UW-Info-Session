@@ -74,12 +74,12 @@
  *  @param infoSession the InfoSession to be added
  *  @param array       the Array add to.
  */
-- (void)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array {
+- (UW)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array {
     // check whether this infoSession exist in array
     NSInteger existIndex = -1;
     for (int i = 0; i < [array count]; i++) {
         InfoSession *eachInfoSession = [array objectAtIndex:i];
-        if (infoSession.SessionId == eachInfoSession.SessionId) {
+        if ([infoSession isEqual:eachInfoSession]) {
             existIndex = i;
         }
     }
@@ -95,10 +95,41 @@
                                    usingComparator:comparator];
         
         [array insertObject:infoSession atIndex:newIndex];
-    } else {
-        [array replaceObjectAtIndex:existIndex withObject:infoSession];
+        return UWAdded;
+    }
+    // else exist
+    else {
+        // check whether information is changed
+        // changed
+        if ([[array objectAtIndex:existIndex] isChangedCompareTo:infoSession]) {
+            [array replaceObjectAtIndex:existIndex withObject:infoSession];
+            return UWReplaced;
+        }
+        // no information is changed
+        else {
+            return UWNonthing;
+        }
     }
 }
+
+/**
+ *  Count the number of InfoSession objects in array, which is after today's date
+ *
+ *  @param infosessions an NSArray of InfoSession objects
+ *
+ *  @return NSInteger
+ */
+- (NSInteger)countFutureInfoSessions:(NSArray *)infosessions {
+    NSInteger count = 0;
+    for (InfoSession *eachSession in infosessions) {
+        if ([eachSession.startTime compare:[NSDate date]] == NSOrderedDescending) {
+            count++;
+        }
+    }
+    return count;
+}
+
+#pragma mark - documents operations
 
 + (NSString*)documentsDirectory{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

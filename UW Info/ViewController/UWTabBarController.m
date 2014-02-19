@@ -80,12 +80,9 @@
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
     if (item.tag == 0) {
-        NSLog(@"tap 0");
     } else if (item.tag == 1) {
-        NSLog(@"tap 1");
         [_myInfoViewController reloadTable];
     } else {
-        NSLog(@"tap 2");
     }
     //[item setBadgeValue:@"1"];
     //[self tabBarItem]
@@ -109,7 +106,6 @@
  */
 - (void) hideTabBar{
     if (!self.isHidden) {
-        NSLog(@"hide tabbar");
         self.isHidden = YES;
         CGRect screenRect = [[UIScreen mainScreen] bounds];
         
@@ -144,7 +140,6 @@
  */
 - (void) showTabBar {
     if (self.isHidden) {
-        NSLog(@"show tabbar");
         self.isHidden = NO;
         CGRect screenRect = [[UIScreen mainScreen] bounds];
         float fHeight = screenRect.size.height - self.tabBar.frame.size.height;

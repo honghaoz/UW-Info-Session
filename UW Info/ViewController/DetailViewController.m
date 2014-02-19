@@ -29,7 +29,7 @@
 
 #import "ProgressHUD.h"
 
-@interface DetailViewController () <EKEventEditViewDelegate>
+@interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate>
 
 - (IBAction)addToMyInfo:(id)sender;
 
@@ -50,6 +50,10 @@
 {
     [super viewDidLoad];
     self.title = @"Details";
+    //self.infoSessionBackup = [self.infoSession copy];
+    
+//    UIBarButtonItem *todayButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:nil];
+//    self.navigationItem.leftBarButtonItem = todayButton;
     
     // initiate the right buttons
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Download"] style:UIBarButtonItemStyleBordered target:self action:@selector(addToMyInfo:)];
@@ -91,16 +95,29 @@
         _infoSessionModel.eventStore = [[EKEventStore alloc] init];
     }
     // Check whether we are authorized to access Calendar
+//    NSInteger eventStoreAccessStatus =
     [self checkEventStoreAccessForCalendar];
     
+//    if (eventStoreAccessStatus == EKAuthorizationStatusAuthorized) {
+//        [self showEventEditViewController];
+//    }
+//    else if (eventStoreAccessStatus == EKAuthorizationStatusNotDetermined) {
+//        ;
+//    }
+//    else {
+//        ;
+//    }
+}
+
+- (void)showEventEditViewController {
     // Create an instance of EKEventEditViewController
-	EKEventEditViewController *addController = [[EKEventEditViewController alloc] init];
-	
+    EKEventEditViewController *addController = [[EKEventEditViewController alloc] init];
+    
     [addController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
     addController.navigationBar.tintColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
     
-	// Set addController's event store to the current event store
-	addController.eventStore = _infoSessionModel.eventStore;
+    // Set addController's event store to the current event store
+    addController.eventStore = _infoSessionModel.eventStore;
     
     // creat a new event
     EKEvent *event = [EKEvent eventWithEventStore:_infoSessionModel.eventStore];
@@ -129,7 +146,7 @@
 /**
  *  Check the authorization status of our application for Calendar
  */
--(void)checkEventStoreAccessForCalendar
+-(NSInteger)checkEventStoreAccessForCalendar
 {
     EKAuthorizationStatus status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
     
@@ -145,16 +162,18 @@
         case EKAuthorizationStatusDenied:
         case EKAuthorizationStatusRestricted:
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Privacy Warning" message:@"Permission was not granted for Calendar.\nWithout permission, no info session can be added."
-                                                           delegate:nil
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Turn On Calendars Access to Add Info Sessions" message:@"Go to \"Settings\" -> \"Privacy\" -> \"Calendar\" to enable access."
+                                                           delegate:self
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil];
+            alert.tag = -1;
             [alert show];
         }
             break;
         default:
             break;
     }
+    return status;
 }
 
 /**
@@ -172,6 +191,13 @@
                  // The user has granted access to their Calendar; let's populate our UI with all events occuring in the next 24 hours.
                  [weakSelf accessGrantedForCalendar];
              });
+         } else {
+             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Turn On Calendars Access to Add Info Sessions" message:@"Go to \"Settings\" -> \"Privacy\" -> \"Calendar\" to enable access."
+                                                            delegate:self
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];\
+             alert.tag = -2;
+             [alert show];
          }
      }];
 }
@@ -183,6 +209,7 @@
 {
     // Let's get the default calendar associated with our event store
     _infoSessionModel.defaultCalendar = _infoSessionModel.eventStore.defaultCalendarForNewEvents;
+    [self showEventEditViewController];
 }
 
 /**
@@ -308,8 +335,17 @@
         }
         else if (indexPath.row == 4) {
             DetailRSVPCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailRSVPCell"];
-            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            cell.contentLabel.text = @"Tap here to RSVP.";
+            if (_infoSession.SessionId > 10) {
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                [cell.contentLabel setTextColor: [UIColor blackColor]];
+                cell.contentLabel.text = @"Tap here to RSVP.";
+            }
+            else {
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                [cell.contentLabel setTextColor: [UIColor lightGrayColor]];
+                cell.contentLabel.text = @"Not Available to RSVP.";
+            }
+            
             return cell;
         }
     }
@@ -355,11 +391,13 @@
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             cell.titleLabel.text = @"Website";
             if ([_infoSession.website length] <= 7) {
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 [cell.contentLabel setFont:[UIFont systemFontOfSize:16]];
                 [cell.contentLabel setTextColor: [UIColor lightGrayColor]];
                 cell.contentLabel.text = @"No Website Provided";
                 return cell;
             } else {
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
                 [cell.contentLabel setFont:[UIFont systemFontOfSize:15]];
                 [cell.contentLabel setTextColor: [UIColor blackColor]];
                 cell.contentLabel.text = [_infoSession.website substringFromIndex:7];
@@ -572,6 +610,15 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 3) {
             [self performSegueWithIdentifier:@"ShowMap" sender:nil];
+        } else if (indexPath.row == 4 && _infoSession.SessionId > 10) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Open RSVP. link in Safari?"
+                                                            message:nil
+                                                           delegate:self
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:@"OK", @"Cancel", nil];
+            [alert setCancelButtonIndex:1];
+            [alert setTag:0];
+            [alert show];
         }
     }
     // select alert section
@@ -596,12 +643,32 @@
             }
         }
     }
+    else if (indexPath.section == 2) {
+        if (indexPath.row == 0 && [_infoSession.website length] > 7) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Open\n%@\nin Safari?", _infoSession.website]
+                                                            message:nil
+                                                           delegate:self
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:@"OK", @"Cancel", nil];
+            [alert setCancelButtonIndex:1];
+            [alert setTag:1];
+            [alert show];
+        }
+    }
     // select note section
     else if (indexPath.section == 3) {
         [self.noteCell.contentText becomeFirstResponder];
     }
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 0 && buttonIndex == 0) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=%@&mode=on", [NSString stringWithFormat:@"%d", _infoSession.SessionId]]]];
+    }
+    else if (alertView.tag == 1 && buttonIndex == 0) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_infoSession.website]];
+    }
+}
 
 /*
 // Override to support conditional editing of the table view.
@@ -687,43 +754,27 @@
  *  @param sender Button "Add"
  */
 - (IBAction)addToMyInfo:(id)sender {
-    [ProgressHUD showSuccess:@"Added to \nMy Info Sessions" Interacton:YES];
-    [_infoSessionModel addInfoSessionInOrder:_infoSession to:_infoSessionModel.myInfoSessions];
-    
-    //[_infoSessionModel.myInfoSessions addObject:_infoSession];
-    
-    //[_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.myInfoSessionsDictionary withInfoSessions:_infoSessionModel.myInfoSessions];
-    
-    //    dispatch_queue_t q = dispatch_queue_create("com.honghaoz", NULL);
-    //    dispatch_sync(q, ^ {
-    
-    //    [UIView  beginAnimations:nil context:NULL];
-    //    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    //    [UIView setAnimationDuration:0.75];
-    //    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.navigationController.view cache:NO];
-    //    [UIView commitAnimations];
-    //
-    //    [UIView beginAnimations:nil context:NULL];
-    //    [UIView setAnimationDelay:0.375];
-    //    [self.navigationController popViewControllerAnimated:NO];
-    //    [UIView commitAnimations];
+    //[ProgressHUD setAnimationDelay:0.1];
+    //[ProgressHUD showSuccess:@"Added to \nMy Info Sessions" Interacton:YES];
+    UW addResult = [_infoSessionModel addInfoSessionInOrder:[_infoSession copy] to:_infoSessionModel.myInfoSessions];
+    if (addResult == UWReplaced) {
+        [ProgressHUD showSuccess:@"Modified successfully!" Interacton:YES];
+    } else if (addResult == UWAdded) {
+        UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
+        [[navigation tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel countFutureInfoSessions:_infoSessionModel.myInfoSessions])];
+        
+        MyInfoViewController *myInfoViewController = (MyInfoViewController *)navigation.topViewController;
+        myInfoViewController.infoSessionModel = _infoSessionModel;
+        
+        [self animateSnapshotOfView:self.view toTab:navigation];
+    }
     
     
-    //    [UIView animateWithDuration:0.75
-    //                     animations:^{
-    //                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    //                         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.navigationController.view cache:NO];
-    //
-    //                     }];
-    //    [self.navigationController popViewControllerAnimated:NO];
-    
-    //[self.navigationController popViewControllerAnimated:YES];
-    UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
+//    CALayer * layerToThrow = [CALayer layer]; [layerToThrow setFrame:[viewToThrow frame]]; UIImage * viewContentImage = [self imageRepresentationOfView:viewToThrow]; [layerToThrow setContents:(id)[viewContentImage CGImage]]; [[[self view] layer] insertSublayer:layerToThrow above:[viewToThrow layer]];
     
     
+//    [UIView animateWithDuration:0.5 animations:^{
     
-    [UIView animateWithDuration:0.5 animations:^{
-        [[navigation tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel.myInfoSessions count])];
         
         
 ////        [navigation tabBarItem].image = [UIImage imageNamed:@"List"];
@@ -754,13 +805,12 @@
 //                 [addImageView removeFromSuperview];
 //             }
 //         }];
-    }completion:^(BOOL finished) {
-        [[navigation tabBarItem] setBadgeValue:nil];
-    }];
+//    }completion:^(BOOL finished) {
+//        [[navigation tabBarItem] setBadgeValue:nil];
+//    }];
     
     
-    MyInfoViewController *myInfoViewController = (MyInfoViewController *)navigation.topViewController;
-    myInfoViewController.infoSessionModel = _infoSessionModel;
+    
     
     //    });
     //    dispatch_sync(q, ^{
@@ -774,6 +824,55 @@
     //    [navController popToRootViewControllerAnimated:YES];
 }
 
+- (void)animateSnapshotOfView:(UIView *)view toTab:(UINavigationController *)navController
+{
+    NSUInteger targetTabIndex = [self.tabBarController.viewControllers indexOfObject:navController];
+    NSUInteger tabCount = [self.tabBarController.tabBar.items count];
+    // AFAIK there's no API (as of iOS 4) to get the frame of a tab bar item, so guesstimate using the index and the tab bar frame.
+    CGRect tabBarFrame = self.tabBarController.tabBar.frame;
+    CGPoint targetPoint = CGPointMake((targetTabIndex + 0.5) * tabBarFrame.size.width / tabCount, CGRectGetMidY(tabBarFrame));
+    targetPoint = [self.view.window convertPoint:targetPoint fromView:self.tabBarController.tabBar.superview];
+    
+    UIGraphicsBeginImageContext(view.frame.size);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    CGRect frame = [self.view.window convertRect:view.frame fromView:view.superview];
+    CALayer *imageLayer = [CALayer layer];
+    imageLayer.contents = (id)image.CGImage;
+    imageLayer.opaque = NO;
+    imageLayer.opacity = 0;
+    imageLayer.frame = frame;
+    [self.view.window.layer insertSublayer:imageLayer above:self.tabBarController.view.layer];
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPoint startPoint = imageLayer.position;
+    CGPathMoveToPoint(path, NULL, startPoint.x, startPoint.y);
+    CGPathAddCurveToPoint(path,NULL,
+                          startPoint.x, startPoint.y,
+                          targetPoint.x, targetPoint.y,
+                          targetPoint.x, targetPoint.y);
+    CAKeyframeAnimation *positionAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+    positionAnimation.path = path;
+    CGPathRelease(path);
+    
+    CABasicAnimation *sizeAnimation = [CABasicAnimation animationWithKeyPath:@"bounds.size"];
+    sizeAnimation.fromValue = [NSValue valueWithCGSize:imageLayer.frame.size];
+    sizeAnimation.toValue = [NSValue valueWithCGSize:CGSizeMake(10, 10)];
+    
+    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    opacityAnimation.fromValue = [NSNumber numberWithFloat:0.89];
+    opacityAnimation.toValue = [NSNumber numberWithFloat:0];
+    
+    CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
+    animationGroup.animations = [NSArray arrayWithObjects:positionAnimation, sizeAnimation, opacityAnimation, nil];
+    animationGroup.duration = 0.5;
+    animationGroup.timingFunction=[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+    animationGroup.delegate = self;
+    [animationGroup setValue:imageLayer forKey:@"animatedImageLayer"];
+    
+    [imageLayer addAnimation:animationGroup forKey:@"animateToTab"];
+}
 
 /**
  *  Tap gesture tatget method, resgin FirstResponder

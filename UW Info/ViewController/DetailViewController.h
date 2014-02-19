@@ -23,6 +23,7 @@
 @interface DetailViewController : UITableViewController <AlertViewControllerDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) InfoSession *infoSession;
+//@property (nonatomic, strong) InfoSession *infoSessionBackup;
 @property (nonatomic, strong) InfoSessionModel *infoSessionModel;
 @property (nonatomic, weak) DetailDescriptionCell *noteCell;
 

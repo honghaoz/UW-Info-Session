@@ -127,6 +127,7 @@ static NSDictionary *alertSequenceDictionary;
         return nil;
     }
     self.SessionId = (NSUInteger)[[attributes valueForKeyPath:@"id"] integerValue];
+    //NSLog(@"%i", self.SessionId);
     self.employer = [attributes valueForKeyPath:@"employer"];
     
     NSString *cancelledString = @"CANCELLED";
@@ -171,7 +172,6 @@ static NSDictionary *alertSequenceDictionary;
     
 }
 
-
 /**
  *  Get the Week number of NSDate
  *
@@ -191,7 +191,7 @@ static NSDictionary *alertSequenceDictionary;
 
 
 /**
- *  Compare to another inforsession, according startTime
+ *  Compare to another infoSession, according startTime
  *
  *  @param anotherInfoSession InfoSession
  *
@@ -202,6 +202,52 @@ static NSDictionary *alertSequenceDictionary;
 }
 
 /**
+ *  Compare to another infoSession, based id and date
+ *
+ *  @param anotherInfoSession anotherInfoSession
+ *
+ *  @return BOOL
+ */
+- (BOOL)isEqual:(InfoSession *)anotherInfoSession {
+    if (self.SessionId == anotherInfoSession.SessionId) {
+        // if session ID is valid and same
+        if (self.SessionId > 10) {
+            return YES;
+        }
+        // else session ID is not valid (no sessionID)
+        else {
+            if ([self.date isEqualToDate:anotherInfoSession.date] &&
+                [self.startTime isEqualToDate:anotherInfoSession.startTime] &&
+                [self.endTime isEqualToDate:anotherInfoSession.endTime]) {
+                return YES;
+            }
+        }
+    } else {
+        return NO;
+    }
+    return NO;
+}
+
+/**
+ *  Detect whether one infosession is have the same editable data
+ *
+ *  @param anotherInfoSession anotherInfoSession
+ *
+ *  @return NO, if infomation is the same, else, YES
+ */
+- (BOOL)isChangedCompareTo:(InfoSession *)anotherInfoSession {
+    if (self.alertIsOn == anotherInfoSession.alertIsOn &&
+        [self.alerts isEqualToArray:anotherInfoSession.alerts] &&
+        (self.note == anotherInfoSession.note || [self.note isEqualToString:anotherInfoSession.note]) &&
+        (self.ekEvent == anotherInfoSession.ekEvent)) {
+        return NO;
+    }
+    else {
+        return YES;
+    }
+}
+
+/**
  *  Create new alert Dictionary, which is an elements of self.alerts
  *
  *  @param choice alertChoice, to match the alertChoiceDictionary
@@ -209,7 +255,7 @@ static NSDictionary *alertSequenceDictionary;
  *  @return return the a new alertDictionary
  */
 - (NSMutableDictionary *)createNewAlertDictionaryWithChoice:(NSInteger)choice {
-    return [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:choice],[NSNumber numberWithDouble:[[InfoSession alertIntervalDictionary][NSIntegerToString(choice)] doubleValue]]] forKeys:@[@"alertChoice", @"alertInterval"]];
+    return [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:choice], [NSNumber numberWithDouble:[[InfoSession alertIntervalDictionary][NSIntegerToString(choice)] doubleValue]]] forKeys:@[@"alertChoice", @"alertInterval"]];
 }
 
 /**
@@ -305,6 +351,48 @@ static NSDictionary *alertSequenceDictionary;
         return ekalarms;
     }
     return nil;
+}
+
+/**
+ *  NSCopying Protocal method, make a copy of InfoSession object (ekEvent is not copied!!!)
+ *
+ *  @param zone zone description
+ *
+ *  @return new InfoSession object
+ */
+- (id)copyWithZone:(NSZone *)zone {
+    // allocate new copy
+    InfoSession *copy = [[InfoSession alloc] init];
+    // for Integer/ NSsstrin/ NSDate/ BOOL, just use copy or assgin directly
+    copy.SessionId = self.SessionId;
+    copy.employer = [self.employer copy];
+    copy.date = [self.date copy];
+    copy.startTime = [self.startTime copy];
+    copy.endTime = [self.endTime copy];
+    copy.location = [self.location copy];
+    copy.website = [self.website copy];
+    copy.audience = [self.audience copy];
+    copy.programs = [self.programs copy];
+    copy.description = [self.description copy];
+    copy.weekNum = self.weekNum;
+    copy.isCancelled = self.isCancelled;
+    copy.alertIsOn = self.alertIsOn;
+    
+    // allocate a new alerts for this copy
+    copy.alerts = [[NSMutableArray alloc] init];
+    for (NSMutableDictionary *eachAlert in self.alerts) {
+        NSMutableDictionary *newAlert = [[NSMutableDictionary alloc] init];
+        NSNumber *newChoice = [[NSNumber alloc] initWithInteger:[eachAlert[@"alertChoice"] integerValue]];
+        [newAlert setObject:newChoice forKey:@"alertChoice"];
+        
+        NSNumber *newInterval = [[NSNumber alloc] initWithDouble:[eachAlert[@"alertInterval"] doubleValue]];
+        [newAlert setObject:newInterval forKey:@"alertInterval"];
+        [copy.alerts addObject:newAlert];
+    }
+    // !!! ekEvent is not conform NSCopying Protocol, so, just assgin.
+    copy.ekEvent = self.ekEvent;
+    copy.note = [self.note copy];
+    return copy;
 }
 
 @end

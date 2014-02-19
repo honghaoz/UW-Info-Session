@@ -10,7 +10,7 @@
 #import <EventKit/EventKit.h>
 #import <EventKitUI/EventKitUI.h>
 
-@interface InfoSession : NSObject
+@interface InfoSession : NSObject <NSCopying>
 
 //attribute that not changed
 @property (nonatomic, readonly, assign) NSUInteger SessionId;
@@ -49,6 +49,10 @@
 
 
 - (instancetype)initWithAttributes:(NSDictionary *)attributes;
+
+- (BOOL)isEqual:(InfoSession *)anotherInfoSession;
+
+- (BOOL)isChangedCompareTo:(InfoSession *)anotherInfoSession;
 
 //- (NSURL *)logoImageURL;
 + (NSURLSessionTask *)infoSessionsWithBlock:(void (^)(NSArray *sessions, NSError *error))block;
