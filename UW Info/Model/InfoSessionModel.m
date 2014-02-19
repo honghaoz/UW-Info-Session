@@ -126,6 +126,15 @@
     }
 }
 
++ (UW)deleteInfoSession:(InfoSession *)infoSession in:(NSMutableArray *)array {
+    NSInteger existIndex = [InfoSessionModel findInfoSession:infoSession in:array];
+    if (existIndex != -1) {
+        [array removeObjectAtIndex:existIndex];
+        return UWDeleted;
+    }
+    return UWNonthing;
+}
+
 /**
  *  Count the number of InfoSession objects in array, which is after today's date
  *

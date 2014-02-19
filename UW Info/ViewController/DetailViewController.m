@@ -13,10 +13,13 @@
 #import "DetailDescriptionCell.h"
 #import "DetailSwitchCell.h"
 
+
 #import "InfoSession.h"
 #import "InfoSessionModel.h"
 
 #import "AlertViewController.h"
+
+#import "InfoSessionsViewController.h"
 #import "MyInfoViewController.h"
 
 #import "LoadingCell.h"
@@ -29,7 +32,7 @@
 
 #import "ProgressHUD.h"
 
-@interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate>
+@interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
 
 - (IBAction)addToMyInfo:(id)sender;
 
@@ -271,8 +274,17 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    return 4;
+    // if showing infoSession is deleted, then pop up
+    if (_infoSessionBackup == nil) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    if (openedMyInfo == YES) {
+        NSLog(@"return 5");
+        return 5;
+    } else {
+        NSLog(@"return 4");
+        return 4;
+    }
 }
 
 /**
@@ -308,6 +320,7 @@
         }
         case 2: numberOfRows = 4; break;
         case 3: numberOfRows = 1; break;
+        case 4: numberOfRows = 1; break;
     }
     return numberOfRows;
 }
@@ -393,6 +406,7 @@
             else if (indexPath.row == [_infoSession.alerts count] + 1) {
                 LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddAlertCell"];
                 cell.loadingLabel.text = @"Add more alert";
+                [cell.loadingLabel setTextColor:[UIColor darkGrayColor]];
                 return cell;
             }
             // alert item rows
@@ -523,6 +537,14 @@
             return cell;
         }
     }
+    else if (indexPath.section == 4){
+        if (indexPath.row == 0) {
+            LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddAlertCell"];
+            cell.loadingLabel.text = @"Delete From My Info Sessions";
+            [cell.loadingLabel setTextColor:[UIColor redColor]];
+            return cell;
+        }
+    }
     return nil;
 }
 
@@ -630,6 +652,11 @@
                     break;
                 }
             } break;
+        case 4:
+            switch (indexPath.row) {
+                case 0:
+                    height = 42.0f; break;
+            } break;
     }
     return height;
 }
@@ -695,7 +722,13 @@
     else if (indexPath.section == 3) {
         [self.noteCell.contentText becomeFirstResponder];
     }
+    else if (indexPath.section == 4) {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Delete Info Session", nil];
+        [actionSheet showInView:self.view];
+    }
 }
+
+#pragma mark - UIAlertViewDelegate methods
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (alertView.tag == 0 && buttonIndex == 0) {
@@ -705,6 +738,83 @@
     else if (alertView.tag == 1 && buttonIndex == 0) {
         _performedNavigation = @"OpenWebsiteLink";
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_infoSession.website]];
+    }
+}
+
+#pragma mark - UIUIActionSheetDelegate 
+
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
+    for (id actionSheetSubview in actionSheet.subviews) {
+        if ([actionSheetSubview isKindOfClass:[UIButton class]]) {
+            UIButton *button = (UIButton *)actionSheetSubview;
+            if ([button.titleLabel.text isEqualToString:@"Delete Info Session"]) {
+                [button setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            }
+        }
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)theActionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 0) {
+        //[self takePhoto];
+        [self deleteOperation:nil];
+    }
+    theActionSheet = nil;
+}
+
+/**
+ *  Delete infoSession from myInfoSessions
+ *
+ *  @param sender none
+ */
+- (void)deleteOperation:(id)sender {
+    if ([InfoSessionModel deleteInfoSession:_infoSession in:_infoSessionModel.myInfoSessions] == UWDeleted) {
+        
+        UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            self.performedNavigation = @"DeleteInfoSession";
+            [self.navigationController popViewControllerAnimated:YES];
+        }completion:^(BOOL finished) {
+            
+            // set badge
+            NSInteger futureInfoSessions = [_infoSessionModel countFutureInfoSessions:_infoSessionModel.myInfoSessions];
+            [[navigation tabBarItem] setBadgeValue: futureInfoSessions == 0 ? nil: NSIntegerToString(futureInfoSessions)];
+            
+            // if caller is MyInfoViewController, after pop up, need reload data
+            if ([_caller isEqualToString:@"MyInfoViewController"]) {
+                MyInfoViewController *myInfoViewController = (MyInfoViewController *)navigation.topViewController;
+                [myInfoViewController reloadTable];
+            }
+            _infoSessionBackup = nil;
+            
+            // if deletion operation is commited in MyInfoVC
+            if ([_caller isEqualToString:@"MyInfoViewController"]) {
+                UINavigationController *infoSessionVCNavigationController = self.tabBarController.infoSessionsViewController.navigationController;
+                // if count > 1, means detailView is shown
+                if ([infoSessionVCNavigationController.viewControllers count] > 1) {
+                    UITableViewController *controller = infoSessionVCNavigationController.viewControllers[1];
+                    if ([controller isKindOfClass:[DetailViewController class]]) {
+                        DetailViewController *detailController = (DetailViewController *)controller;
+                        if ([_infoSession isEqual:detailController.infoSession]) {
+                            detailController.infoSessionBackup = nil;
+                        }
+                    }
+                }
+            } else if ([_caller isEqualToString:@"InfoSessionsViewController"]) {
+                UINavigationController *myInfoVCNavigationController = self.tabBarController.myInfoViewController.navigationController;
+                // if count > 1, means detailView is shown
+                if ([myInfoVCNavigationController.viewControllers count] > 1) {
+                    UITableViewController *controller = myInfoVCNavigationController.viewControllers[1];
+                    if ([controller isKindOfClass:[DetailViewController class]]) {
+                        DetailViewController *detailController = (DetailViewController *)controller;
+                        if ([_infoSession isEqual:detailController.infoSession]) {
+                            detailController.infoSessionBackup = nil;
+                        }
+                    }
+                }
+            }
+        }];
     }
 }
 
@@ -811,14 +921,17 @@
             [UIView animateWithDuration:0.2 animations:^{
                 [self animateSnapshotOfView:self.view.window toTab:navigation];
             }completion:^(BOOL finished) {
-                [[navigation tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel countFutureInfoSessions:_infoSessionModel.myInfoSessions])];
+                // set badge
+                NSInteger futureInfoSessions = [_infoSessionModel countFutureInfoSessions:_infoSessionModel.myInfoSessions];
+                [[navigation tabBarItem] setBadgeValue: futureInfoSessions == 0 ? nil: NSIntegerToString(futureInfoSessions)];
+                
                 // if added, replace _infoSession to the added infoSession in myInfoSession
                 NSInteger existIndex = [InfoSessionModel findInfoSession:_infoSession in:_infoSessionModel.myInfoSessions];
                 _infoSession = _infoSessionModel.myInfoSessions[existIndex];
-                // reload tabale
-                [self.tableView reloadData];
                 // at this time, the data from myInfo, so set YES
                 openedMyInfo = YES;
+                // reload tabale
+                [self.tableView reloadData];
             }];
         }
     }

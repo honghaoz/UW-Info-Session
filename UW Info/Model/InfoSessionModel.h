@@ -10,6 +10,7 @@
 typedef NS_ENUM(NSUInteger, UW){
     UWAdded,
     UWReplaced,
+    UWDeleted,
     UWNonthing
 };
 
@@ -32,6 +33,7 @@ typedef NS_ENUM(NSUInteger, UW){
 
 + (NSInteger)findInfoSession:(InfoSession *)infoSession in:(NSMutableArray *)array;
 + (UW)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array;
++ (UW)deleteInfoSession:(InfoSession *)infoSession in:(NSMutableArray *)array;
 
 + (NSString*)documentsDirectory;;
 + (NSString*)dataFilePath:(NSString *)fileName;
