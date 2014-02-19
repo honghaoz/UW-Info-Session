@@ -50,7 +50,8 @@
 {
     [super viewDidLoad];
     self.title = @"Details";
-    //self.infoSessionBackup = [self.infoSession copy];
+    
+    [self backupInfoSession];
     
 //    UIBarButtonItem *todayButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:nil];
 //    self.navigationItem.leftBarButtonItem = todayButton;
@@ -72,6 +73,14 @@
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if ([self.infoSessionBackup isChangedCompareTo:self.infoSession]) {
+        [self addToMyInfo:nil];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -229,9 +238,11 @@
 //        NSLog(@"eventId: %@", [controller.event eventIdentifier]);
         _infoSession.ekEvent = controller.event;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeChanged:) name:EKEventStoreChangedNotification object:_infoSessionModel.eventStore];
+        [self backupInfoSession];
     } else if (action == EKEventEditViewActionDeleted) {
         _infoSession.ekEvent = nil;
         NSLog(@"Deleted edited");
+        [self backupInfoSession];
     }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -357,6 +368,14 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
                 [cell.remindSwitch setOn:YES animated:YES];
+                
+                // if this infoSession is in the future, can turn on siwtch
+                if ([_infoSession.startTime compare:[NSDate date]] == NSOrderedDescending) {
+                    [cell.remindSwitch setEnabled:YES];
+                } else {
+                    [cell.remindSwitch setEnabled:NO];
+                }
+                
                 return cell;
             }
             // the last row, add more alert
@@ -382,6 +401,12 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
             [cell.remindSwitch setOn:NO animated:YES];
+            // if this infoSession is in the future, can turn on siwtch
+            if ([_infoSession.startTime compare:[NSDate date]] == NSOrderedDescending) {
+                [cell.remindSwitch setEnabled:YES];
+            } else {
+                [cell.remindSwitch setEnabled:NO];
+            }
             return cell;
         }
     }
@@ -759,7 +784,9 @@
     UW addResult = [_infoSessionModel addInfoSessionInOrder:[_infoSession copy] to:_infoSessionModel.myInfoSessions];
     if (addResult == UWReplaced) {
         [ProgressHUD showSuccess:@"Modified successfully!" Interacton:YES];
+        [self backupInfoSession];
     } else if (addResult == UWAdded) {
+        [self backupInfoSession];
         UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
         [[navigation tabBarItem] setBadgeValue:NSIntegerToString([_infoSessionModel countFutureInfoSessions:_infoSessionModel.myInfoSessions])];
         
@@ -890,6 +917,12 @@
     NSMutableArray *indexPathToReload = [[NSMutableArray alloc] init];
     [indexPathToReload addObject:[NSIndexPath indexPathForRow:0 inSection:3]];
     [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)backupInfoSession {
+    // back up a copy of the infosession, used for detecting changes
+    // guarrentee when pop up, any unsaved changes will be save.
+    self.infoSessionBackup = [self.infoSession copy];
 }
 
 #pragma mark - UIScrollView Delegate method

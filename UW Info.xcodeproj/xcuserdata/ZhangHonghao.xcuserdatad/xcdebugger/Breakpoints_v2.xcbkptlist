@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/ViewController/DetailViewController.m"
-            timestampString = "414483163.956018"
+            timestampString = "414484788.74427"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "836"
-            endingLineNumber = "836"
+            startingLineNumber = "861"
+            endingLineNumber = "861"
             landmarkName = "-animateSnapshotOfView:toTab:"
             landmarkType = "5">
          </BreakpointContent>
