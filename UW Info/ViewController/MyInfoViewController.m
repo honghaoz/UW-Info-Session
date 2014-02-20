@@ -11,6 +11,7 @@
 #import "InfoSessionModel.h"
 #import "LoadingCell.h"
 #import "DetailViewController.h"
+#import "UWTabBarController.h"
 
 @interface MyInfoViewController ()
 
@@ -27,6 +28,11 @@
         // Custom initialization
     }
     return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    _tabBarController.lastTapped = -1;
 }
 
 - (void)viewDidLoad

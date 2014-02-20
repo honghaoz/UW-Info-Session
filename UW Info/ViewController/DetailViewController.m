@@ -92,6 +92,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    _tabBarController.lastTapped = -1;
     [super viewWillAppear:animated];
     _performedNavigation = @"";
     [self.tableView reloadData];
@@ -733,7 +734,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (alertView.tag == 0 && buttonIndex == 0) {
         _performedNavigation = @"OpenRSVPLink";
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=%@&mode=on", [NSString stringWithFormat:@"%d", _infoSession.SessionId]]]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=%@&mode=on", [NSString stringWithFormat:@"%lu", (unsigned long)_infoSession.SessionId]]]];
     }
     else if (alertView.tag == 1 && buttonIndex == 0) {
         _performedNavigation = @"OpenWebsiteLink";

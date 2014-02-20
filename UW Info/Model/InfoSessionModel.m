@@ -110,9 +110,7 @@
     }
     // else exist
     else {
-        NSLog(@"copied: %i", [infoSession.alerts count]);
-        
-        
+
         // check whether information is changed
         // changed
         if ([[array objectAtIndex:existIndex] isChangedCompareTo:infoSession]) {

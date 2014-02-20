@@ -31,6 +31,7 @@
 {
     [super viewDidLoad];
     NSLog(@"UWTabbar viweDidLoad");
+    _lastTapped = -1;
 //    [self.tabBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:0.9]];
     
      //[UIColor colorWithRed:0/255.0 green:213/255.0 blue:161/255.0 alpha:1]];
@@ -84,17 +85,24 @@
     if (item.tag == 0) {
         _detailViewController.performedNavigation = @"Open Tabbar1";
         
-        // if first tab show InfoSessionsViewController then scroll to today
-        UINavigationController *navigationController = [self.viewControllers objectAtIndex:0];
-        if ([navigationController.topViewController isKindOfClass:[InfoSessionsViewController class]]) {
-            [_infoSessionsViewController scrollToToday];
+        if (_lastTapped == 0) {
+            // if first tab show InfoSessionsViewController then scroll to today
+            UINavigationController *navigationController = [self.viewControllers objectAtIndex:0];
+            if ([navigationController.topViewController isKindOfClass:[InfoSessionsViewController class]]) {
+                [_infoSessionsViewController scrollToToday];
+            }
         }
+        _lastTapped = 0;
 
     } else if (item.tag == 1) {
         _detailViewController.performedNavigation = @"Open Tabbar2";
-        [_myInfoViewController reloadTable];
+        if (_lastTapped != 1) {
+            [_myInfoViewController reloadTable];
+        }
+        _lastTapped = 1;
     } else {
         _detailViewController.performedNavigation = @"Open Tabbar3";
+        _lastTapped = 2;
     }
     //[item setBadgeValue:@"1"];
     //[self tabBarItem]

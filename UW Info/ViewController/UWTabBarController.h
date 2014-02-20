@@ -20,6 +20,8 @@
 @property (nonatomic, strong) SearchViewController *searchViewController;
 @property (nonatomic, strong) DetailViewController *detailViewController;
 
+@property (nonatomic, assign) NSUInteger lastTapped;
+
 @property (nonatomic, assign) BOOL isHidden;
 
 - (void) hideTabBar;
