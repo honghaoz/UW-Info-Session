@@ -10,6 +10,8 @@
 		1B19834918A618A60022A285 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19834818A618A60022A285 /* DetailViewController.m */; };
 		1B2040B918B3F75300C72D51 /* ProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1B2040B618B3F75300C72D51 /* ProgressHUD.bundle */; };
 		1B2040BA18B3F75300C72D51 /* ProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2040B818B3F75300C72D51 /* ProgressHUD.m */; };
+		1B2040BD18B5DBC100C72D51 /* InfoModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1B2040BB18B5DBC100C72D51 /* InfoModel.xcdatamodeld */; };
+		1B2040BF18B5DCB500C72D51 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2040BE18B5DCB500C72D51 /* CoreData.framework */; };
 		1B2076EB18AAA65100FE7088 /* AlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2076EA18AAA65100FE7088 /* AlertViewController.m */; };
 		1B2F746718AF66190042322B /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F745518AF66190042322B /* AFHTTPRequestOperation.m */; };
 		1B2F746818AF66190042322B /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F745718AF66190042322B /* AFHTTPRequestOperationManager.m */; };
@@ -78,6 +80,8 @@
 		1B2040B618B3F75300C72D51 /* ProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ProgressHUD.bundle; sourceTree = "<group>"; };
 		1B2040B718B3F75300C72D51 /* ProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressHUD.h; sourceTree = "<group>"; };
 		1B2040B818B3F75300C72D51 /* ProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressHUD.m; sourceTree = "<group>"; };
+		1B2040BC18B5DBC100C72D51 /* InfoModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = InfoModel.xcdatamodel; sourceTree = "<group>"; };
+		1B2040BE18B5DCB500C72D51 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		1B2076E918AAA65100FE7088 /* AlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertViewController.h; sourceTree = "<group>"; };
 		1B2076EA18AAA65100FE7088 /* AlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertViewController.m; sourceTree = "<group>"; };
 		1B2F745418AF66190042322B /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -174,6 +178,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B2040BF18B5DCB500C72D51 /* CoreData.framework in Frameworks */,
 				1B6F54C818AC219000D3DD47 /* EventKitUI.framework in Frameworks */,
 				1B6F54C618AC218600D3DD47 /* EventKit.framework in Frameworks */,
 				1BD83A9718A59F1C00EDBB6D /* CoreGraphics.framework in Frameworks */,
@@ -291,6 +296,7 @@
 				1B37453618A5BA28007CF08C /* InfoSession.m */,
 				1BAD97E418A98F65006F4546 /* InfoSessionModel.h */,
 				1BAD97E518A98F65006F4546 /* InfoSessionModel.m */,
+				1B2040BB18B5DBC100C72D51 /* InfoModel.xcdatamodeld */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -386,6 +392,7 @@
 		1BD83A9318A59F1C00EDBB6D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1B2040BE18B5DCB500C72D51 /* CoreData.framework */,
 				1B6F54C718AC219000D3DD47 /* EventKitUI.framework */,
 				1B6F54C518AC218600D3DD47 /* EventKit.framework */,
 				1BD83A9418A59F1C00EDBB6D /* Foundation.framework */,
@@ -572,6 +579,7 @@
 				1B2076EB18AAA65100FE7088 /* AlertViewController.m in Sources */,
 				1B2F746A18AF66190042322B /* AFNetworkReachabilityManager.m in Sources */,
 				1B2F746E18AF66190042322B /* AFURLResponseSerialization.m in Sources */,
+				1B2040BD18B5DBC100C72D51 /* InfoModel.xcdatamodeld in Sources */,
 				1B2F746D18AF66190042322B /* AFURLRequestSerialization.m in Sources */,
 				1BAD97F218A9DF30006F4546 /* SearchViewController.m in Sources */,
 				1B717E5F18A7F7DC00E20A29 /* DetailLinkCell.m in Sources */,
@@ -800,6 +808,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1B2040BB18B5DBC100C72D51 /* InfoModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1B2040BC18B5DBC100C72D51 /* InfoModel.xcdatamodel */,
+			);
+			currentVersion = 1B2040BC18B5DBC100C72D51 /* InfoModel.xcdatamodel */;
+			name = InfoModel.xcdatamodeld;
+			path = Model/InfoModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 1BD83A8918A59F1C00EDBB6D /* Project object */;
 }

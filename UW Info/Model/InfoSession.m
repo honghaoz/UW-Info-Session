@@ -24,7 +24,7 @@ static NSDictionary *alertSequenceDictionary;
 
 @interface InfoSession()
 
-@property (nonatomic, readwrite, assign) NSUInteger SessionId;
+@property (nonatomic, readwrite, assign) NSUInteger sessionId;
 @property (nonatomic, readwrite, copy) NSString *employer;
 @property (nonatomic, readwrite, strong) NSDate *date;
 @property (nonatomic, readwrite, strong) NSDate *startTime;
@@ -126,7 +126,7 @@ static NSDictionary *alertSequenceDictionary;
     if (!self) {
         return nil;
     }
-    self.SessionId = (NSUInteger)[[attributes valueForKeyPath:@"id"] integerValue];
+    self.sessionId = (NSUInteger)[[attributes valueForKeyPath:@"id"] integerValue];
     //NSLog(@"%i", self.SessionId);
     self.employer = [attributes valueForKeyPath:@"employer"];
     
@@ -209,9 +209,9 @@ static NSDictionary *alertSequenceDictionary;
  *  @return BOOL
  */
 - (BOOL)isEqual:(InfoSession *)anotherInfoSession {
-    if (self.SessionId == anotherInfoSession.SessionId) {
+    if (self.sessionId == anotherInfoSession.sessionId) {
         // if session ID is valid and same
-        if (self.SessionId > 10) {
+        if (self.sessionId > 10) {
             return YES;
         }
         // else session ID is not valid (no sessionID)
@@ -364,7 +364,7 @@ static NSDictionary *alertSequenceDictionary;
     // allocate new copy
     InfoSession *copy = [[InfoSession alloc] init];
     // for Integer/ NSsstrin/ NSDate/ BOOL, just use copy or assgin directly
-    copy.SessionId = self.SessionId;
+    copy.sessionId = self.sessionId;
     copy.employer = [self.employer copy];
     copy.date = [self.date copy];
     copy.startTime = [self.startTime copy];

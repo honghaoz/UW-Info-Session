@@ -13,7 +13,7 @@
 @interface InfoSession : NSObject <NSCopying>
 
 //attribute that not changed
-@property (nonatomic, readonly, assign) NSUInteger SessionId;
+@property (nonatomic, readonly, assign) NSUInteger sessionId;
 @property (nonatomic, readonly, copy) NSString *employer;
 @property (nonatomic, readonly, strong) NSDate *date;
 @property (nonatomic, readonly, strong) NSDate *startTime;

@@ -371,7 +371,7 @@
         }
         else if (indexPath.row == 4) {
             DetailRSVPCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailRSVPCell"];
-            if (_infoSession.SessionId > 10) {
+            if (_infoSession.sessionId > 10) {
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
                 [cell.contentLabel setTextColor: [UIColor blackColor]];
                 cell.contentLabel.text = @"Tap here to RSVP.";
@@ -674,7 +674,7 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 3) {
             [self performSegueWithIdentifier:@"ShowMap" sender:nil];
-        } else if (indexPath.row == 4 && _infoSession.SessionId > 10) {
+        } else if (indexPath.row == 4 && _infoSession.sessionId > 10) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Open RSVP. link in Safari?"
                                                             message:nil
                                                            delegate:self
@@ -734,7 +734,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (alertView.tag == 0 && buttonIndex == 0) {
         _performedNavigation = @"OpenRSVPLink";
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=%@&mode=on", [NSString stringWithFormat:@"%lu", (unsigned long)_infoSession.SessionId]]]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=%@&mode=on", [NSString stringWithFormat:@"%lu", (unsigned long)_infoSession.sessionId]]]];
     }
     else if (alertView.tag == 1 && buttonIndex == 0) {
         _performedNavigation = @"OpenWebsiteLink";
