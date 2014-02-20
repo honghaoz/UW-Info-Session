@@ -114,9 +114,9 @@ def renderResponse(listOfMonths):
             raise Exception, 'Some sessions are missing info'
 
         # merge/zipper all the fields together per info sessions
+        idOffset = len(employers) - len(ids)
         for i in range(0, len(employers)):
             session = {}
-            idOffset = len(employers) - len(ids)
             if i < idOffset:
                 session["id"] = ""
             else:
@@ -172,8 +172,8 @@ class Json(BasicHandler):
     """json format"""
     def get(self):
         key = self.request.get("key")
+        self.response.headers["Content-Type"] = "application/json"
         if key == '77881122':
-            self.response.headers["Content-Type"] = "application/json"
             response = urllib2.urlopen("http://uw-info1.appspot.com/infosessions.json?key=77881122").read()
             self.write(response)
         else:

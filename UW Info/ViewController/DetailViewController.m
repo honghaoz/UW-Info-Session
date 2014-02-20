@@ -132,40 +132,6 @@
     
 }
 
-- (void)showEventEditViewController {
-    // Create an instance of EKEventEditViewController
-    EKEventEditViewController *addController = [[EKEventEditViewController alloc] init];
-    
-    [addController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
-    addController.navigationBar.tintColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
-    
-    // Set addController's event store to the current event store
-    addController.eventStore = _infoSessionModel.eventStore;
-    
-    // creat a new event
-    EKEvent *event = [EKEvent eventWithEventStore:_infoSessionModel.eventStore];
-    // if infosession's event is nil or refresh failed (means this event is deleted)
-    if (_infoSession.ekEvent == nil || ![_infoSession.ekEvent refresh]) {
-        [event setTitle:_infoSession.employer];
-        [event setLocation:_infoSession.location];
-        [event setStartDate:_infoSession.startTime];
-        [event setEndDate:_infoSession.endTime];
-        [event setAlarms:[_infoSession getEKAlarms]];
-        [event setURL:[NSURL URLWithString:_infoSession.website]];
-        [event setNotes:_infoSession.note];
-        
-        [event setCalendar:_infoSessionModel.defaultCalendar];
-    }
-    // infosession's event already exists
-    else {
-        event = _infoSession.ekEvent;
-    }
-    
-    addController.event = event;
-    addController.editViewDelegate = self;
-    [self presentViewController:addController animated:YES completion:nil];
-}
-
 /**
  *  Check the authorization status of our application for Calendar
  */
@@ -233,6 +199,40 @@
     // Let's get the default calendar associated with our event store
     _infoSessionModel.defaultCalendar = _infoSessionModel.eventStore.defaultCalendarForNewEvents;
     [self showEventEditViewController];
+}
+
+- (void)showEventEditViewController {
+    // Create an instance of EKEventEditViewController
+    EKEventEditViewController *addController = [[EKEventEditViewController alloc] init];
+    
+    [addController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
+    addController.navigationBar.tintColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
+    
+    // Set addController's event store to the current event store
+    addController.eventStore = _infoSessionModel.eventStore;
+    
+    // creat a new event
+    EKEvent *event = [EKEvent eventWithEventStore:_infoSessionModel.eventStore];
+    // if infosession's event is nil or refresh failed (means this event is deleted)
+    if (_infoSession.ekEvent == nil || ![_infoSession.ekEvent refresh]) {
+        [event setTitle:_infoSession.employer];
+        [event setLocation:_infoSession.location];
+        [event setStartDate:_infoSession.startTime];
+        [event setEndDate:_infoSession.endTime];
+        [event setAlarms:[_infoSession getEKAlarms]];
+        [event setURL:[NSURL URLWithString:_infoSession.website]];
+        [event setNotes:_infoSession.note];
+        
+        [event setCalendar:_infoSessionModel.defaultCalendar];
+    }
+    // infosession's event already exists
+    else {
+        event = _infoSession.ekEvent;
+    }
+    
+    addController.event = event;
+    addController.editViewDelegate = self;
+    [self presentViewController:addController animated:YES completion:nil];
 }
 
 /**
@@ -768,6 +768,7 @@
  *  @param sender none
  */
 - (void)deleteOperation:(id)sender {
+    NSLog(@"delete operation");
     if ([InfoSessionModel deleteInfoSession:_infoSession in:_infoSessionModel.myInfoSessions] == UWDeleted) {
         
         UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];

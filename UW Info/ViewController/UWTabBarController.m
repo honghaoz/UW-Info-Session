@@ -56,16 +56,17 @@
     self.isHidden = NO;
     
     // initiate three VC in tabbarController
+    NSLog(@"initiate three VC in tabbarController");
     UINavigationController *navigationController = [self.viewControllers objectAtIndex:0];
-    _infoSessionsViewController = (InfoSessionsViewController *)navigationController.topViewController;
+    _infoSessionsViewController = (InfoSessionsViewController *)navigationController.viewControllers[0];
     _infoSessionsViewController.tabBarController = self;
     
     navigationController = [self.viewControllers objectAtIndex:1];
-    _myInfoViewController = (MyInfoViewController *)navigationController.topViewController;
+    _myInfoViewController = (MyInfoViewController *)navigationController.viewControllers[0];
      _myInfoViewController.tabBarController = self;
     
     navigationController = [self.viewControllers objectAtIndex:2];
-    _searchViewController = (SearchViewController *)navigationController.topViewController;
+    _searchViewController = (SearchViewController *)navigationController.viewControllers[0];
      _searchViewController.tabBarController = self;
     
     //[self setSelectedIndex:1];
@@ -82,7 +83,13 @@
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
     if (item.tag == 0) {
         _detailViewController.performedNavigation = @"Open Tabbar1";
-        [_infoSessionsViewController scrollToToday];
+        
+        // if first tab show InfoSessionsViewController then scroll to today
+        UINavigationController *navigationController = [self.viewControllers objectAtIndex:0];
+        if ([navigationController.topViewController isKindOfClass:[InfoSessionsViewController class]]) {
+            [_infoSessionsViewController scrollToToday];
+        }
+
     } else if (item.tag == 1) {
         _detailViewController.performedNavigation = @"Open Tabbar2";
         [_myInfoViewController reloadTable];

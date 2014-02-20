@@ -114,9 +114,9 @@ def renderResponse(listOfMonths):
             raise Exception, 'Some sessions are missing info'
 
         # merge/zipper all the fields together per info sessions
+        idOffset = len(employers) - len(ids)
         for i in range(0, len(employers)):
             session = {}
-            idOffset = len(employers) - len(ids)
             if i < idOffset:
                 session["id"] = ""
             else:
@@ -163,6 +163,7 @@ class JsonOneMonth(BasicHandler):
     """json format one month"""
     def get(self, monthId):
         key = self.request.get("key")
+        self.response.headers["Content-Type"] = "application/json"
         if key == '77881122':
             self.write(json.dumps(renderResponse([monthId])))
         else:
