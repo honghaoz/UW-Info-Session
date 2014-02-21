@@ -35,8 +35,8 @@ typedef NS_ENUM(NSUInteger, UW){
 + (void)saveMap;
 + (UIImage *)loadMap;
 
-//- (void)saveMyInfoSessions;
-//- (NSMutableArray *)loadMyInfoSessions;
+- (void)saveInfoSessions;
+- (void)loadInfoSessions;
 
 - (NSInteger)countFutureInfoSessions:(NSArray *)infosessions;
 

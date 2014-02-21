@@ -104,7 +104,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    NSLog(@"preformedNavigation: %@", _performedNavigation);
+    //NSLog(@"preformedNavigation: %@", _performedNavigation);
     if ([_performedNavigation isEqualToString:@""]) {
         if ([self.infoSessionBackup isChangedCompareTo:self.infoSession]) {
             [self addToMyInfo:nil];
@@ -284,10 +284,8 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
     if (openedMyInfo == YES) {
-        NSLog(@"return 5");
         return 5;
     } else {
-        NSLog(@"return 4");
         return 4;
     }
 }
@@ -776,26 +774,21 @@
     NSLog(@"delete operation");
     if ([InfoSessionModel deleteInfoSession:_infoSession in:_infoSessionModel.myInfoSessions] == UWDeleted) {
         
-        UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
+        //UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
         
         [UIView animateWithDuration:0.2 animations:^{
             self.performedNavigation = @"DeleteInfoSession";
             [self.navigationController popViewControllerAnimated:YES];
         }completion:^(BOOL finished) {
-            
-            // set badge
-            NSInteger futureInfoSessions = [_infoSessionModel countFutureInfoSessions:_infoSessionModel.myInfoSessions];
-            [[navigation tabBarItem] setBadgeValue: futureInfoSessions == 0 ? nil: NSIntegerToString(futureInfoSessions)];
-            
-            // if caller is MyInfoViewController, after pop up, need reload data
-            if ([_caller isEqualToString:@"MyInfoViewController"]) {
-                MyInfoViewController *myInfoViewController = (MyInfoViewController *)navigation.topViewController;
-                [myInfoViewController reloadTable];
-            }
+            // set badge for second barItem
+            [_tabBarController setBadge];
             _infoSessionBackup = nil;
             
             // if deletion operation is commited in MyInfoVC
             if ([_caller isEqualToString:@"MyInfoViewController"]) {
+                // if caller is MyInfoViewController, after pop up, need reload data
+                [_tabBarController.myInfoViewController reloadTable];
+                
                 UINavigationController *infoSessionVCNavigationController = self.tabBarController.infoSessionsViewController.navigationController;
                 // if count > 1, means detailView is shown
                 if ([infoSessionVCNavigationController.viewControllers count] > 1) {
@@ -908,7 +901,6 @@
  *  @param sender Button "Add"
  */
 - (IBAction)addToMyInfo:(id)sender {
-    NSLog(@"addToMyInfo called");
     UW addResult = UWNonthing;
     
     // this case is first time open an infosession from InfoSessionsVC
@@ -917,19 +909,19 @@
         addResult = [InfoSessionModel addInfoSessionInOrder:[_infoSession copy] to:_infoSessionModel.myInfoSessions];
         // if first time to add, the below if statement must be true!
         if (addResult == UWAdded) {
-            NSLog(@"added!");
             [self backupInfoSession];
-            UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
+            //UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
             
-            MyInfoViewController *myInfoViewController = (MyInfoViewController *)navigation.topViewController;
-            myInfoViewController.infoSessionModel = _infoSessionModel;
+            //MyInfoViewController *myInfoViewController = (MyInfoViewController *)navigation.topViewController;
+            //myInfoViewController.infoSessionModel = _infoSessionModel;
             
             [UIView animateWithDuration:0.2 animations:^{
-                [self animateSnapshotOfView:self.view.window toTab:navigation];
+                [self animateSnapshotOfView:self.view.window toTab:_tabBarController.viewControllers[1]];
             }completion:^(BOOL finished) {
-                // set badge
-                NSInteger futureInfoSessions = [_infoSessionModel countFutureInfoSessions:_infoSessionModel.myInfoSessions];
-                [[navigation tabBarItem] setBadgeValue: futureInfoSessions == 0 ? nil: NSIntegerToString(futureInfoSessions)];
+//                // set badge
+//                NSInteger futureInfoSessions = [_infoSessionModel countFutureInfoSessions:_infoSessionModel.myInfoSessions];
+//                [[navigation tabBarItem] setBadgeValue: futureInfoSessions == 0 ? nil: NSIntegerToString(futureInfoSessions)];
+                [_tabBarController setBadge];
                 
                 // if added, replace _infoSession to the added infoSession in myInfoSession
                 NSInteger existIndex = [InfoSessionModel findInfoSession:_infoSession in:_infoSessionModel.myInfoSessions];

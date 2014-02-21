@@ -24,7 +24,6 @@
 
 @interface InfoSessionsViewController ()
 
-@property (nonatomic, strong) InfoSessionModel *infoSessionModel;
 @property (nonatomic, strong) UIButton *termSelection;
 
 @end
@@ -88,10 +87,6 @@
 //    [self.view addSubview:showOrigin];
 //    showOrigin.text = @"(%i, %i)";
 //    [showOrigin setBackgroundColor:[UIColor yellowColor]];
-    
-    
-    // initiate infoSessionModel
-    _infoSessionModel = [[InfoSessionModel alloc] init];
     
     //reload data
     [self reload:nil];

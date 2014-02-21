@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 @class UWTabBarController;
+@class InfoSessionModel;
 
 @interface InfoSessionsViewController : UITableViewController
 
+@property (nonatomic, strong) InfoSessionModel *infoSessionModel;
 @property (nonatomic, weak) UWTabBarController *tabBarController;
 
 - (void)scrollToToday;

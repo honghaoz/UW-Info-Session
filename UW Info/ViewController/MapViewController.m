@@ -34,11 +34,11 @@
     // set title
     self.title = @"Map of UWaterloo";
     
-    // show origin label
-    showOrigin =[[UILabel alloc] initWithFrame:(CGRectMake(10, 70, 190, 44))];
-    [self.view addSubview:showOrigin];
-    showOrigin.text = @"(%i, %i)";
-    [showOrigin setBackgroundColor:[UIColor yellowColor]];
+//    // show origin label
+//    showOrigin =[[UILabel alloc] initWithFrame:(CGRectMake(10, 70, 190, 44))];
+//    [self.view addSubview:showOrigin];
+//    showOrigin.text = @"(%i, %i)";
+//    [showOrigin setBackgroundColor:[UIColor yellowColor]];
     
 //    UIButton *button =  [[UIButton alloc] initWithFrame:CGRectMake(30, 70, 190, 44)];
 //    [button setTitle:@"ASDASDASDASD" forState:UIControlStateNormal];
@@ -66,10 +66,6 @@
     [self.scrollView setFrame:[[UIScreen mainScreen] bounds]];
     [self.scrollView setContentSize:self.imageView.frame.size];
 
-    
-    
-    
-    
     UITapGestureRecognizer *doubleTap;
     doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
     [doubleTap setNumberOfTapsRequired:2];
@@ -90,7 +86,7 @@
     [self.scrollView setAutoresizesSubviews:YES];
     
     [self.scrollView setZoomScale:0.4 animated:NO];
-    [self.scrollView setContentOffset:CGPointMake(0, 0) animated:NO];
+    [self.scrollView setContentOffset:CGPointMake(825, 375) animated:NO];
 
     self->barIsHidden = NO;
 }
@@ -113,11 +109,11 @@
     return self.imageView;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [showOrigin setText:[NSString stringWithFormat:@"offset: (%.2f, %.2f)\nzoom: %.2f", self.scrollView.contentOffset.x, self.scrollView.contentOffset.y, self.scrollView.zoomScale]];
-    //[showOrigin setText:[NSString stringWithFormat:@"offset: %@ \nzoom: %.2f", NSStringFromCGPoint(self.scrollView.contentOffset), self.scrollView.zoomScale]];
-    [showOrigin setNumberOfLines:0];
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    [showOrigin setText:[NSString stringWithFormat:@"offset: (%.2f, %.2f)\nzoom: %.2f", self.scrollView.contentOffset.x, self.scrollView.contentOffset.y, self.scrollView.zoomScale]];
+//    //[showOrigin setText:[NSString stringWithFormat:@"offset: %@ \nzoom: %.2f", NSStringFromCGPoint(self.scrollView.contentOffset), self.scrollView.zoomScale]];
+//    [showOrigin setNumberOfLines:0];
+//}
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
     NSLog(@"scrollView Did End Scrolling Animation");

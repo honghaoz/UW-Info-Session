@@ -7,12 +7,21 @@
 //
 
 #import "UWAppDelegate.h"
+#import "InfoSessionModel.h"
+#import "UWTabBarController.h"
 
-@implementation UWAppDelegate
+@implementation UWAppDelegate {
+    InfoSessionModel *_infoSessionModel;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    UWTabBarController *tabController = (UWTabBarController *)self.window.rootViewController;
+    // initiate infoSessionModel
+    _infoSessionModel = [[InfoSessionModel alloc] init];
+    tabController.infoSessionModel = _infoSessionModel;
+    
     return YES;
 }
 							
@@ -22,10 +31,15 @@
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
 
+-(void)saveData {
+    [_infoSessionModel saveInfoSessions];
+}
+
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    [self saveData];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -41,6 +55,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [self saveData];
 }
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {

@@ -11,10 +11,12 @@
 @class MyInfoViewController;
 @class SearchViewController;
 @class DetailViewController;
+@class InfoSessionModel;
 
 @interface UWTabBarController : UITabBarController //<DetailViewControllerDelegate>
 
-//@property (nonatomic, strong) InfoSessionModel *infoSessionModel;
+@property (nonatomic, strong) InfoSessionModel *infoSessionModel;
+
 @property (nonatomic, strong) InfoSessionsViewController *infoSessionsViewController;
 @property (nonatomic, strong) MyInfoViewController *myInfoViewController;
 @property (nonatomic, strong) SearchViewController *searchViewController;
@@ -27,5 +29,7 @@
 
 - (void) hideTabBar;
 - (void) showTabBar;
+
+- (void) setBadge;
 
 @end

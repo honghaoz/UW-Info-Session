@@ -13,6 +13,7 @@
 -(id)init {
     if ((self = [super init])) {
         NSLog(@"InfoSessionModel Initiated!");
+        [self loadInfoSessions];
         [self handleFirstTime];
     }
     return self;
@@ -183,9 +184,34 @@
     return [UIImage imageWithData:pngData];
 }
 
-//- (void)saveMyInfoSessions {
-//    [_myInfoSessions writeToFile:[InfoSessionModel dataFilePath:@""] atomically:<#(BOOL)#>]
-//}
+- (void)saveInfoSessions {
+    NSMutableData *data = [[NSMutableData alloc]init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    [archiver encodeObject:_infoSessions forKey:@"infoSessions"];
+    [archiver encodeObject:_infoSessionsDictionary forKey:@"infoSessionsDictionary"];
+    [archiver encodeObject:_myInfoSessions forKey:@"myInfoSessions"];
+    [archiver finishEncoding];
+    [data writeToFile:[InfoSessionModel dataFilePath:@"InfoSession.plist"] atomically:YES];
+}
+
+- (void)loadInfoSessions {
+    NSLog(@"start load infoSessions");
+    NSString *path = [InfoSessionModel dataFilePath:@"InfoSession.plist"];
+    if([[NSFileManager defaultManager]fileExistsAtPath:path]){
+        NSLog(@"loaded infoSessions");
+        NSData *data =[[NSData alloc]initWithContentsOfFile:path];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
+        //_infoSessions = [unarchiver decodeObjectForKey:@"infoSessions"];
+        //_infoSessionsDictionary = [unarchiver decodeObjectForKey:@"infoSessionsDictionary"];
+        _myInfoSessions = [unarchiver decodeObjectForKey:@"myInfoSessions"];
+        NSLog(@"infoSessionsCount: %i", [_infoSessions count]);
+        NSLog(@"myInfoSessionsCount: %i", [_myInfoSessions count]);
+        [unarchiver finishDecoding];
+    }else{
+        //self.lists = [[NSMutableArray alloc]initWithCapacity:20];
+    }
+
+}
 
 #pragma mark - NSCoding protocol methods
 

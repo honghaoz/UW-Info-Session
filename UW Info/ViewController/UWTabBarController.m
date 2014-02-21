@@ -11,6 +11,7 @@
 #import "MyInfoViewController.h"
 #import "SearchViewController.h"
 #import "DetailViewController.h"
+#import "InfoSessionModel.h"
 
 @interface UWTabBarController ()
 
@@ -61,18 +62,19 @@
     UINavigationController *navigationController = [self.viewControllers objectAtIndex:0];
     _infoSessionsViewController = (InfoSessionsViewController *)navigationController.viewControllers[0];
     _infoSessionsViewController.tabBarController = self;
+    _infoSessionsViewController.infoSessionModel = self.infoSessionModel;
     
     navigationController = [self.viewControllers objectAtIndex:1];
     _myInfoViewController = (MyInfoViewController *)navigationController.viewControllers[0];
-     _myInfoViewController.tabBarController = self;
+    _myInfoViewController.tabBarController = self;
+    _myInfoViewController.infoSessionModel = self.infoSessionModel;
     
     navigationController = [self.viewControllers objectAtIndex:2];
     _searchViewController = (SearchViewController *)navigationController.viewControllers[0];
-     _searchViewController.tabBarController = self;
+    _searchViewController.tabBarController = self;
     
-    //[self setSelectedIndex:1];
-    //[self setSelectedIndex:2];
-    //[self setSelectedIndex:0];
+    [self setBadge];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -184,6 +186,13 @@
         }
         [UIView commitAnimations];
     }
+}
+
+- (void)setBadge {
+    UINavigationController *navigation = (UINavigationController *)self.viewControllers[1];
+    // set badge
+    NSInteger futureInfoSessions = [_infoSessionModel countFutureInfoSessions:_infoSessionModel.myInfoSessions];
+    [[navigation tabBarItem] setBadgeValue: futureInfoSessions == 0 ? nil: NSIntegerToString(futureInfoSessions)];
 }
 
 @end
