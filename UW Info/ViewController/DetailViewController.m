@@ -373,7 +373,7 @@
             DetailRSVPCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailRSVPCell"];
             if (_infoSession.sessionId > 10) {
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-                [cell.contentLabel setTextColor: [UIColor blackColor]];
+                [cell.contentLabel setTextColor: [UIColor darkGrayColor]];
                 cell.contentLabel.text = @"Tap here to RSVP.";
             }
             else {

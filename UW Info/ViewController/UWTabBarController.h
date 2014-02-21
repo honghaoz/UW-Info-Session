@@ -18,7 +18,8 @@
 @property (nonatomic, strong) InfoSessionsViewController *infoSessionsViewController;
 @property (nonatomic, strong) MyInfoViewController *myInfoViewController;
 @property (nonatomic, strong) SearchViewController *searchViewController;
-@property (nonatomic, strong) DetailViewController *detailViewController;
+@property (nonatomic, strong) DetailViewController *detailViewControllerOfTabbar0;
+@property (nonatomic, strong) DetailViewController *detailViewControllerOfTabbar1;
 
 @property (nonatomic, assign) NSUInteger lastTapped;
 

@@ -235,6 +235,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     DetailViewController *controller = segue.destinationViewController;
+    _tabBarController.detailViewControllerOfTabbar1 = controller;
     controller.caller = sender[0];
     controller.infoSession = sender[1];
     controller.infoSessionModel = sender[2];
