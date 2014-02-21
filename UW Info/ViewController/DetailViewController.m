@@ -34,6 +34,10 @@
 
 @interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
 
+// Used for manage calendar event, only initiate once!
+@property (nonatomic, strong) EKEventStore *eventStore;
+@property (nonatomic, strong) EKCalendar *defaultCalendar;
+
 - (IBAction)addToMyInfo:(id)sender;
 
 @end
@@ -125,8 +129,8 @@
  *  @param sender calendar button
  */
 - (void)addToCalendar:(id)sender {
-    if (_infoSessionModel.eventStore == nil) {
-        _infoSessionModel.eventStore = [[EKEventStore alloc] init];
+    if (_eventStore == nil) {
+        _eventStore = [[EKEventStore alloc] init];
     }
     // Check whether we are authorized to access Calendar
     [self checkEventStoreAccessForCalendar];
@@ -171,7 +175,7 @@
  */
 -(void)requestCalendarAccess
 {
-    [_infoSessionModel.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error)
+    [_eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error)
      {
          if (granted)
          {
@@ -198,7 +202,7 @@
 -(void)accessGrantedForCalendar
 {
     // Let's get the default calendar associated with our event store
-    _infoSessionModel.defaultCalendar = _infoSessionModel.eventStore.defaultCalendarForNewEvents;
+    _defaultCalendar = _eventStore.defaultCalendarForNewEvents;
     [self showEventEditViewController];
 }
 
@@ -210,10 +214,10 @@
     addController.navigationBar.tintColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
     
     // Set addController's event store to the current event store
-    addController.eventStore = _infoSessionModel.eventStore;
+    addController.eventStore = _eventStore;
     
     // creat a new event
-    EKEvent *event = [EKEvent eventWithEventStore:_infoSessionModel.eventStore];
+    EKEvent *event = [EKEvent eventWithEventStore:_eventStore];
     // if infosession's event is nil or refresh failed (means this event is deleted)
     if (_infoSession.ekEvent == nil || ![_infoSession.ekEvent refresh]) {
         [event setTitle:_infoSession.employer];
@@ -224,7 +228,7 @@
         [event setURL:[NSURL URLWithString:_infoSession.website]];
         [event setNotes:_infoSession.note];
         
-        [event setCalendar:_infoSessionModel.defaultCalendar];
+        [event setCalendar:_defaultCalendar];
     }
     // infosession's event already exists
     else {
@@ -252,7 +256,7 @@
 //        NSLog(@"calendarId: %@", [controller.event.calendar calendarIdentifier]);
 //        NSLog(@"eventId: %@", [controller.event eventIdentifier]);
         _infoSession.ekEvent = controller.event;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeChanged:) name:EKEventStoreChangedNotification object:_infoSessionModel.eventStore];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeChanged:) name:EKEventStoreChangedNotification object:_eventStore];
         [self backupInfoSession];
     } else if (action == EKEventEditViewActionDeleted) {
         _infoSession.ekEvent = nil;

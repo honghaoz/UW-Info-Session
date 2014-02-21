@@ -14,7 +14,7 @@ typedef NS_ENUM(NSUInteger, UW){
     UWNonthing
 };
 
-@interface InfoSessionModel : InfoSession
+@interface InfoSessionModel : InfoSession <NSCoding>
 
 // info sessions data retrived from api
 @property (nonatomic, strong) NSArray *infoSessions;
@@ -23,11 +23,6 @@ typedef NS_ENUM(NSUInteger, UW){
 // user saved info sessions
 @property (nonatomic, strong) NSMutableArray *myInfoSessions;
 //@property (nonatomic, strong) NSMutableDictionary *myInfoSessionsDictionary;
-
-// Used for manage calendar event, only initiate once!
-@property (nonatomic, strong) EKEventStore *eventStore;
-@property (nonatomic, strong) EKCalendar *defaultCalendar;
-
 
 - (void)processInfoSessionsDictionary:(NSDictionary *)dictionary withInfoSessions:(NSArray *)array;
 
@@ -40,6 +35,8 @@ typedef NS_ENUM(NSUInteger, UW){
 + (void)saveMap;
 + (UIImage *)loadMap;
 
+//- (void)saveMyInfoSessions;
+//- (NSMutableArray *)loadMyInfoSessions;
 
 - (NSInteger)countFutureInfoSessions:(NSArray *)infosessions;
 

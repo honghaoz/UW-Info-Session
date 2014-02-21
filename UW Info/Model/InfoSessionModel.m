@@ -150,6 +150,17 @@
     return count;
 }
 
+
+- (void)handleFirstTime {
+    NSLog([[NSUserDefaults standardUserDefaults] boolForKey:@"hasRun"] ? @"Has Run" : @"Run For The First Time");
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasRun"]) {
+        // for the first time, save map to local documents directory
+        [InfoSessionModel saveMap];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasRun"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
+
 #pragma mark - documents operations
 
 + (NSString*)documentsDirectory{
@@ -172,14 +183,25 @@
     return [UIImage imageWithData:pngData];
 }
 
-- (void)handleFirstTime {
-    NSLog([[NSUserDefaults standardUserDefaults] boolForKey:@"hasRun"] ? @"Has Run" : @"Run For The First Time");
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasRun"]) {
-        // for the first time, save map to local documents directory
-        [InfoSessionModel saveMap];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasRun"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+//- (void)saveMyInfoSessions {
+//    [_myInfoSessions writeToFile:[InfoSessionModel dataFilePath:@""] atomically:<#(BOOL)#>]
+//}
+
+#pragma mark - NSCoding protocol methods
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if ((self = [super init])) {
+        self.infoSessions = [aDecoder decodeObjectForKey:@"infoSessions"];
+        self.infoSessionsDictionary = [aDecoder decodeObjectForKey:@"infoSessionsDictionary"];
+        self.myInfoSessions = [aDecoder decodeObjectForKey:@"myInfoSessions"];
     }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.infoSessions forKey:@"infoSessions"];
+    [aCoder encodeObject:self.infoSessionsDictionary forKey:@"infoSessionsDictionary"];
+    [aCoder encodeObject:self.myInfoSessions forKey:@"myInfoSessions"];
 }
 
 @end

@@ -10,7 +10,7 @@
 #import <EventKit/EventKit.h>
 #import <EventKitUI/EventKitUI.h>
 
-@interface InfoSession : NSObject <NSCopying>
+@interface InfoSession : NSObject <NSCopying, NSCoding>
 
 //attribute that not changed
 @property (nonatomic, readonly, assign) NSUInteger sessionId;
@@ -28,15 +28,7 @@
 
 @property (nonatomic, assign) BOOL isCancelled;
 
-
 // alerts related attributes
-// Dictionary of alerts description, interval and sequence
-+ (NSDictionary *) alertChoiceDictionary;
-+ (NSString *)getAlertDescription:(NSNumber *)alertChoice;
-+ (NSDictionary *) alertIntervalDictionary;
-+ (NSDictionary *) alertSequenceDictionary;
-+ (NSString *)getAlertSequence:(NSNumber *)alertChoice;
-
 @property (nonatomic, assign) BOOL alertIsOn;
 @property (nonatomic, strong) NSMutableArray *alerts;
 
@@ -46,7 +38,12 @@
 // other attributes
 @property (nonatomic, copy) NSString *note;
 
-
+// Dictionary of alerts description, interval and sequence
++ (NSDictionary *) alertChoiceDictionary;
++ (NSString *)getAlertDescription:(NSNumber *)alertChoice;
++ (NSDictionary *) alertIntervalDictionary;
++ (NSDictionary *) alertSequenceDictionary;
++ (NSString *)getAlertSequence:(NSNumber *)alertChoice;
 
 - (instancetype)initWithAttributes:(NSDictionary *)attributes;
 

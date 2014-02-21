@@ -395,4 +395,51 @@ static NSDictionary *alertSequenceDictionary;
     return copy;
 }
 
+#pragma mark - NSCoding protocol methods
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if ((self = [super init])) {
+        self.sessionId = [aDecoder decodeIntegerForKey:@"sessionId"];
+        self.employer = [aDecoder decodeObjectForKey:@"employer"];
+        self.date = [aDecoder decodeObjectForKey:@"date"];
+        self.startTime = [aDecoder decodeObjectForKey:@"startTime"];
+        self.endTime = [aDecoder decodeObjectForKey:@"endTime"];
+        self.location = [aDecoder decodeObjectForKey:@"location"];
+        self.website = [aDecoder decodeObjectForKey:@"website"];
+        self.audience = [aDecoder decodeObjectForKey:@"audience"];
+        self.programs = [aDecoder decodeObjectForKey:@"programs"];
+        self.description = [aDecoder decodeObjectForKey:@"description"];
+        
+        self.weekNum = [aDecoder decodeIntegerForKey:@"weekNum"];
+        self.isCancelled = [aDecoder decodeBoolForKey:@"isCancelled"];
+        self.alertIsOn = [aDecoder decodeBoolForKey:@"alertIsOn"];
+        self.alerts = [aDecoder decodeObjectForKey:@"alerts"];
+        self.ekEvent = [aDecoder decodeObjectForKey:@"ekEvent"];
+        self.note = [aDecoder decodeObjectForKey:@"note"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeInteger:self.sessionId forKey:@"sessionId"];
+    [aCoder encodeObject:self.employer forKey:@"employer"];
+    [aCoder encodeObject:self.date forKey:@"date"];
+    [aCoder encodeObject:self.startTime forKey:@"startTime"];
+    [aCoder encodeObject:self.endTime forKey:@"endTime"];
+    [aCoder encodeObject:self.location forKey:@"location"];
+    [aCoder encodeObject:self.website forKey:@"website"];
+    [aCoder encodeObject:self.audience forKey:@"audience"];
+    [aCoder encodeObject:self.programs forKey:@"programs"];
+    [aCoder encodeObject:self.description forKey:@"description"];
+    
+    [aCoder encodeInteger:self.weekNum forKey:@"weekNum"];
+    [aCoder encodeBool:self.isCancelled forKey:@"isCancelled"];
+    [aCoder encodeBool:self.alertIsOn forKey:@"alertIsOn"];
+    
+    [aCoder encodeObject:self.alerts forKey:@"alerts"];
+    [aCoder encodeObject:self.ekEvent forKey:@"ekEvent"];
+    [aCoder encodeObject:self.note forKey:@"note"];
+
+}
+
 @end

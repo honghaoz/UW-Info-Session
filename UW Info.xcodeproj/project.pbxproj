@@ -10,7 +10,6 @@
 		1B19834918A618A60022A285 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19834818A618A60022A285 /* DetailViewController.m */; };
 		1B2040B918B3F75300C72D51 /* ProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1B2040B618B3F75300C72D51 /* ProgressHUD.bundle */; };
 		1B2040BA18B3F75300C72D51 /* ProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2040B818B3F75300C72D51 /* ProgressHUD.m */; };
-		1B2040BD18B5DBC100C72D51 /* InfoModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1B2040BB18B5DBC100C72D51 /* InfoModel.xcdatamodeld */; };
 		1B2040BF18B5DCB500C72D51 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2040BE18B5DCB500C72D51 /* CoreData.framework */; };
 		1B2076EB18AAA65100FE7088 /* AlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2076EA18AAA65100FE7088 /* AlertViewController.m */; };
 		1B2F746718AF66190042322B /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F745518AF66190042322B /* AFHTTPRequestOperation.m */; };
@@ -44,6 +43,7 @@
 		1B717E6E18A80A7A00E20A29 /* LoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E6C18A80A7A00E20A29 /* LoadingCell.m */; };
 		1B717E7118A80B8200E20A29 /* DetailDescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E7018A80B8200E20A29 /* DetailDescriptionCell.m */; };
 		1B717E7618A8294600E20A29 /* DetailNormalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E7518A8294600E20A29 /* DetailNormalCell.m */; };
+		1B8C557C18B7BCB60070CD82 /* EKEvent+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C557B18B7BCB60070CD82 /* EKEvent+NSCoding.m */; };
 		1BAD97E618A98F65006F4546 /* InfoSessionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97E518A98F65006F4546 /* InfoSessionModel.m */; };
 		1BAD97E918A9CAE2006F4546 /* UWTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */; };
 		1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */; };
@@ -80,7 +80,6 @@
 		1B2040B618B3F75300C72D51 /* ProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ProgressHUD.bundle; sourceTree = "<group>"; };
 		1B2040B718B3F75300C72D51 /* ProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressHUD.h; sourceTree = "<group>"; };
 		1B2040B818B3F75300C72D51 /* ProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressHUD.m; sourceTree = "<group>"; };
-		1B2040BC18B5DBC100C72D51 /* InfoModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = InfoModel.xcdatamodel; sourceTree = "<group>"; };
 		1B2040BE18B5DCB500C72D51 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		1B2076E918AAA65100FE7088 /* AlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertViewController.h; sourceTree = "<group>"; };
 		1B2076EA18AAA65100FE7088 /* AlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertViewController.m; sourceTree = "<group>"; };
@@ -144,6 +143,8 @@
 		1B717E7018A80B8200E20A29 /* DetailDescriptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailDescriptionCell.m; path = TableViewCell/DetailDescriptionCell.m; sourceTree = "<group>"; };
 		1B717E7418A8294600E20A29 /* DetailNormalCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailNormalCell.h; path = TableViewCell/DetailNormalCell.h; sourceTree = "<group>"; };
 		1B717E7518A8294600E20A29 /* DetailNormalCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailNormalCell.m; path = TableViewCell/DetailNormalCell.m; sourceTree = "<group>"; };
+		1B8C557A18B7BCB60070CD82 /* EKEvent+NSCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EKEvent+NSCoding.h"; path = "Category/EKEvent+NSCoding.h"; sourceTree = "<group>"; };
+		1B8C557B18B7BCB60070CD82 /* EKEvent+NSCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "EKEvent+NSCoding.m"; path = "Category/EKEvent+NSCoding.m"; sourceTree = "<group>"; };
 		1BAD97E418A98F65006F4546 /* InfoSessionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InfoSessionModel.h; path = Model/InfoSessionModel.h; sourceTree = "<group>"; };
 		1BAD97E518A98F65006F4546 /* InfoSessionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSessionModel.m; path = Model/InfoSessionModel.m; sourceTree = "<group>"; };
 		1BAD97E718A9CAE2006F4546 /* UWTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWTabBarController.h; path = ViewController/UWTabBarController.h; sourceTree = "<group>"; };
@@ -296,7 +297,6 @@
 				1B37453618A5BA28007CF08C /* InfoSession.m */,
 				1BAD97E418A98F65006F4546 /* InfoSessionModel.h */,
 				1BAD97E518A98F65006F4546 /* InfoSessionModel.m */,
-				1B2040BB18B5DBC100C72D51 /* InfoModel.xcdatamodeld */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -367,6 +367,15 @@
 			name = DetailViewController;
 			sourceTree = "<group>";
 		};
+		1B8C557918B72B490070CD82 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				1B8C557A18B7BCB60070CD82 /* EKEvent+NSCoding.h */,
+				1B8C557B18B7BCB60070CD82 /* EKEvent+NSCoding.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		1BD83A8818A59F1C00EDBB6D = {
 			isa = PBXGroup;
 			children = (
@@ -408,10 +417,11 @@
 			children = (
 				1B2F745318AF66190042322B /* AFNetworking */,
 				1B2F747018AF66210042322B /* UIKit+AFNetworking */,
+				1B37453D18A5D0D6007CF08C /* Networking Extensions */,
 				1BD83AA318A59F1C00EDBB6D /* UWAppDelegate.h */,
 				1BD83AA418A59F1C00EDBB6D /* UWAppDelegate.m */,
 				1BD83AA618A59F1C00EDBB6D /* Main.storyboard */,
-				1B37453D18A5D0D6007CF08C /* Networking Extensions */,
+				1B8C557918B72B490070CD82 /* Categories */,
 				1B37453818A5BA2C007CF08C /* Models */,
 				1B37453918A5BA3D007CF08C /* Controllers */,
 				1BD83AAF18A59F1C00EDBB6D /* Images.xcassets */,
@@ -579,7 +589,7 @@
 				1B2076EB18AAA65100FE7088 /* AlertViewController.m in Sources */,
 				1B2F746A18AF66190042322B /* AFNetworkReachabilityManager.m in Sources */,
 				1B2F746E18AF66190042322B /* AFURLResponseSerialization.m in Sources */,
-				1B2040BD18B5DBC100C72D51 /* InfoModel.xcdatamodeld in Sources */,
+				1B8C557C18B7BCB60070CD82 /* EKEvent+NSCoding.m in Sources */,
 				1B2F746D18AF66190042322B /* AFURLRequestSerialization.m in Sources */,
 				1BAD97F218A9DF30006F4546 /* SearchViewController.m in Sources */,
 				1B717E5F18A7F7DC00E20A29 /* DetailLinkCell.m in Sources */,
@@ -808,20 +818,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		1B2040BB18B5DBC100C72D51 /* InfoModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				1B2040BC18B5DBC100C72D51 /* InfoModel.xcdatamodel */,
-			);
-			currentVersion = 1B2040BC18B5DBC100C72D51 /* InfoModel.xcdatamodel */;
-			name = InfoModel.xcdatamodeld;
-			path = Model/InfoModel.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 1BD83A8918A59F1C00EDBB6D /* Project object */;
 }
