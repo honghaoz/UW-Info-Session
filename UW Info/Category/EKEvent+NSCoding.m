@@ -21,13 +21,14 @@
         self.alarms = [aDecoder decodeObjectForKey:@"alarms"];
         self.URL = [aDecoder decodeObjectForKey:@"URL"];
         self.notes = [aDecoder decodeObjectForKey:@"notes"];
-        self.calendar = [aDecoder decodeObjectForKey:@"calendar"];
+        //self.calendar = [aDecoder decodeObjectForKey:@"calendar"];
         
     }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder{
+    NSLog(@"ekevent encoder called");
     [aCoder encodeObject:self.title forKey:@"title"];
     [aCoder encodeInteger:self.availability forKey:@"availability"];
     [aCoder encodeObject:self.startDate forKey:@"startDate"];
@@ -37,7 +38,7 @@
     [aCoder encodeObject:self.alarms forKey:@"alarms"];
     [aCoder encodeObject:self.URL forKey:@"URL"];
     [aCoder encodeObject:self.notes forKey:@"notes"];
-    [aCoder encodeObject:self.calendar forKey:@"calendar"];
+    //[aCoder encodeObject:self.calendar forKey:@"calendar"];
 }
 
 @end

@@ -34,10 +34,6 @@
 
 @interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
 
-// Used for manage calendar event, only initiate once!
-@property (nonatomic, strong) EKEventStore *eventStore;
-@property (nonatomic, strong) EKCalendar *defaultCalendar;
-
 - (IBAction)addToMyInfo:(id)sender;
 
 @end
@@ -129,8 +125,9 @@
  *  @param sender calendar button
  */
 - (void)addToCalendar:(id)sender {
-    if (_eventStore == nil) {
-        _eventStore = [[EKEventStore alloc] init];
+    if (_infoSessionModel.eventStore == nil) {
+        NSLog(@"new eventStore is created");
+        _infoSessionModel.eventStore = [[EKEventStore alloc] init];
     }
     // Check whether we are authorized to access Calendar
     [self checkEventStoreAccessForCalendar];
@@ -175,7 +172,7 @@
  */
 -(void)requestCalendarAccess
 {
-    [_eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error)
+    [_infoSessionModel.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error)
      {
          if (granted)
          {
@@ -201,8 +198,15 @@
  */
 -(void)accessGrantedForCalendar
 {
-    // Let's get the default calendar associated with our event store
-    _defaultCalendar = _eventStore.defaultCalendarForNewEvents;
+    // if this infoSession's calendarId is not nil, use this calendarId to initiate default calendar
+    if (_infoSession.calendarId != nil) {
+        _infoSessionModel.defaultCalendar = [_infoSessionModel.eventStore calendarWithIdentifier:_infoSession.calendarId];
+    }
+    // else if infoSession's calendarId is nil, or defaultCalendar is initiated failed in last if statement
+    if (_infoSession.calendarId == nil || _infoSessionModel.defaultCalendar == nil) {
+        // Let's get the default calendar associated with our event store
+        _infoSessionModel.defaultCalendar = _infoSessionModel.eventStore.defaultCalendarForNewEvents;
+    }
     [self showEventEditViewController];
 }
 
@@ -210,16 +214,45 @@
     // Create an instance of EKEventEditViewController
     EKEventEditViewController *addController = [[EKEventEditViewController alloc] init];
     
+    // changed UI to meet this app's style
     [addController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
     addController.navigationBar.tintColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
     
     // Set addController's event store to the current event store
-    addController.eventStore = _eventStore;
+    addController.eventStore = _infoSessionModel.eventStore;
     
     // creat a new event
-    EKEvent *event = [EKEvent eventWithEventStore:_eventStore];
+    EKEvent *event = [EKEvent eventWithEventStore:_infoSessionModel.eventStore];
+    
+    // if ekEvent and eventId all are nil, then this event is not saved,
+    // try to fetch the event according the startDate and endDate and title ...
+    if (_infoSession.ekEvent == nil && _infoSession.eventId == nil) {
+        NSLog(@"ekEvent and eventId are all nil. try to fetch1");
+        _infoSession.ekEvent = [self fetchEventAccordingStartDate:_infoSession.startTime andEndDate:_infoSession.endTime];
+    }
+    // if ekEvent is nil but eventId is not nil, then this event is saved and restore from file
+    // try to fetch the event with eventId.
+    else if (_infoSession.ekEvent == nil && _infoSession.eventId != nil) {
+        NSLog(@"ekEvent is nil but eventId is not nil. try to fetch2");
+        // fetch the event according the infosession's eventId
+        _infoSession.ekEvent = [self fetchEventWithId:_infoSession.eventId];
+    }
+    else if (_infoSession.ekEvent != nil && _infoSession.eventId != nil) {
+        NSLog(@"ekEvent and eventId are all not nil");
+    } else {
+        _infoSession.ekEvent == nil ? NSLog(@"ekevent is nil") : NSLog(@"ekevent is not nil");
+        _infoSession.eventId == nil ? NSLog(@"eventId is nil") : NSLog(@"eventId is not nil");
+        NSLog(@"never log out!!");
+    }
+    
     // if infosession's event is nil or refresh failed (means this event is deleted)
     if (_infoSession.ekEvent == nil || ![_infoSession.ekEvent refresh]) {
+        if (_infoSession.ekEvent == nil) {
+            NSLog(@"fetched event is nil");
+        } else if (![_infoSession.ekEvent refresh]) {
+            NSLog(@"event is deleted");
+        }
+        NSLog(@"new event is created");
         [event setTitle:_infoSession.employer];
         [event setLocation:_infoSession.location];
         [event setStartDate:_infoSession.startTime];
@@ -228,17 +261,49 @@
         [event setURL:[NSURL URLWithString:_infoSession.website]];
         [event setNotes:_infoSession.note];
         
-        [event setCalendar:_defaultCalendar];
+        [event setCalendar:_infoSessionModel.defaultCalendar];
     }
     // infosession's event already exists
     else {
+        NSLog(@"old event is read");
         event = _infoSession.ekEvent;
     }
     
     addController.event = event;
     addController.editViewDelegate = self;
+    self.performedNavigation = @"addCalendarEvent";
     [self presentViewController:addController animated:YES completion:nil];
 }
+
+/**
+ *  Fetch the event with eventIdentifier
+ *
+ *  @param eventId EKEvent eventIdentifier
+ *
+ *  @return the event if exsit, else nil
+ */
+- (EKEvent *)fetchEventWithId:(NSString *)eventId {
+    return [_infoSessionModel.eventStore eventWithIdentifier:eventId];
+}
+
+- (EKEvent *)fetchEventAccordingStartDate:(NSDate *)startDate andEndDate:(NSDate *)endDate {
+    NSPredicate *predicate = [_infoSessionModel.eventStore predicateForEventsWithStartDate:startDate
+                                                            endDate:endDate
+                                                          calendars:nil];
+    NSArray *events = [_infoSessionModel.eventStore eventsMatchingPredicate:predicate];
+    EKEvent *theEvent = nil;
+    NSLog(@"event count: %i", [events count]);
+    for (EKEvent *eachEvent in events) {
+        NSLog(@"%@ == %@", eachEvent.title, _infoSession.employer);
+        if ([eachEvent.title isEqualToString:_infoSession.employer]) {
+            NSLog(@"find the evnet!!");
+            theEvent = eachEvent;
+            break;
+        }
+    }
+    return theEvent;
+}
+
 
 /**
  *  EventEditViewController delegate method
@@ -253,27 +318,33 @@
     }
     else if (action == EKEventEditViewActionSaved) {
         NSLog(@"Saved edited");
-//        NSLog(@"calendarId: %@", [controller.event.calendar calendarIdentifier]);
-//        NSLog(@"eventId: %@", [controller.event eventIdentifier]);
         _infoSession.ekEvent = controller.event;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeChanged:) name:EKEventStoreChangedNotification object:_eventStore];
-        [self backupInfoSession];
+        _infoSession.calendarId = [controller.event.calendar calendarIdentifier];
+        _infoSession.eventId = [controller.event eventIdentifier];
+        
+        NSLog(@"calendarId: %@", _infoSession.calendarId);
+        NSLog(@"eventID: %@", _infoSession.eventId);
+        
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeChanged:) name:EKEventStoreChangedNotification object:_eventStore];
     } else if (action == EKEventEditViewActionDeleted) {
+        NSLog(@"deleted event");
         _infoSession.ekEvent = nil;
-        NSLog(@"Deleted edited");
-        [self backupInfoSession];
+        _infoSession.calendarId = nil;
+        _infoSession.eventId = nil;
+        //NSLog(@"Deleted edited");
     }
+    [self backupInfoSession];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-/**
- *  Notification Handler, used handle eventStore is changed
- *
- *  @param sender Send?
- */
--(void)storeChanged:(id)sender {
-    NSLog(@"event store changed");
-}
+///**
+// *  Notification Handler, used handle eventStore is changed
+// *
+// *  @param sender Send?
+// */
+//-(void)storeChanged:(id)sender {
+//    NSLog(@"event store changed");
+//}
 
 #pragma mark - Table view data source
 
@@ -918,9 +989,7 @@
             [UIView animateWithDuration:0.2 animations:^{
                 [self animateSnapshotOfView:self.view.window toTab:_tabBarController.viewControllers[1]];
             }completion:^(BOOL finished) {
-//                // set badge
-//                NSInteger futureInfoSessions = [_infoSessionModel countFutureInfoSessions:_infoSessionModel.myInfoSessions];
-//                [[navigation tabBarItem] setBadgeValue: futureInfoSessions == 0 ? nil: NSIntegerToString(futureInfoSessions)];
+                // set badge
                 [_tabBarController setBadge];
                 
                 // if added, replace _infoSession to the added infoSession in myInfoSession

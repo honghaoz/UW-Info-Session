@@ -151,7 +151,6 @@
     return count;
 }
 
-
 - (void)handleFirstTime {
     NSLog([[NSUserDefaults standardUserDefaults] boolForKey:@"hasRun"] ? @"Has Run" : @"Run For The First Time");
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasRun"]) {
@@ -159,6 +158,10 @@
         [InfoSessionModel saveMap];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasRun"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    // if has run, but map file is missing, then saveMap again.
+    else if (![InfoSessionModel checkMap]) {
+        [InfoSessionModel saveMap];
     }
 }
 
@@ -182,6 +185,11 @@
 + (UIImage *)loadMap {
     NSData *pngData = [NSData dataWithContentsOfFile:[self dataFilePath:@"uw_map.png"]];
     return [UIImage imageWithData:pngData];
+}
+
++ (BOOL)checkMap {
+    NSString *path = [InfoSessionModel dataFilePath:@"uw_map.png"];
+    return [[NSFileManager defaultManager]fileExistsAtPath:path];
 }
 
 - (void)saveInfoSessions {

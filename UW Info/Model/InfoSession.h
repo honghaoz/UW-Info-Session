@@ -35,6 +35,9 @@
 // calendar EKEvent
 @property (nonatomic, strong) EKEvent *ekEvent;
 
+@property (nonatomic, copy) NSString *calendarId;
+@property (nonatomic, copy) NSString *eventId;
+
 // other attributes
 @property (nonatomic, copy) NSString *note;
 

@@ -391,6 +391,8 @@ static NSDictionary *alertSequenceDictionary;
     }
     // !!! ekEvent is not conform NSCopying Protocol, so, just assgin.
     copy.ekEvent = self.ekEvent;
+    copy.calendarId = [self.calendarId copy];
+    copy.eventId = [self.eventId copy];
     copy.note = [self.note copy];
     return copy;
 }
@@ -414,7 +416,9 @@ static NSDictionary *alertSequenceDictionary;
         self.isCancelled = [aDecoder decodeBoolForKey:@"isCancelled"];
         self.alertIsOn = [aDecoder decodeBoolForKey:@"alertIsOn"];
         self.alerts = [aDecoder decodeObjectForKey:@"alerts"];
-        self.ekEvent = [aDecoder decodeObjectForKey:@"ekEvent"];
+        //self.ekEvent = [aDecoder decodeObjectForKey:@"ekEvent"];
+        self.calendarId = [aDecoder decodeObjectForKey:@"calendarId"];
+        self.eventId = [aDecoder decodeObjectForKey:@"eventId"];
         self.note = [aDecoder decodeObjectForKey:@"note"];
     }
     return self;
@@ -437,7 +441,9 @@ static NSDictionary *alertSequenceDictionary;
     [aCoder encodeBool:self.alertIsOn forKey:@"alertIsOn"];
     
     [aCoder encodeObject:self.alerts forKey:@"alerts"];
-    [aCoder encodeObject:self.ekEvent forKey:@"ekEvent"];
+    //[aCoder encodeObject:self.ekEvent forKey:@"ekEvent"];
+    [aCoder encodeObject:self.calendarId forKey:@"calendarId"];
+    [aCoder encodeObject:self.eventId forKey:@"eventId"];
     [aCoder encodeObject:self.note forKey:@"note"];
 
 }

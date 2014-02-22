@@ -33,14 +33,6 @@
     [super viewDidLoad];
     NSLog(@"UWTabbar viweDidLoad");
     _lastTapped = -1;
-//    [self.tabBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:0.9]];
-    
-     //[UIColor colorWithRed:0/255.0 green:213/255.0 blue:161/255.0 alpha:1]];
-    
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
     
     UITabBar *tabBar = self.tabBar;
     [tabBar setBarStyle:UIBarStyleBlackOpaque];
@@ -56,6 +48,11 @@
     self.tabBar.tintColor = [UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0];
 	// Do any additional setup after loading the view.
     self.isHidden = NO;
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
     // initiate three VC in tabbarController
     NSLog(@"initiate three VC in tabbarController");
