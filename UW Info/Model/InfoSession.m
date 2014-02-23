@@ -22,6 +22,8 @@ static NSDictionary *alertChoiceDictionary;
 static NSDictionary *alertIntervalDictionary;
 static NSDictionary *alertSequenceDictionary;
 
+static EKEventStore *eventStore;
+
 @interface InfoSession()
 
 @property (nonatomic, readwrite, assign) NSUInteger sessionId;
@@ -41,6 +43,8 @@ static NSDictionary *alertSequenceDictionary;
 @end
 
 @implementation InfoSession
+
+#pragma mark - query Dictionary (Alert related)
 
 // Dictionary of alerts description, interval and sequence
 + (NSDictionary *)alertChoiceDictionary {
@@ -77,6 +81,8 @@ static NSDictionary *alertSequenceDictionary;
 + (NSString *)getAlertSequence:(NSNumber *)alertChoice {
     return [InfoSession alertSequenceDictionary][[alertChoice stringValue]];
 }
+
+#pragma make - Initiate a new InfoSession instance
 
 /**
  *  Initiate NSArray sessions.
@@ -172,6 +178,12 @@ static NSDictionary *alertSequenceDictionary;
     
 }
 
+//- (NSURL *)logoImageURL {
+//    return [NSURL URLWithString:[NSString stringWithFormat:@"http://g.etfv.co/%@", self.website]];
+//}
+
+#pragma mark - Other helper methods
+
 /**
  *  Get the Week number of NSDate
  *
@@ -184,11 +196,6 @@ static NSDictionary *alertSequenceDictionary;
     [dateFormatter setDateFormat:@"w"];
     return [[dateFormatter stringFromDate:date] intValue];
 }
-
-//- (NSURL *)logoImageURL {
-//    return [NSURL URLWithString:[NSString stringWithFormat:@"http://g.etfv.co/%@", self.website]];
-//}
-
 
 /**
  *  Compare to another infoSession, according startTime
@@ -238,14 +245,30 @@ static NSDictionary *alertSequenceDictionary;
 - (BOOL)isChangedCompareTo:(InfoSession *)anotherInfoSession {
     if (self.alertIsOn == anotherInfoSession.alertIsOn &&
         [self.alerts isEqualToArray:anotherInfoSession.alerts] &&
-        (self.note == anotherInfoSession.note || [self.note isEqualToString:anotherInfoSession.note]) &&
-        (self.ekEvent == anotherInfoSession.ekEvent)) {
+        (self.note == anotherInfoSession.note || [self.note isEqualToString:anotherInfoSession.note])) {
         return NO;
     }
     else {
         return YES;
     }
 }
+
+/**
+ *  Static variable eventStore, only initiate once.
+ *
+ *  @return EKEventStore instance
+ */
++ (EKEventStore *)eventStore {
+    if (eventStore == nil) {
+        eventStore = [[EKEventStore alloc] init];
+        return eventStore;
+    } else {
+        return eventStore;
+    }
+
+}
+
+#pragma mark - Alerts related methods
 
 /**
  *  Create new alert Dictionary, which is an elements of self.alerts
@@ -345,13 +368,15 @@ static NSDictionary *alertSequenceDictionary;
     if (self.alertIsOn) {
         NSMutableArray *ekalarms = [[NSMutableArray alloc] init];
         for (NSMutableDictionary *eachAlert in self.alerts) {
-            NSLog(@"offset %f", [eachAlert[@"alertInterval"] doubleValue]);
+            //NSLog(@"offset %f", [eachAlert[@"alertInterval"] doubleValue]);
             [ekalarms addObject:[EKAlarm alarmWithRelativeOffset:[eachAlert[@"alertInterval"] doubleValue]]];
         }
         return ekalarms;
     }
     return nil;
 }
+
+#pragma mark - NSCopying Protocol method
 
 /**
  *  NSCopying Protocal method, make a copy of InfoSession object (ekEvent is not copied!!!)
@@ -389,8 +414,22 @@ static NSDictionary *alertSequenceDictionary;
         [newAlert setObject:newInterval forKey:@"alertInterval"];
         [copy.alerts addObject:newAlert];
     }
-    // !!! ekEvent is not conform NSCopying Protocol, so, just assgin.
-    copy.ekEvent = self.ekEvent;
+    // !!! ekEvent is not conform NSCopying Protocol, so, need process specially
+    if (self.ekEvent == nil) {
+        copy.ekEvent = nil;
+    } else {
+        copy.ekEvent = [EKEvent eventWithEventStore:eventStore];
+        copy.ekEvent = [eventStore eventWithIdentifier:self.ekEvent.eventIdentifier];
+        [copy.ekEvent setTitle:[self.ekEvent.title copy]];
+        [copy.ekEvent setLocation:[self.ekEvent.location copy]];
+        [copy.ekEvent setStartDate:[self.ekEvent.startDate copy]];
+        [copy.ekEvent setEndDate:[self.ekEvent.endDate copy]];
+        [copy.ekEvent setAlarms:[self.ekEvent.alarms copy]];
+        [copy.ekEvent setURL:[self.ekEvent.URL copy]];
+        [copy.ekEvent setNotes:[self.ekEvent.notes copy]];
+        
+        [copy.ekEvent setCalendar:[eventStore calendarWithIdentifier:self.ekEvent.calendarItemIdentifier]];
+    }
     copy.calendarId = [self.calendarId copy];
     copy.eventId = [self.eventId copy];
     copy.note = [self.note copy];

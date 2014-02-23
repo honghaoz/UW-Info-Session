@@ -14,12 +14,6 @@
 @class UWTabBarController;
 @class DetailDescriptionCell;
 
-//@protocol DetailViewControllerDelegate <NSObject>
-//
-//- (void)detailViewController:(DetailViewController *)detailController didAddInfoSession:(InfoSession *)infoSession;
-//
-//@end
-
 @interface DetailViewController : UITableViewController <AlertViewControllerDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) NSString *caller;
@@ -29,8 +23,8 @@
 @property (nonatomic, weak) DetailDescriptionCell *noteCell;
 
 @property (nonatomic, weak) UWTabBarController *tabBarController;
-@property (nonatomic, copy) NSString *performedNavigation;
 
-//@property (nonatomic, weak) UITabBarController <DetailViewControllerDelegate> *delegate;
+// performedNavigation is a string records what navigation action causes DetailView disappears
+@property (nonatomic, copy) NSString *performedNavigation;
 
 @end

@@ -12,7 +12,7 @@
 
 -(id)init {
     if ((self = [super init])) {
-        NSLog(@"InfoSessionModel Initiated!");
+        //NSLog(@"InfoSessionModel Initiated!");
         [self loadInfoSessions];
         [self handleFirstTime];
     }
@@ -26,7 +26,7 @@
  */
 -(NSMutableArray *)myInfoSessions {
     if (_myInfoSessions == nil) {
-        NSLog(@"myInfoSessions initiated!");
+        //NSLog(@"myInfoSessions initiated!");
         _myInfoSessions = [[NSMutableArray alloc] init];
         return _myInfoSessions;
     } else {
@@ -193,6 +193,7 @@
 }
 
 - (void)saveInfoSessions {
+    NSLog(@"saved data");
     NSMutableData *data = [[NSMutableData alloc]init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
     [archiver encodeObject:_infoSessions forKey:@"infoSessions"];
@@ -212,8 +213,8 @@
         //_infoSessions = [unarchiver decodeObjectForKey:@"infoSessions"];
         //_infoSessionsDictionary = [unarchiver decodeObjectForKey:@"infoSessionsDictionary"];
         _myInfoSessions = [unarchiver decodeObjectForKey:@"myInfoSessions"];
-        NSLog(@"infoSessionsCount: %i", [_infoSessions count]);
-        NSLog(@"myInfoSessionsCount: %i", [_myInfoSessions count]);
+        NSLog(@"infoSessionsCount: %lu", (unsigned long)[_infoSessions count]);
+        NSLog(@"myInfoSessionsCount: %lu", (unsigned long)[_myInfoSessions count]);
         [unarchiver finishDecoding];
     }else{
         //self.lists = [[NSMutableArray alloc]initWithCapacity:20];

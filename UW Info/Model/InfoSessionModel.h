@@ -26,7 +26,7 @@ typedef NS_ENUM(NSUInteger, UW){
 
 
 // Used for manage calendar event, only initiate once!
-@property (nonatomic, strong) EKEventStore *eventStore;
+//@property (nonatomic, strong) EKEventStore *eventStore;
 @property (nonatomic, strong) EKCalendar *defaultCalendar;
 
 - (void)processInfoSessionsDictionary:(NSDictionary *)dictionary withInfoSessions:(NSArray *)array;

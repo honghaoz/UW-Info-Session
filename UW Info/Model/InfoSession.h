@@ -35,6 +35,7 @@
 // calendar EKEvent
 @property (nonatomic, strong) EKEvent *ekEvent;
 
+// two id related to Calendar Event
 @property (nonatomic, copy) NSString *calendarId;
 @property (nonatomic, copy) NSString *eventId;
 
@@ -47,6 +48,9 @@
 + (NSDictionary *) alertIntervalDictionary;
 + (NSDictionary *) alertSequenceDictionary;
 + (NSString *)getAlertSequence:(NSNumber *)alertChoice;
+
+// Used for manage calendar event, only initiate once!
++ (EKEventStore *) eventStore;
 
 - (instancetype)initWithAttributes:(NSDictionary *)attributes;
 

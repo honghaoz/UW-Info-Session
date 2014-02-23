@@ -125,10 +125,11 @@
  *  @param sender calendar button
  */
 - (void)addToCalendar:(id)sender {
-    if (_infoSessionModel.eventStore == nil) {
-        NSLog(@"new eventStore is created");
-        _infoSessionModel.eventStore = [[EKEventStore alloc] init];
-    }
+//    if (_infoSessionModel.eventStore == nil) {
+//        NSLog(@"new eventStore is created");
+//        _infoSessionModel.eventStore = [[EKEventStore alloc] init];
+//    }
+    [InfoSession eventStore];
     // Check whether we are authorized to access Calendar
     [self checkEventStoreAccessForCalendar];
     
@@ -172,7 +173,7 @@
  */
 -(void)requestCalendarAccess
 {
-    [_infoSessionModel.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error)
+    [[InfoSession eventStore] requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error)
      {
          if (granted)
          {
@@ -200,16 +201,19 @@
 {
     // if this infoSession's calendarId is not nil, use this calendarId to initiate default calendar
     if (_infoSession.calendarId != nil) {
-        _infoSessionModel.defaultCalendar = [_infoSessionModel.eventStore calendarWithIdentifier:_infoSession.calendarId];
+        _infoSessionModel.defaultCalendar = [[InfoSession eventStore] calendarWithIdentifier:_infoSession.calendarId];
     }
     // else if infoSession's calendarId is nil, or defaultCalendar is initiated failed in last if statement
     if (_infoSession.calendarId == nil || _infoSessionModel.defaultCalendar == nil) {
         // Let's get the default calendar associated with our event store
-        _infoSessionModel.defaultCalendar = _infoSessionModel.eventStore.defaultCalendarForNewEvents;
+        _infoSessionModel.defaultCalendar = [InfoSession eventStore].defaultCalendarForNewEvents;
     }
     [self showEventEditViewController];
 }
 
+/**
+ *  Called after accessGrantedForCalendar
+ */
 - (void)showEventEditViewController {
     // Create an instance of EKEventEditViewController
     EKEventEditViewController *addController = [[EKEventEditViewController alloc] init];
@@ -219,10 +223,10 @@
     addController.navigationBar.tintColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
     
     // Set addController's event store to the current event store
-    addController.eventStore = _infoSessionModel.eventStore;
+    addController.eventStore = [InfoSession eventStore];
     
     // creat a new event
-    EKEvent *event = [EKEvent eventWithEventStore:_infoSessionModel.eventStore];
+    EKEvent *event = [EKEvent eventWithEventStore:[InfoSession eventStore]];
     
     // if ekEvent and eventId all are nil, then this event is not saved,
     // try to fetch the event according the startDate and endDate and title ...
@@ -283,16 +287,24 @@
  *  @return the event if exsit, else nil
  */
 - (EKEvent *)fetchEventWithId:(NSString *)eventId {
-    return [_infoSessionModel.eventStore eventWithIdentifier:eventId];
+    return [[InfoSession eventStore] eventWithIdentifier:eventId];
 }
 
+/**
+ *  Fetch the event is between this infoSession's startTime and endTime and title == employer
+ *
+ *  @param startDate NSDate startTime
+ *  @param endDate   NSDate endTime
+ *
+ *  @return the EKEvent meet the predicater or nil if not found.
+ */
 - (EKEvent *)fetchEventAccordingStartDate:(NSDate *)startDate andEndDate:(NSDate *)endDate {
-    NSPredicate *predicate = [_infoSessionModel.eventStore predicateForEventsWithStartDate:startDate
+    NSPredicate *predicate = [[InfoSession eventStore] predicateForEventsWithStartDate:startDate
                                                             endDate:endDate
                                                           calendars:nil];
-    NSArray *events = [_infoSessionModel.eventStore eventsMatchingPredicate:predicate];
+    NSArray *events = [[InfoSession eventStore] eventsMatchingPredicate:predicate];
     EKEvent *theEvent = nil;
-    NSLog(@"event count: %i", [events count]);
+    NSLog(@"event count: %lu", (unsigned long)[events count]);
     for (EKEvent *eachEvent in events) {
         NSLog(@"%@ == %@", eachEvent.title, _infoSession.employer);
         if ([eachEvent.title isEqualToString:_infoSession.employer]) {
@@ -304,7 +316,6 @@
     return theEvent;
 }
 
-
 /**
  *  EventEditViewController delegate method
  *
@@ -314,7 +325,7 @@
 - (void)eventEditViewController:(EKEventEditViewController *)controller
           didCompleteWithAction:(EKEventEditViewAction)action {
     if (action == EKEventEditViewActionCanceled) {
-         NSLog(@"Canceled edit");
+        NSLog(@"Canceled edit");
     }
     else if (action == EKEventEditViewActionSaved) {
         NSLog(@"Saved edited");
@@ -885,6 +896,8 @@
                 }
             }
         }];
+        // save to file
+        [_infoSessionModel saveInfoSessions];
     }
 }
 
@@ -999,6 +1012,8 @@
                 openedMyInfo = YES;
                 // reload tabale
                 [self.tableView reloadData];
+                // save to file
+                [_infoSessionModel saveInfoSessions];
             }];
         }
     }
@@ -1007,94 +1022,11 @@
         if ([_infoSessionBackup isChangedCompareTo:_infoSession]) {
             [ProgressHUD showSuccess:@"Modified successfully!" Interacton:YES];
             [self backupInfoSession];
+            // save to file
+            [_infoSessionModel saveInfoSessions];
         }
     }
 }
-
-//    
-//    if (addResult == UWReplaced) {
-//        NSLog(@"replaced!");
-//        [ProgressHUD showSuccess:@"Modified successfully!" Interacton:YES];
-//
-//    } else
-//    
-    
-//    CALayer * layerToThrow = [CALayer layer]; [layerToThrow setFrame:[viewToThrow frame]]; UIImage * viewContentImage = [self imageRepresentationOfView:viewToThrow]; [layerToThrow setContents:(id)[viewContentImage CGImage]]; [[[self view] layer] insertSublayer:layerToThrow above:[viewToThrow layer]];
-    
-    
-//    [UIView animateWithDuration:0.5 animations:^{
-    
-        
-        
-////        [navigation tabBarItem].image = [UIImage imageNamed:@"List"];
-//        UIImageView *addImageView = [[UIImageView alloc] initWithFrame:CGRectMake(147, 7, 25, 23)];
-//        addImageView.image = [[UIImage imageNamed:@"Bookmarks-selected"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//        
-//        [addImageView setTintColor:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
-//        //[addImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//        
-//        [UIView animateWithDuration:0.5
-//                         animations:^
-//         {
-//             [self.tabBarController.tabBar addSubview:addImageView];
-//             //move right
-//             addImageView.center = CGPointMake(addImageView.center.x +2, addImageView.center.y +2);
-//         }
-//                         completion:^(BOOL completed)
-//         {
-//             
-//             if (completed)
-//             {
-//                 //completed move right..now move left
-//                 [UIView animateWithDuration:1
-//                                  animations:^
-//                  {
-//                      addImageView.center = CGPointMake(addImageView.center.x -2, addImageView.center.y -2);
-//                  }];
-//                 [addImageView removeFromSuperview];
-//             }
-//         }];
-//    }completion:^(BOOL finished) {
-//        [[navigation tabBarItem] setBadgeValue:nil];
-//    }];
-    
-    
-    
-    
-    //    });
-    //    dispatch_sync(q, ^{
-    //[self.delegate detailViewController:self didAddInfoSession:_infoSession];
-    //    });
-    
-    //[self.delegate detailViewController:self didAddInfoSession:_infoSession];
-    //[self.tabBarController setSelectedIndex:10];
-    //NSLog(@"%i", [self.tabBarController.viewControllers count]);
-    //    UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:0];
-    //    [navController popToRootViewControllerAnimated:YES];
-//}
-//
-
-//- (UIImage *)imageRepresentationOfView:(UIView *)view {
-//    CGSize imageSize = [view frame].size; BOOL imageIsOpaque = [view isOpaque];
-//    CGFloat imageScale = 0.0; // automatically set to scale factor of main screen
-//    UIGraphicsBeginImageContextWithOptions(imageSize, imageIsOpaque, imageScale); CALayer * drawingLayer = [view layer];
-//    [drawingLayer renderInContext:UIGraphicsGetCurrentContext()];
-//    UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
-//    return image;
-//}
-//
-//- (CGRect)approximateFrameForTabBarItemAtIndex:(NSUInteger)barItemIndex  inTabBar:(UITabBar *)tabBar {
-//    CGFloat barMidX = CGRectGetMidX([tabBar frame]);
-//    CGSize barItemSize = CGSizeMake(80.0, 45.0);
-//    CGFloat distanceBetweenBarItems = 110.0;
-//    CGFloat barItemX = barItemIndex*distanceBetweenBarItems + barItemSize.width*0.5;
-//    CGFloat totalBarItemsWidth = ([tabBar.items count]-1)*distanceBetweenBarItems + barItemSize.width;
-//    barItemX += barMidX - round(totalBarItemsWidth*0.5);
-//    return CGRectMake(barItemX, CGRectGetMinY([tabBar frame]), 30.0, barItemSize.height);
-//}
-//
-//- (CGFloat)scaleFactorForView:(UIView *)view toFitInSize:(CGSize)size { CGFloat viewWidth = CGRectGetWidth([view frame]); CGFloat viewHeight = CGRectGetHeight([view frame]);  CGFloat viewAspect = viewWidth/viewHeight; CGFloat sizeAspect = size.width/size.height;  if (viewAspect > sizeAspect) { return MIN(1.0, (size.width/viewWidth)); } else { return MIN(1.0, (size.height/viewHeight)); } }
 
 /**
  *  Magic animation!!! Capture the current screen and drop to tabbar
