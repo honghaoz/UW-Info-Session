@@ -20,6 +20,7 @@
 
 @implementation MyInfoViewController {
     UIRefreshControl *refreshControl;
+    UIBarButtonItem *editButton;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -47,6 +48,9 @@
     NSLog(@"MyInfoVC DidLoad");
     [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    
+    // initiate the right buttons
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(enterEditMode:)] animated:YES];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(reloadTable) forControlEvents:UIControlEventValueChanged];
@@ -85,10 +89,12 @@
 {
     if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
         LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EmptyCell"];
-        //cell.loadingIndicator.hidden = YES;
-        //cell.loadingLabel.text = @"No Info Session Saved";
-        //[cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
-        //[cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
+        
+        // set the label vertically align center.
+        CGRect newFrame = cell.loadingLabel.frame;
+        newFrame.origin.y = [self tableView:tableView heightForRowAtIndexPath:indexPath] / 2 - cell.loadingLabel.frame.size.height / 2;
+        cell.loadingLabel.frame = newFrame;
+        
         return cell;
     } else {
         InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InfoSessionCell"];
@@ -171,7 +177,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // empty cell
     if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
-        return 44.0f;
+        return 70.0f;
     } else {
         // info session cell
         return 70.0f;
@@ -190,14 +196,13 @@
     
 }
 
-/*
+
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-*/
 
 
 // Override to support editing the table view.
@@ -216,15 +221,23 @@
                 if ([controller isKindOfClass:[DetailViewController class]]) {
                     // get the tabbar item0's detailViewController
                     DetailViewController *detailController = (DetailViewController *)controller;
+                    // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
                     if ([infoSessionToBeDeleted isEqual:detailController.infoSession]) {
                         detailController.infoSessionBackup = nil;
                     }
                 }
             }
-            
+            // save to file
+            [_infoSessionModel saveInfoSessions];
         }
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        if ([_infoSessionModel.myInfoSessions count] != 0) {
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        // if last item is deleted
+        else {
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self enterEditMode:nil];
+        }
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -246,6 +259,16 @@
     return YES;
 }
 */
+
+- (void)enterEditMode:(id)sender {
+    if ([self.tableView isEditing]) {
+        [self.tableView setEditing:NO animated:YES];
+        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(enterEditMode:)] animated:YES];
+    } else {
+        [self.tableView setEditing:YES animated:YES];
+        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(enterEditMode:)] animated:YES];
+    }
+}
 
 
 #pragma mark - Navigation

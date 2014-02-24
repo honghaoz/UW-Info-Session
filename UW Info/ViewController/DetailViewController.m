@@ -878,6 +878,7 @@
                     if ([controller isKindOfClass:[DetailViewController class]]) {
                         // get the tabbar item0's detailViewController
                         DetailViewController *detailController = (DetailViewController *)controller;
+                        // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
                         if ([_infoSession isEqual:detailController.infoSession]) {
                             detailController.infoSessionBackup = nil;
                         }
