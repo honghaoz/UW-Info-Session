@@ -876,6 +876,7 @@
                 if ([infoSessionVCNavigationController.viewControllers count] > 1) {
                     UITableViewController *controller = infoSessionVCNavigationController.viewControllers[1];
                     if ([controller isKindOfClass:[DetailViewController class]]) {
+                        // get the tabbar item0's detailViewController
                         DetailViewController *detailController = (DetailViewController *)controller;
                         if ([_infoSession isEqual:detailController.infoSession]) {
                             detailController.infoSessionBackup = nil;

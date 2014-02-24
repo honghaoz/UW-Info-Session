@@ -12,6 +12,7 @@
 #import "LoadingCell.h"
 #import "DetailViewController.h"
 #import "UWTabBarController.h"
+#import "InfoSessionsViewController.h"
 
 @interface MyInfoViewController ()
 
@@ -198,19 +199,37 @@
 }
 */
 
-/*
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        InfoSession *infoSessionToBeDeleted = _infoSessionModel.myInfoSessions[indexPath.row];
+        if ([InfoSessionModel deleteInfoSession:infoSessionToBeDeleted in:_infoSessionModel.myInfoSessions] == UWDeleted) {
+            NSLog(@"deleted");
+            [_tabBarController setBadge];
+            
+            UINavigationController *infoSessionVCNavigationController = _tabBarController.infoSessionsViewController.navigationController;
+            // if count > 1, means detailView is shown
+            if ([infoSessionVCNavigationController.viewControllers count] > 1) {
+                UITableViewController *controller = infoSessionVCNavigationController.viewControllers[1];
+                if ([controller isKindOfClass:[DetailViewController class]]) {
+                    // get the tabbar item0's detailViewController
+                    DetailViewController *detailController = (DetailViewController *)controller;
+                    if ([infoSessionToBeDeleted isEqual:detailController.infoSession]) {
+                        detailController.infoSessionBackup = nil;
+                    }
+                }
+            }
+            
+        }
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
 
 /*
 // Override to support rearranging the table view.
