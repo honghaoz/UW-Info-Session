@@ -44,6 +44,12 @@
     return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    NSLog(@"need refresh today's colour");
+}
+
+
 /**
  *  initiate left & right bar buttons, reload data for the first time.
  */

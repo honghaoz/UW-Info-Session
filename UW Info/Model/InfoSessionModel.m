@@ -107,6 +107,7 @@
                                    usingComparator:comparator];
         
         [array insertObject:infoSession atIndex:newIndex];
+        [infoSession scheduleNotifications];
         return UWAdded;
     }
     // else exist
@@ -116,6 +117,7 @@
         // changed
         if ([[array objectAtIndex:existIndex] isChangedCompareTo:infoSession]) {
             [array replaceObjectAtIndex:existIndex withObject:infoSession];
+            [infoSession scheduleNotifications];
             return UWReplaced;
         }
         // no information is changed
@@ -128,6 +130,7 @@
 + (UW)deleteInfoSession:(InfoSession *)infoSession in:(NSMutableArray *)array {
     NSInteger existIndex = [InfoSessionModel findInfoSession:infoSession in:array];
     if (existIndex != -1) {
+        [infoSession cancelNotifications];
         [array removeObjectAtIndex:existIndex];
         return UWDeleted;
     }

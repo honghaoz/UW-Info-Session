@@ -1023,6 +1023,7 @@
         // if opend saved one, then detect whether some changes made.
         if ([_infoSessionBackup isChangedCompareTo:_infoSession]) {
             [ProgressHUD showSuccess:@"Modified successfully!" Interacton:YES];
+            [_infoSession scheduleNotifications];
             [self backupInfoSession];
             // save to file
             [_infoSessionModel saveInfoSessions];

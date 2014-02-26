@@ -71,4 +71,7 @@
 - (BOOL)isRemovedAfterRefreshingAlerts;
 // calendar alerts
 - (NSArray *)getEKAlarms;
+
+- (void)cancelNotifications;
+- (void) scheduleNotifications;
 @end

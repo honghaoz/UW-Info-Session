@@ -216,14 +216,18 @@ static EKEventStore *eventStore;
  *  @return BOOL
  */
 - (BOOL)isEqual:(InfoSession *)anotherInfoSession {
-    if (self.sessionId == anotherInfoSession.sessionId) {
+    if (anotherInfoSession == nil) {
+        return NO;
+    }
+    else if (self.sessionId == anotherInfoSession.sessionId) {
         // if session ID is valid and same
         if (self.sessionId > 10) {
             return YES;
         }
         // else session ID is not valid (no sessionID)
         else {
-            if ([self.date isEqualToDate:anotherInfoSession.date] &&
+            if ([self.employer isEqualToString:anotherInfoSession.employer] &&
+                [self.date isEqualToDate:anotherInfoSession.date] &&
                 [self.startTime isEqualToDate:anotherInfoSession.startTime] &&
                 [self.endTime isEqualToDate:anotherInfoSession.endTime]) {
                 return YES;
@@ -486,5 +490,84 @@ static EKEventStore *eventStore;
     [aCoder encodeObject:self.note forKey:@"note"];
 
 }
+
+#pragma mark - UILocalNotification related methods
+
+- (NSString *)getIdentifier {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    // set the locale to fix the formate to read and write;
+    NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    [dateFormatter setLocale:enUSPOSIXLocale];
+    // set timezone to EST
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+    
+    // set date format: 09 5, 2013
+    [dateFormatter setDateFormat:@"MM-d-y"];
+    
+    NSString *dateString = [dateFormatter stringFromDate:self.date];
+
+    // set time format: 1:00 PM, September 5, 2013
+    [dateFormatter setDateFormat:@"HH:mm"];
+    NSString *startString = [dateFormatter stringFromDate:self.startTime];
+    NSString *endString = [dateFormatter stringFromDate:self.endTime];
+    return [NSString stringWithFormat:@"%i-%@-%@-%@-%@", self.sessionId, self.employer, dateString, startString, endString];
+}
+
+- (void)cancelNotifications {
+    NSLog(@"Start to cancel notifications");
+    NSMutableArray *existingNotifications = [self notificationsForThisInfoSession];
+    if (existingNotifications != nil) {
+        NSLog(@"Cancel %i exist notifications", [existingNotifications count]);
+        for (UILocalNotification *eachNotification in existingNotifications) {
+            NSLog(@"  Canceled: %@", eachNotification);
+            [[UIApplication sharedApplication] cancelLocalNotification:eachNotification];
+        }
+    }
+}
+
+- (void)scheduleNotifications {
+    NSLog(@"Start to Schedule notifications");
+    // if found notification, cancel all of them
+    [self cancelNotifications];
+    
+    // then reschedule notifications
+    if (self.alertIsOn) {
+        for (NSInteger i = 0; i < [self.alerts count]; i++) {
+            NSMutableDictionary *eachAlert = self.alerts[i];
+            if ([eachAlert[@"alertChoice"] integerValue] > 0) {
+                UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+                localNotification.fireDate = [self.startTime dateByAddingTimeInterval:[eachAlert[@"alertInterval"] doubleValue]];
+                localNotification.timeZone = [NSTimeZone timeZoneWithName:@"EST"];
+                localNotification.alertBody = self.employer;
+                localNotification.soundName = UILocalNotificationDefaultSoundName;
+                localNotification.userInfo = [NSMutableDictionary dictionaryWithObjects:@[[self getIdentifier], [NSNumber numberWithInteger:i]] forKeys:@[@"InfoId", @"Count"]];
+                [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+                NSLog(@"scheduled notification for %@", [self getIdentifier]);
+                NSLog(@"%@", localNotification);
+            }
+        }
+    }
+}
+
+- (NSMutableArray*)notificationsForThisInfoSession{
+    NSMutableArray *resultNotifications = [[NSMutableArray alloc] init];
+    NSArray *allNotifications = [[UIApplication sharedApplication]scheduledLocalNotifications];
+    for(UILocalNotification *notification in allNotifications){
+        NSString *infoIdentifier = [notification.userInfo objectForKey:@"InfoId"];
+        if([infoIdentifier isEqual:[self getIdentifier]]){
+            [resultNotifications addObject:notification];
+        }
+    }
+    if ([resultNotifications count] == 0) {
+        return nil;
+    } else {
+        return resultNotifications;
+    }
+}
+//
+//-(void)dealloc{
+//    NSLog(@"dealloc");
+//    [self cancelNotifications];
+//}
 
 @end

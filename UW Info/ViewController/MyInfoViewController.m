@@ -192,16 +192,27 @@
  *  @param indexPath indexPath
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self performSegueWithIdentifier:@"ShowDetailFromMyInfoSessions" sender:[[NSArray alloc] initWithObjects:@"MyInfoViewController", _infoSessionModel.myInfoSessions[indexPath.row], _infoSessionModel, nil]];
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    // empty cell
+    if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
+        return;
+    } else {
+        // info session cell
+        [self performSegueWithIdentifier:@"ShowDetailFromMyInfoSessions" sender:[[NSArray alloc] initWithObjects:@"MyInfoViewController", _infoSessionModel.myInfoSessions[indexPath.row], _infoSessionModel, nil]];
+    }
 }
 
 
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+    // empty cell
+    if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
+        return NO;
+    } else {
+        // info session cell
+        return YES;
+    }
 }
 
 
@@ -236,7 +247,9 @@
         // if last item is deleted
         else {
             [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            [self enterEditMode:nil];
+            if ([self.tableView isEditing]){
+                [self enterEditMode:nil];
+            }
         }
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
