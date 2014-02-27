@@ -22,6 +22,8 @@
     _infoSessionModel = [[InfoSessionModel alloc] init];
     tabController.infoSessionModel = _infoSessionModel;
     
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    
     return YES;
 }
 							
@@ -45,6 +47,7 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -60,6 +63,10 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
     
+}
+
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+    NSLog(@"didReceivedLocalNotification %@",notification);
 }
 
 @end

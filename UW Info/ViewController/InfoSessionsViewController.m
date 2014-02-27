@@ -389,6 +389,10 @@
     NSMutableAttributedString *locationString = [[NSMutableAttributedString alloc] initWithString:infoSession.location];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+    // set the locale to fix the formate to read and write;
+    NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    [dateFormatter setLocale:enUSPOSIXLocale];
+    [timeFormatter setLocale:enUSPOSIXLocale];
     [dateFormatter setDateFormat:@"MMM d, y"];
     [timeFormatter setDateFormat:@"h:mm a"];
     

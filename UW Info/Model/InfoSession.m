@@ -538,8 +538,13 @@ static EKEventStore *eventStore;
                 UILocalNotification *localNotification = [[UILocalNotification alloc] init];
                 localNotification.fireDate = [self.startTime dateByAddingTimeInterval:[eachAlert[@"alertInterval"] doubleValue]];
                 localNotification.timeZone = [NSTimeZone timeZoneWithName:@"EST"];
-                localNotification.alertBody = self.employer;
+                
+                NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+                [timeFormatter setDateFormat:@"h:mm a, MMM d"];
+                
+                localNotification.alertBody = [NSString stringWithFormat:@"%@ %@", self.employer, [timeFormatter stringFromDate:self.startTime]];
                 localNotification.soundName = UILocalNotificationDefaultSoundName;
+                localNotification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
                 localNotification.userInfo = [NSMutableDictionary dictionaryWithObjects:@[[self getIdentifier], [NSNumber numberWithInteger:i]] forKeys:@[@"InfoId", @"Count"]];
                 [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
                 NSLog(@"scheduled notification for %@", [self getIdentifier]);

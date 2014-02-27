@@ -116,6 +116,7 @@
 
 - (void) applicationDidEnterBackground {
     [self.noteCell.contentText resignFirstResponder];
+    [self addToMyInfo:nil];
 }
 
 #pragma mark - Calendar related
@@ -425,7 +426,9 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Date";
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"MMMM d, y"];
+            NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+            [dateFormatter setLocale:enUSPOSIXLocale];
+            [dateFormatter setDateFormat:@"cccc MMM d, y"];
             cell.contentLabel.text = [dateFormatter stringFromDate:_infoSession.date];
             return cell;
         }
@@ -434,6 +437,8 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Time";
             NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+            NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+            [timeFormatter setLocale:enUSPOSIXLocale];
             [timeFormatter setDateFormat:@"h:mm a"];
             cell.contentLabel.text = [NSString stringWithFormat:@"%@ - %@", [timeFormatter stringFromDate:_infoSession.startTime], [timeFormatter stringFromDate:_infoSession.endTime]];
             return cell;
@@ -667,7 +672,25 @@
                 }
                 case 1: height = 42.0f; break;
                 case 2: height = 42.0f; break;
-                case 3: height = 42.0f; break;
+                case 3: {
+                    // use UITextView to calculate height of this label
+                    UITextView *calculationView = [[UITextView alloc] init];
+                    [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:_infoSession.location]];
+                    [calculationView setFont:[UIFont systemFontOfSize:16]];
+                    CGSize size = [calculationView sizeThatFits:CGSizeMake(200.0f, FLT_MAX)];
+                    
+                    // text line = 1
+                    if (size.height < 37.0f) {
+                        height = 42.0f;
+                    } else if (size.height < 56.0f) {
+                        // text line = 2
+                        height = 58.0f;
+                    } else {
+                        // text line = 3
+                        height = 74.0f;
+                    }
+                    break;
+                }
                 case 4: height = 42.0f; break;
             } break;
         case 1: height = 42.0f; break;
