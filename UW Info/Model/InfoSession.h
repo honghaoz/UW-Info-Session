@@ -73,5 +73,7 @@
 - (NSArray *)getEKAlarms;
 
 - (void)cancelNotifications;
-- (void) scheduleNotifications;
+- (void)scheduleNotifications;
+
+- (NSString *)getIdentifier;
 @end

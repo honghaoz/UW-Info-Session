@@ -7,6 +7,7 @@
 //
 
 #import "InfoSessionModel.h"
+#import "InfoSession.h"
 
 @implementation InfoSessionModel
 
@@ -81,6 +82,25 @@
     for (int i = 0; i < [array count]; i++) {
         InfoSession *eachInfoSession = [array objectAtIndex:i];
         if ([infoSession isEqual:eachInfoSession]) {
+            existIndex = i;
+        }
+    }
+    return existIndex;
+}
+
+/**
+ *  check whether this infoSession identifier exists in array
+ *
+ *  @param infoSessionId an InfoSession identifier
+ *  @param array       array of InfoSessions
+ *
+ *  @return -1, if not found, else, return index
+ */
++ (NSInteger)findInfoSessionIdentifier:(NSString *)infoSessionId in:(NSMutableArray *)array {
+    NSInteger existIndex = -1;
+    for (int i = 0; i < [array count]; i++) {
+        InfoSession *eachInfoSession = [array objectAtIndex:i];
+        if ([[eachInfoSession getIdentifier] isEqual:infoSessionId]) {
             existIndex = i;
         }
     }

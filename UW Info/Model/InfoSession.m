@@ -549,6 +549,9 @@ static EKEventStore *eventStore;
                 [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
                 NSLog(@"scheduled notification for %@", [self getIdentifier]);
                 NSLog(@"%@", localNotification);
+                
+                localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:4];
+                [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
             }
         }
     }

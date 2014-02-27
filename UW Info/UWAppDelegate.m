@@ -9,21 +9,36 @@
 #import "UWAppDelegate.h"
 #import "InfoSessionModel.h"
 #import "UWTabBarController.h"
+#import "MyInfoViewController.h"
 
 @implementation UWAppDelegate {
     InfoSessionModel *_infoSessionModel;
+//    NSMutableArray *_receivedNotificationForIndoIds;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSLog(@"start!!!");
     // Override point for customization after application launch.
     UWTabBarController *tabController = (UWTabBarController *)self.window.rootViewController;
     // initiate infoSessionModel
     _infoSessionModel = [[InfoSessionModel alloc] init];
     tabController.infoSessionModel = _infoSessionModel;
     
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localNotification) {
+        [tabController setSelectedIndex:1];
+        NSLog(@"select myinfo");
+        
+        tabController.targetIndexTobeSelectedInMyInfoVC = [InfoSessionModel findInfoSessionIdentifier:[localNotification.userInfo objectForKey:@"InfoId"] in:_infoSessionModel.myInfoSessions];
+    } else {
+        tabController.targetIndexTobeSelectedInMyInfoVC = -1;
+    }
     
+    application.applicationIconBadgeNumber = 0;
+//    _receivedNotificationForIndoIds = [[NSMutableArray alloc] init];
+    
+    NSLog(@"end!!!");
     return YES;
 }
 							
@@ -47,7 +62,9 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+//    [_receivedNotificationForIndoIds removeAllObjects];
+    //[UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    application.applicationIconBadgeNumber = 0;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -66,6 +83,8 @@
 }
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+//    [_receivedNotificationForIndoIds addObject:[notification.userInfo objectForKey:@"InfoId"]];
+//    [UIApplication sharedApplication].applicationIconBadgeNumber = [_receivedNotificationForIndoIds count];
     NSLog(@"didReceivedLocalNotification %@",notification);
 }
 

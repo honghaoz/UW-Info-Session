@@ -27,6 +27,7 @@
 {
     self = [super initWithStyle:style];
     if (self) {
+        NSLog(@"myInfo initiated!");
         // Custom initialization
     }
     return self;

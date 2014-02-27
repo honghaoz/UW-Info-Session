@@ -27,6 +27,8 @@
 
 @property (nonatomic, assign) BOOL isHidden;
 
+@property (nonatomic, assign) NSInteger targetIndexTobeSelectedInMyInfoVC;
+
 - (void) hideTabBar;
 - (void) showTabBar;
 

@@ -72,6 +72,13 @@
     
     [self setBadge];
     
+    // if targetIndex not equals -1, then need to show detailView
+    if (_targetIndexTobeSelectedInMyInfoVC != -1) {
+        [self setSelectedIndex:1];
+        [_myInfoViewController reloadTable];
+        [_myInfoViewController performSegueWithIdentifier:@"ShowDetailFromMyInfoSessions" sender:[[NSArray alloc] initWithObjects:@"MyInfoViewController", _infoSessionModel.myInfoSessions[_targetIndexTobeSelectedInMyInfoVC], _infoSessionModel, nil]];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning
