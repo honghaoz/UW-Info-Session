@@ -47,8 +47,8 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     NSLog(@"MyInfoVC DidLoad");
-    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
+    self.navigationController.navigationBar.tintColor = UWBlack;
     
     // initiate the right buttons
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(enterEditMode:)] animated:YES];
@@ -123,11 +123,15 @@
     }
     // if current time is between start time and end time, set blue (ongoing sessions)
     else if ( ([infoSession.startTime compare:[NSDate date]] == NSOrderedAscending) && ([[NSDate date] compare:infoSession.endTime] == NSOrderedAscending) ){
-        [cell.employer setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-        [cell.locationLabel setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-        [cell.location setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-        [cell.dateLabel setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-        [cell.date setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
+        UIColor *fontColor = UWGold;
+        //[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]
+        [cell.employer setTextColor:fontColor];
+        cell.employer.shadowColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0];
+        cell.employer.shadowOffset  = CGSizeMake(0.0, 1.0);
+        [cell.locationLabel setTextColor:fontColor];
+        [cell.location setTextColor:fontColor];
+        [cell.dateLabel setTextColor:fontColor];
+        [cell.date setTextColor:fontColor];
     }
     // set light grey (past sessions)
     else {

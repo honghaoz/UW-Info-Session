@@ -24,12 +24,17 @@ typedef NS_ENUM(NSUInteger, UW){
 @property (nonatomic, strong) NSMutableArray *myInfoSessions;
 //@property (nonatomic, strong) NSMutableDictionary *myInfoSessionsDictionary;
 
+@property (nonatomic, copy) NSString *currentTerm;
 
 // Used for manage calendar event, only initiate once!
 //@property (nonatomic, strong) EKEventStore *eventStore;
 @property (nonatomic, strong) EKCalendar *defaultCalendar;
 
+- (void)clearInfoSessions;
+
 - (void)processInfoSessionsDictionary:(NSDictionary *)dictionary withInfoSessions:(NSArray *)array;
+
++ (NSURLSessionTask *)infoSessionsWithBlock:(void (^)(NSArray *sessions, NSString *currentTerm, NSError *error))block;
 
 + (NSInteger)findInfoSession:(InfoSession *)infoSession in:(NSMutableArray *)array;
 + (NSInteger)findInfoSessionIdentifier:(NSString *)infoSessionId in:(NSMutableArray *)array;

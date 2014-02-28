@@ -26,6 +26,10 @@ from google.appengine.ext import ndb
 from google.appengine.api import memcache
 
 import logging
+import datetime
+import sys
+sys.path.insert(0, 'libs')
+import pytz
 
 # Global variables for jinja environment
 template_dir = os.path.join(os.path.dirname(__file__), 'html_template')
@@ -155,9 +159,43 @@ def renderResponse(listOfMonths):
 
     # add data to response dict
     response = {}
-    response["meta"] = {"numbers" : numbers}
+    response["meta"] = {"months" : numbers}
     response["data"] = sessions
     return response
+
+# get term string from year and month, eg: 2014Jan -> 2014 Winter
+def getTermFromYearMonth(theMonthId):
+    year = theMonthId[:4]
+    month = theMonthId[4:]
+    if month == 'Jan' or month == 'Feb' or month == 'Mar' or month == 'Apr':
+        return year + " Winter"
+    elif month == 'May' or month == 'Jun' or month == 'Jul' or month == 'Aug':
+        return year + " Spring"
+    else:
+        return year + " Fall"
+
+# get current term string
+def getCurrentTerm():
+    timezone = pytz.timezone('EST')
+    currentDate = datetime.datetime.now(timezone)
+    logging.info(currentDate.strftime("%Y%b"))
+    currentTerm = getTermFromYearMonth(currentDate.strftime("%Y%b"))
+    return currentTerm
+
+def getMonthsOfTerm(theTerm):
+    year, term = theTerm.split(" ")
+    year = year.strip()
+    term = term.strip()
+    result = []
+    if term == 'Winter':
+        result = [year + 'Jan', year + 'Feb', year + 'Mar', year + 'Apr']
+    elif term == 'Spring':
+        result = [year + 'May', year + 'Jun', year + 'Jul', year + 'Aug']
+    elif term == 'Fall':
+        result = [year + 'Sep', year + 'Oct', year + 'Nov', year + 'Dec']
+    else:
+        result = []
+    return result
 
 class JsonOneMonth(BasicHandler):
     """json format one month"""
@@ -165,7 +203,23 @@ class JsonOneMonth(BasicHandler):
         key = self.request.get("key")
         self.response.headers["Content-Type"] = "application/json"
         if key == '77881122':
-            self.write(json.dumps(renderResponse([monthId])))
+            response = renderResponse([monthId])
+            response['meta']['term'] = getTermFromYearMonth(monthId)
+            self.write(json.dumps(response))
+        else:
+            self.write(json.dumps(renderResponse([])))
+
+class JsonOneTerm(BasicHandler):
+    """json format one term"""
+    def get(self, theTerm):
+        year = theTerm[:4]
+        term = theTerm[4:]
+        key = self.request.get("key")
+        self.response.headers["Content-Type"] = "application/json"
+        if key == '77881122':
+            response = renderResponse(getMonthsOfTerm(year + " " + term))
+            response['meta']['term'] = year + " " + term
+            self.write(json.dumps(response))
         else:
             self.write(json.dumps(renderResponse([])))
 
@@ -173,16 +227,19 @@ class Json(BasicHandler):
     """json format"""
     def get(self):
         key = self.request.get("key")
+        self.response.headers["Content-Type"] = "application/json"
         if key == '77881122':
-            self.response.headers["Content-Type"] = "application/json"
-            self.write(json.dumps(renderResponse(["2014Jan", "2014Feb", "2014Mar"])))
+            currentTerm = getCurrentTerm()
+            response = renderResponse(getMonthsOfTerm(currentTerm))
+            response['meta']['term'] = currentTerm
+            self.write(json.dumps(response))
         else:
             self.write(json.dumps(renderResponse([])))
-        
 
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/infosessions/([0-9]{4}[A-Z]{1}[a-z]{2}).json', JsonOneMonth),
+    ('/infosessions/([0-9]{4}[A-Z]{1}[a-z]+).json', JsonOneTerm),
     ('/infosessions.json', Json)
 ], debug=True)

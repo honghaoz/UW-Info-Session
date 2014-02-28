@@ -6,8 +6,15 @@
 //  Copyright (c) 2014 org-honghao. All rights reserved.
 //
 
+#import "AFHTTPRequestOperation.h"
+#import "AFUwaterlooApiClient.h"
+
 #import "InfoSessionModel.h"
 #import "InfoSession.h"
+
+//const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
+//const NSString *apiKey1 =  @"913034dae16d7233dd1683713cbb4721";
+const NSString *myApiKey = @"77881122";
 
 @implementation InfoSessionModel
 
@@ -52,6 +59,54 @@
     } else {
         return _infoSessionsDictionary;
     }
+}
+
+- (void)clearInfoSessions {
+    _infoSessions = nil;
+    _infoSessionsDictionary = nil;
+    _currentTerm = nil;
+}
+
+/**
+ *  Initiate NSArray sessions.
+ *
+ *  @param block
+ *
+ *  @return
+ */
++ (NSURLSessionTask *)infoSessionsWithBlock:(void (^)(NSArray *sessions, NSString *currentTerm, NSError *error))block{
+    return [[AFUwaterlooApiClient sharedClient] GET:@"infosessions.json" parameters:@{@"key" : myApiKey} success:^(NSURLSessionDataTask * __unused task, id JSON) {
+        //response array from jason
+        NSArray *infoSessionsFromResponse = [JSON valueForKeyPath:@"data"];
+        NSString *currentTerm = [JSON valueForKeyPath:@"meta.term"];
+        // new empty array to store infoSessions
+        NSMutableArray *mutableInfoSessions = [NSMutableArray arrayWithCapacity:[infoSessionsFromResponse count]];
+        
+        for (NSDictionary *attributes in infoSessionsFromResponse) {
+            InfoSession *infoSession = [[InfoSession alloc] initWithAttributes:attributes];
+            // if start time < end time or date is nil, do not add
+            if (!([infoSession.startTime compare:infoSession.endTime] != NSOrderedAscending
+                  || infoSession.date == nil
+                  || [infoSession.employer length] == 0)) {
+                [mutableInfoSessions addObject:infoSession];
+            }
+        }
+        
+        if (block) {
+            // sorted info sessions in ascending order with start time
+            [mutableInfoSessions sortUsingComparator:^(InfoSession *info1, InfoSession *info2){
+                return [info1 compareTo:info2];
+            }];
+            
+            //[mutableInfoSessions sortedArrayUsingSelector:@selector(compareTo:)];
+            block([NSArray arrayWithArray:mutableInfoSessions], currentTerm, nil);
+        }
+    } failure:^(NSURLSessionDataTask *__unused task, NSError *error) {
+        if (block) {
+            NSLog(@"failure");
+            block([NSArray array], nil, error);
+        }
+    }];
 }
 
 /**

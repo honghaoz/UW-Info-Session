@@ -8,7 +8,7 @@
 
 #import "AFUwaterlooApiClient.h"
 //static NSString * const AFUwaterlooApiBaseURLString = @"https://api.uwaterloo.ca/v2/";
-static NSString * const AFUwaterlooApiBaseURLString = @"http://uw-info.appspot.com/";
+static NSString * const AFUwaterlooApiBaseURLString = @"http://uw-info1.appspot.com/";
 //static NSString * const getFaviconBaseURLString = @"http://g.etfv.co/";
 
 @implementation AFUwaterlooApiClient

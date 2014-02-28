@@ -36,7 +36,7 @@
     
     UITabBar *tabBar = self.tabBar;
     [tabBar setBarStyle:UIBarStyleBlackOpaque];
-    [tabBar setBackgroundColor:[UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1]];
+    [tabBar setBackgroundColor:UWBlack];
     //[UIColor colorWithRed:0.26 green:0.28 blue:0.33 alpha:1]
     UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
     UITabBarItem *item1 = [tabBar.items objectAtIndex:1];

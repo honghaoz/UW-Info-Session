@@ -21,10 +21,12 @@
 #import "InfoSessionModel.h"
 
 #import "UWTabBarController.h"
+#import "UWTermMenu.h"
+#import "InfoDetailedTitleButton.h"
 
 @interface InfoSessionsViewController ()
 
-@property (nonatomic, strong) UIButton *termSelection;
+@property (nonatomic, strong) UWTermMenu *termMenu;
 
 @end
 
@@ -60,12 +62,12 @@
     _tabBarController.lastTapped = -1;
     //self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0 green:179/255.0 blue:134/255.0 alpha:1];
     
-    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
+    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
     // black
     //[UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1]
     // yellow
     //[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]
-    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
+    self.navigationController.navigationBar.tintColor = UWBlack;
     //[self.tableView setBackgroundColor:[UIColor blackColor]];
     
     // show refresh button
@@ -79,15 +81,19 @@
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
     // init menu button (term selection)
-//    self.termSelection = [[UIButton alloc] initWithFrame:CGRectMake([[UIScreen mainScreen] bounds].size.width / 2.0 , 60.0, 60, 30)];
-    
-//    self.termSelection = [[UIButton alloc] initWithFrame:CGRectMake(30, 10, 190, 44)];
+//    self.termSelection = [[UIButton alloc] initWithFrame:CGRectMake(0 , 0, 180, 60)];
+//
 //    [self.termSelection setTitle:@"ASDASDASDASD" forState:UIControlStateNormal];
 //    [self.termSelection setTitle:@"tap!" forState:UIControlStateSelected];
 //    [self.termSelection setUserInteractionEnabled:YES];
 //    [self.termSelection setBackgroundColor:[UIColor blueColor]];
 //    //[self.termSelection setSelected:YES];
 //     [self.navigationController.navigationBar addSubview:self.termSelection];
+    
+    _termMenu = [[UWTermMenu alloc] initWithNavigationController:self.navigationController];
+    _termMenu.infoSessionModel = _infoSessionModel;
+    
+    self.navigationItem.titleView = (UIView *)[_termMenu getMenuButton];
 
 //    showOrigin =[[UILabel alloc] initWithFrame:(CGRectMake(10, 70, 190, 44))];
 //    [self.view addSubview:showOrigin];
@@ -116,8 +122,8 @@
     NSLog(@"reload data");
     // end refreshControl
     [self.refreshControl endRefreshing];
-    _infoSessionModel.infoSessions = nil;
-    _infoSessionModel.infoSessionsDictionary = nil;
+    [_infoSessionModel clearInfoSessions];
+    [_termMenu setTitleTerm];
     [self.tableView reloadData];
     [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
     
@@ -127,10 +133,16 @@
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
-    NSURLSessionTask *task = [InfoSession infoSessionsWithBlock:^(NSArray *sessions, NSError *error) {
+    NSURLSessionTask *task = [InfoSessionModel infoSessionsWithBlock:^(NSArray *sessions, NSString *currentTerm,  NSError *error) {
         if (!error) {
             // initiate infoSessionModel
+            
             _infoSessionModel.infoSessions = sessions;
+            _infoSessionModel.currentTerm = currentTerm;
+            
+            _termMenu.infoSessionModel = _infoSessionModel;
+            [_termMenu setTitleTerm];
+            
             [_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.infoSessionsDictionary withInfoSessions:_infoSessionModel.infoSessions];
             
             // reload TableView data
@@ -182,7 +194,8 @@
     NSArray *infoSessionsOfCurrentWeek = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(currentWeekNum)];
     NSInteger rowNumToScroll = -1;
     for (InfoSession *eachCell in infoSessionsOfCurrentWeek) {
-        if ([[NSDate date] compare:eachCell.startTime] == NSOrderedDescending ) {
+        // current date is later than startTime
+        if ([[NSDate date] compare:eachCell.endTime] == NSOrderedDescending ) {
             rowNumToScroll++;
         }
     }
@@ -191,11 +204,11 @@
         rowNumToScroll = 0;
     }
     // if this week is empty and next week is not empty, show next week's first item
-    if (rowNumToScroll + 1 == [infoSessionsOfCurrentWeek count] &&
-         ([self numberOfSectionsInTableView:self.tableView] > sectionNumToScroll + 1)) {
-        rowNumToScroll = 0;
-        sectionNumToScroll += 1;
-    }
+//    if (rowNumToScroll + 1 == [infoSessionsOfCurrentWeek count] &&
+//         ([self numberOfSectionsInTableView:self.tableView] > sectionNumToScroll + 1)) {
+//        rowNumToScroll = 0;
+//        sectionNumToScroll += 1;
+//    }
     // scroll!
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:rowNumToScroll inSection:sectionNumToScroll] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     // reload current
@@ -370,11 +383,15 @@
     }
     // if current time is between start time and end time, set blue (ongoing sessions)
     else if ( ([infoSession.startTime compare:[NSDate date]] == NSOrderedAscending) && ([[NSDate date] compare:infoSession.endTime] == NSOrderedAscending) ){
-        [cell.employer setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-        [cell.locationLabel setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-        [cell.location setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-        [cell.dateLabel setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-        [cell.date setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
+        UIColor *fontColor = UWGold;
+        //[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]
+        [cell.employer setTextColor:fontColor];
+        cell.employer.shadowColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0];
+        cell.employer.shadowOffset  = CGSizeMake(0.0, 1.0);
+        [cell.locationLabel setTextColor:fontColor];
+        [cell.location setTextColor:fontColor];
+        [cell.dateLabel setTextColor:fontColor];
+        [cell.date setTextColor:fontColor];
     }
     // set light grey (past sessions)
     else {

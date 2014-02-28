@@ -54,12 +54,13 @@
 
 - (instancetype)initWithAttributes:(NSDictionary *)attributes;
 
+- (NSComparisonResult)compareTo:(InfoSession *)anotherInfoSession;
+
 - (BOOL)isEqual:(InfoSession *)anotherInfoSession;
 
 - (BOOL)isChangedCompareTo:(InfoSession *)anotherInfoSession;
 
 //- (NSURL *)logoImageURL;
-+ (NSURLSessionTask *)infoSessionsWithBlock:(void (^)(NSArray *sessions, NSError *error))block;
 
 // alerts related methods
 - (BOOL)addOneAlert;

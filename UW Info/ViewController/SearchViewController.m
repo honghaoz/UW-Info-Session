@@ -27,8 +27,8 @@
 {
     [super viewDidLoad];
     NSLog(@"SearchVC DidLoad");
-    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
+    self.navigationController.navigationBar.tintColor = UWBlack;
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  

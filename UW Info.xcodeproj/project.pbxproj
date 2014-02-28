@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B050C7918BFB4BB00DCC342 /* InfoDetailedTitleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B050C7818BFB4BB00DCC342 /* InfoDetailedTitleButton.m */; };
+		1B050C8718BFBD1700DCC342 /* RECommonFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B050C7E18BFBD1700DCC342 /* RECommonFunctions.m */; };
+		1B050C8818BFBD1700DCC342 /* REMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B050C8018BFBD1700DCC342 /* REMenu.m */; };
+		1B050C8918BFBD1700DCC342 /* REMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B050C8218BFBD1700DCC342 /* REMenuItem.m */; };
+		1B050C8A18BFBD1700DCC342 /* REMenuItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B050C8418BFBD1700DCC342 /* REMenuItemView.m */; };
+		1B050C8B18BFBD1700DCC342 /* REMenuContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B050C8618BFBD1700DCC342 /* REMenuContainerView.m */; };
+		1B050C8E18BFC18B00DCC342 /* UWTermMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B050C8D18BFC18B00DCC342 /* UWTermMenu.m */; };
 		1B19834918A618A60022A285 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19834818A618A60022A285 /* DetailViewController.m */; };
 		1B2040B918B3F75300C72D51 /* ProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1B2040B618B3F75300C72D51 /* ProgressHUD.bundle */; };
 		1B2040BA18B3F75300C72D51 /* ProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2040B818B3F75300C72D51 /* ProgressHUD.m */; };
@@ -75,6 +82,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1B050C7718BFB4BB00DCC342 /* InfoDetailedTitleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoDetailedTitleButton.h; sourceTree = "<group>"; };
+		1B050C7818BFB4BB00DCC342 /* InfoDetailedTitleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoDetailedTitleButton.m; sourceTree = "<group>"; };
+		1B050C7D18BFBD1700DCC342 /* RECommonFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RECommonFunctions.h; sourceTree = "<group>"; };
+		1B050C7E18BFBD1700DCC342 /* RECommonFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECommonFunctions.m; sourceTree = "<group>"; };
+		1B050C7F18BFBD1700DCC342 /* REMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenu.h; sourceTree = "<group>"; };
+		1B050C8018BFBD1700DCC342 /* REMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMenu.m; sourceTree = "<group>"; };
+		1B050C8118BFBD1700DCC342 /* REMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenuItem.h; sourceTree = "<group>"; };
+		1B050C8218BFBD1700DCC342 /* REMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMenuItem.m; sourceTree = "<group>"; };
+		1B050C8318BFBD1700DCC342 /* REMenuItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenuItemView.h; sourceTree = "<group>"; };
+		1B050C8418BFBD1700DCC342 /* REMenuItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMenuItemView.m; sourceTree = "<group>"; };
+		1B050C8518BFBD1700DCC342 /* REMenuContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenuContainerView.h; sourceTree = "<group>"; };
+		1B050C8618BFBD1700DCC342 /* REMenuContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMenuContainerView.m; sourceTree = "<group>"; };
+		1B050C8C18BFC18B00DCC342 /* UWTermMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWTermMenu.h; sourceTree = "<group>"; };
+		1B050C8D18BFC18B00DCC342 /* UWTermMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWTermMenu.m; sourceTree = "<group>"; };
 		1B19834718A618A60022A285 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ViewController/DetailViewController.h; sourceTree = "<group>"; };
 		1B19834818A618A60022A285 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController.m; path = ViewController/DetailViewController.m; sourceTree = "<group>"; };
 		1B2040B618B3F75300C72D51 /* ProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ProgressHUD.bundle; sourceTree = "<group>"; };
@@ -201,6 +222,51 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B050C7A18BFB4DB00DCC342 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				1B717E6918A80A7A00E20A29 /* InfoSessionCell.h */,
+				1B717E6A18A80A7A00E20A29 /* InfoSessionCell.m */,
+				1B717E6B18A80A7A00E20A29 /* LoadingCell.h */,
+				1B717E6C18A80A7A00E20A29 /* LoadingCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		1B050C7B18BFB4E700DCC342 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				1B717E7418A8294600E20A29 /* DetailNormalCell.h */,
+				1B717E7518A8294600E20A29 /* DetailNormalCell.m */,
+				1B717E5D18A7F7DC00E20A29 /* DetailLinkCell.h */,
+				1B717E5E18A7F7DC00E20A29 /* DetailLinkCell.m */,
+				1B717E6318A809F900E20A29 /* DetailRSVPCell.h */,
+				1B717E6418A809F900E20A29 /* DetailRSVPCell.m */,
+				1B717E6F18A80B8200E20A29 /* DetailDescriptionCell.h */,
+				1B717E7018A80B8200E20A29 /* DetailDescriptionCell.m */,
+				1BF0542118A93ECC005C04B2 /* DetailSwitchCell.h */,
+				1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		1B050C7C18BFBD0A00DCC342 /* REMenu */ = {
+			isa = PBXGroup;
+			children = (
+				1B050C7D18BFBD1700DCC342 /* RECommonFunctions.h */,
+				1B050C7E18BFBD1700DCC342 /* RECommonFunctions.m */,
+				1B050C7F18BFBD1700DCC342 /* REMenu.h */,
+				1B050C8018BFBD1700DCC342 /* REMenu.m */,
+				1B050C8118BFBD1700DCC342 /* REMenuItem.h */,
+				1B050C8218BFBD1700DCC342 /* REMenuItem.m */,
+				1B050C8318BFBD1700DCC342 /* REMenuItemView.h */,
+				1B050C8418BFBD1700DCC342 /* REMenuItemView.m */,
+				1B050C8518BFBD1700DCC342 /* REMenuContainerView.h */,
+				1B050C8618BFBD1700DCC342 /* REMenuContainerView.m */,
+			);
+			name = REMenu;
+			sourceTree = "<group>";
+		};
 		1B2040B518B3F75300C72D51 /* ProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -338,10 +404,11 @@
 			children = (
 				1B3744F818A5A842007CF08C /* InfoSessionsViewController.h */,
 				1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */,
-				1B717E6918A80A7A00E20A29 /* InfoSessionCell.h */,
-				1B717E6A18A80A7A00E20A29 /* InfoSessionCell.m */,
-				1B717E6B18A80A7A00E20A29 /* LoadingCell.h */,
-				1B717E6C18A80A7A00E20A29 /* LoadingCell.m */,
+				1B050C8C18BFC18B00DCC342 /* UWTermMenu.h */,
+				1B050C8D18BFC18B00DCC342 /* UWTermMenu.m */,
+				1B050C7718BFB4BB00DCC342 /* InfoDetailedTitleButton.h */,
+				1B050C7818BFB4BB00DCC342 /* InfoDetailedTitleButton.m */,
+				1B050C7A18BFB4DB00DCC342 /* Cells */,
 			);
 			name = InfoSessionsViewController;
 			sourceTree = "<group>";
@@ -351,18 +418,9 @@
 			children = (
 				1B19834718A618A60022A285 /* DetailViewController.h */,
 				1B19834818A618A60022A285 /* DetailViewController.m */,
-				1B717E7418A8294600E20A29 /* DetailNormalCell.h */,
-				1B717E7518A8294600E20A29 /* DetailNormalCell.m */,
-				1B717E5D18A7F7DC00E20A29 /* DetailLinkCell.h */,
-				1B717E5E18A7F7DC00E20A29 /* DetailLinkCell.m */,
-				1B717E6318A809F900E20A29 /* DetailRSVPCell.h */,
-				1B717E6418A809F900E20A29 /* DetailRSVPCell.m */,
-				1B717E6F18A80B8200E20A29 /* DetailDescriptionCell.h */,
-				1B717E7018A80B8200E20A29 /* DetailDescriptionCell.m */,
-				1BF0542118A93ECC005C04B2 /* DetailSwitchCell.h */,
-				1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */,
 				1B4DD55718AC90B8009B0214 /* MapViewController */,
 				1B2076EC18AAA67000FE7088 /* AlertViewController */,
+				1B050C7B18BFB4E700DCC342 /* Cells */,
 			);
 			name = DetailViewController;
 			sourceTree = "<group>";
@@ -415,6 +473,7 @@
 		1BD83A9A18A59F1C00EDBB6D /* UW Info */ = {
 			isa = PBXGroup;
 			children = (
+				1B050C7C18BFBD0A00DCC342 /* REMenu */,
 				1B2F745318AF66190042322B /* AFNetworking */,
 				1B2F747018AF66210042322B /* UIKit+AFNetworking */,
 				1B37453D18A5D0D6007CF08C /* Networking Extensions */,
@@ -567,6 +626,8 @@
 				1B2F746C18AF66190042322B /* AFURLConnectionOperation.m in Sources */,
 				1B2F746B18AF66190042322B /* AFSecurityPolicy.m in Sources */,
 				1B2F748518AF66210042322B /* UIButton+AFNetworking.m in Sources */,
+				1B050C7918BFB4BB00DCC342 /* InfoDetailedTitleButton.m in Sources */,
+				1B050C8A18BFBD1700DCC342 /* REMenuItemView.m in Sources */,
 				1B2F748318AF66210042322B /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				1B2040BA18B3F75300C72D51 /* ProgressHUD.m in Sources */,
 				1B2F748718AF66210042322B /* UIProgressView+AFNetworking.m in Sources */,
@@ -578,18 +639,22 @@
 				1B717E6E18A80A7A00E20A29 /* LoadingCell.m in Sources */,
 				1B2F748218AF66210042322B /* AFNetworkActivityIndicatorManager.m in Sources */,
 				1B2F748418AF66210042322B /* UIAlertView+AFNetworking.m in Sources */,
+				1B050C8818BFBD1700DCC342 /* REMenu.m in Sources */,
 				1B37453C18A5D0CE007CF08C /* AFUwaterlooApiClient.m in Sources */,
+				1B050C8B18BFBD1700DCC342 /* REMenuContainerView.m in Sources */,
 				1B19834918A618A60022A285 /* DetailViewController.m in Sources */,
 				1B2F746818AF66190042322B /* AFHTTPRequestOperationManager.m in Sources */,
 				1B2F748918AF66210042322B /* UIWebView+AFNetworking.m in Sources */,
 				1B717E7118A80B8200E20A29 /* DetailDescriptionCell.m in Sources */,
 				1B2F746718AF66190042322B /* AFHTTPRequestOperation.m in Sources */,
+				1B050C8918BFBD1700DCC342 /* REMenuItem.m in Sources */,
 				1B2F748818AF66210042322B /* UIRefreshControl+AFNetworking.m in Sources */,
 				1B2F746F18AF66190042322B /* AFURLSessionManager.m in Sources */,
 				1B2076EB18AAA65100FE7088 /* AlertViewController.m in Sources */,
 				1B2F746A18AF66190042322B /* AFNetworkReachabilityManager.m in Sources */,
 				1B2F746E18AF66190042322B /* AFURLResponseSerialization.m in Sources */,
 				1B8C557C18B7BCB60070CD82 /* EKEvent+NSCoding.m in Sources */,
+				1B050C8718BFBD1700DCC342 /* RECommonFunctions.m in Sources */,
 				1B2F746D18AF66190042322B /* AFURLRequestSerialization.m in Sources */,
 				1BAD97F218A9DF30006F4546 /* SearchViewController.m in Sources */,
 				1B717E5F18A7F7DC00E20A29 /* DetailLinkCell.m in Sources */,
@@ -598,6 +663,7 @@
 				1B4DD55618AC90B4009B0214 /* MapViewController.m in Sources */,
 				1B2F748618AF66210042322B /* UIImageView+AFNetworking.m in Sources */,
 				1BD83AA118A59F1C00EDBB6D /* main.m in Sources */,
+				1B050C8E18BFC18B00DCC342 /* UWTermMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
