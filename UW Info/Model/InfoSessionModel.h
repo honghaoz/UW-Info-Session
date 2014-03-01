@@ -65,6 +65,6 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 - (void)setYearAndTerm;
 
 - (void)saveToTermInfoDic;
-- (BOOL)setInfoSessionsWithTerm:(NSString *)term;
+- (BOOL)readInfoSessionsWithTerm:(NSString *)term;
 
 @end

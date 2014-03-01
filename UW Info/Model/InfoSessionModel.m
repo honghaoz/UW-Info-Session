@@ -371,19 +371,18 @@ const NSString *myApiKey = @"77881122";
     }
     NSLog(@"save!!!!!");
     [_termInfoDic setValue:[_infoSessions copy] forKey:[_currentTerm copy]];
+    [_termInfoDic setValue:[NSDate date] forKey:[NSString stringWithFormat:@"%@ - QueriedTime", _currentTerm]];
     NSLog(@"dic: %i", [_termInfoDic count]);
     for (NSString *key in _termInfoDic) {
         NSLog(@"%@ ==", key);
     }
 }
 
-- (BOOL)setInfoSessionsWithTerm:(NSString *)term{
+- (BOOL)readInfoSessionsWithTerm:(NSString *)term{
     NSLog(@"set!!!!");
     NSInteger existIndex = -1;
     NSInteger index = 0;
     for (NSString *key in _termInfoDic) {
-        NSLog(@"%@ == %@", key, term);
-        NSLog(@"%d == %d", [key length], [term length]);
         if ([key isEqualToString:term]) {
             NSLog(@"equal!");
             existIndex = index;
@@ -396,12 +395,21 @@ const NSString *myApiKey = @"77881122";
         NSLog(@"set failed");
         return false;
     } else {
-        NSLog(@"set successfully");
-        _infoSessions = [_termInfoDic[term] copy];
-        [self processInfoSessionsDictionary:_infoSessionsDictionary withInfoSessions:_infoSessions];
-        _currentTerm = [term copy];
-        [self setYearAndTerm];
-        return true;
+        // if last queried time is 20m ago, then need connect to network to refresh
+        NSInteger intervalForRefresh = 60 * 20;
+        NSDate *lastQueriedTime = [_termInfoDic objectForKey:[NSString stringWithFormat:@"%@ - QueriedTime", term]];
+        ;
+        if ([[NSDate date] timeIntervalSinceDate:lastQueriedTime] > intervalForRefresh) {
+            NSLog(@"too old, need refesh");
+            return false;
+        } else {
+            NSLog(@"set successfully");
+            _infoSessions = [_termInfoDic[term] copy];
+            [self processInfoSessionsDictionary:_infoSessionsDictionary withInfoSessions:_infoSessions];
+            _currentTerm = [term copy];
+            [self setYearAndTerm];
+            return true;
+        }
     }
 }
 

@@ -136,7 +136,7 @@
     }
     
     // if the target term is already saved in _infoSessionModel.termInfoDic, then read it directly.
-    if ([_infoSessionModel setInfoSessionsWithTerm:[NSString stringWithFormat:@"%i %@", _shownYear, _shownTerm]]) {
+    if ([_infoSessionModel readInfoSessionsWithTerm:[NSString stringWithFormat:@"%i %@", _shownYear, _shownTerm]]) {
         NSLog(@"no network");
         _termMenu.infoSessionModel = _infoSessionModel;
         [_termMenu setDetailLabel];
