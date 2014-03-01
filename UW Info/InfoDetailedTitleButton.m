@@ -48,4 +48,12 @@
     self.detailTextLabel.text = detailText;
 }
 
+- (void)setText:(NSMutableAttributedString *)attributedString{
+    [self.textLabel setAttributedText:attributedString];
+}
+
+- (void)setDetailTextWithAttributedString:(NSMutableAttributedString *)detailAttributedString {
+    [self.detailTextLabel setAttributedText:detailAttributedString];
+}
+
 @end

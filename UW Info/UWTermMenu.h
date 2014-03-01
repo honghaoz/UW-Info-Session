@@ -11,16 +11,21 @@
 @class InfoSessionModel;
 @class REMenu;
 @class InfoDetailedTitleButton;
+@class InfoSessionsViewController;
 
 @interface UWTermMenu : NSObject
 
 @property (nonatomic, strong) InfoDetailedTitleButton *titleButton;
-@property (strong, readwrite, nonatomic) REMenu *menu;
-@property (strong, nonatomic) UINavigationController *navigationController;
+@property (nonatomic, strong) REMenu *menu;
+@property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, strong) InfoSessionModel *infoSessionModel;
+@property (nonatomic, weak) InfoSessionsViewController *infoSessionViewController;
 
 - (UWTermMenu *)initWithNavigationController:(UINavigationController *)navigationController;
 - (InfoDetailedTitleButton *)getMenuButton;
-- (void)setTitleTerm;
+- (void)setDetailLabel;
+
+- (NSUInteger)getCurrentYear:(NSDate *)date;
+- (NSString *)getCurrentTermFromDate:(NSDate *)date;
 
 @end

@@ -13,5 +13,7 @@
 
 - (InfoDetailedTitleButton *)initWithText:(NSString *)text detailText:(NSString *)detailText;
 - (void)setText:(NSString *)text andDetailText:(NSString *)detailText;
+- (void)setText:(NSMutableAttributedString *)attributedString;
+- (void)setDetailTextWithAttributedString:(NSMutableAttributedString *)detailAttributedString;
 
 @end

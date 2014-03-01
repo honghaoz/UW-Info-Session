@@ -15,6 +15,7 @@
 @property (nonatomic, strong) InfoSessionModel *infoSessionModel;
 @property (nonatomic, weak) UWTabBarController *tabBarController;
 
+- (void)reload:(__unused id)sender;
 - (void)scrollToToday;
 
 @end

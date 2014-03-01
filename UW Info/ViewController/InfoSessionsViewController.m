@@ -92,6 +92,7 @@
     
     _termMenu = [[UWTermMenu alloc] initWithNavigationController:self.navigationController];
     _termMenu.infoSessionModel = _infoSessionModel;
+    _termMenu.infoSessionViewController = self;
     
     self.navigationItem.titleView = (UIView *)[_termMenu getMenuButton];
 
@@ -123,9 +124,12 @@
     // end refreshControl
     [self.refreshControl endRefreshing];
     [_infoSessionModel clearInfoSessions];
-    [_termMenu setTitleTerm];
+    [_termMenu setDetailLabel];
+    NSLog(@"infosessions: %@", _infoSessionModel.infoSessions);
     [self.tableView reloadData];
-    [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
+    [self reloadSection:-1 WithAnimation:UITableViewRowAnimationBottom];
+    
+    NSLog(@"reloaded table");
     
     //change right bar button to indicator
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -133,15 +137,24 @@
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
-    NSURLSessionTask *task = [InfoSessionModel infoSessionsWithBlock:^(NSArray *sessions, NSString *currentTerm,  NSError *error) {
+//    NSLog(@"%@", NSStringFromClass([NSDictionary class]));
+//    NSLog(@"%@", );
+    if ([NSStringFromClass([sender class]) isEqualToString:@"__NSDictionaryI"]){
+        _infoSessionModel.year = [sender[@"Year"] integerValue];
+        _infoSessionModel.term = sender[@"Term"];
+    } else {
+        _infoSessionModel.year = 0;
+        _infoSessionModel.term = nil;
+    }
+    NSURLSessionTask *task = [InfoSessionModel infoSessions:_infoSessionModel.year andTerm:_infoSessionModel.term withBlock:^(NSArray *sessions, NSString *currentTerm,  NSError *error) {
         if (!error) {
             // initiate infoSessionModel
-            
             _infoSessionModel.infoSessions = sessions;
             _infoSessionModel.currentTerm = currentTerm;
+            [_infoSessionModel setYearAndTerm];
             
             _termMenu.infoSessionModel = _infoSessionModel;
-            [_termMenu setTitleTerm];
+            [_termMenu setDetailLabel];
             
             [_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.infoSessionsDictionary withInfoSessions:_infoSessionModel.infoSessions];
             
@@ -186,33 +199,35 @@
  *  scroll to the row of today
  */
 - (void)scrollToToday {
-    // scroll TableView to current date
-    InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
-    NSUInteger currentWeekNum = [self getWeekNumber:[NSDate date]];
-    NSUInteger sectionNumToScroll = currentWeekNum - [firstInfoSession weekNum];
-    
-    NSArray *infoSessionsOfCurrentWeek = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(currentWeekNum)];
-    NSInteger rowNumToScroll = -1;
-    for (InfoSession *eachCell in infoSessionsOfCurrentWeek) {
-        // current date is later than startTime
-        if ([[NSDate date] compare:eachCell.endTime] == NSOrderedDescending ) {
-            rowNumToScroll++;
+    if (_infoSessionModel.year == [_termMenu getCurrentYear:[NSDate date]] && [_infoSessionModel.term isEqualToString:[_termMenu getCurrentTermFromDate:[NSDate date]]]) {
+        // scroll TableView to current date
+        InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
+        NSUInteger currentWeekNum = [self getWeekNumber:[NSDate date]];
+        NSUInteger sectionNumToScroll = currentWeekNum - [firstInfoSession weekNum];
+        
+        NSArray *infoSessionsOfCurrentWeek = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(currentWeekNum)];
+        NSInteger rowNumToScroll = -1;
+        for (InfoSession *eachCell in infoSessionsOfCurrentWeek) {
+            // current date is later than startTime
+            if ([[NSDate date] compare:eachCell.endTime] == NSOrderedDescending ) {
+                rowNumToScroll++;
+            }
         }
+        // if current date is the first date of this section
+        if (rowNumToScroll == -1) {
+            rowNumToScroll = 0;
+        }
+        // if this week is empty and next week is not empty, show next week's first item
+        //    if (rowNumToScroll + 1 == [infoSessionsOfCurrentWeek count] &&
+        //         ([self numberOfSectionsInTableView:self.tableView] > sectionNumToScroll + 1)) {
+        //        rowNumToScroll = 0;
+        //        sectionNumToScroll += 1;
+        //    }
+        // scroll!
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:rowNumToScroll inSection:sectionNumToScroll] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        // reload current
+        [self reloadSection:sectionNumToScroll WithAnimation:UITableViewRowAnimationFade];
     }
-    // if current date is the first date of this section
-    if (rowNumToScroll == -1) {
-        rowNumToScroll = 0;
-    }
-    // if this week is empty and next week is not empty, show next week's first item
-//    if (rowNumToScroll + 1 == [infoSessionsOfCurrentWeek count] &&
-//         ([self numberOfSectionsInTableView:self.tableView] > sectionNumToScroll + 1)) {
-//        rowNumToScroll = 0;
-//        sectionNumToScroll += 1;
-//    }
-    // scroll!
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:rowNumToScroll inSection:sectionNumToScroll] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    // reload current
-    [self reloadSection:sectionNumToScroll WithAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark - Table view data source
@@ -235,9 +250,15 @@
  *  @Return the title of sections. show week start date to end date
  */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if ([_infoSessionModel.infoSessionsDictionary count] == 0) {
+    // if no any one infoSession in this term, show "No info sessions"
+    if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions != nil) {
+        return @"No info sessions";
+    }
+    // if there's info sessions, so for certain week with no info session
+    else if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions == nil) {
         return @"Refreshing...";
     }
+    // show last one
     else if (section == [self numberOfSectionsInTableView:tableView] - 1) {
         return @"No more info sessions";
     }
@@ -303,7 +324,16 @@
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([_infoSessionModel.infoSessionsDictionary count] == 0) {
+    // if no any one infoSession in this term, show "No info sessions"
+    if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions != nil) {
+        LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
+        cell.loadingIndicator.hidden = YES;
+        cell.loadingLabel.text = @"No info sessions";
+        [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
+        [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
+        return cell;
+    }
+    else if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions == nil) {
         LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
         cell.loadingIndicator.hidden = NO;
         [cell.loadingIndicator startAnimating];
@@ -462,10 +492,23 @@
 - (void)reloadSection:(NSUInteger)sectionToScroll WithAnimation:(UITableViewRowAnimation)animation {
     NSUInteger sectionNumToScroll = sectionToScroll;
     if (sectionToScroll == -1) {
-        InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
-        sectionNumToScroll = [self getWeekNumber:[NSDate date]] - [firstInfoSession weekNum];
+        if (_infoSessionModel.year == [_termMenu getCurrentYear:[NSDate date]] && [_infoSessionModel.term isEqualToString:[_termMenu getCurrentTermFromDate:[NSDate date]]]) {
+            InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
+            sectionNumToScroll = [self getWeekNumber:[NSDate date]] - [firstInfoSession weekNum];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionNumToScroll] withRowAnimation:animation];
+        }
+        else if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions != nil){
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        else if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions == nil){
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        else {
+            //sectionNumToScroll = 0;
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:animation];
+        }
     }
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionNumToScroll] withRowAnimation:animation];
+    
 }
 /**
  *  get the array of infoSession according give section

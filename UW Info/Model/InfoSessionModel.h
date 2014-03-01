@@ -14,6 +14,12 @@ typedef NS_ENUM(NSUInteger, UW){
     UWNonthing
 };
 
+typedef NS_ENUM(NSUInteger, UWTerm) {
+    UWWinter = 0,
+    UWSpring,
+    UWFall
+};
+
 @interface InfoSessionModel : InfoSession <NSCoding>
 
 // info sessions data retrived from api
@@ -25,6 +31,8 @@ typedef NS_ENUM(NSUInteger, UW){
 //@property (nonatomic, strong) NSMutableDictionary *myInfoSessionsDictionary;
 
 @property (nonatomic, copy) NSString *currentTerm;
+@property (nonatomic, assign) NSInteger year;
+@property (nonatomic, copy) NSString *term;
 
 // Used for manage calendar event, only initiate once!
 //@property (nonatomic, strong) EKEventStore *eventStore;
@@ -34,7 +42,7 @@ typedef NS_ENUM(NSUInteger, UW){
 
 - (void)processInfoSessionsDictionary:(NSDictionary *)dictionary withInfoSessions:(NSArray *)array;
 
-+ (NSURLSessionTask *)infoSessionsWithBlock:(void (^)(NSArray *sessions, NSString *currentTerm, NSError *error))block;
++ (NSURLSessionTask *)infoSessions:(NSInteger)year andTerm:(NSString *)term withBlock:(void (^)(NSArray *sessions, NSString *currentTerm, NSError *error))block;
 
 + (NSInteger)findInfoSession:(InfoSession *)infoSession in:(NSMutableArray *)array;
 + (NSInteger)findInfoSessionIdentifier:(NSString *)infoSessionId in:(NSMutableArray *)array;
@@ -50,5 +58,6 @@ typedef NS_ENUM(NSUInteger, UW){
 - (void)loadInfoSessions;
 
 - (NSInteger)countFutureInfoSessions:(NSArray *)infosessions;
+- (void)setYearAndTerm;
 
 @end

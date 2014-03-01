@@ -65,6 +65,7 @@ const NSString *myApiKey = @"77881122";
     _infoSessions = nil;
     _infoSessionsDictionary = nil;
     _currentTerm = nil;
+    [self setYearAndTerm];
 }
 
 /**
@@ -74,11 +75,18 @@ const NSString *myApiKey = @"77881122";
  *
  *  @return
  */
-+ (NSURLSessionTask *)infoSessionsWithBlock:(void (^)(NSArray *sessions, NSString *currentTerm, NSError *error))block{
-    return [[AFUwaterlooApiClient sharedClient] GET:@"infosessions.json" parameters:@{@"key" : myApiKey} success:^(NSURLSessionDataTask * __unused task, id JSON) {
++ (NSURLSessionTask *)infoSessions:(NSInteger)year andTerm:(NSString *)term withBlock:(void (^)(NSArray *sessions, NSString *currentTerm, NSError *error))block{
+    NSString *getTarget;
+    if (year == 0 || term == nil) {
+        getTarget = @"infosessions.json";
+    } else {
+        getTarget = [NSString stringWithFormat:@"infosessions/%i%@.json", year, term];
+    }
+    return [[AFUwaterlooApiClient sharedClient] GET:getTarget parameters:@{@"key" : myApiKey} success:^(NSURLSessionDataTask * __unused task, id JSON) {
         //response array from jason
         NSArray *infoSessionsFromResponse = [JSON valueForKeyPath:@"data"];
         NSString *currentTerm = [JSON valueForKeyPath:@"meta.term"];
+
         // new empty array to store infoSessions
         NSMutableArray *mutableInfoSessions = [NSMutableArray arrayWithCapacity:[infoSessionsFromResponse count]];
         
@@ -315,6 +323,24 @@ const NSString *myApiKey = @"77881122";
     [aCoder encodeObject:self.infoSessions forKey:@"infoSessions"];
     [aCoder encodeObject:self.infoSessionsDictionary forKey:@"infoSessionsDictionary"];
     [aCoder encodeObject:self.myInfoSessions forKey:@"myInfoSessions"];
+}
+
+- (void)setYearAndTerm {
+    NSLog(@"%d", [_currentTerm length]);
+    if (_currentTerm == nil) {
+        _year = 0;
+        _term = nil;
+        NSLog(@"successsssssasdajsdlkjasldkjaskljdlkasjd");
+        return;
+    } else if ([_currentTerm length] > 6) {
+        NSLog(@"successsssss");
+        _year = [[_currentTerm substringToIndex:4] integerValue];
+        _term = [_currentTerm substringFromIndex:5];
+    } else {
+        NSLog(@"successsssssasdajsdlkjasldkjaskljdlkasjdadasdasdasdasdasdasd");
+        _year = 0;
+        _term = nil;
+    }
 }
 
 @end
