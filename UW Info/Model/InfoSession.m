@@ -453,14 +453,14 @@ static EKEventStore *eventStore;
     [dateFormatter setDateFormat:@"HH:mm"];
     NSString *startString = [dateFormatter stringFromDate:self.startTime];
     NSString *endString = [dateFormatter stringFromDate:self.endTime];
-    return [NSString stringWithFormat:@"%i-%@-%@-%@-%@", self.sessionId, self.employer, dateString, startString, endString];
+    return [NSString stringWithFormat:@"%lu-%@-%@-%@-%@", (unsigned long)self.sessionId, self.employer, dateString, startString, endString];
 }
 
 - (void)cancelNotifications {
     NSLog(@"Start to cancel notifications");
     NSMutableArray *existingNotifications = [self notificationsForThisInfoSession];
     if (existingNotifications != nil) {
-        NSLog(@"Cancel %i exist notifications", [existingNotifications count]);
+        NSLog(@"Cancel %lu exist notifications", (unsigned long)[existingNotifications count]);
         for (UILocalNotification *eachNotification in existingNotifications) {
             NSLog(@"  Canceled: %@", eachNotification);
             [[UIApplication sharedApplication] cancelLocalNotification:eachNotification];

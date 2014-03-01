@@ -138,9 +138,12 @@
 //    }];
     
     __weak typeof(self) weakSelf = self;
+    __weak typeof(_infoSessionViewController) weakInfoSessionVC = _infoSessionViewController;
     [self.menu setCloseCompletionHandler:^{
         NSLog(@"common menu close");
         [weakSelf setSignOfDetailLabelTo:@"down"];
+        weakInfoSessionVC.navigationItem.rightBarButtonItem.enabled = YES;
+        weakInfoSessionVC.navigationItem.leftBarButtonItem.enabled = YES;
     }];
 }
 
@@ -161,10 +164,13 @@
     [self setMenuWithItems:menuItems];
     
     __weak typeof(self) weakSelf = self;
+    __weak typeof(_infoSessionViewController) weakInfoSessionVC = _infoSessionViewController;
     [self.menu setCloseCompletionHandler:^{
         NSLog(@"year menu close");
         [weakSelf setDetailLabel];
         [weakSelf setTermMenu];
+        weakInfoSessionVC.navigationItem.rightBarButtonItem.enabled = YES;
+        weakInfoSessionVC.navigationItem.leftBarButtonItem.enabled = YES;
     }];
 }
 

@@ -27,6 +27,8 @@
 @interface InfoSessionsViewController ()
 
 @property (nonatomic, strong) UWTermMenu *termMenu;
+@property (nonatomic, assign) NSInteger shownYear;
+@property (nonatomic, copy) NSString *shownTerm;
 
 @end
 
@@ -81,25 +83,14 @@
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
     // init menu button (term selection)
-//    self.termSelection = [[UIButton alloc] initWithFrame:CGRectMake(0 , 0, 180, 60)];
-//
-//    [self.termSelection setTitle:@"ASDASDASDASD" forState:UIControlStateNormal];
-//    [self.termSelection setTitle:@"tap!" forState:UIControlStateSelected];
-//    [self.termSelection setUserInteractionEnabled:YES];
-//    [self.termSelection setBackgroundColor:[UIColor blueColor]];
-//    //[self.termSelection setSelected:YES];
-//     [self.navigationController.navigationBar addSubview:self.termSelection];
-    
     _termMenu = [[UWTermMenu alloc] initWithNavigationController:self.navigationController];
     _termMenu.infoSessionModel = _infoSessionModel;
     _termMenu.infoSessionViewController = self;
     
+    _shownYear = [_termMenu getCurrentYear:[NSDate date]];
+    _shownTerm = [_termMenu getCurrentTermFromDate:[NSDate date]];
+    
     self.navigationItem.titleView = (UIView *)[_termMenu getMenuButton];
-
-//    showOrigin =[[UILabel alloc] initWithFrame:(CGRectMake(10, 70, 190, 44))];
-//    [self.view addSubview:showOrigin];
-//    showOrigin.text = @"(%i, %i)";
-//    [showOrigin setBackgroundColor:[UIColor yellowColor]];
     
     //reload data
     [self reload:nil];
@@ -126,7 +117,7 @@
     [_infoSessionModel clearInfoSessions];
     [_termMenu setDetailLabel];
     [self.tableView reloadData];
-    [self reloadSection:-1 WithAnimation:UITableViewRowAnimationBottom];
+    [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
     
     //change right bar button to indicator
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -134,50 +125,79 @@
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
-//    NSLog(@"%@", NSStringFromClass([NSDictionary class]));
-//    NSLog(@"%@", );
     if ([NSStringFromClass([sender class]) isEqualToString:@"__NSDictionaryI"]){
-        _infoSessionModel.year = [sender[@"Year"] integerValue];
-        _infoSessionModel.term = sender[@"Term"];
+//        _infoSessionModel.year = [sender[@"Year"] integerValue];
+//        _infoSessionModel.term = sender[@"Term"];
+        _shownYear = [sender[@"Year"] integerValue];
+        _shownTerm = sender[@"Term"];
     } else {
-        _infoSessionModel.year = 0;
-        _infoSessionModel.term = nil;
+//        _infoSessionModel.year = [_termMenu getCurrentYear:[NSDate date]];
+//        _infoSessionModel.term = [_termMenu getCurrentTermFromDate:[NSDate date]];
     }
-    NSURLSessionTask *task = [InfoSessionModel infoSessions:_infoSessionModel.year andTerm:_infoSessionModel.term withBlock:^(NSArray *sessions, NSString *currentTerm,  NSError *error) {
-        if (!error) {
-            // initiate infoSessionModel
-            _infoSessionModel.infoSessions = sessions;
-            _infoSessionModel.currentTerm = currentTerm;
-            [_infoSessionModel setYearAndTerm];
-            
-            _termMenu.infoSessionModel = _infoSessionModel;
-            [_termMenu setDetailLabel];
-            
-            [_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.infoSessionsDictionary withInfoSessions:_infoSessionModel.infoSessions];
-            [_infoSessionModel updateMyInfoSessions];
-            
-            // reload TableView data
-            [self.tableView reloadData];
-            // scroll TableView to current date
-            [self scrollToToday];
-            
-            // reload sections animations
-            [self reloadSection:-1 WithAnimation:UITableViewRowAnimationBottom];
-            // end refreshControl
-            [self.refreshControl endRefreshing];
-            
-        }
-        // restore right bar button to refresh button
-//        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
+    
+    // if the target term is already saved in _infoSessionModel.termInfoDic, then read it directly.
+    if ([_infoSessionModel setInfoSessionsWithTerm:[NSString stringWithFormat:@"%i %@", _shownYear, _shownTerm]]) {
+        NSLog(@"no network");
+        _termMenu.infoSessionModel = _infoSessionModel;
+        [_termMenu setDetailLabel];
         
+        // reload TableView data
+        [self.tableView reloadData];
+        // scroll TableView to current date
+        if (![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"]) {
+            [self scrollToToday];
+        }
+        
+        // reload sections animations
+        [self reloadSection:-1 WithAnimation:UITableViewRowAnimationAutomatic];
+        // end refreshControl
+        [self.refreshControl endRefreshing];
         self.navigationItem.rightBarButtonItem.enabled = YES;
         self.navigationItem.leftBarButtonItem.enabled = YES;
-        
-    }];
+    }
+    // else, no infoSession saved for this target term, need update
+    else {
+        NSURLSessionTask *task = [InfoSessionModel infoSessions:_shownYear andTerm:_shownTerm withBlock:^(NSArray *sessions, NSString *currentTerm,  NSError *error) {
+            if (!error) {
+                // initiate infoSessionModel
+                _infoSessionModel.infoSessions = sessions;
+                _infoSessionModel.currentTerm = currentTerm;
+                [_infoSessionModel setYearAndTerm];
+                
+                _termMenu.infoSessionModel = _infoSessionModel;
+                [_termMenu setDetailLabel];
+                
+                [_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.infoSessionsDictionary withInfoSessions:_infoSessionModel.infoSessions];
+                [_infoSessionModel updateMyInfoSessions];
+                
+                // save to TermDic.
+                [_infoSessionModel saveToTermInfoDic];
+                
+                // reload TableView data
+                [self.tableView reloadData];
+                // scroll TableView to current date
+                if (![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"]) {
+                    [self scrollToToday];
+                }
+                
+                // reload sections animations
+                [self reloadSection:-1 WithAnimation:UITableViewRowAnimationBottom];
+                // end refreshControl
+                [self.refreshControl endRefreshing];
+                
+            }
+            // restore right bar button to refresh button
+    //        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
+            
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+            self.navigationItem.leftBarButtonItem.enabled = YES;
+            
+        }];
+        [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+        //[self.refreshControl setRefreshingWithStateOfTask:task];
+        [activityIndicatorView setAnimatingWithStateOfTask:task];
+    }
     
-    [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
-    //[self.refreshControl setRefreshingWithStateOfTask:task];
-    [activityIndicatorView setAnimatingWithStateOfTask:task];
 }
 
 /**
@@ -197,7 +217,7 @@
  *  scroll to the row of today
  */
 - (void)scrollToToday {
-    if (_infoSessionModel.year == [_termMenu getCurrentYear:[NSDate date]] && [_infoSessionModel.term isEqualToString:[_termMenu getCurrentTermFromDate:[NSDate date]]]) {
+    if (_shownYear == [_termMenu getCurrentYear:[NSDate date]] && [_shownTerm isEqualToString:[_termMenu getCurrentTermFromDate:[NSDate date]]]) {
         // scroll TableView to current date
         InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
         NSUInteger currentWeekNum = [self getWeekNumber:[NSDate date]];
@@ -488,9 +508,9 @@
  *  @param animation       UITableViewRowAnimation
  */
 - (void)reloadSection:(NSUInteger)sectionToScroll WithAnimation:(UITableViewRowAnimation)animation {
-    NSUInteger sectionNumToScroll = sectionToScroll;
     if (sectionToScroll == -1) {
-        if (_infoSessionModel.year == [_termMenu getCurrentYear:[NSDate date]] && [_infoSessionModel.term isEqualToString:[_termMenu getCurrentTermFromDate:[NSDate date]]]) {
+        if (_shownYear == [_termMenu getCurrentYear:[NSDate date]] && [_shownTerm isEqualToString:[_termMenu getCurrentTermFromDate:[NSDate date]]]) {
+            NSUInteger sectionNumToScroll = sectionToScroll;
             InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
             sectionNumToScroll = [self getWeekNumber:[NSDate date]] - [firstInfoSession weekNum];
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionNumToScroll] withRowAnimation:animation];
@@ -502,11 +522,12 @@
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
         else {
+            NSLog(@"reload 22222");
             //sectionNumToScroll = 0;
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:animation];
         }
     }
-    
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:animation];
 }
 /**
  *  get the array of infoSession according give section

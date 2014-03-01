@@ -80,7 +80,7 @@ const NSString *myApiKey = @"77881122";
     if (year == 0 || term == nil) {
         getTarget = @"infosessions.json";
     } else {
-        getTarget = [NSString stringWithFormat:@"infosessions/%i%@.json", year, term];
+        getTarget = [NSString stringWithFormat:@"infosessions/%li%@.json", (long)year, term];
     }
     return [[AFUwaterlooApiClient sharedClient] GET:getTarget parameters:@{@"key" : myApiKey} success:^(NSURLSessionDataTask * __unused task, id JSON) {
         //response array from jason
@@ -352,20 +352,56 @@ const NSString *myApiKey = @"77881122";
 }
 
 - (void)setYearAndTerm {
-    NSLog(@"%d", [_currentTerm length]);
     if (_currentTerm == nil) {
         _year = 0;
         _term = nil;
-        NSLog(@"successsssssasdajsdlkjasldkjaskljdlkasjd");
         return;
     } else if ([_currentTerm length] > 6) {
-        NSLog(@"successsssss");
         _year = [[_currentTerm substringToIndex:4] integerValue];
         _term = [_currentTerm substringFromIndex:5];
     } else {
-        NSLog(@"successsssssasdajsdlkjasldkjaskljdlkasjdadasdasdasdasdasdasd");
         _year = 0;
         _term = nil;
+    }
+}
+
+- (void)saveToTermInfoDic {
+    if (_termInfoDic == nil) {
+        _termInfoDic = [[NSMutableDictionary alloc] init];
+    }
+    NSLog(@"save!!!!!");
+    [_termInfoDic setValue:[_infoSessions copy] forKey:[_currentTerm copy]];
+    NSLog(@"dic: %i", [_termInfoDic count]);
+    for (NSString *key in _termInfoDic) {
+        NSLog(@"%@ ==", key);
+    }
+}
+
+- (BOOL)setInfoSessionsWithTerm:(NSString *)term{
+    NSLog(@"set!!!!");
+    NSInteger existIndex = -1;
+    NSInteger index = 0;
+    for (NSString *key in _termInfoDic) {
+        NSLog(@"%@ == %@", key, term);
+        NSLog(@"%d == %d", [key length], [term length]);
+        if ([key isEqualToString:term]) {
+            NSLog(@"equal!");
+            existIndex = index;
+            break;
+        }
+        index++;
+    }
+    // this term not exists
+    if (existIndex == -1) {
+        NSLog(@"set failed");
+        return false;
+    } else {
+        NSLog(@"set successfully");
+        _infoSessions = [_termInfoDic[term] copy];
+        [self processInfoSessionsDictionary:_infoSessionsDictionary withInfoSessions:_infoSessions];
+        _currentTerm = [term copy];
+        [self setYearAndTerm];
+        return true;
     }
 }
 

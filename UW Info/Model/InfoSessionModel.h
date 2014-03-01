@@ -34,6 +34,8 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 @property (nonatomic, assign) NSInteger year;
 @property (nonatomic, copy) NSString *term;
 
+@property (nonatomic, strong) NSMutableDictionary *termInfoDic;
+
 // Used for manage calendar event, only initiate once!
 //@property (nonatomic, strong) EKEventStore *eventStore;
 @property (nonatomic, strong) EKCalendar *defaultCalendar;
@@ -61,5 +63,8 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 
 - (NSInteger)countFutureInfoSessions:(NSArray *)infosessions;
 - (void)setYearAndTerm;
+
+- (void)saveToTermInfoDic;
+- (BOOL)setInfoSessionsWithTerm:(NSString *)term;
 
 @end
