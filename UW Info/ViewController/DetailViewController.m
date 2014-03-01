@@ -484,6 +484,8 @@
                 [cell.remindSwitch setOn:YES animated:YES];
                 
                 // if this infoSession is in the future, can turn on siwtch
+                _infoSession.isCancelled ? NSLog(@"cancelled") : NSLog(@"not cancel");
+                
                 if ([_infoSession.startTime compare:[NSDate date]] == NSOrderedDescending) {
                     [cell.remindSwitch setEnabled:YES];
                 } else {
@@ -517,7 +519,8 @@
             [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
             [cell.remindSwitch setOn:NO animated:YES];
             // if this infoSession is in the future, can turn on siwtch
-            if ([_infoSession.startTime compare:[NSDate date]] == NSOrderedDescending) {
+            if ([_infoSession.startTime compare:[NSDate date]] == NSOrderedDescending &&
+                _infoSession.isCancelled == NO) {
                 [cell.remindSwitch setEnabled:YES];
             } else {
                 [cell.remindSwitch setEnabled:NO];

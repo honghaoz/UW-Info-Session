@@ -13,18 +13,18 @@
 @interface InfoSession : NSObject <NSCopying, NSCoding>
 
 //attribute that not changed
-@property (nonatomic, readonly, assign) NSUInteger sessionId;
-@property (nonatomic, readonly, copy) NSString *employer;
-@property (nonatomic, readonly, strong) NSDate *date;
-@property (nonatomic, readonly, strong) NSDate *startTime;
-@property (nonatomic, readonly, strong) NSDate *endTime;
-@property (nonatomic, readonly, copy) NSString *location;
-@property (nonatomic, readonly, copy) NSString *website;
-@property (nonatomic, readonly, copy) NSString *audience;
-@property (nonatomic, readonly, copy) NSString *programs;
-@property (nonatomic, readonly, copy) NSString *description;
+@property (nonatomic, assign) NSUInteger sessionId;
+@property (nonatomic, copy) NSString *employer;
+@property (nonatomic, strong) NSDate *date;
+@property (nonatomic, strong) NSDate *startTime;
+@property (nonatomic, strong) NSDate *endTime;
+@property (nonatomic, copy) NSString *location;
+@property (nonatomic, copy) NSString *website;
+@property (nonatomic, copy) NSString *audience;
+@property (nonatomic, copy) NSString *programs;
+@property (nonatomic, copy) NSString *description;
 //@property (nonatomic, readonly, unsafe_unretained) NSURL *logoImageURL;
-@property (nonatomic, readonly, assign) NSUInteger weekNum;
+@property (nonatomic, assign) NSUInteger weekNum;
 
 @property (nonatomic, assign) BOOL isCancelled;
 

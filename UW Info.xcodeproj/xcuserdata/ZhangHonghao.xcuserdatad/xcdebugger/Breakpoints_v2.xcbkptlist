@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/ViewController/InfoSessionsViewController.m"
-            timestampString = "415345660.867916"
+            timestampString = "415347081.346428"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
             landmarkName = "-reload:"
             landmarkType = "5">
          </BreakpointContent>
@@ -106,12 +106,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/ViewController/InfoSessionsViewController.m"
-            timestampString = "415345660.867916"
+            timestampString = "415347081.346428"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
+            startingLineNumber = "148"
+            endingLineNumber = "148"
             landmarkName = "-reload:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UW Info/Model/InfoSessionModel.m"
+            timestampString = "415348622.540989"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "313"
+            endingLineNumber = "313"
+            landmarkName = "-updateMyInfoSessions"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UW Info/Model/InfoSessionModel.m"
+            timestampString = "415348622.540989"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "317"
+            endingLineNumber = "317"
+            landmarkName = "-updateMyInfoSessions"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

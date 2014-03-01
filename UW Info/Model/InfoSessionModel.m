@@ -308,6 +308,32 @@ const NSString *myApiKey = @"77881122";
 
 }
 
+- (void)updateMyInfoSessions {
+    for (InfoSession *eachInfoSession in _myInfoSessions) {
+        NSInteger existIndex = [InfoSessionModel findInfoSession:eachInfoSession in:(NSMutableArray *)_infoSessions];
+        if (existIndex != -1) {
+            InfoSession *theCorrespondingInfoSession = _infoSessions[existIndex];
+            eachInfoSession.employer = [theCorrespondingInfoSession.employer copy];
+            eachInfoSession.date = [theCorrespondingInfoSession.date copy];
+            eachInfoSession.startTime = [theCorrespondingInfoSession.startTime copy];
+            eachInfoSession.endTime = [theCorrespondingInfoSession.endTime copy];
+            eachInfoSession.location = [theCorrespondingInfoSession.location copy];
+            eachInfoSession.website = [theCorrespondingInfoSession.website copy];
+            eachInfoSession.audience = [theCorrespondingInfoSession.audience copy];
+            eachInfoSession.programs = [theCorrespondingInfoSession.programs copy];
+            eachInfoSession.description = [theCorrespondingInfoSession.description copy];
+            eachInfoSession.weekNum = theCorrespondingInfoSession.weekNum;
+            eachInfoSession.isCancelled = theCorrespondingInfoSession.isCancelled;
+            if (theCorrespondingInfoSession.isCancelled) {
+                [eachInfoSession cancelNotifications];
+                eachInfoSession.alertIsOn = NO;
+            } else {
+                [eachInfoSession scheduleNotifications];
+            }
+        }
+    }
+}
+
 #pragma mark - NSCoding protocol methods
 
 - (id)initWithCoder:(NSCoder *)aDecoder {

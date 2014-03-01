@@ -18,20 +18,6 @@ static EKEventStore *eventStore;
 
 @interface InfoSession()
 
-@property (nonatomic, readwrite, assign) NSUInteger sessionId;
-@property (nonatomic, readwrite, copy) NSString *employer;
-@property (nonatomic, readwrite, strong) NSDate *date;
-@property (nonatomic, readwrite, strong) NSDate *startTime;
-@property (nonatomic, readwrite, strong) NSDate *endTime;
-@property (nonatomic, readwrite, copy) NSString *location;
-@property (nonatomic, readwrite, copy) NSString *website;
-@property (nonatomic, readwrite, copy) NSString *audience;
-@property (nonatomic, readwrite, copy) NSString *programs;
-@property (nonatomic, readwrite, copy) NSString *description;
-//@property (nonatomic, readwrite, copy) NSString *logoImageURLString;
-
-@property (nonatomic, readwrite, assign) NSUInteger weekNum;
-
 @end
 
 @implementation InfoSession

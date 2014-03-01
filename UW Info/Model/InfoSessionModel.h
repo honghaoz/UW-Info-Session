@@ -57,6 +57,8 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 - (void)saveInfoSessions;
 - (void)loadInfoSessions;
 
+- (void)updateMyInfoSessions;
+
 - (NSInteger)countFutureInfoSessions:(NSArray *)infosessions;
 - (void)setYearAndTerm;
 

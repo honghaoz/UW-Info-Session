@@ -125,11 +125,8 @@
     [self.refreshControl endRefreshing];
     [_infoSessionModel clearInfoSessions];
     [_termMenu setDetailLabel];
-    NSLog(@"infosessions: %@", _infoSessionModel.infoSessions);
     [self.tableView reloadData];
     [self reloadSection:-1 WithAnimation:UITableViewRowAnimationBottom];
-    
-    NSLog(@"reloaded table");
     
     //change right bar button to indicator
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -157,6 +154,7 @@
             [_termMenu setDetailLabel];
             
             [_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.infoSessionsDictionary withInfoSessions:_infoSessionModel.infoSessions];
+            [_infoSessionModel updateMyInfoSessions];
             
             // reload TableView data
             [self.tableView reloadData];
