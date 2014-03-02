@@ -74,34 +74,51 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
+        return 1;
+    } else {
+        return 2;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0 ){
-        return 1;
+    if (section == 0) {
+        if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0 ){
+            return 1;
+        } else {
+            return [_infoSessionModel.myInfoSessions count];
+        };
     } else {
-        return [_infoSessionModel.myInfoSessions count];
-    };
+        return 1;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
-        LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EmptyCell"];
-        
-        // set the label vertically align center.
-        CGRect newFrame = cell.loadingLabel.frame;
-        newFrame.origin.y = [self tableView:tableView heightForRowAtIndexPath:indexPath] / 2 - cell.loadingLabel.frame.size.height / 2;
-        cell.loadingLabel.frame = newFrame;
-        
-        return cell;
+    if (indexPath.section == 0) {
+        if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
+            LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
+            cell.loadingIndicator.hidden = YES;
+            cell.loadingLabel.text = @"No info session saved";
+            [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
+            [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
+            return cell;
+
+        } else {
+            InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InfoSessionCell"];
+            [self configureCell:cell withIndexPath:indexPath];
+            return cell;
+        }
     } else {
-        InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InfoSessionCell"];
-        [self configureCell:cell withIndexPath:indexPath];
+        LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
+        cell.loadingIndicator.hidden = YES;
+        cell.loadingLabel.text = [NSString stringWithFormat:@"%i Info Sessions", [_infoSessionModel.myInfoSessions count]];
+        [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
+        [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
         return cell;
     }
+    
 }
 
 /**
@@ -181,12 +198,17 @@
  */
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // empty cell
-    if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
-        return 70.0f;
+    if (indexPath.section == 0) {
+        if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
+            return 44.0f;
+        } else {
+            // info session cell
+            return 70.0f;
+        }
     } else {
-        // info session cell
-        return 70.0f;
+        return 44.0f;
     }
+    
 }
 
 
@@ -198,12 +220,14 @@
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    // empty cell
-    if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
-        return;
-    } else {
-        // info session cell
-        [self performSegueWithIdentifier:@"ShowDetailFromMyInfoSessions" sender:[[NSArray alloc] initWithObjects:@"MyInfoViewController", _infoSessionModel.myInfoSessions[indexPath.row], _infoSessionModel, nil]];
+    if (indexPath.section == 0) {
+        // empty cell
+        if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
+            return;
+        } else {
+            // info session cell
+            [self performSegueWithIdentifier:@"ShowDetailFromMyInfoSessions" sender:[[NSArray alloc] initWithObjects:@"MyInfoViewController", _infoSessionModel.myInfoSessions[indexPath.row], _infoSessionModel, nil]];
+        }
     }
 }
 
@@ -211,13 +235,18 @@
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // empty cell
-    if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
-        return NO;
+    if (indexPath.section == 0) {
+        // empty cell
+        if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
+            return NO;
+        } else {
+            // info session cell
+            return YES;
+        }
     } else {
-        // info session cell
-        return YES;
+        return NO;
     }
+    
 }
 
 

@@ -143,17 +143,41 @@ const NSString *myApiKey = @"77881122";
 }
 
 - (void)processInfoSessionsIndexDic {
+    [_infoSessionsIndexDic removeAllObjects];
     for (InfoSession *eachSession in _infoSessions) {
-        NSString *key = [eachSession.employer substringToIndex:1];
+        NSString *key = [[eachSession.employer substringToIndex:1] capitalizedString];
+        char keyChar = [key characterAtIndex:0];
+        if (!(keyChar >= 'A' && keyChar <= 'Z')) {
+            key = @"#";
+        }
         // if key not exist
-        self.infoSessionsIndexDic == nil ? NSLog(@"nil") : NSLog(@"not nil");
         if (self.infoSessionsIndexDic[key] == nil) {
             [self.infoSessionsIndexDic setValue:[[NSMutableArray alloc] initWithObjects:eachSession, nil] forKey:key];
         } else {
             // key exists
-            [self.infoSessionsIndexDic[key] addObject:eachSession];
+            NSComparator comparator = ^(InfoSession *info1, InfoSession *info2) {
+                NSComparisonResult compareResult = [[info1.employer capitalizedString] compare:[info2.employer capitalizedString]];
+                if (compareResult == NSOrderedSame) {
+                    compareResult = [info1.startTime compare:info2.startTime];
+                }
+                return compareResult;
+            };
+            
+            NSUInteger newIndex = [self.infoSessionsIndexDic[key] indexOfObject:eachSession
+                                                                  inSortedRange:(NSRange){0, [self.infoSessionsIndexDic[key] count]}
+                                                                        options:NSBinarySearchingInsertionIndex
+                                                                usingComparator:comparator];
+            
+            [self.infoSessionsIndexDic[key] insertObject:eachSession atIndex:newIndex];
         }
     }
+//    for (int i = 0; i < [self.infoSessionsIndexDic.allValues count]; i++) {
+//        NSMutableArray *each = self.infoSessionsIndexDic.allValues[i];
+//        NSLog(@"%i", [each count]);
+//        each = (NSMutableArray *)[each sortedArrayUsingComparator:^(InfoSession *info1, InfoSession *info2){
+//            return [info1.employer compare:info2.employer];
+//        }];
+//    }
 }
 
 /**

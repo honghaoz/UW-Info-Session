@@ -519,7 +519,24 @@
     if ([_infoSessionModel.infoSessionsDictionary count] == 0 || section == [self numberOfSectionsInTableView:tableView] - 1) {
         return 0.0f;
     }
-    return 25.0f;
+    return 23.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *background = [[UIView alloc] init];
+    background.frame = CGRectMake(0, 0, 320, 23);
+    background.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1];
+    
+    UILabel *myLabel = [[UILabel alloc] init];
+    myLabel.frame = CGRectMake(15, 0, 320, 23);
+    myLabel.font = [UIFont boldSystemFontOfSize:14];
+    myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    
+    UIView *headerView = [[UIView alloc] init];
+    [headerView addSubview:background];
+    [background addSubview:myLabel];
+    
+    return headerView;
 }
 
 /**

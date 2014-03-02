@@ -433,24 +433,29 @@
                                     <outlet property="locationLabel" destination="rba-sT-JP2" id="nDg-Gg-aT4"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EmptyCell" rowHeight="44" id="AQr-Ze-l2E" customClass="LoadingCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LoadingCell" rowHeight="44" id="TA6-Pj-YBt" customClass="LoadingCell">
                                 <rect key="frame" x="0.0" y="156" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AQr-Ze-l2E" id="SVA-sq-HSU">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TA6-Pj-YBt" id="6ZG-RR-cSI">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No info session saved" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" id="gz2-rM-zba">
-                                            <rect key="frame" x="76" y="11" width="169" height="21"/>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" id="gQq-PZ-Eji">
+                                            <rect key="frame" x="203" y="11" width="20" height="20"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </activityIndicatorView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Refreshing..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7at-GX-Bsq">
+                                            <rect key="frame" x="70" y="11" width="181" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="loadingLabel" destination="gz2-rM-zba" id="xe5-ur-Vkm"/>
+                                    <outlet property="loadingIndicator" destination="gQq-PZ-Eji" id="3O3-20-mmJ"/>
+                                    <outlet property="loadingLabel" destination="7at-GX-Bsq" id="gRi-7G-GDx"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -677,6 +682,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="EvK-Ps-maJ"/>
+        <segue reference="fT1-AS-H6Z"/>
     </inferredMetricsTieBreakers>
 </document>

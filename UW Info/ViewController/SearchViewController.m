@@ -9,8 +9,11 @@
 #import "SearchViewController.h"
 #import "InfoSessionModel.h"
 #import "InfoSessionCell.h"
+#import "LoadingCell.h"
 
 @interface SearchViewController ()
+
+@property (nonatomic, strong) NSArray *sectionIndex;
 
 @end
 
@@ -40,16 +43,20 @@
     [self reloadTable];
 }
 
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    CGRect barFrame = self.searchBar.frame;
-    barFrame.size.width = self.view.bounds.size.width;
-    self.searchBar.frame = barFrame;
-}
+//- (void)viewDidLayoutSubviews {
+//    [super viewDidLayoutSubviews];
+//    CGRect barFrame = self.searchBar.frame;
+//    barFrame.size.width = self.view.bounds.size.width;
+//    self.searchBar.frame = barFrame;
+//}
 
 - (void)reloadTable {
+    NSLog(@"reload search table");
     [_infoSessionModel processInfoSessionsIndexDic];
-    [self getKeyForSection:2];
+    [self setSectionIndex];
+    [self.tableView reloadData];
+    [self.tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
+    [self.tableView setSectionIndexColor:UWBlack];
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,42 +67,77 @@
 
 #pragma mark - Table view data source
 - (NSString *)getKeyForSection:(NSInteger)section {
-    NSMutableArray *allKeys = (NSMutableArray *)[_infoSessionModel.infoSessionsIndexDic.allKeys sortedArrayUsingComparator:^(NSString *key1, NSString *key2){
-        return [key1 compare:key2];
-    }];
-    return allKeys[section];
+    return _sectionIndex[section];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-
     // Return the number of sections.
-    return [_infoSessionModel.infoSessionsIndexDic count];
+    return [_infoSessionModel.infoSessionsIndexDic count] + 1;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return [self getKeyForSection:section];
+    if (section < [_infoSessionModel.infoSessionsIndexDic count]) {
+        return [self getKeyForSection:section];
+    } else {
+        return @"";
+    }
+    
+}
+
+- (NSArray *)setSectionIndex{
+    _sectionIndex = [_infoSessionModel.infoSessionsIndexDic.allKeys sortedArrayUsingComparator:^(NSString *key1, NSString *key2){
+        if ([key1 isEqualToString:@"#"]) {
+            return NSOrderedDescending;
+        } else if ([key2 isEqualToString:@"#"]) {
+            return NSOrderedAscending;
+        } else {
+            return [key1 compare:key2];
+        }
+    }];
+    return _sectionIndex;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView{
-    NSMutableArray *allKeys = (NSMutableArray *)[_infoSessionModel.infoSessionsIndexDic.allKeys sortedArrayUsingComparator:^(NSString *key1, NSString *key2){
-        return [key1 compare:key2];
-    }];
-    return allKeys;
+    return _sectionIndex;
 }
+
+//- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index{
+//    
+//}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *infoSessionForThisSection = [_infoSessionModel.infoSessionsIndexDic objectForKey:[self getKeyForSection:section]];
-    return [infoSessionForThisSection count] ;
+    if (section < [_infoSessionModel.infoSessionsIndexDic count]) {
+        NSArray *infoSessionForThisSection = [_infoSessionModel.infoSessionsIndexDic objectForKey:[self getKeyForSection:section]];
+        return [infoSessionForThisSection count] ;
+    } else {
+        return 1;
+    }
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Configure the cell...
-    InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InfoSessionCell"];
-    [self configureCell:cell withIndexPath:indexPath];
-    return cell;
+    if (indexPath.section < [_infoSessionModel.infoSessionsIndexDic count]) {
+        // Configure the cell...
+        InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InfoSessionCell"];
+        [self configureCell:cell withIndexPath:indexPath];
+        return cell;
+    } else {
+        LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
+        
+        if ([_infoSessionModel.infoSessions count] == 0) {
+            cell.loadingLabel.text =  @"No info sessions";
+        } else {
+            cell.loadingLabel.text = [NSString stringWithFormat:@"%i Info Sessions", [_infoSessionModel.infoSessions count]];
+        }
+        cell.loadingIndicator.hidden = YES;
+        [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
+        [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
+        return cell;
+    }
+    
 }
 
 - (void)configureCell:(InfoSessionCell *)cell withIndexPath:(NSIndexPath *)indexPath {
@@ -144,8 +186,41 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // info session cell
-    return 70.0f;
+    if (indexPath.section < [_infoSessionModel.infoSessionsIndexDic count]) {
+        return 70.0f;
+    } else {
+        return 44.0f;
+    }
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section < [_infoSessionModel.infoSessionsIndexDic count]) {
+        return 23.0f;
+    } else {
+        return 0.0f;
+    }
+}
+
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+//    return 0.0f;
+//}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *background = [[UIView alloc] init];
+    background.frame = CGRectMake(0, 0, 320, 23);
+    background.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1];
+    
+    UILabel *myLabel = [[UILabel alloc] init];
+    myLabel.frame = CGRectMake(15, 0, 320, 23);
+    myLabel.font = [UIFont boldSystemFontOfSize:17];
+    myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    
+    UIView *headerView = [[UIView alloc] init];
+    [headerView addSubview:background];
+    [background addSubview:myLabel];
+    
+    return headerView;
 }
 
 //- (void)scrollViewDidScroll:(UIScrollView *)scrollView {

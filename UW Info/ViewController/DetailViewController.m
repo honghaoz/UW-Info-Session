@@ -660,16 +660,20 @@
                     [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:_infoSession.employer]];
                     [calculationView setFont:[UIFont systemFontOfSize:16]];
                     CGSize size = [calculationView sizeThatFits:CGSizeMake(200.0f, FLT_MAX)];
-                    
+                    NSLog(@"%f", size.height);
                     // text line = 1
                     if (size.height < 37.0f) {
                         height = 42.0f;
                     } else if (size.height < 56.0f) {
-                    // text line = 2
+                        // text line = 2
                         height = 58.0f;
-                    } else {
-                    // text line = 3
+                    } else if (size.height < 75.0f) {
+                        // text line = 3
                         height = 74.0f;
+                        // text line = 4
+                    } else {
+                        height = 90.0f;
+                        // text line = 5
                     }
                     break;
                 }
@@ -688,9 +692,15 @@
                     } else if (size.height < 56.0f) {
                         // text line = 2
                         height = 58.0f;
-                    } else {
+                    } else if (size.height < 75.0f) {
                         // text line = 3
                         height = 74.0f;
+                        // text line = 4
+                    } else if (size.height < 94.0f) {
+                        height = 90.0f;
+                        // text line = 5
+                    } else {
+                        height = 106.0f;
                     }
                     break;
                 }
@@ -713,9 +723,15 @@
                     } else if (size.height < 56.0f) {
                         // text line = 2
                         height = 58.0f;
-                    } else {
+                    } else if (size.height < 75.0f) {
                         // text line = 3
                         height = 74.0f;
+                        // text line = 4
+                    } else if (size.height < 94.0f) {
+                        height = 90.0f;
+                        // text line = 5
+                    } else {
+                        height = 106.0f;
                     }
                     break;
                 }

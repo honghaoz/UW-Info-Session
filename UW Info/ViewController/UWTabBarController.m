@@ -108,6 +108,9 @@
     } else {
         _detailViewControllerOfTabbar0.performedNavigation = @"Open Tabbar3";
         _detailViewControllerOfTabbar1.performedNavigation = @"Open Tabbar3";
+        if (_lastTapped != 2) {
+            [_searchViewController reloadTable];
+        }
         _lastTapped = 2;
     }
     //[item setBadgeValue:@"1"];
