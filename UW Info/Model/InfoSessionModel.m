@@ -93,9 +93,10 @@ const NSString *myApiKey = @"77881122";
         for (NSDictionary *attributes in infoSessionsFromResponse) {
             InfoSession *infoSession = [[InfoSession alloc] initWithAttributes:attributes];
             // if start time < end time or date is nil, do not add
-            if (!([infoSession.startTime compare:infoSession.endTime] != NSOrderedAscending
-                  || infoSession.date == nil
-                  || [infoSession.employer length] == 0)) {
+            if (!([infoSession.startTime compare:infoSession.endTime] != NSOrderedAscending ||
+                  infoSession.date == nil ||
+                  [infoSession.employer length] == 0 ||
+                  [infoSession.programs length] == 0)) {
                 [mutableInfoSessions addObject:infoSession];
             }
         }
@@ -285,6 +286,10 @@ const NSString *myApiKey = @"77881122";
     [archiver encodeObject:_infoSessions forKey:@"infoSessions"];
     [archiver encodeObject:_infoSessionsDictionary forKey:@"infoSessionsDictionary"];
     [archiver encodeObject:_myInfoSessions forKey:@"myInfoSessions"];
+    [archiver encodeObject:_currentTerm forKey:@"currentTerm"];
+    [archiver encodeInteger:_year forKey:@"year"];
+    [archiver encodeObject:_term forKey:@"term"];
+    [archiver encodeObject:_termInfoDic forKey:@"termInfoDic"];
     [archiver finishEncoding];
     [data writeToFile:[InfoSessionModel dataFilePath:@"InfoSession.plist"] atomically:YES];
 }
@@ -299,8 +304,13 @@ const NSString *myApiKey = @"77881122";
         //_infoSessions = [unarchiver decodeObjectForKey:@"infoSessions"];
         //_infoSessionsDictionary = [unarchiver decodeObjectForKey:@"infoSessionsDictionary"];
         _myInfoSessions = [unarchiver decodeObjectForKey:@"myInfoSessions"];
+        _currentTerm = [unarchiver decodeObjectForKey:@"currentTerm"];
+        _year = [unarchiver decodeIntegerForKey:@"year"];
+        _term = [unarchiver decodeObjectForKey:@"term"];
+        _termInfoDic = [unarchiver decodeObjectForKey:@"termInfoDic"];
         NSLog(@"infoSessionsCount: %lu", (unsigned long)[_infoSessions count]);
         NSLog(@"myInfoSessionsCount: %lu", (unsigned long)[_myInfoSessions count]);
+        NSLog(@"termInfoDic: %lu", (unsigned long)[_termInfoDic count]);
         [unarchiver finishDecoding];
     }else{
         //self.lists = [[NSMutableArray alloc]initWithCapacity:20];
@@ -341,6 +351,11 @@ const NSString *myApiKey = @"77881122";
         self.infoSessions = [aDecoder decodeObjectForKey:@"infoSessions"];
         self.infoSessionsDictionary = [aDecoder decodeObjectForKey:@"infoSessionsDictionary"];
         self.myInfoSessions = [aDecoder decodeObjectForKey:@"myInfoSessions"];
+        self.currentTerm = [aDecoder decodeObjectForKey:@"currentTerm"];
+        self.year = [aDecoder decodeIntegerForKey:@"year"];
+        self.term = [aDecoder decodeObjectForKey:@"term"];
+        self.termInfoDic = [aDecoder decodeObjectForKey:@"termInfoDic"];
+        
     }
     return self;
 }
@@ -349,6 +364,10 @@ const NSString *myApiKey = @"77881122";
     [aCoder encodeObject:self.infoSessions forKey:@"infoSessions"];
     [aCoder encodeObject:self.infoSessionsDictionary forKey:@"infoSessionsDictionary"];
     [aCoder encodeObject:self.myInfoSessions forKey:@"myInfoSessions"];
+    [aCoder encodeObject:self.currentTerm forKey:@"currentTerm"];
+    [aCoder encodeInteger:self.year forKey:@"year"];
+    [aCoder encodeObject:self.term forKey:@"term"];
+    [aCoder encodeObject:self.termInfoDic forKey:@"termInfoDic"];
 }
 
 - (void)setYearAndTerm {
@@ -372,10 +391,7 @@ const NSString *myApiKey = @"77881122";
     NSLog(@"save!!!!!");
     [_termInfoDic setValue:[_infoSessions copy] forKey:[_currentTerm copy]];
     [_termInfoDic setValue:[NSDate date] forKey:[NSString stringWithFormat:@"%@ - QueriedTime", _currentTerm]];
-    NSLog(@"dic: %i", [_termInfoDic count]);
-    for (NSString *key in _termInfoDic) {
-        NSLog(@"%@ ==", key);
-    }
+    [self saveInfoSessions];
 }
 
 - (BOOL)readInfoSessionsWithTerm:(NSString *)term{

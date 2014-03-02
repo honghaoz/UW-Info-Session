@@ -119,24 +119,36 @@
     [self.tableView reloadData];
     [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
     
+    if ([NSStringFromClass([sender class]) isEqualToString:@"__NSDictionaryI"]){
+        //        _infoSessionModel.year = [sender[@"Year"] integerValue];
+        //        _infoSessionModel.term = sender[@"Term"];
+        _shownYear = [sender[@"Year"] integerValue];
+        _shownTerm = sender[@"Term"];
+    } else {
+        //        _infoSessionModel.year = [_termMenu getCurrentYear:[NSDate date]];
+        //        _infoSessionModel.term = [_termMenu getCurrentTermFromDate:[NSDate date]];
+    }
+    
+    if (_shownYear != [_termMenu getCurrentYear:[NSDate date]] || ![_shownTerm isEqualToString:[_termMenu getCurrentTermFromDate:[NSDate date]]]) {
+        self.navigationItem.leftBarButtonItem = nil;
+    } else {
+        UIBarButtonItem *todayButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain
+                                                                       target:self action:@selector(scrollToToday)];
+        self.navigationItem.leftBarButtonItem = todayButton;
+    }
+    
     //change right bar button to indicator
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 //    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:activityIndicatorView] animated:YES];
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
-    if ([NSStringFromClass([sender class]) isEqualToString:@"__NSDictionaryI"]){
-//        _infoSessionModel.year = [sender[@"Year"] integerValue];
-//        _infoSessionModel.term = sender[@"Term"];
-        _shownYear = [sender[@"Year"] integerValue];
-        _shownTerm = sender[@"Term"];
-    } else {
-//        _infoSessionModel.year = [_termMenu getCurrentYear:[NSDate date]];
-//        _infoSessionModel.term = [_termMenu getCurrentTermFromDate:[NSDate date]];
-    }
-    
+    NSLog(@"readaaaaaaa");
     // if the target term is already saved in _infoSessionModel.termInfoDic, then read it directly.
-    if ([_infoSessionModel readInfoSessionsWithTerm:[NSString stringWithFormat:@"%i %@", _shownYear, _shownTerm]]) {
+    NSLog(@"%@", NSStringFromClass([sender class]));
+    if (![NSStringFromClass([sender class]) isEqualToString:@"UIBarButtonItem"] &&
+        ![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"] &&
+        [_infoSessionModel readInfoSessionsWithTerm:[NSString stringWithFormat:@"%i %@", _shownYear, _shownTerm]]) {
         NSLog(@"no network");
         _termMenu.infoSessionModel = _infoSessionModel;
         [_termMenu setDetailLabel];
@@ -146,6 +158,8 @@
         // scroll TableView to current date
         if (![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"]) {
             [self scrollToToday];
+        } else {
+            [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
         }
         
         // reload sections animations
@@ -178,8 +192,9 @@
                 // scroll TableView to current date
                 if (![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"]) {
                     [self scrollToToday];
+                } else {
+                    [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
                 }
-                
                 // reload sections animations
                 [self reloadSection:-1 WithAnimation:UITableViewRowAnimationBottom];
                 // end refreshControl
@@ -460,6 +475,10 @@
     [timeFormatter setLocale:enUSPOSIXLocale];
     [dateFormatter setDateFormat:@"MMM d, y"];
     [timeFormatter setDateFormat:@"h:mm a"];
+    // set timezone to EST
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+    // set timezone to EST
+    [timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
     
     NSString *dateNSString = [NSString stringWithFormat:@"%@ - %@, %@", [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime], [dateFormatter stringFromDate:infoSession.date]];
     NSMutableAttributedString *dateString = [[NSMutableAttributedString alloc] initWithString:dateNSString];
@@ -514,20 +533,24 @@
             InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
             sectionNumToScroll = [self getWeekNumber:[NSDate date]] - [firstInfoSession weekNum];
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionNumToScroll] withRowAnimation:animation];
+            return;
         }
         else if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions != nil){
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            return;
         }
         else if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions == nil){
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            return;
         }
         else {
             NSLog(@"reload 22222");
             //sectionNumToScroll = 0;
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:animation];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationBottom];
+            return;
         }
     }
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:animation];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionToScroll] withRowAnimation:animation];
 }
 /**
  *  get the array of infoSession according give section

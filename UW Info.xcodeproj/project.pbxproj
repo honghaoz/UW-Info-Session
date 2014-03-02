@@ -479,7 +479,6 @@
 				1B37453D18A5D0D6007CF08C /* Networking Extensions */,
 				1BD83AA318A59F1C00EDBB6D /* UWAppDelegate.h */,
 				1BD83AA418A59F1C00EDBB6D /* UWAppDelegate.m */,
-				1BD83AA618A59F1C00EDBB6D /* Main.storyboard */,
 				1B8C557918B72B490070CD82 /* Categories */,
 				1B37453818A5BA2C007CF08C /* Models */,
 				1B37453918A5BA3D007CF08C /* Controllers */,
@@ -492,6 +491,7 @@
 		1BD83A9B18A59F1C00EDBB6D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1BD83AA618A59F1C00EDBB6D /* Main.storyboard */,
 				1BD83A9C18A59F1C00EDBB6D /* UW Info-Info.plist */,
 				1BD83A9D18A59F1C00EDBB6D /* InfoPlist.strings */,
 				1BD83AA018A59F1C00EDBB6D /* main.m */,

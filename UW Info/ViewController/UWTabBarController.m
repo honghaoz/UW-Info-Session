@@ -49,11 +49,6 @@
 	// Do any additional setup after loading the view.
     self.isHidden = NO;
     
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
     // initiate three VC in tabbarController
     NSLog(@"initiate three VC in tabbarController");
     UINavigationController *navigationController = [self.viewControllers objectAtIndex:0];
@@ -69,6 +64,11 @@
     navigationController = [self.viewControllers objectAtIndex:2];
     _searchViewController = (SearchViewController *)navigationController.viewControllers[0];
     _searchViewController.tabBarController = self;
+
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
     [self setBadge];
     
@@ -78,7 +78,6 @@
         [_myInfoViewController reloadTable];
         [_myInfoViewController performSegueWithIdentifier:@"ShowDetailFromMyInfoSessions" sender:[[NSArray alloc] initWithObjects:@"MyInfoViewController", _infoSessionModel.myInfoSessions[_targetIndexTobeSelectedInMyInfoVC], _infoSessionModel, nil]];
     }
-    
 }
 
 - (void)didReceiveMemoryWarning
