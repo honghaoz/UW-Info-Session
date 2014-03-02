@@ -36,6 +36,8 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 
 @property (nonatomic, strong) NSMutableDictionary *termInfoDic;
 
+@property (nonatomic, strong) NSMutableDictionary *infoSessionsIndexDic;
+
 // Used for manage calendar event, only initiate once!
 //@property (nonatomic, strong) EKEventStore *eventStore;
 @property (nonatomic, strong) EKCalendar *defaultCalendar;
@@ -43,6 +45,8 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 - (void)clearInfoSessions;
 
 - (void)processInfoSessionsDictionary:(NSDictionary *)dictionary withInfoSessions:(NSArray *)array;
+
+- (void)processInfoSessionsIndexDic;
 
 + (NSURLSessionTask *)infoSessions:(NSInteger)year andTerm:(NSString *)term withBlock:(void (^)(NSArray *sessions, NSString *currentTerm, NSError *error))block;
 

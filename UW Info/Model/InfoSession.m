@@ -102,7 +102,6 @@ static EKEventStore *eventStore;
     [dateFormatter setDateFormat:@"h:mm a, MMMM d, y"];
     
     self.startTime = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@, %@", [attributes valueForKeyPath:@"start_time"], [attributes valueForKeyPath:@"date"]]];
-    NSLog(@"%@ - %@", [attributes valueForKeyPath:@"start_time"], [dateFormatter stringFromDate:self.startTime]);
     self.endTime = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@, %@", [attributes valueForKeyPath:@"end_time"], [attributes valueForKeyPath:@"date"]]];
     
     self.weekNum = [self getWeekNumber:self.date];

@@ -64,6 +64,7 @@
     navigationController = [self.viewControllers objectAtIndex:2];
     _searchViewController = (SearchViewController *)navigationController.viewControllers[0];
     _searchViewController.tabBarController = self;
+    _searchViewController.infoSessionModel = self.infoSessionModel;
 
 }
 

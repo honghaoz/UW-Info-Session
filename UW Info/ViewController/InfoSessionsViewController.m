@@ -24,6 +24,8 @@
 #import "UWTermMenu.h"
 #import "InfoDetailedTitleButton.h"
 
+#import "REMenu.h"
+
 @interface InfoSessionsViewController ()
 
 @property (nonatomic, strong) UWTermMenu *termMenu;
@@ -329,7 +331,7 @@
         NSDate *beginningOfNextWeek = [gregorian dateFromComponents:component];
         NSString *endDate = [dateFormatter stringFromDate: beginningOfNextWeek];
         
-        return [NSString stringWithFormat:@"%@ - %@", beginDate, endDate];
+        return [NSString stringWithFormat:@"%@ - %@ (Week: %i)", beginDate, endDate, section + 1];
     }
 }
 
@@ -378,7 +380,7 @@
     else if (indexPath.section == [self numberOfSectionsInTableView:tableView] - 1) {
         LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
         cell.loadingIndicator.hidden = YES;
-        cell.loadingLabel.text = @"No more info sessions";
+        cell.loadingLabel.text = [NSString stringWithFormat:@"%i Info Sessions", [_infoSessionModel.infoSessions count]];
         [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
         [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
         return cell;
@@ -680,7 +682,7 @@
 //        [self.tabBarController showTabBar];
 }
 
--(BOOL)isBottomRowisVisible {
+- (BOOL)isBottomRowisVisible {
     NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
     for (NSIndexPath *index in indexPaths) {
         if (index.section == [self numberOfSectionsInTableView:self.tableView] - 1 && index.row == 0) {
@@ -689,6 +691,11 @@
     }
     return NO;
 }
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+    [_termMenu.menu close];
+}
+
 
 // ios7 facebook like fade navigation bar
 

@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 @class UWTabBarController;
+@class InfoSessionModel;
 @interface SearchViewController : UITableViewController
 
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, strong) InfoSessionModel *infoSessionModel;
 @property (nonatomic, weak) UWTabBarController *tabBarController;
+
+- (void)reloadTable;
 
 @end

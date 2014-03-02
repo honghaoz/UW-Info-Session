@@ -42,22 +42,30 @@ const NSString *myApiKey = @"77881122";
     }
 }
 
-
-//-(NSMutableDictionary *)myInfoSessionsDictionary {
-//    if (_myInfoSessionsDictionary == nil) {
-//        _myInfoSessionsDictionary = [[NSMutableDictionary alloc] init];
-//        return _myInfoSessionsDictionary;
-//    } else {
-//        return _myInfoSessionsDictionary;
-//    }
-//}
-
 -(NSMutableDictionary *)infoSessionsDictionary {
     if (_infoSessionsDictionary == nil) {
         _infoSessionsDictionary = [[NSMutableDictionary alloc] init];
         return _infoSessionsDictionary;
     } else {
         return _infoSessionsDictionary;
+    }
+}
+
+-(NSMutableDictionary *)termInfoDic {
+    if (_termInfoDic == nil) {
+        _termInfoDic = [[NSMutableDictionary alloc] init];
+        return _termInfoDic;
+    } else {
+        return _termInfoDic;
+    }
+}
+
+-(NSMutableDictionary *)infoSessionsIndexDic {
+    if (_infoSessionsIndexDic == nil) {
+        _infoSessionsIndexDic = [[NSMutableDictionary alloc] init];
+        return _infoSessionsIndexDic;
+    } else {
+        return _infoSessionsIndexDic;
     }
 }
 
@@ -122,7 +130,7 @@ const NSString *myApiKey = @"77881122";
  *  To be called after self.infoSessions is initiated.
  *  initiated self.infoSessionsDictionary with key: weekNum, value: corronsponding infoSession
  */
--(void)processInfoSessionsDictionary:(NSMutableDictionary *)dictionary withInfoSessions:(NSArray *)array {
+- (void)processInfoSessionsDictionary:(NSMutableDictionary *)dictionary withInfoSessions:(NSArray *)array {
     for (InfoSession *eachSession in array) {
         // if key not exist
         if (dictionary[NSIntegerToString(eachSession.weekNum)] == nil) {
@@ -133,6 +141,21 @@ const NSString *myApiKey = @"77881122";
         }
     }
 }
+
+- (void)processInfoSessionsIndexDic {
+    for (InfoSession *eachSession in _infoSessions) {
+        NSString *key = [eachSession.employer substringToIndex:1];
+        // if key not exist
+        self.infoSessionsIndexDic == nil ? NSLog(@"nil") : NSLog(@"not nil");
+        if (self.infoSessionsIndexDic[key] == nil) {
+            [self.infoSessionsIndexDic setValue:[[NSMutableArray alloc] initWithObjects:eachSession, nil] forKey:key];
+        } else {
+            // key exists
+            [self.infoSessionsIndexDic[key] addObject:eachSession];
+        }
+    }
+}
+
 /**
  *  check whether this infoSession exist in array
  *
@@ -385,12 +408,11 @@ const NSString *myApiKey = @"77881122";
 }
 
 - (void)saveToTermInfoDic {
-    if (_termInfoDic == nil) {
-        _termInfoDic = [[NSMutableDictionary alloc] init];
-    }
     NSLog(@"save!!!!!");
-    [_termInfoDic setValue:[_infoSessions copy] forKey:[_currentTerm copy]];
-    [_termInfoDic setValue:[NSDate date] forKey:[NSString stringWithFormat:@"%@ - QueriedTime", _currentTerm]];
+    
+    self.termInfoDic == nil ? NSLog(@"nil") : NSLog(@"not");
+    [self.termInfoDic setValue:[_infoSessions copy] forKey:[_currentTerm copy]];
+    [self.termInfoDic setValue:[NSDate date] forKey:[NSString stringWithFormat:@"%@ - QueriedTime", _currentTerm]];
     [self saveInfoSessions];
 }
 
@@ -398,7 +420,7 @@ const NSString *myApiKey = @"77881122";
     NSLog(@"set!!!!");
     NSInteger existIndex = -1;
     NSInteger index = 0;
-    for (NSString *key in _termInfoDic) {
+    for (NSString *key in self.termInfoDic) {
         if ([key isEqualToString:term]) {
             NSLog(@"equal!");
             existIndex = index;
@@ -413,14 +435,14 @@ const NSString *myApiKey = @"77881122";
     } else {
         // if last queried time is 20m ago, then need connect to network to refresh
         NSInteger intervalForRefresh = 60 * 20;
-        NSDate *lastQueriedTime = [_termInfoDic objectForKey:[NSString stringWithFormat:@"%@ - QueriedTime", term]];
+        NSDate *lastQueriedTime = [self.termInfoDic objectForKey:[NSString stringWithFormat:@"%@ - QueriedTime", term]];
         ;
         if ([[NSDate date] timeIntervalSinceDate:lastQueriedTime] > intervalForRefresh) {
             NSLog(@"too old, need refesh");
             return false;
         } else {
             NSLog(@"set successfully");
-            _infoSessions = [_termInfoDic[term] copy];
+            _infoSessions = [self.termInfoDic[term] copy];
             [self processInfoSessionsDictionary:_infoSessionsDictionary withInfoSessions:_infoSessions];
             _currentTerm = [term copy];
             [self setYearAndTerm];
