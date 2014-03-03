@@ -1,5 +1,5 @@
 //
-//  SearchViewController1.m
+//  SearchViewController.m
 //  UW Info
 //
 //  Created by Zhang Honghao on 3/2/14.
@@ -22,12 +22,16 @@
 @property (nonatomic, strong) NSArray *sectionIndex;
 @property (nonatomic, strong) UILabel *detailLabel;
 
+@property (nonatomic, strong) UIView *statusBarView;
+
 @end
 
 @implementation SearchViewController {
     CGFloat startContentOffset;
     CGFloat lastContentOffset;
     CGFloat previousScrollViewYOffset;
+    
+    CGSize keyboardSize;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -54,31 +58,31 @@
     _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0,  statusBarHeight + navigationBarHeight, 320, 44)];
 //    _searchBar.tintColor = [UIColor clearColor];
     _searchBar.delegate = self;
-    _searchBar.barStyle = UIBarStyleDefault;
-    _searchBar.showsCancelButton = NO;
-    //NSMutableArray *scopeTitles = [[NSMutableArray alloc] initWithObjects:@"Employer", @"Program", @"Note", nil];
+    //_searchBar.barStyle = UISearchBarStyleMinimal;
+    //_searchBar.showsCancelButton = NO;
     _searchBar.scopeButtonTitles = [[NSArray alloc] initWithObjects:@"Employer", @"Program", @"Note", nil];//[@"Employer|Program|Note" componentsSeparatedByString:@"|"];
-    _searchBar.showsScopeBar = YES;
-
+    //_searchBar.showsScopeBar = YES;
     
-    // initiate search bar controller
-    _searchController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
-    _searchController.delegate = self;
-    _searchController.searchResultsDataSource = self;
-    _searchController.searchResultsDelegate = self;
+    _searchBar.tintColor = UWBlack;
+    _searchBar.backgroundColor = UWGold;
     
     // initiate table view
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, statusBarHeight + navigationBarHeight, 320, [UIScreen mainScreen].bounds.size.height - statusBarHeight - navigationBarHeight)];
-    //NSLog(@"bounds: %@", NSStringFromCGRect([[UIScreen mainScreen].]));
-    [_tableView setContentInset:UIEdgeInsetsMake(_searchBar.frame.size.height, 0, _tabBarController.tabBar.frame.size.height, 0)];
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height)];
+    [_tableView setContentInset:UIEdgeInsetsMake(navigationBarHeight, 0, 0, 0)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
     [_tableView registerClass:[InfoSessionCell class]  forCellReuseIdentifier:@"InfoSessionCell"];
     [_tableView registerClass:[LoadingCell class] forCellReuseIdentifier:@"LoadingCell"];
     
-    [self.navigationController.view addSubview:_tableView];
-    [self.navigationController.view addSubview:_searchBar];
+    [self.view addSubview:_tableView];
+    [self.view addSubview:_searchBar];
+    
+    // initiate search bar controller
+    _searchController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+    _searchController.delegate = self;
+    _searchController.searchResultsDataSource = self;
+    _searchController.searchResultsDelegate = self;
 
     // initiate titleView
     UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 180.0, 32.0)];
@@ -100,6 +104,18 @@
     
     // reload data
     [self reloadTable];
+    
+//    // observe keyboard
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(keyboardWillShow:)
+//                                                 name:UIKeyboardWillShowNotification
+//                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(keyboardWillShow:)
+//                                                 name:UIKeyboardWillChangeFrameNotification
+//                                               object:nil];
+    _statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, 320, 20)];
+    _statusBarView.backgroundColor=UWGold;
 }
 
 - (void)reloadTable {
@@ -118,24 +134,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
+#pragma mark - Tablw View helper functions
+
 - (NSString *)getKeyForSection:(NSInteger)section {
     return _sectionIndex[section];
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return [_infoSessionModel.infoSessionsIndexDic count] + 1;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (section < [_infoSessionModel.infoSessionsIndexDic count]) {
-        return [self getKeyForSection:section];
-    } else {
-        return @"";
-    }
-    
 }
 
 - (NSArray *)setSectionIndex{
@@ -151,8 +153,37 @@
     return _sectionIndex;
 }
 
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (_searchController.searchResultsTableView == tableView) {
+        return 1;
+    }
+    else {
+        return [_infoSessionModel.infoSessionsIndexDic count] + 1;
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (_searchController.searchResultsTableView == tableView) {
+        return @"";
+    } else {
+        if (section < [_infoSessionModel.infoSessionsIndexDic count]) {
+            return [self getKeyForSection:section];
+        } else {
+            return @"";
+        }
+    }
+    
+}
+
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView{
-    return _sectionIndex;
+    if (_searchController.searchResultsTableView != tableView) {
+        return _sectionIndex;
+    } else {
+        return nil;
+    }
 }
 
 //- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index{
@@ -161,30 +192,22 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section < [_infoSessionModel.infoSessionsIndexDic count]) {
-        NSArray *infoSessionForThisSection = [_infoSessionModel.infoSessionsIndexDic objectForKey:[self getKeyForSection:section]];
-        return [infoSessionForThisSection count] ;
-    } else {
+    if (_searchController.searchResultsTableView == tableView) {
         return 1;
     }
-    
+    else {
+        if (section < [_infoSessionModel.infoSessionsIndexDic count]) {
+            NSArray *infoSessionForThisSection = [_infoSessionModel.infoSessionsIndexDic objectForKey:[self getKeyForSection:section]];
+            return [infoSessionForThisSection count] ;
+        } else {
+            return 1;
+        }
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section < [_infoSessionModel.infoSessionsIndexDic count]) {
-        // Configure the cell...
-        static NSString *cellIdentifier = @"InfoSessionCell";
-        InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-        
-        //cell == nil? NSLog(@"nil") : NSLog(@"not nil");
-        if (cell == nil) {
-            cell = [[InfoSessionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        }
-        
-        [self configureCell:cell withIndexPath:indexPath];
-        return cell;
-    } else {
+    if (_searchController.searchResultsTableView == tableView) {
         static NSString *cellIdentifier = @"LoadingCell";
         LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         
@@ -200,10 +223,42 @@
         }
         cell.loadingIndicator.hidden = YES;
         [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
-        [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
+        [cell.loadingLabel setTextColor:[UIColor blackColor]];
         return cell;
     }
-    
+    else {
+        if (indexPath.section < [_infoSessionModel.infoSessionsIndexDic count]) {
+            // Configure the cell...
+            static NSString *cellIdentifier = @"InfoSessionCell";
+            InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+            
+            //cell == nil? NSLog(@"nil") : NSLog(@"not nil");
+            if (cell == nil) {
+                cell = [[InfoSessionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+            }
+            
+            [self configureCell:cell withIndexPath:indexPath];
+            return cell;
+        } else {
+            static NSString *cellIdentifier = @"LoadingCell";
+            LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+            
+            //cell == nil? NSLog(@"nil") : NSLog(@"not nil");
+            if (cell == nil) {
+                cell = [[LoadingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+            }
+            
+            if ([_infoSessionModel.infoSessions count] == 0) {
+                cell.loadingLabel.text =  @"No info sessions";
+            } else {
+                cell.loadingLabel.text = [NSString stringWithFormat:@"%i Info Sessions", [_infoSessionModel.infoSessions count]];
+            }
+            cell.loadingIndicator.hidden = YES;
+            [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
+            [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
+            return cell;
+        }
+    }
 }
 
 - (void)configureCell:(InfoSessionCell *)cell withIndexPath:(NSIndexPath *)indexPath {
@@ -308,8 +363,9 @@
     if((differenceFromStart) < 0)
     {
         // scroll up
-        if(scrollView.isTracking && (abs(differenceFromLast)>1) && ![self isBottomRowisVisible])
+        if(scrollView.isTracking && (abs(differenceFromLast)>1) && ![self isBottomRowisVisible]){
             [self.tabBarController hideTabBar];
+        }
     }
     // start > current, scroll up
     else {
@@ -366,21 +422,53 @@
     return YES;
 }
 
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
+    NSLog(@"will begin search");
+}
+
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+    NSLog(@"will end search");
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView{
+    NSLog(@"did show result table");
+    self.tableView.hidden = YES;
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView{
+    NSLog(@"did hide result table");
+    self.tableView.hidden = NO;
+}
+
 #pragma mark - UISearchBar Delegate Methods
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    NSLog(@"type");
+    return YES;
+}
+
+
+
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    NSLog(@"search bar begin edit");
+    [_searchBar addSubview:_statusBarView];
     //move the search bar up to the correct location eg
     [UIView animateWithDuration:.3
                      animations:^{
+                         // move search bar up
                          searchBar.frame = CGRectMake(searchBar.frame.origin.x,
                                                       20,
                                                       searchBar.frame.size.width,
                                                       searchBar.frame.size.height);
-                         //                         searchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"string1", @"string2", nil];
-                         //                         searchBar.showsScopeBar = YES;
-                         //                         [searchBar invalidateIntrinsicContentSize];
-                         //[searchBar sizeToFit];
-                         //[searchBar setShowsCancelButton:YES animated:YES];
-                         //self.tableView.tableHeaderView = searchBar;
+                         // move tableView down
+                         [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x,
+                                                             searchBar.frame.size.height,
+                                                             self.tableView.frame.size.width,
+                                                             self.tableView.frame.size.height - 210)];
+                         //searchBar.backgroundColor = [UIColor clearColor];
+                         //NSLog(@"%@", searchBar.barTintColor);
+                         searchBar.barTintColor = [UIColor clearColor];//[UIColor colorWithRed:255/255 green:205.0/255 blue:0/255 alpha:2.0];
+            
+                         //searchBar.backgroundImage = [UIImage imageNamed:@"ye.png"];
                      }
                      completion:^(BOOL finished){
                          //whatever else you may need to do
@@ -389,20 +477,42 @@
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
+    NSLog(@"search bar end edit");
+    [_statusBarView setFrame:CGRectMake(_statusBarView.frame.origin.x, _statusBarView.frame.origin.y - 22, _statusBarView.frame.size.width, _statusBarView.frame.size.height + 22)];
     //move the search bar down to the correct location eg
-    [UIView animateWithDuration:.25
+    [UIView animateWithDuration:.3
                      animations:^{
+                         // move search bar down
                          NSInteger statusBarHeight = 20;
                          NSInteger navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
                          searchBar.frame = CGRectMake(_searchBar.frame.origin.x,
                                                       statusBarHeight + navigationBarHeight,
                                                       _searchBar.frame.size.width,
                                                       _searchBar.frame.size.height);
+                         // move table view up
+                         [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x,
+                                                             0,
+                                                             self.tableView.frame.size.width,
+                                                             self.tableView.frame.size.height + 210)];
+                         searchBar.barTintColor = nil;
+                         //searchBar.backgroundImage = [UIImage imageNamed:@"ye.png"];
+                         [_tabBarController showTabBar];
+                         
                      }
                      completion:^(BOOL finished){
                          //whatever else you may need to do
+                         [_statusBarView removeFromSuperview];
+                         [_statusBarView setFrame:CGRectMake(_statusBarView.frame.origin.x, _statusBarView.frame.origin.y + 22, _statusBarView.frame.size.width, _statusBarView.frame.size.height - 22)];
                      }];
+    
     return YES;
 }
+
+//#pragma mark - other methods
+//- (void)keyboardWillShow:(NSNotification *)notification {
+//    NSLog(@"keyboard changed");
+//    keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+//    NSLog(@"%@", NSStringFromCGSize(keyboardSize));
+//}
 
 @end

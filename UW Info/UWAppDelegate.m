@@ -19,6 +19,24 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     NSLog(@"start!!!");
+    
+//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7)
+//    {
+//        self.window.clipsToBounds = YES;
+//        //[[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackOpaque];
+//        
+//        UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+//        if(orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight)
+//        {
+//            self.window.frame =  CGRectMake(20, 0,self.window.frame.size.width-20,self.window.frame.size.height);
+//            self.window.bounds = CGRectMake(20, 0, self.window.frame.size.width, self.window.frame.size.height);
+//        } else
+//        {
+//            self.window.frame =  CGRectMake(0,20,self.window.frame.size.width,self.window.frame.size.height-20);
+//            self.window.bounds = CGRectMake(0, 20, self.window.frame.size.width, self.window.frame.size.height);
+//        }
+//    }
+    
     // Override point for customization after application launch.
     UWTabBarController *tabController = (UWTabBarController *)self.window.rootViewController;
     // initiate infoSessionModel

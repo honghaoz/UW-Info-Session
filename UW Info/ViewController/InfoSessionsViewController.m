@@ -262,6 +262,7 @@
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:rowNumToScroll inSection:sectionNumToScroll] atScrollPosition:UITableViewScrollPositionTop animated:YES];
         // reload current
         [self reloadSection:sectionNumToScroll WithAnimation:UITableViewRowAnimationFade];
+        [_tabBarController showTabBar];
     }
 }
 
