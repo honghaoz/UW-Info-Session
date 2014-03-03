@@ -1045,9 +1045,9 @@
             
             [UIView animateWithDuration:0.2 animations:^{
                 [self animateSnapshotOfView:self.view.window toTab:_tabBarController.viewControllers[1]];
-            }completion:^(BOOL finished) {
                 // set badge
                 [_tabBarController setBadge];
+            }completion:^(BOOL finished) {
                 
                 // if added, replace _infoSession to the added infoSession in myInfoSession
                 NSInteger existIndex = [InfoSessionModel findInfoSession:_infoSession in:_infoSessionModel.myInfoSessions];

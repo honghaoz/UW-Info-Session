@@ -118,7 +118,6 @@
         [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
         return cell;
     }
-    
 }
 
 /**
@@ -275,11 +274,16 @@
             [_infoSessionModel saveInfoSessions];
         }
         if ([_infoSessionModel.myInfoSessions count] != 0) {
+            NSLog(@"not 0");
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
         // if last item is deleted
         else {
+            NSLog(@"is 0");
+            [tableView reloadData];
             [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            NSLog(@"reloaded");
             if ([self.tableView isEditing]){
                 [self enterEditMode:nil];
             }

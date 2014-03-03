@@ -494,14 +494,16 @@
                                                              0,
                                                              self.tableView.frame.size.width,
                                                              self.tableView.frame.size.height + 210)];
-                         searchBar.barTintColor = nil;
                          //searchBar.backgroundImage = [UIImage imageNamed:@"ye.png"];
-                         [_tabBarController showTabBar];
+                         
                          
                      }
                      completion:^(BOOL finished){
                          //whatever else you may need to do
+                         
+                         [_tabBarController showTabBar];
                          [_statusBarView removeFromSuperview];
+                         searchBar.barTintColor = nil;
                          [_statusBarView setFrame:CGRectMake(_statusBarView.frame.origin.x, _statusBarView.frame.origin.y + 22, _statusBarView.frame.size.width, _statusBarView.frame.size.height - 22)];
                      }];
     
