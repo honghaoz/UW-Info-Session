@@ -1,8 +1,8 @@
 //
-//  SearchViewController.m
+//  SearchViewController1.m
 //  UW Info
 //
-//  Created by Zhang Honghao on 2/10/14.
+//  Created by Zhang Honghao on 3/2/14.
 //  Copyright (c) 2014 org-honghao. All rights reserved.
 //
 
@@ -10,18 +10,29 @@
 #import "InfoSessionModel.h"
 #import "InfoSessionCell.h"
 #import "LoadingCell.h"
+#import "UWTabBarController.h"
 
 @interface SearchViewController ()
 
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) UISearchDisplayController *searchController;
+
+@property (nonatomic, strong) UITableView *tableView;
+
 @property (nonatomic, strong) NSArray *sectionIndex;
+@property (nonatomic, strong) UILabel *detailLabel;
 
 @end
 
-@implementation SearchViewController
+@implementation SearchViewController {
+    CGFloat startContentOffset;
+    CGFloat lastContentOffset;
+    CGFloat previousScrollViewYOffset;
+}
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithStyle:style];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
     }
@@ -31,29 +42,71 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"SearchVC DidLoad");
+	// Do any additional setup after loading the view.
+    // set color
     [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
     self.navigationController.navigationBar.tintColor = UWBlack;
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-//    _searchBar.
+    
+    // initiate search bar
+    NSInteger statusBarHeight = 20;
+    NSInteger navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
+    
+    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0,  statusBarHeight + navigationBarHeight, 320, 44)];
+//    _searchBar.tintColor = [UIColor clearColor];
+    _searchBar.delegate = self;
+    _searchBar.barStyle = UIBarStyleDefault;
+    _searchBar.showsCancelButton = NO;
+    //NSMutableArray *scopeTitles = [[NSMutableArray alloc] initWithObjects:@"Employer", @"Program", @"Note", nil];
+    _searchBar.scopeButtonTitles = [[NSArray alloc] initWithObjects:@"Employer", @"Program", @"Note", nil];//[@"Employer|Program|Note" componentsSeparatedByString:@"|"];
+    _searchBar.showsScopeBar = YES;
+
+    
+    // initiate search bar controller
+    _searchController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+    _searchController.delegate = self;
+    _searchController.searchResultsDataSource = self;
+    _searchController.searchResultsDelegate = self;
+    
+    // initiate table view
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, statusBarHeight + navigationBarHeight, 320, [UIScreen mainScreen].bounds.size.height - statusBarHeight - navigationBarHeight)];
+    //NSLog(@"bounds: %@", NSStringFromCGRect([[UIScreen mainScreen].]));
+    [_tableView setContentInset:UIEdgeInsetsMake(_searchBar.frame.size.height, 0, _tabBarController.tabBar.frame.size.height, 0)];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    
+    [_tableView registerClass:[InfoSessionCell class]  forCellReuseIdentifier:@"InfoSessionCell"];
+    [_tableView registerClass:[LoadingCell class] forCellReuseIdentifier:@"LoadingCell"];
+    
+    [self.navigationController.view addSubview:_tableView];
+    [self.navigationController.view addSubview:_searchBar];
+
+    // initiate titleView
+    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 180.0, 32.0)];
+    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 1.0, 180, 17.0)];
+    textLabel.textAlignment = NSTextAlignmentCenter;
+    textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+    textLabel.font = [UIFont boldSystemFontOfSize:17];
+    
+    _detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 18.0, 180, 14.0)];
+    _detailLabel.textAlignment = NSTextAlignmentCenter;
+    _detailLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize] - 2.0];
+    [titleView addSubview:textLabel];
+    [titleView addSubview:_detailLabel];
+    
+    textLabel.text = @"Info Session Search";
+    _detailLabel.text = _infoSessionModel.currentTerm;
+    
+    [self.navigationItem setTitleView:titleView];
+    
+    // reload data
     [self reloadTable];
 }
-
-//- (void)viewDidLayoutSubviews {
-//    [super viewDidLayoutSubviews];
-//    CGRect barFrame = self.searchBar.frame;
-//    barFrame.size.width = self.view.bounds.size.width;
-//    self.searchBar.frame = barFrame;
-//}
 
 - (void)reloadTable {
     NSLog(@"reload search table");
     [_infoSessionModel processInfoSessionsIndexDic];
     [self setSectionIndex];
+    _detailLabel.text = _infoSessionModel.currentTerm;
     [self.tableView reloadData];
     [self.tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
     [self.tableView setSectionIndexColor:UWBlack];
@@ -103,7 +156,7 @@
 }
 
 //- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index{
-//    
+//
 //}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -121,11 +174,24 @@
 {
     if (indexPath.section < [_infoSessionModel.infoSessionsIndexDic count]) {
         // Configure the cell...
-        InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InfoSessionCell"];
+        static NSString *cellIdentifier = @"InfoSessionCell";
+        InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        
+        //cell == nil? NSLog(@"nil") : NSLog(@"not nil");
+        if (cell == nil) {
+            cell = [[InfoSessionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        }
+        
         [self configureCell:cell withIndexPath:indexPath];
         return cell;
     } else {
-        LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
+        static NSString *cellIdentifier = @"LoadingCell";
+        LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        
+        //cell == nil? NSLog(@"nil") : NSLog(@"not nil");
+        if (cell == nil) {
+            cell = [[LoadingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        }
         
         if ([_infoSessionModel.infoSessions count] == 0) {
             cell.loadingLabel.text =  @"No info sessions";
@@ -223,61 +289,120 @@
     return headerView;
 }
 
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    CGRect rect = _searchBar.frame;
-//    rect.origin.y = scrollView.contentOffset.y + 100;//MAX(, scrollView.contentOffset.y);
-//    _searchBar.frame = rect;
-//}
+#pragma mark - Set Hide When Scroll
+// ???? Why scroll canbe detected? This is a simple ViewController, not scroll view
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    //NSLog(@"scrollViewWillBeginDragging");
+    startContentOffset = lastContentOffset = scrollView.contentOffset.y;
+}
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    CGFloat currentOffset = scrollView.contentOffset.y;
+    CGFloat differenceFromStart = startContentOffset - currentOffset;
+    CGFloat differenceFromLast = lastContentOffset - currentOffset;
+    //NSLog(@"current: %0.0f, start: %0.0f, last: %0.0f", currentOffset, startContentOffset, lastContentOffset);
+    lastContentOffset = currentOffset;
+    
+    // start < current, scroll down
+    if((differenceFromStart) < 0)
+    {
+        // scroll up
+        if(scrollView.isTracking && (abs(differenceFromLast)>1) && ![self isBottomRowisVisible])
+            [self.tabBarController hideTabBar];
+    }
+    // start > current, scroll up
+    else {
+        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+            [self.tabBarController showTabBar];
+    }
+    
+    CGRect bounds = scrollView.bounds;
+    CGSize size = scrollView.contentSize;
+    UIEdgeInsets inset = scrollView.contentInset;
+    float y = currentOffset + bounds.size.height - inset.bottom;
+    float h = size.height;
+    // NSLog(@"offset: %f", offset.y);
+    // NSLog(@"content.height: %f", size.height);
+    // NSLog(@"bounds.height: %f", bounds.size.height);
+    // NSLog(@"inset.top: %f", inset.top);
+    // NSLog(@"inset.bottom: %f", inset.bottom);
+    // NSLog(@"pos: %f of %f", y, h);
+    
+    float reload_distance = 0;
+    if(y > h + reload_distance) {
+        //NSLog(@"load more rows");
+        // bottom row reached, show tabbar
+        [self.tabBarController showTabBar];
+    }
+    //    if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height))
+    //        [self.tabBarController showTabBar];
+}
+
+- (BOOL)isBottomRowisVisible {
+    NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+    for (NSIndexPath *index in indexPaths) {
+        if (index.section == [self numberOfSectionsInTableView:self.tableView] - 1 && index.row == 0) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+    [_tabBarController showTabBar];
+}
+
+#pragma mark - UISearchDisplayController Delegate Methods
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
-    // Return NO if you do not want the specified item to be editable.
+    
+    //    [self filterContentForSearchText:searchString
+    //                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
+    //                                      objectAtIndex:[self.searchDisplayController.searchBar
+    //                                                     selectedScopeButtonIndex]]];
+    
     return YES;
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
+#pragma mark - UISearchBar Delegate Methods
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    //move the search bar up to the correct location eg
+    [UIView animateWithDuration:.3
+                     animations:^{
+                         searchBar.frame = CGRectMake(searchBar.frame.origin.x,
+                                                      20,
+                                                      searchBar.frame.size.width,
+                                                      searchBar.frame.size.height);
+                         //                         searchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"string1", @"string2", nil];
+                         //                         searchBar.showsScopeBar = YES;
+                         //                         [searchBar invalidateIntrinsicContentSize];
+                         //[searchBar sizeToFit];
+                         //[searchBar setShowsCancelButton:YES animated:YES];
+                         //self.tableView.tableHeaderView = searchBar;
+                     }
+                     completion:^(BOOL finished){
+                         //whatever else you may need to do
+                     }];
     return YES;
 }
-*/
 
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
+    //move the search bar down to the correct location eg
+    [UIView animateWithDuration:.25
+                     animations:^{
+                         NSInteger statusBarHeight = 20;
+                         NSInteger navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
+                         searchBar.frame = CGRectMake(_searchBar.frame.origin.x,
+                                                      statusBarHeight + navigationBarHeight,
+                                                      _searchBar.frame.size.width,
+                                                      _searchBar.frame.size.height);
+                     }
+                     completion:^(BOOL finished){
+                         //whatever else you may need to do
+                     }];
+    return YES;
 }
-
- */
 
 @end

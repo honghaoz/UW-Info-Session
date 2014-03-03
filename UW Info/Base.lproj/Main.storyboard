@@ -512,127 +512,18 @@
             </objects>
             <point key="canvasLocation" x="653" y="498"/>
         </scene>
-        <!--Search View Controller - Info Session Search-->
-        <scene sceneID="a86-3u-dg9">
+        <!--Search View Controller-->
+        <scene sceneID="Uhs-Fv-kUO">
             <objects>
-                <tableViewController id="Tp9-sp-LWC" customClass="SearchViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="W6P-ko-c0U">
+                <viewController id="wqO-2p-ZG0" customClass="SearchViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Chf-9L-LTY">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" showsScopeBar="YES" id="lDj-ft-AGI">
-                            <rect key="frame" x="0.0" y="64" width="320" height="88"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <scopeButtonTitles>
-                                <string>Employer</string>
-                                <string>Program</string>
-                                <string>Note</string>
-                            </scopeButtonTitles>
-                            <connections>
-                                <outlet property="delegate" destination="Tp9-sp-LWC" id="Vpt-yA-PfE"/>
-                            </connections>
-                        </searchBar>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="InfoSessionCell" rowHeight="70" id="I0Z-DO-gxs" customClass="InfoSessionCell">
-                                <rect key="frame" x="0.0" y="174" width="320" height="70"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="I0Z-DO-gxs" id="Sip-67-JWZ">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="69"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Employer" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YZ7-JO-AxF">
-                                            <rect key="frame" x="15" y="4" width="272" height="25"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IQN-MT-jIU">
-                                            <rect key="frame" x="15" y="26" width="76" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YHx-0Z-FTN">
-                                            <rect key="frame" x="15" y="43" width="41" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(location goes here)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="T44-fk-ks2">
-                                            <rect key="frame" x="80" y="26" width="202" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(date goes here)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CvV-ee-ZdK">
-                                            <rect key="frame" x="56" y="43" width="226" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="date" destination="CvV-ee-ZdK" id="Mjr-Mv-g07"/>
-                                    <outlet property="dateLabel" destination="YHx-0Z-FTN" id="BOb-b1-PgC"/>
-                                    <outlet property="employer" destination="YZ7-JO-AxF" id="wzz-hm-793"/>
-                                    <outlet property="location" destination="T44-fk-ks2" id="SiI-pY-yRX"/>
-                                    <outlet property="locationLabel" destination="IQN-MT-jIU" id="EOK-CE-yyr"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LoadingCell" rowHeight="44" id="afF-jp-SPD" customClass="LoadingCell">
-                                <rect key="frame" x="0.0" y="244" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="afF-jp-SPD" id="pwi-0G-tKH">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" id="Byg-Gu-6iD">
-                                            <rect key="frame" x="203" y="11" width="20" height="20"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        </activityIndicatorView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Refreshing..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uzL-Cn-lnW">
-                                            <rect key="frame" x="70" y="11" width="181" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="loadingIndicator" destination="Byg-Gu-6iD" id="dfm-Nw-VrL"/>
-                                    <outlet property="loadingLabel" destination="uzL-Cn-lnW" id="p51-xj-uJ1"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="Tp9-sp-LWC" id="MQk-Gw-616"/>
-                            <outlet property="delegate" destination="Tp9-sp-LWC" id="E5p-7X-L50"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Info Session Search" id="aBS-Xe-WXa"/>
-                    <connections>
-                        <outlet property="searchBar" destination="lDj-ft-AGI" id="rvd-nH-49N"/>
-                        <outlet property="searchDisplayController" destination="pD9-9E-NfA" id="yqo-lw-v8d"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FJM-Te-3xo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="pD9-9E-NfA">
-                    <connections>
-                        <outlet property="delegate" destination="Tp9-sp-LWC" id="aX8-wr-Nhh"/>
-                        <outlet property="searchBar" destination="lDj-ft-AGI" id="d34-2a-nLy"/>
-                        <outlet property="searchContentsController" destination="Tp9-sp-LWC" id="bA3-EK-NXJ"/>
-                        <outlet property="searchResultsDataSource" destination="Tp9-sp-LWC" id="uU3-ds-Z5H"/>
-                        <outlet property="searchResultsDelegate" destination="Tp9-sp-LWC" id="SZt-lA-kUf"/>
-                    </connections>
-                </searchDisplayController>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="hyv-UM-Tmv"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EuL-4Y-kGM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1139" y="1282"/>
         </scene>
@@ -663,7 +554,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Tp9-sp-LWC" kind="relationship" relationship="rootViewController" id="AWB-MW-O6G"/>
+                        <segue destination="wqO-2p-ZG0" kind="relationship" relationship="rootViewController" id="qm3-NX-MXF"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9pF-yd-Xzo" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -682,6 +573,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="fT1-AS-H6Z"/>
+        <segue reference="EvK-Ps-maJ"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -710,6 +710,7 @@
 }
 
 - (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+    [_tabBarController showTabBar];
     [_termMenu.menu close];
 }
 

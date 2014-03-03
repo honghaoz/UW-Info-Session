@@ -10,7 +10,7 @@
 
 @interface LoadingCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingIndicator;
-@property (weak, nonatomic) IBOutlet UILabel *loadingLabel;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *loadingIndicator;
+@property (strong, nonatomic) IBOutlet UILabel *loadingLabel;
 
 @end
