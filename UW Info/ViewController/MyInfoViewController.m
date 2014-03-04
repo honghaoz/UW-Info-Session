@@ -172,10 +172,10 @@
     NSMutableAttributedString *locationString = [[NSMutableAttributedString alloc] initWithString:infoSession.location];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"MMM d, y"];
+    [dateFormatter setDateFormat:@"MMM d"];
     [timeFormatter setDateFormat:@"h:mm a"];
     
-    NSString *dateNSString = [NSString stringWithFormat:@"%@ - %@, %@", [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime], [dateFormatter stringFromDate:infoSession.date]];
+    NSString *dateNSString = [NSString stringWithFormat:@"%@, %@ - %@", [dateFormatter stringFromDate:infoSession.date], [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime]];
     NSMutableAttributedString *dateString = [[NSMutableAttributedString alloc] initWithString:dateNSString];
     if (infoSession.isCancelled) {
         [employerString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [employerString length])];

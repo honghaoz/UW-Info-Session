@@ -295,10 +295,10 @@
     }
     else {
         [cell.employer setTextColor: [UIColor blackColor]];
-        [cell.locationLabel setTextColor:[UIColor blackColor]];
-        [cell.location setTextColor:[UIColor blackColor]];
-        [cell.dateLabel setTextColor:[UIColor blackColor]];
-        [cell.date setTextColor:[UIColor blackColor]];
+        [cell.locationLabel setTextColor:[UIColor darkGrayColor]];
+        [cell.location setTextColor:[UIColor darkGrayColor]];
+        [cell.dateLabel setTextColor:[UIColor darkGrayColor]];
+        [cell.date setTextColor:[UIColor darkGrayColor]];
     }
     
     NSMutableAttributedString *employerString = [[NSMutableAttributedString alloc] initWithString:infoSession.employer];
@@ -309,14 +309,14 @@
     NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     [dateFormatter setLocale:enUSPOSIXLocale];
     [timeFormatter setLocale:enUSPOSIXLocale];
-    [dateFormatter setDateFormat:@"MMM d, y"];
+    [dateFormatter setDateFormat:@"MMM d"];
     [timeFormatter setDateFormat:@"h:mm a"];
     // set timezone to EST
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
     // set timezone to EST
     [timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
     
-    NSString *dateNSString = [NSString stringWithFormat:@"%@ - %@, %@", [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime], [dateFormatter stringFromDate:infoSession.date]];
+    NSString *dateNSString = [NSString stringWithFormat:@"%@, %@ - %@", [dateFormatter stringFromDate:infoSession.date], [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime]];
     NSMutableAttributedString *dateString = [[NSMutableAttributedString alloc] initWithString:dateNSString];
     if (infoSession.isCancelled) {
         [employerString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [employerString length])];

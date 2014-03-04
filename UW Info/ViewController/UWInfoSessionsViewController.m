@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 org-honghao. All rights reserved.
 //
 
-#import "InfoSessionsViewController.h"
+#import "UWInfoSessionsViewController.h"
 #import "UIActivityIndicatorView+AFNetworking.h"
 #import "UIRefreshControl+AFNetworking.h"
 #import "UIAlertView+AFNetworking.h"
@@ -22,12 +22,11 @@
 
 #import "UWTabBarController.h"
 #import "UWTermMenu.h"
-#import "InfoDetailedTitleButton.h"
+#import "UWInfoDetailedTitleButton.h"
 
 #import "REMenu.h"
-#import "UWTodayButton.h"
 
-@interface InfoSessionsViewController ()
+@interface UWInfoSessionsViewController ()
 
 @property (nonatomic, strong) UWTermMenu *termMenu;
 @property (nonatomic, assign) NSInteger shownYear;
@@ -35,7 +34,7 @@
 
 @end
 
-@implementation InfoSessionsViewController {
+@implementation UWInfoSessionsViewController {
     UIRefreshControl *refreshControl;
     CGFloat startContentOffset;
     CGFloat lastContentOffset;
@@ -80,9 +79,9 @@
     
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
     
-    
-    self.navigationItem.leftBarButtonItem = [self getTodayButtonItem];
-    //self.navigationItem.leftBarButtonItem = todayButton;
+    UIBarButtonItem *todayButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain
+                                                                     target:self action:@selector(scrollToToday)];
+    self.navigationItem.leftBarButtonItem = todayButton;
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
     // init menu button (term selection)
@@ -106,17 +105,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (UIBarButtonItem *)getTodayButtonItem {
-    UWTodayButton *todayButton = [[UWTodayButton alloc] initWithTitle:@"Today:" date:[NSDate date]];
-    
-    [todayButton addTarget:self action:@selector(scrollToToday) forControlEvents:UIControlEventTouchUpInside];
-    //[todayButton setTitle:@"asdsaasdadasdasdd" forState:UIControlStateNormal];
-    
-    UIBarButtonItem *todayButtonItem = [[UIBarButtonItem alloc] initWithCustomView:todayButton];
-    
-    return todayButtonItem;
 }
 
 /**
@@ -146,9 +134,9 @@
     if (_shownYear != [_termMenu getCurrentYear:[NSDate date]] || ![_shownTerm isEqualToString:[_termMenu getCurrentTermFromDate:[NSDate date]]]) {
         self.navigationItem.leftBarButtonItem = nil;
     } else {
-//        UIBarButtonItem *todayButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain
-//                                                                       target:self action:@selector(scrollToToday)];
-        self.navigationItem.leftBarButtonItem = [self getTodayButtonItem];
+        UIBarButtonItem *todayButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain
+                                                                       target:self action:@selector(scrollToToday)];
+        self.navigationItem.leftBarButtonItem = todayButton;
     }
     
     //change right bar button to indicator
@@ -406,7 +394,7 @@
             [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
             return cell;
         } else {
-            InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InfoSessionCell"];
+            UWInfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InfoSessionCell"];
             [self configureCell:cell withIndexPath:indexPath];
             return cell;
         }
@@ -418,7 +406,7 @@
  *  @param cell      InfoSessionCell
  *  @param indexPath IndexPath for the cell
  */
-- (void)configureCell:(InfoSessionCell *)cell withIndexPath:(NSIndexPath *)indexPath {
+- (void)configureCell:(UWInfoSessionCell *)cell withIndexPath:(NSIndexPath *)indexPath {
     InfoSession *infoSession = [self getInfoSessionAccordingIndexPath:indexPath];
     
     // if current time is befor start time, set dark (future sessions)
@@ -458,21 +446,20 @@
     NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     [dateFormatter setLocale:enUSPOSIXLocale];
     [timeFormatter setLocale:enUSPOSIXLocale];
-    [dateFormatter setDateFormat:@"MMM d"];
+    [dateFormatter setDateFormat:@"MMM d, y"];
     [timeFormatter setDateFormat:@"h:mm a"];
     // set timezone to EST
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
     // set timezone to EST
     [timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
     
-    NSString *dateNSString = [NSString stringWithFormat:@"%@, %@ - %@",[dateFormatter stringFromDate:infoSession.date], [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime]];
+    NSString *dateNSString = [NSString stringWithFormat:@"%@ - %@, %@", [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime], [dateFormatter stringFromDate:infoSession.date]];
     NSMutableAttributedString *dateString = [[NSMutableAttributedString alloc] initWithString:dateNSString];
     if (infoSession.isCancelled) {
         [employerString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [employerString length])];
         [locationString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [locationString length])];
         [dateString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [dateString length])];
     }
-    
     [cell.employer setAttributedText:employerString];
     [cell.location setAttributedText:locationString];
     [cell.date setAttributedText:dateString];
@@ -598,7 +585,7 @@
         return;
     } else {
         // info session cells
-        [self performSegueWithIdentifier:@"ShowDetailFromInfoSessions" sender:[[NSArray alloc] initWithObjects:@"InfoSessionsViewController", [self getInfoSessionAccordingIndexPath:indexPath], _infoSessionModel, nil]];
+        [self performSegueWithIdentifier:@"ShowDetailFromInfoSessions" sender:[[NSArray alloc] initWithObjects:@"UWInfoSessionsViewController", [self getInfoSessionAccordingIndexPath:indexPath], _infoSessionModel, nil]];
     }
     
 }

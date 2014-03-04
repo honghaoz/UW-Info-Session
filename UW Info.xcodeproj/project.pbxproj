@@ -43,6 +43,7 @@
 		1B4DD55318AC8625009B0214 /* map_colour600.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B4DD55118AC8625009B0214 /* map_colour600.png */; };
 		1B4DD55618AC90B4009B0214 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4DD55518AC90B4009B0214 /* MapViewController.m */; };
 		1B59BB2018C441AA00D6112B /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B59BB1F18C441AA00D6112B /* SearchViewController.m */; };
+		1B6EDE4E18C66DB800EBFEB9 /* UWTodayButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B6EDE4D18C66DB800EBFEB9 /* UWTodayButton.m */; };
 		1B6F54C618AC218600D3DD47 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6F54C518AC218600D3DD47 /* EventKit.framework */; };
 		1B6F54C818AC219000D3DD47 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6F54C718AC219000D3DD47 /* EventKitUI.framework */; };
 		1B717E5F18A7F7DC00E20A29 /* DetailLinkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E5E18A7F7DC00E20A29 /* DetailLinkCell.m */; };
@@ -152,6 +153,8 @@
 		1B4DD55518AC90B4009B0214 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = ViewController/MapViewController.m; sourceTree = "<group>"; };
 		1B59BB1E18C441AA00D6112B /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchViewController.h; path = ViewController/SearchViewController.h; sourceTree = "<group>"; };
 		1B59BB1F18C441AA00D6112B /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = ViewController/SearchViewController.m; sourceTree = "<group>"; };
+		1B6EDE4C18C66DB800EBFEB9 /* UWTodayButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWTodayButton.h; sourceTree = "<group>"; };
+		1B6EDE4D18C66DB800EBFEB9 /* UWTodayButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWTodayButton.m; sourceTree = "<group>"; };
 		1B6F54C518AC218600D3DD47 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		1B6F54C718AC219000D3DD47 /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		1B717E5D18A7F7DC00E20A29 /* DetailLinkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailLinkCell.h; path = TableViewCell/DetailLinkCell.h; sourceTree = "<group>"; };
@@ -404,6 +407,8 @@
 			children = (
 				1B3744F818A5A842007CF08C /* InfoSessionsViewController.h */,
 				1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */,
+				1B6EDE4C18C66DB800EBFEB9 /* UWTodayButton.h */,
+				1B6EDE4D18C66DB800EBFEB9 /* UWTodayButton.m */,
 				1B050C8C18BFC18B00DCC342 /* UWTermMenu.h */,
 				1B050C8D18BFC18B00DCC342 /* UWTermMenu.m */,
 				1B050C7718BFB4BB00DCC342 /* InfoDetailedTitleButton.h */,
@@ -644,6 +649,7 @@
 				1B050C8B18BFBD1700DCC342 /* REMenuContainerView.m in Sources */,
 				1B19834918A618A60022A285 /* DetailViewController.m in Sources */,
 				1B2F746818AF66190042322B /* AFHTTPRequestOperationManager.m in Sources */,
+				1B6EDE4E18C66DB800EBFEB9 /* UWTodayButton.m in Sources */,
 				1B2F748918AF66210042322B /* UIWebView+AFNetworking.m in Sources */,
 				1B717E7118A80B8200E20A29 /* DetailDescriptionCell.m in Sources */,
 				1B2F746718AF66190042322B /* AFHTTPRequestOperation.m in Sources */,

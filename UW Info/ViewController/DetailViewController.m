@@ -431,7 +431,7 @@
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
             [dateFormatter setLocale:enUSPOSIXLocale];
-            [dateFormatter setDateFormat:@"cccc MMM d, y"];
+            [dateFormatter setDateFormat:@"cccc, MMM d, y"];
             // set timezone to EST
             [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
             cell.contentLabel.text = [dateFormatter stringFromDate:_infoSession.date];
