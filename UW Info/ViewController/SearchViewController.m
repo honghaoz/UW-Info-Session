@@ -11,6 +11,7 @@
 #import "InfoSessionCell.h"
 #import "LoadingCell.h"
 #import "UWTabBarController.h"
+#import "DetailViewController.h"
 
 @interface SearchViewController ()
 
@@ -23,6 +24,8 @@
 @property (nonatomic, strong) UILabel *detailLabel;
 
 @property (nonatomic, strong) UIView *statusBarView;
+
+@property (nonatomic, strong) NSArray *searchResult;
 
 @end
 
@@ -56,12 +59,8 @@
     NSInteger navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
     
     _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0,  statusBarHeight + navigationBarHeight, 320, 44)];
-//    _searchBar.tintColor = [UIColor clearColor];
     _searchBar.delegate = self;
-    //_searchBar.barStyle = UISearchBarStyleMinimal;
-    //_searchBar.showsCancelButton = NO;
-    _searchBar.scopeButtonTitles = [[NSArray alloc] initWithObjects:@"Employer", @"Program", @"Note", nil];//[@"Employer|Program|Note" componentsSeparatedByString:@"|"];
-    //_searchBar.showsScopeBar = YES;
+    _searchBar.scopeButtonTitles = [[NSArray alloc] initWithObjects:@"Employer", @"Program", @"Note", nil];
     
     _searchBar.tintColor = UWBlack;
     _searchBar.backgroundColor = UWGold;
@@ -193,7 +192,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (_searchController.searchResultsTableView == tableView) {
-        return 1;
+        return [_searchResult count];
     }
     else {
         if (section < [_infoSessionModel.infoSessionsIndexDic count]) {
@@ -208,22 +207,56 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_searchController.searchResultsTableView == tableView) {
-        static NSString *cellIdentifier = @"LoadingCell";
-        LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        static NSString *cellIdentifier = @"InfoSessionCell";
+        InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         
         //cell == nil? NSLog(@"nil") : NSLog(@"not nil");
         if (cell == nil) {
-            cell = [[LoadingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+            cell = [[InfoSessionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         }
         
-        if ([_infoSessionModel.infoSessions count] == 0) {
-            cell.loadingLabel.text =  @"No info sessions";
-        } else {
-            cell.loadingLabel.text = [NSString stringWithFormat:@"%i Info Sessions", [_infoSessionModel.infoSessions count]];
+        InfoSession *infoSession = [_searchResult objectAtIndex:indexPath.row];
+        if (infoSession.isCancelled == YES) {
+            [cell.employer setTextColor: [UIColor lightGrayColor]];
+            [cell.locationLabel setTextColor:[UIColor lightGrayColor]];
+            [cell.location setTextColor:[UIColor lightGrayColor]];
+            [cell.dateLabel setTextColor:[UIColor lightGrayColor]];
+            [cell.date setTextColor:[UIColor lightGrayColor]];
         }
-        cell.loadingIndicator.hidden = YES;
-        [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
-        [cell.loadingLabel setTextColor:[UIColor blackColor]];
+        else {
+            [cell.employer setTextColor: [UIColor blackColor]];
+            [cell.locationLabel setTextColor:[UIColor blackColor]];
+            [cell.location setTextColor:[UIColor blackColor]];
+            [cell.dateLabel setTextColor:[UIColor blackColor]];
+            [cell.date setTextColor:[UIColor blackColor]];
+        }
+        
+        NSMutableAttributedString *employerString = [[NSMutableAttributedString alloc] initWithString:infoSession.employer];
+        NSMutableAttributedString *locationString = [[NSMutableAttributedString alloc] initWithString:infoSession.location];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+        // set the locale to fix the formate to read and write;
+        NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+        [dateFormatter setLocale:enUSPOSIXLocale];
+        [timeFormatter setLocale:enUSPOSIXLocale];
+        [dateFormatter setDateFormat:@"MMM d, y"];
+        [timeFormatter setDateFormat:@"h:mm a"];
+        // set timezone to EST
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+        // set timezone to EST
+        [timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+        
+        NSString *dateNSString = [NSString stringWithFormat:@"%@ - %@, %@", [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime], [dateFormatter stringFromDate:infoSession.date]];
+        NSMutableAttributedString *dateString = [[NSMutableAttributedString alloc] initWithString:dateNSString];
+        if (infoSession.isCancelled) {
+            [employerString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [employerString length])];
+            [locationString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [locationString length])];
+            [dateString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [dateString length])];
+        }
+        [cell.employer setAttributedText:employerString];
+        [cell.location setAttributedText:locationString];
+        [cell.date setAttributedText:dateString];
+
         return cell;
     }
     else {
@@ -251,7 +284,7 @@
             if ([_infoSessionModel.infoSessions count] == 0) {
                 cell.loadingLabel.text =  @"No info sessions";
             } else {
-                cell.loadingLabel.text = [NSString stringWithFormat:@"%i Info Sessions", [_infoSessionModel.infoSessions count]];
+                cell.loadingLabel.text = [NSString stringWithFormat:@"%lu Info Sessions", (unsigned long)[_infoSessionModel.infoSessions count]];
             }
             cell.loadingIndicator.hidden = YES;
             [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
@@ -316,10 +349,15 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section < [_infoSessionModel.infoSessionsIndexDic count]) {
-        return 23.0f;
-    } else {
+    if (_searchController.searchResultsTableView == tableView) {
         return 0.0f;
+    }
+    else {
+        if (section < [_infoSessionModel.infoSessionsIndexDic count]) {
+            return 23.0f;
+        } else {
+            return 0.0f;
+        }
     }
 }
 
@@ -343,6 +381,16 @@
     
     return headerView;
 }
+
+#pragma mark - UITable view delegate methods 
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section < [_infoSessionModel.infoSessionsIndexDic count]) {
+        [self performSegueWithIdentifier:@"ShowDetailFromSearchViewController" sender:[[NSArray alloc] initWithObjects:@"SearchViewController", [_infoSessionModel.infoSessionsIndexDic[[self getKeyForSection:indexPath.section]] objectAtIndex:indexPath.row], _infoSessionModel, nil]];
+    }
+}
+
 
 #pragma mark - Set Hide When Scroll
 // ???? Why scroll canbe detected? This is a simple ViewController, not scroll view
@@ -411,8 +459,26 @@
 
 #pragma mark - UISearchDisplayController Delegate Methods
 
+- (void)filterContentForSearchText:(NSString *)searchText scope:(NSString *)scope {
+    NSPredicate *resultPredicate;
+    if ([scope isEqualToString:@"Employer"]) {
+        resultPredicate = [NSPredicate predicateWithFormat:@"employer contains[c] %@", searchText];
+    } else if ([scope isEqualToString:@"Program"]) {
+        resultPredicate = [NSPredicate predicateWithFormat:@"programs contains[c] %@", searchText];
+    } else if ([scope isEqualToString:@"Note"]){
+        resultPredicate = [NSPredicate predicateWithFormat:@"note contains[c] %@", searchText];
+    }
+    _searchResult = [_infoSessionModel.infoSessions filteredArrayUsingPredicate:resultPredicate];
+    
+}
+
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
+    NSLog(@"should reload table for search string");
+    [self filterContentForSearchText:searchString
+                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
+                                      objectAtIndex:[self.searchDisplayController.searchBar
+                                                     selectedScopeButtonIndex]]];
     
     //    [self filterContentForSearchText:searchString
     //                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
@@ -445,8 +511,6 @@
     NSLog(@"type");
     return YES;
 }
-
-
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     NSLog(@"search bar begin edit");
@@ -494,16 +558,15 @@
                                                              0,
                                                              self.tableView.frame.size.width,
                                                              self.tableView.frame.size.height + 210)];
-                         //searchBar.backgroundImage = [UIImage imageNamed:@"ye.png"];
                          
                          
                      }
                      completion:^(BOOL finished){
                          //whatever else you may need to do
-                         
+                         searchBar.barTintColor = nil;
                          [_tabBarController showTabBar];
                          [_statusBarView removeFromSuperview];
-                         searchBar.barTintColor = nil;
+                         
                          [_statusBarView setFrame:CGRectMake(_statusBarView.frame.origin.x, _statusBarView.frame.origin.y + 22, _statusBarView.frame.size.width, _statusBarView.frame.size.height - 22)];
                      }];
     
@@ -516,5 +579,16 @@
 //    keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
 //    NSLog(@"%@", NSStringFromCGSize(keyboardSize));
 //}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    DetailViewController *controlletr = segue.destinationViewController;
+    _tabBarController.detailViewControllerOfTabbar2 = controlletr;
+    controlletr.caller = sender[0];
+    controlletr.infoSession = sender[1];
+    controlletr.infoSessionModel = sender[2];
+    controlletr.tabBarController = _tabBarController;
+}
 
 @end

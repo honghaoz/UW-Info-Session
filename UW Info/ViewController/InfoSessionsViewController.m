@@ -145,7 +145,6 @@
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
-    NSLog(@"readaaaaaaa");
     // if the target term is already saved in _infoSessionModel.termInfoDic, then read it directly.
     NSLog(@"%@", NSStringFromClass([sender class]));
     if (![NSStringFromClass([sender class]) isEqualToString:@"UIBarButtonItem"] &&
@@ -410,35 +409,6 @@
 - (void)configureCell:(InfoSessionCell *)cell withIndexPath:(NSIndexPath *)indexPath {
     InfoSession *infoSession = [self getInfoSessionAccordingIndexPath:indexPath];
     
-//    [cell setBackgroundColor:[UIColor blackColor]];
-//    
-//    // if current time is befor start time, set dark (future sessions)
-//    if ([[NSDate date] compare:infoSession.startTime] == NSOrderedAscending) {
-//        [cell.employer setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-//        [cell.locationLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-//        [cell.location setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-//        [cell.dateLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-//        [cell.date setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-//    }
-//    // if current time is between start time and end time, set blue (ongoing sessions)
-//    else if ( ([infoSession.startTime compare:[NSDate date]] == NSOrderedAscending) && ([[NSDate date] compare:infoSession.endTime] == NSOrderedAscending) ){
-//        [cell.employer setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-//        [cell.locationLabel setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-//        [cell.location setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-//        [cell.dateLabel setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-//        [cell.date setTextColor:[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]];
-//    }
-//    // set light grey (past sessions)
-//    else {
-//        [cell.employer setTextColor: [UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-//        [cell.locationLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-//        [cell.location setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-//        [cell.dateLabel setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-//        [cell.date setTextColor:[UIColor colorWithRed:1 green:0.87 blue:0.02 alpha:1]];
-//    
-//    }
-
-    
     // if current time is befor start time, set dark (future sessions)
     if ([[NSDate date] compare:infoSession.startTime] == NSOrderedAscending) {
         [cell.employer setTextColor:[UIColor blackColor]];
@@ -469,7 +439,7 @@
 
     }
     NSMutableAttributedString *employerString = [[NSMutableAttributedString alloc] initWithString:infoSession.employer];
-    NSMutableAttributedString *locationString = [[NSMutableAttributedString alloc] initWithString:infoSession.location];
+    NSMutableAttributedString *locationString = [[NSMutableAttributedString alloc] initWithString:[infoSession.location length] < 2 ? @"No Location Provided" : infoSession.location];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
     // set the locale to fix the formate to read and write;
@@ -619,36 +589,6 @@
     }
     
 }
-
-//- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
-//{
-//    if([view isKindOfClass:[UITableViewHeaderFooterView class]]){
-//        
-//        UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView *) view;
-//        tableViewHeaderFooterView.textLabel.textColor = [UIColor blueColor];
-//    }
-//}
-
-//- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-//{
-//    //UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
-//    //[headerView setTintColor:[UIColor yellowColor]];
-//    //headerView.tintColor = [UIColor yellowColor];
-//    
-//    // if you have index/header text in your tableview change your index text color
-////    UITableViewHeaderFooterView *headerIndexText = (UITableViewHeaderFooterView *)view;
-//    //[headerView.textLabel setTextColor:[UIColor blackColor]];
-//    //[headerView setBackgroundColor:[UIColor yellowColor]];
-//    return headerView;
-//}
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-} */
 
 #pragma mark - Set Hide When Scroll
 

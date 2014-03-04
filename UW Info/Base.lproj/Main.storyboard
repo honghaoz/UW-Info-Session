@@ -281,7 +281,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jqe-Ay-CNk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1661" y="171"/>
+            <point key="canvasLocation" x="1687" y="498"/>
         </scene>
         <!--Alert View Controller - Info Session Alert-->
         <scene sceneID="nO8-fF-3Px">
@@ -319,7 +319,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WsJ-xU-scT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2196" y="891"/>
+            <point key="canvasLocation" x="2248" y="1219"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="Kwe-Bb-HUw">
@@ -352,7 +352,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yuu-dS-cZJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2196" y="-587"/>
+            <point key="canvasLocation" x="2248" y="-219"/>
         </scene>
         <!--Navigation Controller - Info sessions-->
         <scene sceneID="A8V-g9-rVo">
@@ -522,6 +522,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="hyv-UM-Tmv"/>
+                    <connections>
+                        <segue destination="B2h-A1-by6" kind="push" identifier="ShowDetailFromSearchViewController" id="QUf-Rg-7EB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EuL-4Y-kGM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -540,7 +543,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pzg-h5-snm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2196" y="171"/>
+            <point key="canvasLocation" x="2248" y="503"/>
         </scene>
         <!--Navigation Controller - Search-->
         <scene sceneID="9Gh-fn-zYy">
@@ -573,6 +576,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="EvK-Ps-maJ"/>
+        <segue reference="QUf-Rg-7EB"/>
     </inferredMetricsTieBreakers>
 </document>

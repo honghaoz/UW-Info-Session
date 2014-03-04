@@ -32,6 +32,8 @@
 
 #import "ProgressHUD.h"
 
+#import "SearchViewController.h"
+
 @interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
 
 - (IBAction)addToMyInfo:(id)sender;
@@ -58,7 +60,7 @@
     self.title = @"Details";
     
     // if caller is Info
-    if ([_caller isEqualToString:@"InfoSessionsViewController"]) {
+    if ([_caller isEqualToString:@"InfoSessionsViewController"] || [_caller isEqualToString:@"SearchViewController"]) {
         NSInteger existIndex = [InfoSessionModel findInfoSession:_infoSession in:_infoSessionModel.myInfoSessions];
         openedMyInfo = NO;
         if (existIndex != -1) {
@@ -89,6 +91,7 @@
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -429,6 +432,8 @@
             NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
             [dateFormatter setLocale:enUSPOSIXLocale];
             [dateFormatter setDateFormat:@"cccc MMM d, y"];
+            // set timezone to EST
+            [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
             cell.contentLabel.text = [dateFormatter stringFromDate:_infoSession.date];
             return cell;
         }
@@ -440,6 +445,8 @@
             NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
             [timeFormatter setLocale:enUSPOSIXLocale];
             [timeFormatter setDateFormat:@"h:mm a"];
+            // set timezone to EST
+            [timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
             cell.contentLabel.text = [NSString stringWithFormat:@"%@ - %@", [timeFormatter stringFromDate:_infoSession.startTime], [timeFormatter stringFromDate:_infoSession.endTime]];
             return cell;
         }
@@ -504,6 +511,7 @@
             // alert item rows
             else {
                 DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
+                [cell.contentLabel setFont:[UIFont systemFontOfSize:16]];
                 [cell.contentLabel setTextColor: [UIColor blackColor]];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             
@@ -926,7 +934,62 @@
                         }
                     }
                 }
+                
+                UINavigationController *searchVCNavigationController = self.tabBarController.searchViewController.navigationController;
+                // if count > 1, means detailView is shown
+                if ([searchVCNavigationController.viewControllers count] > 1) {
+                    UITableViewController *controller = searchVCNavigationController.viewControllers[1];
+                    if ([controller isKindOfClass:[DetailViewController class]]) {
+                        // get the tabbar item0's detailViewController
+                        DetailViewController *detailController = (DetailViewController *)controller;
+                        // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
+                        if ([_infoSession isEqual:detailController.infoSession]) {
+                            detailController.infoSessionBackup = nil;
+                        }
+                    }
+                }
             } else if ([_caller isEqualToString:@"InfoSessionsViewController"]) {
+                UINavigationController *myInfoVCNavigationController = self.tabBarController.myInfoViewController.navigationController;
+                // if count > 1, means detailView is shown
+                if ([myInfoVCNavigationController.viewControllers count] > 1) {
+                    UITableViewController *controller = myInfoVCNavigationController.viewControllers[1];
+                    if ([controller isKindOfClass:[DetailViewController class]]) {
+                        DetailViewController *detailController = (DetailViewController *)controller;
+                        if ([_infoSession isEqual:detailController.infoSession]) {
+                            detailController.infoSessionBackup = nil;
+                        }
+                    }
+                }
+                
+                UINavigationController *searchVCNavigationController = self.tabBarController.searchViewController.navigationController;
+                // if count > 1, means detailView is shown
+                if ([searchVCNavigationController.viewControllers count] > 1) {
+                    UITableViewController *controller = searchVCNavigationController.viewControllers[1];
+                    if ([controller isKindOfClass:[DetailViewController class]]) {
+                        // get the tabbar item0's detailViewController
+                        DetailViewController *detailController = (DetailViewController *)controller;
+                        // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
+                        if ([_infoSession isEqual:detailController.infoSession]) {
+                            detailController.infoSessionBackup = nil;
+                        }
+                    }
+                }
+            } else if ([_caller isEqualToString:@"SearchViewController"]) {
+                
+                UINavigationController *infoSessionVCNavigationController = self.tabBarController.infoSessionsViewController.navigationController;
+                // if count > 1, means detailView is shown
+                if ([infoSessionVCNavigationController.viewControllers count] > 1) {
+                    UITableViewController *controller = infoSessionVCNavigationController.viewControllers[1];
+                    if ([controller isKindOfClass:[DetailViewController class]]) {
+                        // get the tabbar item0's detailViewController
+                        DetailViewController *detailController = (DetailViewController *)controller;
+                        // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
+                        if ([_infoSession isEqual:detailController.infoSession]) {
+                            detailController.infoSessionBackup = nil;
+                        }
+                    }
+                }
+                
                 UINavigationController *myInfoVCNavigationController = self.tabBarController.myInfoViewController.navigationController;
                 // if count > 1, means detailView is shown
                 if ([myInfoVCNavigationController.viewControllers count] > 1) {
@@ -1031,9 +1094,9 @@
 - (IBAction)addToMyInfo:(id)sender {
     UW addResult = UWNonthing;
     
-    // this case is first time open an infosession from InfoSessionsVC
+    // this case is first time open an infosession from InfoSessionsVC or SearchViewController
     // only this situation, openedMyInfo == NO
-    if ([_caller isEqualToString:@"InfoSessionsViewController"] && openedMyInfo == NO) {
+    if (([_caller isEqualToString:@"InfoSessionsViewController"] || [_caller isEqualToString:@"SearchViewController"]) && openedMyInfo == NO) {
         addResult = [InfoSessionModel addInfoSessionInOrder:[_infoSession copy] to:_infoSessionModel.myInfoSessions];
         // if first time to add, the below if statement must be true!
         if (addResult == UWAdded) {

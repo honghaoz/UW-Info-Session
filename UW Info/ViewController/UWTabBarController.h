@@ -22,6 +22,7 @@
 @property (nonatomic, strong) SearchViewController *searchViewController;
 @property (nonatomic, strong) DetailViewController *detailViewControllerOfTabbar0;
 @property (nonatomic, strong) DetailViewController *detailViewControllerOfTabbar1;
+@property (nonatomic, strong) DetailViewController *detailViewControllerOfTabbar2;
 
 @property (nonatomic, assign) NSUInteger lastTapped;
 

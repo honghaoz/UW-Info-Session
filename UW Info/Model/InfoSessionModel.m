@@ -103,8 +103,7 @@ const NSString *myApiKey = @"77881122";
             // if start time < end time or date is nil, do not add
             if (!([infoSession.startTime compare:infoSession.endTime] != NSOrderedAscending ||
                   infoSession.date == nil ||
-                  [infoSession.employer length] == 0 ||
-                  [infoSession.programs length] == 0)) {
+                  [infoSession.employer length] == 0)) {
                 [mutableInfoSessions addObject:infoSession];
             }
         }
