@@ -170,6 +170,14 @@ const NSString *myApiKey = @"77881122";
             [self.infoSessionsIndexDic[key] insertObject:eachSession atIndex:newIndex];
         }
     }
+    
+    _infoSessionsIndexed = [_infoSessions sortedArrayUsingComparator:^(InfoSession *info1, InfoSession *info2) {
+        NSComparisonResult compareResult = [[info1.employer capitalizedString] compare:[info2.employer capitalizedString]];
+        if (compareResult == NSOrderedSame) {
+            compareResult = [info1.startTime compare:info2.startTime];
+        }
+        return compareResult;
+    }];
 //    for (int i = 0; i < [self.infoSessionsIndexDic.allValues count]; i++) {
 //        NSMutableArray *each = self.infoSessionsIndexDic.allValues[i];
 //        NSLog(@"%i", [each count]);

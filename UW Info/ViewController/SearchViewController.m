@@ -157,7 +157,11 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (_searchController.searchResultsTableView == tableView) {
-        return 1;
+        if ([_searchResult count] == 0) {
+            return 1;
+        } else {
+            return 2;
+        }
     }
     else {
         return [_infoSessionModel.infoSessionsIndexDic count] + 1;
@@ -192,7 +196,11 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (_searchController.searchResultsTableView == tableView) {
-        return [_searchResult count];
+        if (section == 0) {
+            return [_searchResult count];
+        } else {
+            return 1;
+        }
     }
     else {
         if (section < [_infoSessionModel.infoSessionsIndexDic count]) {
@@ -207,57 +215,37 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_searchController.searchResultsTableView == tableView) {
-        static NSString *cellIdentifier = @"InfoSessionCell";
-        InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-        
-        //cell == nil? NSLog(@"nil") : NSLog(@"not nil");
-        if (cell == nil) {
-            cell = [[InfoSessionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        if (indexPath.section == 0) {
+            static NSString *cellIdentifier = @"InfoSessionCell";
+            InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+            
+            //cell == nil? NSLog(@"nil") : NSLog(@"not nil");
+            if (cell == nil) {
+                cell = [[InfoSessionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+            }
+            
+            [self configureCell:cell withIndexPath:indexPath usingInfoSessions:_searchResult];
+            return cell;
+        } else {
+            static NSString *cellIdentifier = @"LoadingCell";
+            LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+            
+            //cell == nil? NSLog(@"nil") : NSLog(@"not nil");
+            if (cell == nil) {
+                cell = [[LoadingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+            }
+            
+            if ([_searchResult count] == 0) {
+                cell.loadingLabel.text =  @"No info sessions";
+            } else {
+                cell.loadingLabel.text = [NSString stringWithFormat:@"%lu Info Sessions", (unsigned long)[_searchResult count]];
+            }
+            cell.loadingIndicator.hidden = YES;
+            [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
+            [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
+            return cell;
         }
         
-        InfoSession *infoSession = [_searchResult objectAtIndex:indexPath.row];
-        if (infoSession.isCancelled == YES) {
-            [cell.employer setTextColor: [UIColor lightGrayColor]];
-            [cell.locationLabel setTextColor:[UIColor lightGrayColor]];
-            [cell.location setTextColor:[UIColor lightGrayColor]];
-            [cell.dateLabel setTextColor:[UIColor lightGrayColor]];
-            [cell.date setTextColor:[UIColor lightGrayColor]];
-        }
-        else {
-            [cell.employer setTextColor: [UIColor blackColor]];
-            [cell.locationLabel setTextColor:[UIColor blackColor]];
-            [cell.location setTextColor:[UIColor blackColor]];
-            [cell.dateLabel setTextColor:[UIColor blackColor]];
-            [cell.date setTextColor:[UIColor blackColor]];
-        }
-        
-        NSMutableAttributedString *employerString = [[NSMutableAttributedString alloc] initWithString:infoSession.employer];
-        NSMutableAttributedString *locationString = [[NSMutableAttributedString alloc] initWithString:infoSession.location];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-        // set the locale to fix the formate to read and write;
-        NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-        [dateFormatter setLocale:enUSPOSIXLocale];
-        [timeFormatter setLocale:enUSPOSIXLocale];
-        [dateFormatter setDateFormat:@"MMM d, y"];
-        [timeFormatter setDateFormat:@"h:mm a"];
-        // set timezone to EST
-        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
-        // set timezone to EST
-        [timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
-        
-        NSString *dateNSString = [NSString stringWithFormat:@"%@ - %@, %@", [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime], [dateFormatter stringFromDate:infoSession.date]];
-        NSMutableAttributedString *dateString = [[NSMutableAttributedString alloc] initWithString:dateNSString];
-        if (infoSession.isCancelled) {
-            [employerString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [employerString length])];
-            [locationString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [locationString length])];
-            [dateString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [dateString length])];
-        }
-        [cell.employer setAttributedText:employerString];
-        [cell.location setAttributedText:locationString];
-        [cell.date setAttributedText:dateString];
-
-        return cell;
     }
     else {
         if (indexPath.section < [_infoSessionModel.infoSessionsIndexDic count]) {
@@ -270,7 +258,9 @@
                 cell = [[InfoSessionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
             }
             
-            [self configureCell:cell withIndexPath:indexPath];
+            NSArray *infoSessionForThisSection = [_infoSessionModel.infoSessionsIndexDic objectForKey:[self getKeyForSection:indexPath.section]];
+            
+            [self configureCell:cell withIndexPath:indexPath usingInfoSessions:infoSessionForThisSection];
             return cell;
         } else {
             static NSString *cellIdentifier = @"LoadingCell";
@@ -294,9 +284,8 @@
     }
 }
 
-- (void)configureCell:(InfoSessionCell *)cell withIndexPath:(NSIndexPath *)indexPath {
-    NSArray *infoSessionForThisSection = [_infoSessionModel.infoSessionsIndexDic objectForKey:[self getKeyForSection:indexPath.section]];
-    InfoSession *infoSession = [infoSessionForThisSection objectAtIndex:indexPath.row];
+- (void)configureCell:(InfoSessionCell *)cell withIndexPath:(NSIndexPath *)indexPath usingInfoSessions:(NSArray *)infoSessions {
+    InfoSession *infoSession = [infoSessions objectAtIndex:indexPath.row];
     if (infoSession.isCancelled == YES) {
         [cell.employer setTextColor: [UIColor lightGrayColor]];
         [cell.locationLabel setTextColor:[UIColor lightGrayColor]];
@@ -340,12 +329,19 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section < [_infoSessionModel.infoSessionsIndexDic count]) {
-        return 70.0f;
+    if (_searchController.searchResultsTableView == tableView) {
+        if (indexPath.section == 0) {
+            return 70.0f;
+        } else {
+            return 44.0f;
+        }
     } else {
-        return 44.0f;
+        if (indexPath.section < [_infoSessionModel.infoSessionsIndexDic count]) {
+            return 70.0f;
+        } else {
+            return 44.0f;
+        }
     }
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -386,76 +382,86 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section < [_infoSessionModel.infoSessionsIndexDic count]) {
-        [self performSegueWithIdentifier:@"ShowDetailFromSearchViewController" sender:[[NSArray alloc] initWithObjects:@"SearchViewController", [_infoSessionModel.infoSessionsIndexDic[[self getKeyForSection:indexPath.section]] objectAtIndex:indexPath.row], _infoSessionModel, nil]];
+    if (_searchController.searchResultsTableView == tableView) {
+        if (indexPath.section == 0) {
+            [self performSegueWithIdentifier:@"ShowDetailFromSearchViewController" sender:[[NSArray alloc] initWithObjects:@"SearchViewController", [_searchResult objectAtIndex:indexPath.row], _infoSessionModel, nil]];
+        }
+    }
+    else {
+        if (indexPath.section < [_infoSessionModel.infoSessionsIndexDic count]) {
+            [self performSegueWithIdentifier:@"ShowDetailFromSearchViewController" sender:[[NSArray alloc] initWithObjects:@"SearchViewController", [_infoSessionModel.infoSessionsIndexDic[[self getKeyForSection:indexPath.section]] objectAtIndex:indexPath.row], _infoSessionModel, nil]];
+        }
     }
 }
 
 
 #pragma mark - Set Hide When Scroll
-// ???? Why scroll canbe detected? This is a simple ViewController, not scroll view
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    //NSLog(@"scrollViewWillBeginDragging");
-    startContentOffset = lastContentOffset = scrollView.contentOffset.y;
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-    CGFloat currentOffset = scrollView.contentOffset.y;
-    CGFloat differenceFromStart = startContentOffset - currentOffset;
-    CGFloat differenceFromLast = lastContentOffset - currentOffset;
-    //NSLog(@"current: %0.0f, start: %0.0f, last: %0.0f", currentOffset, startContentOffset, lastContentOffset);
-    lastContentOffset = currentOffset;
-    
-    // start < current, scroll down
-    if((differenceFromStart) < 0)
-    {
-        // scroll up
-        if(scrollView.isTracking && (abs(differenceFromLast)>1) && ![self isBottomRowisVisible]){
-            [self.tabBarController hideTabBar];
-        }
-    }
-    // start > current, scroll up
-    else {
-        if(scrollView.isTracking && (abs(differenceFromLast)>1))
-            [self.tabBarController showTabBar];
-    }
-    
-    CGRect bounds = scrollView.bounds;
-    CGSize size = scrollView.contentSize;
-    UIEdgeInsets inset = scrollView.contentInset;
-    float y = currentOffset + bounds.size.height - inset.bottom;
-    float h = size.height;
-    // NSLog(@"offset: %f", offset.y);
-    // NSLog(@"content.height: %f", size.height);
-    // NSLog(@"bounds.height: %f", bounds.size.height);
-    // NSLog(@"inset.top: %f", inset.top);
-    // NSLog(@"inset.bottom: %f", inset.bottom);
-    // NSLog(@"pos: %f of %f", y, h);
-    
-    float reload_distance = 0;
-    if(y > h + reload_distance) {
-        //NSLog(@"load more rows");
-        // bottom row reached, show tabbar
-        [self.tabBarController showTabBar];
-    }
-    //    if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height))
-    //        [self.tabBarController showTabBar];
-}
-
-- (BOOL)isBottomRowisVisible {
-    NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-    for (NSIndexPath *index in indexPaths) {
-        if (index.section == [self numberOfSectionsInTableView:self.tableView] - 1 && index.row == 0) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
-- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
-    [_tabBarController showTabBar];
-}
+//// ???? Why scroll canbe detected? This is a simple ViewController, not scroll view
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+//    if (_searchController.searchResultsTableView == self.tableView) {
+//        //NSLog(@"scrollViewWillBeginDragging");
+//        startContentOffset = lastContentOffset = scrollView.contentOffset.y;
+//    }
+//}
+//
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    if (_searchController.searchResultsTableView == self.tableView) {
+//        CGFloat currentOffset = scrollView.contentOffset.y;
+//        CGFloat differenceFromStart = startContentOffset - currentOffset;
+//        CGFloat differenceFromLast = lastContentOffset - currentOffset;
+//        //NSLog(@"current: %0.0f, start: %0.0f, last: %0.0f", currentOffset, startContentOffset, lastContentOffset);
+//        lastContentOffset = currentOffset;
+//        
+//        // start < current, scroll down
+//        if((differenceFromStart) < 0)
+//        {
+//            // scroll up
+//            if(scrollView.isTracking && (abs(differenceFromLast)>1) && ![self isBottomRowisVisible]){
+//                [self.tabBarController hideTabBar];
+//            }
+//        }
+//        // start > current, scroll up
+//        else {
+//            if(scrollView.isTracking && (abs(differenceFromLast)>1))
+//                [self.tabBarController showTabBar];
+//        }
+//        
+//        CGRect bounds = scrollView.bounds;
+//        CGSize size = scrollView.contentSize;
+//        UIEdgeInsets inset = scrollView.contentInset;
+//        float y = currentOffset + bounds.size.height - inset.bottom;
+//        float h = size.height;
+//        // NSLog(@"offset: %f", offset.y);
+//        // NSLog(@"content.height: %f", size.height);
+//        // NSLog(@"bounds.height: %f", bounds.size.height);
+//        // NSLog(@"inset.top: %f", inset.top);
+//        // NSLog(@"inset.bottom: %f", inset.bottom);
+//        // NSLog(@"pos: %f of %f", y, h);
+//        
+//        float reload_distance = 0;
+//        if(y > h + reload_distance) {
+//            //NSLog(@"load more rows");
+//            // bottom row reached, show tabbar
+//            [self.tabBarController showTabBar];
+//        }
+//        //    if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height))
+//        //        [self.tabBarController showTabBar];
+//    }
+//}
+//
+//- (BOOL)isBottomRowisVisible {
+//    NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+//    for (NSIndexPath *index in indexPaths) {
+//        if (index.section == [self numberOfSectionsInTableView:self.tableView] - 1 && index.row == 0) {
+//            return YES;
+//        }
+//    }
+//    return NO;
+//}
+//
+//- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+//    [_tabBarController showTabBar];
+//}
 
 #pragma mark - UISearchDisplayController Delegate Methods
 
@@ -468,7 +474,7 @@
     } else if ([scope isEqualToString:@"Note"]){
         resultPredicate = [NSPredicate predicateWithFormat:@"note contains[c] %@", searchText];
     }
-    _searchResult = [_infoSessionModel.infoSessions filteredArrayUsingPredicate:resultPredicate];
+    _searchResult = [_infoSessionModel.infoSessionsIndexed filteredArrayUsingPredicate:resultPredicate];
     
 }
 
@@ -504,73 +510,31 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView{
     NSLog(@"did hide result table");
     self.tableView.hidden = NO;
+    //[self searchBarShouldEndEditing:_searchBar];
 }
 
 #pragma mark - UISearchBar Delegate Methods
-- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-    NSLog(@"type");
-    return YES;
-}
+//- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+//    NSLog(@"type");
+//    return YES;
+//}
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-    NSLog(@"search bar begin edit");
-    [_searchBar addSubview:_statusBarView];
-    //move the search bar up to the correct location eg
-    [UIView animateWithDuration:.3
-                     animations:^{
-                         // move search bar up
-                         searchBar.frame = CGRectMake(searchBar.frame.origin.x,
-                                                      20,
-                                                      searchBar.frame.size.width,
-                                                      searchBar.frame.size.height);
-                         // move tableView down
-                         [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x,
-                                                             searchBar.frame.size.height,
-                                                             self.tableView.frame.size.width,
-                                                             self.tableView.frame.size.height - 210)];
-                         //searchBar.backgroundColor = [UIColor clearColor];
-                         //NSLog(@"%@", searchBar.barTintColor);
-                         searchBar.barTintColor = [UIColor clearColor];//[UIColor colorWithRed:255/255 green:205.0/255 blue:0/255 alpha:2.0];
-            
-                         //searchBar.backgroundImage = [UIImage imageNamed:@"ye.png"];
-                     }
-                     completion:^(BOOL finished){
-                         //whatever else you may need to do
-                     }];
+    NSLog(@"searchBarShouldBeginEditing");
+    [self showSearchBar];
     return YES;
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
-    NSLog(@"search bar end edit");
-    [_statusBarView setFrame:CGRectMake(_statusBarView.frame.origin.x, _statusBarView.frame.origin.y - 22, _statusBarView.frame.size.width, _statusBarView.frame.size.height + 22)];
-    //move the search bar down to the correct location eg
-    [UIView animateWithDuration:.3
-                     animations:^{
-                         // move search bar down
-                         NSInteger statusBarHeight = 20;
-                         NSInteger navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
-                         searchBar.frame = CGRectMake(_searchBar.frame.origin.x,
-                                                      statusBarHeight + navigationBarHeight,
-                                                      _searchBar.frame.size.width,
-                                                      _searchBar.frame.size.height);
-                         // move table view up
-                         [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x,
-                                                             0,
-                                                             self.tableView.frame.size.width,
-                                                             self.tableView.frame.size.height + 210)];
-                         
-                         
-                     }
-                     completion:^(BOOL finished){
-                         //whatever else you may need to do
-                         searchBar.barTintColor = nil;
-                         [_tabBarController showTabBar];
-                         [_statusBarView removeFromSuperview];
-                         
-                         [_statusBarView setFrame:CGRectMake(_statusBarView.frame.origin.x, _statusBarView.frame.origin.y + 22, _statusBarView.frame.size.width, _statusBarView.frame.size.height - 22)];
-                     }];
-    
+    NSLog(@"searchBarShouldEndEditing");
+    if (self.tableView.hidden == NO) {
+        [self hideSearchBar];
+    }
     return YES;
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [self hideSearchBar];
 }
 
 //#pragma mark - other methods
@@ -579,6 +543,71 @@
 //    keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
 //    NSLog(@"%@", NSStringFromCGSize(keyboardSize));
 //}
+
+
+- (void)showSearchBar {
+    // if search bar is not already shown
+    if (_searchBar.frame.origin.y > 20) {
+        NSLog(@"show search bar");
+        [_searchBar addSubview:_statusBarView];
+        //move the search bar up to the correct location eg
+        [UIView animateWithDuration:.3
+                         animations:^{
+                             // move search bar up
+                             _searchBar.frame = CGRectMake(_searchBar.frame.origin.x,
+                                                           20,
+                                                           _searchBar.frame.size.width,
+                                                           _searchBar.frame.size.height);
+                             // move tableView down
+                             [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x,
+                                                                 _searchBar.frame.size.height,
+                                                                 self.tableView.frame.size.width,
+                                                                 [UIScreen mainScreen].bounds.size.height - 210)];
+                             
+                             _searchBar.barTintColor = [UIColor clearColor];
+                         }
+                         completion:^(BOOL finished){
+                             //whatever else you may need to do
+                         }];
+
+    }
+}
+
+- (void)hideSearchBar {
+    NSInteger statusBarHeight = 20;
+    NSInteger navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
+    if (_searchBar.frame.origin.y < statusBarHeight + navigationBarHeight) {
+        NSLog(@"hide search bar");
+        [_statusBarView setFrame:CGRectMake(_statusBarView.frame.origin.x, _statusBarView.frame.origin.y - 22, _statusBarView.frame.size.width, _statusBarView.frame.size.height + 22)];
+        //move the search bar down to the correct location eg
+        [UIView animateWithDuration:.3
+                         animations:^{
+                             // move search bar down
+                             _searchBar.frame = CGRectMake(_searchBar.frame.origin.x,
+                                                           statusBarHeight + navigationBarHeight,
+                                                           _searchBar.frame.size.width,
+                                                           _searchBar.frame.size.height);
+                             // move table view up
+                             [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x,
+                                                                 0,
+                                                                 self.tableView.frame.size.width,
+                                                                 [UIScreen mainScreen].bounds.size.height)];
+                             
+                             
+                         }
+                         completion:^(BOOL finished){
+                             //whatever else you may need to do
+                             _searchBar.barTintColor = nil;
+                             [_tabBarController showTabBar];
+                             [_statusBarView removeFromSuperview];
+                             
+                             [_statusBarView setFrame:CGRectMake(_statusBarView.frame.origin.x, _statusBarView.frame.origin.y + 22, _statusBarView.frame.size.width, _statusBarView.frame.size.height - 22)];
+                         }];
+//        [UIView animateWithDuration:4 animations:^(){
+//            _searchBar.barTintColor = nil;
+//        }];
+    }
+}
 
 #pragma mark - Navigation
 

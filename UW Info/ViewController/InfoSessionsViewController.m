@@ -592,68 +592,68 @@
 
 #pragma mark - Set Hide When Scroll
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    //NSLog(@"scrollViewWillBeginDragging");
-    startContentOffset = lastContentOffset = scrollView.contentOffset.y;
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
- 
-    CGFloat currentOffset = scrollView.contentOffset.y;
-    CGFloat differenceFromStart = startContentOffset - currentOffset;
-    CGFloat differenceFromLast = lastContentOffset - currentOffset;
-    //NSLog(@"current: %0.0f, start: %0.0f, last: %0.0f", currentOffset, startContentOffset, lastContentOffset);
-    lastContentOffset = currentOffset;
-    
-    // start < current, scroll down
-    if((differenceFromStart) < 0)
-    {
-        // scroll up
-        if(scrollView.isTracking && (abs(differenceFromLast)>1) && ![self isBottomRowisVisible])
-            [self.tabBarController hideTabBar];
-    }
-    // start > current, scroll up
-    else {
-        if(scrollView.isTracking && (abs(differenceFromLast)>1))
-            [self.tabBarController showTabBar];
-    }
-    
-    CGRect bounds = scrollView.bounds;
-    CGSize size = scrollView.contentSize;
-    UIEdgeInsets inset = scrollView.contentInset;
-    float y = currentOffset + bounds.size.height - inset.bottom;
-    float h = size.height;
-    // NSLog(@"offset: %f", offset.y);
-    // NSLog(@"content.height: %f", size.height);
-    // NSLog(@"bounds.height: %f", bounds.size.height);
-    // NSLog(@"inset.top: %f", inset.top);
-    // NSLog(@"inset.bottom: %f", inset.bottom);
-    // NSLog(@"pos: %f of %f", y, h);
-    
-    float reload_distance = 0;
-    if(y > h + reload_distance) {
-        //NSLog(@"load more rows");
-        // bottom row reached, show tabbar
-        [self.tabBarController showTabBar];
-    }
-//    if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height))
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+//    //NSLog(@"scrollViewWillBeginDragging");
+//    startContentOffset = lastContentOffset = scrollView.contentOffset.y;
+//}
+//
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+// 
+//    CGFloat currentOffset = scrollView.contentOffset.y;
+//    CGFloat differenceFromStart = startContentOffset - currentOffset;
+//    CGFloat differenceFromLast = lastContentOffset - currentOffset;
+//    //NSLog(@"current: %0.0f, start: %0.0f, last: %0.0f", currentOffset, startContentOffset, lastContentOffset);
+//    lastContentOffset = currentOffset;
+//    
+//    // start < current, scroll down
+//    if((differenceFromStart) < 0)
+//    {
+//        // scroll up
+//        if(scrollView.isTracking && (abs(differenceFromLast)>1) && ![self isBottomRowisVisible])
+//            [self.tabBarController hideTabBar];
+//    }
+//    // start > current, scroll up
+//    else {
+//        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+//            [self.tabBarController showTabBar];
+//    }
+//    
+//    CGRect bounds = scrollView.bounds;
+//    CGSize size = scrollView.contentSize;
+//    UIEdgeInsets inset = scrollView.contentInset;
+//    float y = currentOffset + bounds.size.height - inset.bottom;
+//    float h = size.height;
+//    // NSLog(@"offset: %f", offset.y);
+//    // NSLog(@"content.height: %f", size.height);
+//    // NSLog(@"bounds.height: %f", bounds.size.height);
+//    // NSLog(@"inset.top: %f", inset.top);
+//    // NSLog(@"inset.bottom: %f", inset.bottom);
+//    // NSLog(@"pos: %f of %f", y, h);
+//    
+//    float reload_distance = 0;
+//    if(y > h + reload_distance) {
+//        //NSLog(@"load more rows");
+//        // bottom row reached, show tabbar
 //        [self.tabBarController showTabBar];
-}
-
-- (BOOL)isBottomRowisVisible {
-    NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-    for (NSIndexPath *index in indexPaths) {
-        if (index.section == [self numberOfSectionsInTableView:self.tableView] - 1 && index.row == 0) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
-- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
-    [_tabBarController showTabBar];
-    [_termMenu.menu close];
-}
+//    }
+////    if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height))
+////        [self.tabBarController showTabBar];
+//}
+//
+//- (BOOL)isBottomRowisVisible {
+//    NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+//    for (NSIndexPath *index in indexPaths) {
+//        if (index.section == [self numberOfSectionsInTableView:self.tableView] - 1 && index.row == 0) {
+//            return YES;
+//        }
+//    }
+//    return NO;
+//}
+//
+//- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+//    [_tabBarController showTabBar];
+//    [_termMenu.menu close];
+//}
 
 
 // ios7 facebook like fade navigation bar
