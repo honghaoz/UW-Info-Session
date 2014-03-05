@@ -117,8 +117,11 @@
     _statusBarView.backgroundColor=UWGold;
 }
 
+- (void)scrollToFirstRow{
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
 - (void)reloadTable {
-    NSLog(@"reload search table");
     [_infoSessionModel processInfoSessionsIndexDic];
     [self setSectionIndex];
     _detailLabel.text = _infoSessionModel.currentTerm;
@@ -480,7 +483,6 @@
 
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
-    NSLog(@"should reload table for search string");
     [self filterContentForSearchText:searchString
                                scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
                                       objectAtIndex:[self.searchDisplayController.searchBar
@@ -494,21 +496,19 @@
     return YES;
 }
 
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
-    NSLog(@"will begin search");
-}
+//- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
+//    NSLog(@"will begin search");
+//}
 
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-    NSLog(@"will end search");
-}
+//- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+//    NSLog(@"will end search");
+//}
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView{
-    NSLog(@"did show result table");
     self.tableView.hidden = YES;
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView{
-    NSLog(@"did hide result table");
     self.tableView.hidden = NO;
     //[self searchBarShouldEndEditing:_searchBar];
 }
@@ -520,13 +520,11 @@
 //}
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-    NSLog(@"searchBarShouldBeginEditing");
     [self showSearchBar];
     return YES;
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
-    NSLog(@"searchBarShouldEndEditing");
     if (self.tableView.hidden == NO) {
         [self hideSearchBar];
     }
@@ -548,7 +546,6 @@
 - (void)showSearchBar {
     // if search bar is not already shown
     if (_searchBar.frame.origin.y > 20) {
-        NSLog(@"show search bar");
         [_searchBar addSubview:_statusBarView];
         //move the search bar up to the correct location eg
         [UIView animateWithDuration:.3
@@ -577,7 +574,6 @@
     NSInteger statusBarHeight = 20;
     NSInteger navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
     if (_searchBar.frame.origin.y < statusBarHeight + navigationBarHeight) {
-        NSLog(@"hide search bar");
         [_statusBarView setFrame:CGRectMake(_statusBarView.frame.origin.x, _statusBarView.frame.origin.y - 22, _statusBarView.frame.size.width, _statusBarView.frame.size.height + 22)];
         //move the search bar down to the correct location eg
         [UIView animateWithDuration:.3

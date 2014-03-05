@@ -34,10 +34,11 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 @property (nonatomic, assign) NSInteger year;
 @property (nonatomic, copy) NSString *term;
 
+// store different terms' info sessions
 @property (nonatomic, strong) NSMutableDictionary *termInfoDic;
 
+// processed dictionary, seperated in alphabet sequence.
 @property (nonatomic, strong) NSMutableDictionary *infoSessionsIndexDic;
-
 @property (nonatomic, strong) NSArray *infoSessionsIndexed;
 
 // Used for manage calendar event, only initiate once!

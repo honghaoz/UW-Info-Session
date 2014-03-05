@@ -88,7 +88,7 @@ const NSString *myApiKey = @"77881122";
     if (year == 0 || term == nil) {
         getTarget = @"infosessions.json";
     } else {
-        getTarget = [NSString stringWithFormat:@"infosessions/%li%@.json", (long)year, term];
+        getTarget = [NSString stringWithFormat:@"infosessions/%i%@.json", year, term];
     }
     return [[AFUwaterlooApiClient sharedClient] GET:getTarget parameters:@{@"key" : myApiKey} success:^(NSURLSessionDataTask * __unused task, id JSON) {
         //response array from jason
@@ -119,7 +119,6 @@ const NSString *myApiKey = @"77881122";
         }
     } failure:^(NSURLSessionDataTask *__unused task, NSError *error) {
         if (block) {
-            NSLog(@"failure");
             block([NSArray array], nil, error);
         }
     }];
@@ -141,6 +140,10 @@ const NSString *myApiKey = @"77881122";
     }
 }
 
+/**
+ *  process the index dictionary, key is "A" ,"B", "C"
+ *  process the index array
+ */
 - (void)processInfoSessionsIndexDic {
     [_infoSessionsIndexDic removeAllObjects];
     for (InfoSession *eachSession in _infoSessions) {
@@ -178,13 +181,6 @@ const NSString *myApiKey = @"77881122";
         }
         return compareResult;
     }];
-//    for (int i = 0; i < [self.infoSessionsIndexDic.allValues count]; i++) {
-//        NSMutableArray *each = self.infoSessionsIndexDic.allValues[i];
-//        NSLog(@"%i", [each count]);
-//        each = (NSMutableArray *)[each sortedArrayUsingComparator:^(InfoSession *info1, InfoSession *info2){
-//            return [info1.employer compare:info2.employer];
-//        }];
-//    }
 }
 
 /**
@@ -292,8 +288,10 @@ const NSString *myApiKey = @"77881122";
     return count;
 }
 
+/**
+ *  Handle for the first time, used for save map.
+ */
 - (void)handleFirstTime {
-    NSLog([[NSUserDefaults standardUserDefaults] boolForKey:@"hasRun"] ? @"Has Run" : @"Run For The First Time");
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasRun"]) {
         // for the first time, save map to local documents directory
         [InfoSessionModel saveMap];
@@ -334,7 +332,6 @@ const NSString *myApiKey = @"77881122";
 }
 
 - (void)saveInfoSessions {
-    NSLog(@"saved data");
     NSMutableData *data = [[NSMutableData alloc]init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
     [archiver encodeObject:_infoSessions forKey:@"infoSessions"];
@@ -349,10 +346,8 @@ const NSString *myApiKey = @"77881122";
 }
 
 - (void)loadInfoSessions {
-    NSLog(@"start load infoSessions");
     NSString *path = [InfoSessionModel dataFilePath:@"InfoSession.plist"];
     if([[NSFileManager defaultManager]fileExistsAtPath:path]){
-        NSLog(@"loaded infoSessions");
         NSData *data =[[NSData alloc]initWithContentsOfFile:path];
         NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
         //_infoSessions = [unarchiver decodeObjectForKey:@"infoSessions"];
@@ -362,9 +357,6 @@ const NSString *myApiKey = @"77881122";
         _year = [unarchiver decodeIntegerForKey:@"year"];
         _term = [unarchiver decodeObjectForKey:@"term"];
         _termInfoDic = [unarchiver decodeObjectForKey:@"termInfoDic"];
-        NSLog(@"infoSessionsCount: %lu", (unsigned long)[_infoSessions count]);
-        NSLog(@"myInfoSessionsCount: %lu", (unsigned long)[_myInfoSessions count]);
-        NSLog(@"termInfoDic: %lu", (unsigned long)[_termInfoDic count]);
         [unarchiver finishDecoding];
     }else{
         //self.lists = [[NSMutableArray alloc]initWithCapacity:20];
@@ -372,6 +364,9 @@ const NSString *myApiKey = @"77881122";
 
 }
 
+/**
+ *  Update my info sessions' information if saved info sessions's information is obselted.
+ */
 - (void)updateMyInfoSessions {
     for (InfoSession *eachInfoSession in _myInfoSessions) {
         NSInteger existIndex = [InfoSessionModel findInfoSession:eachInfoSession in:(NSMutableArray *)_infoSessions];
@@ -424,6 +419,9 @@ const NSString *myApiKey = @"77881122";
     [aCoder encodeObject:self.termInfoDic forKey:@"termInfoDic"];
 }
 
+/**
+ *  set year and term using currentTerm
+ */
 - (void)setYearAndTerm {
     if (_currentTerm == nil) {
         _year = 0;
@@ -438,22 +436,27 @@ const NSString *myApiKey = @"77881122";
     }
 }
 
+/**
+ *  save new term's info sessions to dictionary
+ */
 - (void)saveToTermInfoDic {
-    NSLog(@"save!!!!!");
-    
-    self.termInfoDic == nil ? NSLog(@"nil") : NSLog(@"not");
     [self.termInfoDic setValue:[_infoSessions copy] forKey:[_currentTerm copy]];
     [self.termInfoDic setValue:[NSDate date] forKey:[NSString stringWithFormat:@"%@ - QueriedTime", _currentTerm]];
     [self saveInfoSessions];
 }
 
+/**
+ *  if this term's info sessions haved been saved befor, return it
+ *
+ *  @param term term string
+ *
+ *  @return true if info session is set successfully, false otherwise
+ */
 - (BOOL)readInfoSessionsWithTerm:(NSString *)term{
-    NSLog(@"set!!!!");
     NSInteger existIndex = -1;
     NSInteger index = 0;
     for (NSString *key in self.termInfoDic) {
         if ([key isEqualToString:term]) {
-            NSLog(@"equal!");
             existIndex = index;
             break;
         }
@@ -461,7 +464,6 @@ const NSString *myApiKey = @"77881122";
     }
     // this term not exists
     if (existIndex == -1) {
-        NSLog(@"set failed");
         return false;
     } else {
         // if last queried time is 20m ago, then need connect to network to refresh
@@ -469,10 +471,8 @@ const NSString *myApiKey = @"77881122";
         NSDate *lastQueriedTime = [self.termInfoDic objectForKey:[NSString stringWithFormat:@"%@ - QueriedTime", term]];
         ;
         if ([[NSDate date] timeIntervalSinceDate:lastQueriedTime] > intervalForRefresh) {
-            NSLog(@"too old, need refesh");
             return false;
         } else {
-            NSLog(@"set successfully");
             _infoSessions = [self.termInfoDic[term] copy];
             [self processInfoSessionsDictionary:_infoSessionsDictionary withInfoSessions:_infoSessions];
             _currentTerm = [term copy];

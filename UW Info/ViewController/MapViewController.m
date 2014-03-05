@@ -93,12 +93,10 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    NSLog(@"viewDidDisappear");
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    NSLog(@"viewWillDisappear");
 }
 - (void)didReceiveMemoryWarning
 {
@@ -123,8 +121,6 @@
 
 - (void)handleSingleTap
 {
-    NSLog(@"single tap");
-    
     //    //Toggle visible/hidden status bar.
     //    //This will only work if the Info.plist file is updated with two additional entries
     //    //"View controller-based status bar appearance" set to NO and "Status bar is initially hidden" set to YES or NO

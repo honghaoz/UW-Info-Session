@@ -56,7 +56,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"DetailVC DidLoad");
     self.title = @"Details";
     
     // if caller is Info
@@ -64,7 +63,6 @@
         NSInteger existIndex = [InfoSessionModel findInfoSession:_infoSession in:_infoSessionModel.myInfoSessions];
         openedMyInfo = NO;
         if (existIndex != -1) {
-            NSLog(@"opened myInfo");
             _infoSession = _infoSessionModel.myInfoSessions[existIndex];
             openedMyInfo = YES;
         }
@@ -235,32 +233,25 @@
     // if ekEvent and eventId all are nil, then this event is not saved,
     // try to fetch the event according the startDate and endDate and title ...
     if (_infoSession.ekEvent == nil && _infoSession.eventId == nil) {
-        NSLog(@"ekEvent and eventId are all nil. try to fetch1");
         _infoSession.ekEvent = [self fetchEventAccordingStartDate:_infoSession.startTime andEndDate:_infoSession.endTime];
     }
     // if ekEvent is nil but eventId is not nil, then this event is saved and restore from file
     // try to fetch the event with eventId.
     else if (_infoSession.ekEvent == nil && _infoSession.eventId != nil) {
-        NSLog(@"ekEvent is nil but eventId is not nil. try to fetch2");
         // fetch the event according the infosession's eventId
         _infoSession.ekEvent = [self fetchEventWithId:_infoSession.eventId];
     }
     else if (_infoSession.ekEvent != nil && _infoSession.eventId != nil) {
-        NSLog(@"ekEvent and eventId are all not nil");
+        
     } else {
-        _infoSession.ekEvent == nil ? NSLog(@"ekevent is nil") : NSLog(@"ekevent is not nil");
-        _infoSession.eventId == nil ? NSLog(@"eventId is nil") : NSLog(@"eventId is not nil");
-        NSLog(@"never log out!!");
     }
     
     // if infosession's event is nil or refresh failed (means this event is deleted)
     if (_infoSession.ekEvent == nil || ![_infoSession.ekEvent refresh]) {
         if (_infoSession.ekEvent == nil) {
-            NSLog(@"fetched event is nil");
         } else if (![_infoSession.ekEvent refresh]) {
-            NSLog(@"event is deleted");
+            
         }
-        NSLog(@"new event is created");
         [event setTitle:_infoSession.employer];
         [event setLocation:_infoSession.location];
         [event setStartDate:_infoSession.startTime];
@@ -273,7 +264,6 @@
     }
     // infosession's event already exists
     else {
-        NSLog(@"old event is read");
         event = _infoSession.ekEvent;
     }
     
@@ -308,11 +298,8 @@
                                                           calendars:nil];
     NSArray *events = [[InfoSession eventStore] eventsMatchingPredicate:predicate];
     EKEvent *theEvent = nil;
-    NSLog(@"event count: %lu", (unsigned long)[events count]);
     for (EKEvent *eachEvent in events) {
-        NSLog(@"%@ == %@", eachEvent.title, _infoSession.employer);
         if ([eachEvent.title isEqualToString:_infoSession.employer]) {
-            NSLog(@"find the evnet!!");
             theEvent = eachEvent;
             break;
         }
@@ -329,20 +316,14 @@
 - (void)eventEditViewController:(EKEventEditViewController *)controller
           didCompleteWithAction:(EKEventEditViewAction)action {
     if (action == EKEventEditViewActionCanceled) {
-        NSLog(@"Canceled edit");
     }
     else if (action == EKEventEditViewActionSaved) {
-        NSLog(@"Saved edited");
         _infoSession.ekEvent = controller.event;
         _infoSession.calendarId = [controller.event.calendar calendarIdentifier];
         _infoSession.eventId = [controller.event eventIdentifier];
         
-        NSLog(@"calendarId: %@", _infoSession.calendarId);
-        NSLog(@"eventID: %@", _infoSession.eventId);
-        
 //        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeChanged:) name:EKEventStoreChangedNotification object:_eventStore];
     } else if (action == EKEventEditViewActionDeleted) {
-        NSLog(@"deleted event");
         _infoSession.ekEvent = nil;
         _infoSession.calendarId = nil;
         _infoSession.eventId = nil;
@@ -491,11 +472,14 @@
                 [cell.remindSwitch setOn:YES animated:YES];
                 
                 // if this infoSession is in the future, can turn on siwtch
-                _infoSession.isCancelled ? NSLog(@"cancelled") : NSLog(@"not cancel");
                 
                 if ([_infoSession.startTime compare:[NSDate date]] == NSOrderedDescending) {
                     [cell.remindSwitch setEnabled:YES];
                 } else {
+                    [cell.remindSwitch setEnabled:NO];
+                }
+                
+                if (_infoSession.isCancelled) {
                     [cell.remindSwitch setEnabled:NO];
                 }
                 
@@ -668,7 +652,6 @@
                     [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:_infoSession.employer]];
                     [calculationView setFont:[UIFont systemFontOfSize:16]];
                     CGSize size = [calculationView sizeThatFits:CGSizeMake(200.0f, FLT_MAX)];
-                    NSLog(@"%f", size.height);
                     // text line = 1
                     if (size.height < 37.0f) {
                         height = 42.0f;
@@ -821,6 +804,11 @@
     }
     // select alert section
     else if (indexPath.section == 1) {
+        if (_infoSession.isCancelled || !([_infoSession.startTime compare:[NSDate date]] == NSOrderedDescending)) {
+            [ProgressHUD showError:@"Reminder not available!" Interacton:YES];
+             //showSuccess:@"Modified successfully!" Interacton:YES];
+        }
+        
         // select alert setting rows
         if (1 <= indexPath.row && indexPath.row <= [_infoSession.alerts count]) {
             [self performSegueWithIdentifier:@"ShowAlert" sender:indexPath];
@@ -903,7 +891,6 @@
  *  @param sender none
  */
 - (void)deleteOperation:(id)sender {
-    NSLog(@"delete operation");
     if ([InfoSessionModel deleteInfoSession:_infoSession in:_infoSessionModel.myInfoSessions] == UWDeleted) {
         
         //UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
@@ -1064,7 +1051,6 @@
 }
 
 - (void) textViewDidBeginEditing:(UITextView *)textView {
-    NSLog(@"begin editing");
     if (_infoSession.note == nil || [_infoSession.note length] == 0) {
         textView.text = @"";
     }
@@ -1152,9 +1138,6 @@
     targetPoint = [self.view.window convertPoint:targetPoint fromView:self.tabBarController.tabBar.superview];
     
     UIGraphicsBeginImageContext(view.frame.size);
-    
-    //NSLog(@"view.frame: %@, %@", NSStringFromCGPoint(view.frame.origin), NSStringFromCGSize(view.frame.size));
-    //NSLog(@"view.bounds: %@, %@", NSStringFromCGPoint(view.bounds.origin), NSStringFromCGSize(view.bounds.size));
     
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
@@ -1308,7 +1291,6 @@
         MapViewController *controller = segue.destinationViewController;
         controller.tabBarController = _tabBarController;
         controller.infoSessionModel = _infoSessionModel;
-        NSLog(@"show map");
     }
 }
 

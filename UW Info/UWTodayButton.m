@@ -36,7 +36,6 @@
 */
 
 - (UWTodayButton *)initWithTitle:(NSString *)title date:(NSDate *)date {
-    NSLog(@"cakked");
     CGFloat buttonWidth = 40;
     self = [self initWithFrame:CGRectMake(0, 0, buttonWidth, 30)];
     if (self) {
@@ -46,14 +45,14 @@
         _todayLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
         _todayLabel.font = [UIFont systemFontOfSize:13];
         _todayLabel.text = title;
-        _todayLabel.textColor = [UIColor blackColor];
+        _todayLabel.textColor = UWBlack;
         _todayLabel.highlightedTextColor = [UIColor colorWithWhite:0.0 alpha:0.3];
         
         _dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 16, buttonWidth, 14)];
         _dateLabel.textAlignment = NSTextAlignmentCenter;
         _dateLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
         _dateLabel.font = [UIFont boldSystemFontOfSize:11];
-        _dateLabel.textColor = [UIColor blackColor];
+        _dateLabel.textColor = UWBlack;
         _dateLabel.highlightedTextColor = [UIColor colorWithWhite:0.0 alpha:0.3];
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -71,13 +70,11 @@
 }
 
 - (void)setSelected:(BOOL)selected {
-    NSLog(@"selected");
     super.selected = selected;
     _todayLabel.highlighted = selected;
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
-    NSLog(@"highlighted");
     super.highlighted = highlighted;
     _todayLabel.highlighted = highlighted;
     _dateLabel.highlighted = highlighted;

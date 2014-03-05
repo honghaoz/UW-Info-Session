@@ -28,7 +28,6 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder{
-    NSLog(@"ekevent encoder called");
     [aCoder encodeObject:self.title forKey:@"title"];
     [aCoder encodeInteger:self.availability forKey:@"availability"];
     [aCoder encodeObject:self.startDate forKey:@"startDate"];

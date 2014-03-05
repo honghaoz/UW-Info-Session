@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 org-honghao. All rights reserved.
 //
 
+//  Need implement update today's info session color
+
 #import "InfoSessionsViewController.h"
 #import "UIActivityIndicatorView+AFNetworking.h"
 #import "UIRefreshControl+AFNetworking.h"
@@ -13,13 +15,11 @@
 #import "UIImageView+AFNetworking.h"
 
 #import "InfoSession.h"
+#import "InfoSessionModel.h"
 #import "InfoSessionCell.h"
 #import "LoadingCell.h"
 
-
 #import "DetailViewController.h"
-#import "InfoSessionModel.h"
-
 #import "UWTabBarController.h"
 #import "UWTermMenu.h"
 #import "InfoDetailedTitleButton.h"
@@ -53,7 +53,6 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    NSLog(@"need refresh today's colour");
 }
 
 
@@ -63,26 +62,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"InfoSessionVC DidLoad");
     _tabBarController.lastTapped = -1;
-    //self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0 green:179/255.0 blue:134/255.0 alpha:1];
     
     [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
-    // black
-    //[UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1]
-    // yellow
-    //[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]
     self.navigationController.navigationBar.tintColor = UWBlack;
-    //[self.tableView setBackgroundColor:[UIColor blackColor]];
     
     // show refresh button
-    //[[UIBarButtonItem appearance] setTintColor:[UIColor yellowColor]];
-    
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
     
     
     self.navigationItem.leftBarButtonItem = [self getTodayButtonItem];
-    //self.navigationItem.leftBarButtonItem = todayButton;
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
     // init menu button (term selection)
@@ -99,7 +88,7 @@
     [self reload:nil];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(reload:) forControlEvents:UIControlEventValueChanged];
-    //self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull down to reload data"];
+//    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull down to reload data"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -108,12 +97,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+/**
+ *  initiate Today barButtonItem
+ *
+ *  @return UIBarButtonItem
+ */
 - (UIBarButtonItem *)getTodayButtonItem {
     UWTodayButton *todayButton = [[UWTodayButton alloc] initWithTitle:@"Today:" date:[NSDate date]];
     
     [todayButton addTarget:self action:@selector(scrollToToday) forControlEvents:UIControlEventTouchUpInside];
-    //[todayButton setTitle:@"asdsaasdadasdasdd" forState:UIControlStateNormal];
-    
     UIBarButtonItem *todayButtonItem = [[UIBarButtonItem alloc] initWithCustomView:todayButton];
     
     return todayButtonItem;
@@ -125,7 +117,6 @@
  *  @param sender
  */
 - (void)reload:(__unused id)sender {
-    NSLog(@"reload data");
     // end refreshControl
     [self.refreshControl endRefreshing];
     [_infoSessionModel clearInfoSessions];
@@ -134,35 +125,23 @@
     [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
     
     if ([NSStringFromClass([sender class]) isEqualToString:@"__NSDictionaryI"]){
-        //        _infoSessionModel.year = [sender[@"Year"] integerValue];
-        //        _infoSessionModel.term = sender[@"Term"];
         _shownYear = [sender[@"Year"] integerValue];
         _shownTerm = sender[@"Term"];
-    } else {
-        //        _infoSessionModel.year = [_termMenu getCurrentYear:[NSDate date]];
-        //        _infoSessionModel.term = [_termMenu getCurrentTermFromDate:[NSDate date]];
     }
     
     if (_shownYear != [_termMenu getCurrentYear:[NSDate date]] || ![_shownTerm isEqualToString:[_termMenu getCurrentTermFromDate:[NSDate date]]]) {
         self.navigationItem.leftBarButtonItem = nil;
     } else {
-//        UIBarButtonItem *todayButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain
-//                                                                       target:self action:@selector(scrollToToday)];
         self.navigationItem.leftBarButtonItem = [self getTodayButtonItem];
     }
     
-    //change right bar button to indicator
-    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:activityIndicatorView] animated:YES];
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
     // if the target term is already saved in _infoSessionModel.termInfoDic, then read it directly.
-    NSLog(@"%@", NSStringFromClass([sender class]));
     if (![NSStringFromClass([sender class]) isEqualToString:@"UIBarButtonItem"] &&
         ![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"] &&
-        [_infoSessionModel readInfoSessionsWithTerm:[NSString stringWithFormat:@"%i %@", _shownYear, _shownTerm]]) {
-        NSLog(@"no network");
+        [_infoSessionModel readInfoSessionsWithTerm:[NSString stringWithFormat:@"%li %@", (long)_shownYear, _shownTerm]]) {
         _termMenu.infoSessionModel = _infoSessionModel;
         [_termMenu setDetailLabel];
         
@@ -214,15 +193,15 @@
                 [self.refreshControl endRefreshing];
                 
             }
-            // restore right bar button to refresh button
-    //        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
-            
             self.navigationItem.rightBarButtonItem.enabled = YES;
             self.navigationItem.leftBarButtonItem.enabled = YES;
             
         }];
         [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
         //[self.refreshControl setRefreshingWithStateOfTask:task];
+        
+        //need change
+        UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [activityIndicatorView setAnimatingWithStateOfTask:task];
     }
     
@@ -392,7 +371,7 @@
     else if (indexPath.section == [self numberOfSectionsInTableView:tableView] - 1) {
         LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
         cell.loadingIndicator.hidden = YES;
-        cell.loadingLabel.text = [NSString stringWithFormat:@"%i Info Sessions", [_infoSessionModel.infoSessions count]];
+        cell.loadingLabel.text = [NSString stringWithFormat:@"%lu Info Sessions", (unsigned long)[_infoSessionModel.infoSessions count]];
         [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
         [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
         return cell;
@@ -506,6 +485,14 @@
     return 23.0f;
 }
 
+/**
+ *  Set headers' view in tableView
+ *
+ *  @param tableView tableView to be set
+ *  @param section   section to be set
+ *
+ *  @return ui view for header
+ */
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *background = [[UIView alloc] init];
     background.frame = CGRectMake(0, 0, 320, 23);
@@ -547,7 +534,6 @@
             return;
         }
         else {
-            NSLog(@"reload 22222");
             //sectionNumToScroll = 0;
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationBottom];
             return;

@@ -435,7 +435,11 @@ static EKEventStore *eventStore;
 }
 
 #pragma mark - UILocalNotification related methods
-
+/**
+ *  get a unique identifier string for this info session
+ *
+ *  @return NSString for identifier
+ */
 - (NSString *)getIdentifier {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     // set the locale to fix the formate to read and write;
@@ -456,20 +460,22 @@ static EKEventStore *eventStore;
     return [NSString stringWithFormat:@"%lu-%@-%@-%@-%@", (unsigned long)self.sessionId, self.employer, dateString, startString, endString];
 }
 
+/**
+ *  cancel all notification
+ */
 - (void)cancelNotifications {
-    NSLog(@"Start to cancel notifications");
     NSMutableArray *existingNotifications = [self notificationsForThisInfoSession];
     if (existingNotifications != nil) {
-        NSLog(@"Cancel %lu exist notifications", (unsigned long)[existingNotifications count]);
         for (UILocalNotification *eachNotification in existingNotifications) {
-            NSLog(@"  Canceled: %@", eachNotification);
             [[UIApplication sharedApplication] cancelLocalNotification:eachNotification];
         }
     }
 }
 
+/**
+ *  schedule notifications for this info session
+ */
 - (void)scheduleNotifications {
-    NSLog(@"Start to Schedule notifications");
     // if found notification, cancel all of them
     [self cancelNotifications];
     
@@ -485,14 +491,12 @@ static EKEventStore *eventStore;
                 NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
                 [timeFormatter setDateFormat:@"h:mm a, MMM d"];
                 
-                localNotification.alertBody = [NSString stringWithFormat:@"%@ %@", self.employer, [timeFormatter stringFromDate:self.startTime]];
+                localNotification.alertBody = [NSString stringWithFormat:@"%@ %@ at %@", self.employer, [timeFormatter stringFromDate:self.startTime], self.location];
                 localNotification.soundName = UILocalNotificationDefaultSoundName;
                 localNotification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
                 localNotification.userInfo = [NSMutableDictionary dictionaryWithObjects:@[[self getIdentifier], [NSNumber numberWithInteger:i]] forKeys:@[@"InfoId", @"Count"]];
                 [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-                NSLog(@"scheduled notification for %@", [self getIdentifier]);
-                NSLog(@"%@", localNotification);
-//                
+                
 //                localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:4];
 //                [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
             }
@@ -500,6 +504,11 @@ static EKEventStore *eventStore;
     }
 }
 
+/**
+ *  get notifications for this info session
+ *
+ *  @return NSMutableArray of notifications
+ */
 - (NSMutableArray*)notificationsForThisInfoSession{
     NSMutableArray *resultNotifications = [[NSMutableArray alloc] init];
     NSArray *allNotifications = [[UIApplication sharedApplication]scheduledLocalNotifications];
@@ -515,10 +524,5 @@ static EKEventStore *eventStore;
         return resultNotifications;
     }
 }
-//
-//-(void)dealloc{
-//    NSLog(@"dealloc");
-//    [self cancelNotifications];
-//}
 
 @end

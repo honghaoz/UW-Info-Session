@@ -27,7 +27,6 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        NSLog(@"myInfo initiated!");
         // Custom initialization
     }
     return self;
@@ -46,7 +45,6 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    NSLog(@"MyInfoVC DidLoad");
     [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
     self.navigationController.navigationBar.tintColor = UWBlack;
     

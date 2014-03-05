@@ -31,7 +31,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"UWTabbar viweDidLoad");
     _lastTapped = -1;
     
     UITabBar *tabBar = self.tabBar;
@@ -50,7 +49,6 @@
     self.isHidden = NO;
     
     // initiate three VC in tabbarController
-    NSLog(@"initiate three VC in tabbarController");
     UINavigationController *navigationController = [self.viewControllers objectAtIndex:0];
     _infoSessionsViewController = (InfoSessionsViewController *)navigationController.viewControllers[0];
     _infoSessionsViewController.tabBarController = self;
@@ -65,13 +63,12 @@
     _searchViewController = (SearchViewController *)navigationController.viewControllers[0];
     _searchViewController.tabBarController = self;
     _searchViewController.infoSessionModel = self.infoSessionModel;
-
+    
+    [self setBadge];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    [self setBadge];
     
     // if targetIndex not equals -1, then need to show detailView
     if (_targetIndexTobeSelectedInMyInfoVC != -1) {
@@ -90,6 +87,7 @@
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
     if (item.tag == 0) {
         _detailViewControllerOfTabbar1.performedNavigation = @"Open Tabbar1";
+        _detailViewControllerOfTabbar2.performedNavigation = @"Open Tabbar1";
         if (_lastTapped == 0) {
             // if first tab show InfoSessionsViewController then scroll to today
             UINavigationController *navigationController = [self.viewControllers objectAtIndex:0];
@@ -101,6 +99,7 @@
 
     } else if (item.tag == 1) {
         _detailViewControllerOfTabbar0.performedNavigation = @"Open Tabbar2";
+        _detailViewControllerOfTabbar2.performedNavigation = @"Open Tabbar2";
         if (_lastTapped != 1) {
             [_myInfoViewController reloadTable];
         }
@@ -111,22 +110,12 @@
         if (_lastTapped != 2) {
             [_searchViewController reloadTable];
         }
+        if (_lastTapped == 2) {
+            [_searchViewController scrollToFirstRow];
+        }
         _lastTapped = 2;
     }
-    //[item setBadgeValue:@"1"];
-    //[self tabBarItem]
 }
-
-//#pragma mark - DetailViewControllerDelegate methods
-//
-//- (void)detailViewController:(DetailViewController *)detailController didAddInfoSession:(InfoSession *)infoSession {
-//    //[self setSelectedIndex:1];
-//    //[[self.viewControllers[0] tabBarItem] setBadgeValue:@"!@312312"];
-////    MyInfoViewController *myInfoViewController = [[MyInfoViewController alloc] init];
-////    UINavigationController *navigation = self.viewControllers[1];
-////    [navigation pushViewController:myInfoViewController animated:YES];
-//    
-//}
 
 /**
  *  Hide tabbarcontroller
@@ -195,6 +184,9 @@
     }
 }
 
+/**
+ *  set second tabbar's badge
+ */
 - (void)setBadge {
     UINavigationController *navigation = (UINavigationController *)self.viewControllers[1];
     // set badge

@@ -13,50 +13,28 @@
 
 @implementation UWAppDelegate {
     InfoSessionModel *_infoSessionModel;
-//    NSMutableArray *_receivedNotificationForIndoIds;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSLog(@"start!!!");
-    
-//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7)
-//    {
-//        self.window.clipsToBounds = YES;
-//        //[[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackOpaque];
-//        
-//        UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-//        if(orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight)
-//        {
-//            self.window.frame =  CGRectMake(20, 0,self.window.frame.size.width-20,self.window.frame.size.height);
-//            self.window.bounds = CGRectMake(20, 0, self.window.frame.size.width, self.window.frame.size.height);
-//        } else
-//        {
-//            self.window.frame =  CGRectMake(0,20,self.window.frame.size.width,self.window.frame.size.height-20);
-//            self.window.bounds = CGRectMake(0, 20, self.window.frame.size.width, self.window.frame.size.height);
-//        }
-//    }
-    
     // Override point for customization after application launch.
     UWTabBarController *tabController = (UWTabBarController *)self.window.rootViewController;
     // initiate infoSessionModel
     _infoSessionModel = [[InfoSessionModel alloc] init];
     tabController.infoSessionModel = _infoSessionModel;
     
+    // check if app is launched by tapping a notification
+    // if so, lead app to show detail of this info session
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (localNotification) {
         [tabController setSelectedIndex:1];
-        NSLog(@"select myinfo");
-        
         tabController.targetIndexTobeSelectedInMyInfoVC = [InfoSessionModel findInfoSessionIdentifier:[localNotification.userInfo objectForKey:@"InfoId"] in:_infoSessionModel.myInfoSessions];
     } else {
         tabController.targetIndexTobeSelectedInMyInfoVC = -1;
     }
     
+    // clear badge number
     application.applicationIconBadgeNumber = 0;
-//    _receivedNotificationForIndoIds = [[NSMutableArray alloc] init];
-    
-    NSLog(@"end!!!");
     return YES;
 }
 							
@@ -66,6 +44,9 @@
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
 
+/**
+ *  save date to local file
+ */
 -(void)saveData {
     [_infoSessionModel saveInfoSessions];
 }

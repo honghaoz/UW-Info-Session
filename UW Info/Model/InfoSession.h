@@ -26,8 +26,6 @@
 //@property (nonatomic, readonly, unsafe_unretained) NSURL *logoImageURL;
 @property (nonatomic, assign) NSUInteger weekNum;
 
-@property (nonatomic, assign) BOOL isCancelled;
-
 // alerts related attributes
 @property (nonatomic, assign) BOOL alertIsOn;
 @property (nonatomic, strong) NSMutableArray *alerts;
@@ -40,6 +38,7 @@
 @property (nonatomic, copy) NSString *eventId;
 
 // other attributes
+@property (nonatomic, assign) BOOL isCancelled;
 @property (nonatomic, copy) NSString *note;
 
 // Dictionary of alerts description, interval and sequence
@@ -76,5 +75,6 @@
 - (void)cancelNotifications;
 - (void)scheduleNotifications;
 
+// get an unique identifier string
 - (NSString *)getIdentifier;
 @end
