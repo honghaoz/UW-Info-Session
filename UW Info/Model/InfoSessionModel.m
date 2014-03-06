@@ -481,7 +481,7 @@ const NSString *myApiKey = @"77881122";
             return false;
         } else {
             _infoSessions = [self.termInfoDic[term] copy];
-            [self processInfoSessionsDictionary:_infoSessionsDictionary withInfoSessions:_infoSessions];
+            [self processInfoSessionsDictionary:self.infoSessionsDictionary withInfoSessions:self.infoSessions];
             _currentTerm = [term copy];
             [self setYearAndTerm];
             return true;

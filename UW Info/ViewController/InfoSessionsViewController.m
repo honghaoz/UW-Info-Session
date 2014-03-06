@@ -117,24 +117,29 @@
  *  @param sender
  */
 - (void)reload:(__unused id)sender {
-    // end refreshControl
-    [self.refreshControl endRefreshing];
-    [_infoSessionModel clearInfoSessions];
+    // if reload sender is not UIRefreshControll, do not clear table
+    if (![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"]) {
+        [_infoSessionModel clearInfoSessions];
+        [self.tableView reloadData];
+        [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
+    }
+    // reset titile's detail label
     [_termMenu setDetailLabel];
-    [self.tableView reloadData];
-    [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
     
+    // if sender is from choosed term, set show year and term
     if ([NSStringFromClass([sender class]) isEqualToString:@"__NSDictionaryI"]){
         _shownYear = [sender[@"Year"] integerValue];
         _shownTerm = sender[@"Term"];
     }
     
+    // if shown year and term is not current term, hide todayButton
     if (_shownYear != [_termMenu getCurrentYear:[NSDate date]] || ![_shownTerm isEqualToString:[_termMenu getCurrentTermFromDate:[NSDate date]]]) {
         self.navigationItem.leftBarButtonItem = nil;
     } else {
         self.navigationItem.leftBarButtonItem = [self getTodayButtonItem];
     }
     
+    // when reload is in processing, disable left and right button
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
@@ -142,22 +147,24 @@
     if (![NSStringFromClass([sender class]) isEqualToString:@"UIBarButtonItem"] &&
         ![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"] &&
         [_infoSessionModel readInfoSessionsWithTerm:[NSString stringWithFormat:@"%li %@", (long)_shownYear, _shownTerm]]) {
+        
+        // set termMenu
         _termMenu.infoSessionModel = _infoSessionModel;
         [_termMenu setDetailLabel];
         
+        // reload ended, end refreshing
+        [self.refreshControl endRefreshing];
         // reload TableView data
         [self.tableView reloadData];
-        // scroll TableView to current date
+        // is sender is not UIRefreshControl, scroll TableView to current date
         if (![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"]) {
             [self scrollToToday];
-        } else {
-            [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
         }
         
         // reload sections animations
         [self reloadSection:-1 WithAnimation:UITableViewRowAnimationAutomatic];
-        // end refreshControl
-        [self.refreshControl endRefreshing];
+        
+        // restore left and right buttons
         self.navigationItem.rightBarButtonItem.enabled = YES;
         self.navigationItem.leftBarButtonItem.enabled = YES;
     }
@@ -170,10 +177,13 @@
                 _infoSessionModel.currentTerm = currentTerm;
                 [_infoSessionModel setYearAndTerm];
                 
+                // set termMenu
                 _termMenu.infoSessionModel = _infoSessionModel;
                 [_termMenu setDetailLabel];
                 
+                // process infoSessionsDictionary, used for dividing infoSessions into different weeks
                 [_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.infoSessionsDictionary withInfoSessions:_infoSessionModel.infoSessions];
+                // update my infoSessions, if same info sessions have been saved before, update to newest information
                 [_infoSessionModel updateMyInfoSessions];
                 
                 // save to TermDic.
@@ -184,8 +194,6 @@
                 // scroll TableView to current date
                 if (![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"]) {
                     [self scrollToToday];
-                } else {
-                    [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
                 }
                 // reload sections animations
                 [self reloadSection:-1 WithAnimation:UITableViewRowAnimationBottom];

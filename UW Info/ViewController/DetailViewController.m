@@ -117,7 +117,10 @@
 
 - (void) applicationDidEnterBackground {
     [self.noteCell.contentText resignFirstResponder];
-    [self addToMyInfo:nil];
+    if ([self.infoSessionBackup isChangedCompareTo:self.infoSession]) {
+        [self addToMyInfo:nil];
+    }
+    //[self addToMyInfo:nil];
 }
 
 #pragma mark - Calendar related
