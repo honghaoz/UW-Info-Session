@@ -119,6 +119,8 @@
 - (void)reload:(__unused id)sender {
     // if reload sender is not UIRefreshControll, do not clear table
     if (![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"]) {
+        // reload ended, end refreshing
+        [self.refreshControl endRefreshing];
         [_infoSessionModel clearInfoSessions];
         [self.tableView reloadData];
         [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];

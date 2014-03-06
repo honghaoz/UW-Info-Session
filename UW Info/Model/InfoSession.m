@@ -240,7 +240,7 @@ static EKEventStore *eventStore;
  *  @return return the a new alertDictionary
  */
 - (NSMutableDictionary *)createNewAlertDictionaryWithChoice:(NSInteger)choice {
-    return [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:choice], [NSNumber numberWithDouble:[[InfoSession alertIntervalDictionary][NSIntegerToString(choice)] doubleValue]]] forKeys:@[@"alertChoice", @"alertInterval"]];
+    return [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:choice], [NSNumber numberWithDouble:[[InfoSession alertIntervalDictionary][NSIntegerToString(choice)] doubleValue]], [NSNumber numberWithBool:NO]] forKeys:@[@"alertChoice", @"alertInterval", @"isNotified"]];
 }
 
 /**
@@ -294,6 +294,7 @@ static EKEventStore *eventStore;
 - (void)setAlertChoiceForAlertDictionaryAtIndex:(NSInteger)index newChoice:(NSInteger)alertChoice {
     NSMutableDictionary *theAlert = self.alerts[index];
     theAlert[@"alertChoice"] = [NSNumber numberWithInteger:alertChoice];
+    theAlert[@"isNotified"] = [NSNumber numberWithBool:NO];
 }
 
 /**
@@ -373,7 +374,9 @@ static EKEventStore *eventStore;
         [newAlert setObject:newChoice forKey:@"alertChoice"];
         
         NSNumber *newInterval = [[NSNumber alloc] initWithDouble:[eachAlert[@"alertInterval"] doubleValue]];
+        NSNumber *newIsNotified = [[NSNumber alloc] initWithDouble:[eachAlert[@"isNotified"] doubleValue]];
         [newAlert setObject:newInterval forKey:@"alertInterval"];
+        [newAlert setObject:newIsNotified forKey:@"isNotified"];
         [copy.alerts addObject:newAlert];
     }
     // !!! ekEvent is not conform NSCopying Protocol, so, need process specially
@@ -496,9 +499,11 @@ static EKEventStore *eventStore;
     
     // then reschedule notifications
     if (self.alertIsOn) {
+        NSMutableDictionary *eachAlert;
         for (NSInteger i = 0; i < [self.alerts count]; i++) {
-            NSMutableDictionary *eachAlert = self.alerts[i];
-            if ([eachAlert[@"alertChoice"] integerValue] > 0) {
+            eachAlert = self.alerts[i];
+            [eachAlert[@"isNotified"] boolValue] ? NSLog(@"isNotified") : NSLog(@"not isNotified");
+            if ([eachAlert[@"alertChoice"] integerValue] > 0 && [eachAlert[@"isNotified"] boolValue] == NO) {
                 UILocalNotification *localNotification = [[UILocalNotification alloc] init];
                 localNotification.fireDate = [self.startTime dateByAddingTimeInterval:[eachAlert[@"alertInterval"] doubleValue]];
                 localNotification.timeZone = [NSTimeZone timeZoneWithName:@"EST"];
@@ -510,10 +515,16 @@ static EKEventStore *eventStore;
                 NSString *timeString = [InfoSession getAlertDescriptionForNitification:eachAlert[@"alertChoice"]];
                 
                 localNotification.alertBody = [NSString stringWithFormat:@"%@ %@ at %@", self.employer, timeString, self.location];
-                localNotification.soundName = UILocalNotificationDefaultSoundName;
+                localNotification.soundName = @"alarm.caf";
+                localNotification.alertAction = @"view";
+                //localNotification.alertLaunchImage =
                 localNotification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
-                localNotification.userInfo = [NSMutableDictionary dictionaryWithObjects:@[[self getIdentifier], self.employer] forKeys:@[@"InfoId", @"Employer"]];
+                localNotification.userInfo = [NSMutableDictionary dictionaryWithObjects:@[[self getIdentifier], self.employer, [NSNumber numberWithInteger:i]] forKeys:@[@"InfoId", @"Employer", @"AlertIndex"]];
                 [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+                
+//                localNotification.fireDate = [[NSDate date] dateByAddingTimeInterval:4];
+//                [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+                
             }
         }
     }

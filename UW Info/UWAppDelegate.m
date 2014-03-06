@@ -28,10 +28,14 @@
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (localNotification) {
         [tabController setSelectedIndex:1];
-        tabController.targetIndexTobeSelectedInMyInfoVC = [InfoSessionModel findInfoSessionIdentifier:[localNotification.userInfo objectForKey:@"InfoId"] in:_infoSessionModel.myInfoSessions];
+        NSInteger targetIndex = [InfoSessionModel findInfoSessionIdentifier:[localNotification.userInfo objectForKey:@"InfoId"] in:_infoSessionModel.myInfoSessions];
+        tabController.targetIndexTobeSelectedInMyInfoVC = targetIndex;
+        
+        [self setNotified:localNotification];
     } else {
         tabController.targetIndexTobeSelectedInMyInfoVC = -1;
     }
+    NSLog(@"start");
     
     return YES;
 }
@@ -54,6 +58,8 @@
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     [self saveData];
+    // clear badge number
+    application.applicationIconBadgeNumber = 0;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -71,6 +77,8 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    // clear badge number
+    application.applicationIconBadgeNumber = 0;
     [self saveData];
 }
 
@@ -79,15 +87,29 @@
 }
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
-    
-    
-    
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:notification.userInfo[@"Employer"]
                                                     message:notification.alertBody
                                                    delegate:self
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
     [alert show];
+    [self setNotified:notification];
+    
+    // clear badge number
+    application.applicationIconBadgeNumber = 0;
+}
+
+/**
+ *  Use notification to set the related alert to isNotified
+ *
+ *  @param notification
+ */
+- (void)setNotified:(UILocalNotification *)notification {
+    NSInteger targetIndex = [InfoSessionModel findInfoSessionIdentifier:[notification.userInfo objectForKey:@"InfoId"] in:_infoSessionModel.myInfoSessions];
+    InfoSession *theTargetInfo = [_infoSessionModel.myInfoSessions objectAtIndex:targetIndex];
+    //NSMutableDictionary *theTargetAlert = [theTargetInfo getAlertForChoice:[notification.userInfo objectForKey:@"AlertIndex"]];
+    NSMutableDictionary *theTargetAlert = [theTargetInfo.alerts objectAtIndex:[[notification.userInfo objectForKey:@"AlertIndex"] integerValue]];
+    [theTargetAlert setValue:[NSNumber numberWithBool:YES] forKey:@"isNotified"];
 }
 
 @end

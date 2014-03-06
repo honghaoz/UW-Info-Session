@@ -54,6 +54,7 @@
 		1BAD97E618A98F65006F4546 /* InfoSessionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97E518A98F65006F4546 /* InfoSessionModel.m */; };
 		1BAD97E918A9CAE2006F4546 /* UWTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */; };
 		1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */; };
+		1BB1A12018C908BB00823A0D /* alarm.caf in Resources */ = {isa = PBXBuildFile; fileRef = 1BB1A11F18C9040C00823A0D /* alarm.caf */; };
 		1BD83A9518A59F1C00EDBB6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9418A59F1C00EDBB6D /* Foundation.framework */; };
 		1BD83A9718A59F1C00EDBB6D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9618A59F1C00EDBB6D /* CoreGraphics.framework */; };
 		1BD83A9918A59F1C00EDBB6D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9818A59F1C00EDBB6D /* UIKit.framework */; };
@@ -68,7 +69,6 @@
 		1BD83AC118A59F1D00EDBB6D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1BD83ABF18A59F1D00EDBB6D /* InfoPlist.strings */; };
 		1BD83AC318A59F1D00EDBB6D /* UW_InfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BD83AC218A59F1D00EDBB6D /* UW_InfoTests.m */; };
 		1BD967CB18C8D7850097FCD6 /* map_colour300.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD967C918C8D7850097FCD6 /* map_colour300.png */; };
-		1BD967CC18C8D7850097FCD6 /* map_colour600.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD967CA18C8D7850097FCD6 /* map_colour600.png */; };
 		1BF0542318A93ECC005C04B2 /* DetailSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */; };
 /* End PBXBuildFile section */
 
@@ -175,6 +175,7 @@
 		1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWTabBarController.m; path = ViewController/UWTabBarController.m; sourceTree = "<group>"; };
 		1BAD97ED18A9DEF6006F4546 /* MyInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyInfoViewController.h; path = ViewController/MyInfoViewController.h; sourceTree = "<group>"; };
 		1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyInfoViewController.m; path = ViewController/MyInfoViewController.m; sourceTree = "<group>"; };
+		1BB1A11F18C9040C00823A0D /* alarm.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = alarm.caf; path = Resources/alarm.caf; sourceTree = "<group>"; };
 		1BD83A9118A59F1C00EDBB6D /* UW Info.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UW Info.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BD83A9418A59F1C00EDBB6D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1BD83A9618A59F1C00EDBB6D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -193,7 +194,6 @@
 		1BD83AC018A59F1D00EDBB6D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1BD83AC218A59F1D00EDBB6D /* UW_InfoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UW_InfoTests.m; sourceTree = "<group>"; };
 		1BD967C918C8D7850097FCD6 /* map_colour300.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map_colour300.png; path = Resources/map_colour300.png; sourceTree = "<group>"; };
-		1BD967CA18C8D7850097FCD6 /* map_colour600.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map_colour600.png; path = Resources/map_colour600.png; sourceTree = "<group>"; };
 		1BF0542118A93ECC005C04B2 /* DetailSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSwitchCell.h; path = TableViewCell/DetailSwitchCell.h; sourceTree = "<group>"; };
 		1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSwitchCell.m; path = TableViewCell/DetailSwitchCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -526,7 +526,7 @@
 			isa = PBXGroup;
 			children = (
 				1BD967C918C8D7850097FCD6 /* map_colour300.png */,
-				1BD967CA18C8D7850097FCD6 /* map_colour600.png */,
+				1BB1A11F18C9040C00823A0D /* alarm.caf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -614,8 +614,8 @@
 				1BD83AB018A59F1C00EDBB6D /* Images.xcassets in Resources */,
 				1B2040B918B3F75300C72D51 /* ProgressHUD.bundle in Resources */,
 				1BD83A9F18A59F1C00EDBB6D /* InfoPlist.strings in Resources */,
-				1BD967CC18C8D7850097FCD6 /* map_colour600.png in Resources */,
 				1BD967CB18C8D7850097FCD6 /* map_colour300.png in Resources */,
+				1BB1A12018C908BB00823A0D /* alarm.caf in Resources */,
 				1BD83AA818A59F1C00EDBB6D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
