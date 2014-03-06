@@ -48,6 +48,8 @@
 + (NSDictionary *) alertSequenceDictionary;
 + (NSString *)getAlertSequence:(NSNumber *)alertChoice;
 
++ (NSDictionary *) alertDescriptionForNotificationDictionary;
+
 // Used for manage calendar event, only initiate once!
 + (EKEventStore *) eventStore;
 

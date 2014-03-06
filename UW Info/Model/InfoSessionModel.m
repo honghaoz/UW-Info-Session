@@ -88,7 +88,7 @@ const NSString *myApiKey = @"77881122";
     if (year == 0 || term == nil) {
         getTarget = @"infosessions.json";
     } else {
-        getTarget = [NSString stringWithFormat:@"infosessions/%i%@.json", year, term];
+        getTarget = [NSString stringWithFormat:@"infosessions/%li%@.json", (long)year, term];
     }
     return [[AFUwaterlooApiClient sharedClient] GET:getTarget parameters:@{@"key" : myApiKey} success:^(NSURLSessionDataTask * __unused task, id JSON) {
         //response array from jason

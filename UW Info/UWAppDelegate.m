@@ -82,9 +82,15 @@
 }
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
-//    [_receivedNotificationForIndoIds addObject:[notification.userInfo objectForKey:@"InfoId"]];
-//    [UIApplication sharedApplication].applicationIconBadgeNumber = [_receivedNotificationForIndoIds count];
-    NSLog(@"didReceivedLocalNotification %@",notification);
+    
+    
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:notification.userInfo[@"Employer"]
+                                                    message:notification.alertBody
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 @end

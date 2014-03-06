@@ -251,7 +251,7 @@
         // scroll!
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:rowNumToScroll inSection:sectionNumToScroll] atScrollPosition:UITableViewScrollPositionTop animated:YES];
         // reload current
-        [self reloadSection:sectionNumToScroll WithAnimation:UITableViewRowAnimationFade];
+        //[self reloadSection:sectionNumToScroll WithAnimation:UITableViewRowAnimationFade];
         [_tabBarController showTabBar];
     }
 }
@@ -322,7 +322,7 @@
         NSDate *beginningOfNextWeek = [gregorian dateFromComponents:component];
         NSString *endDate = [dateFormatter stringFromDate: beginningOfNextWeek];
         
-        return [NSString stringWithFormat:@"%@ - %@ (Week: %i)", beginDate, endDate, section + 1];
+        return [NSString stringWithFormat:@"%@ - %@ (Week: %li)", beginDate, endDate, section + 1];
     }
 }
 

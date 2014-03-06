@@ -14,6 +14,8 @@ static NSDictionary *alertChoiceDictionary;
 static NSDictionary *alertIntervalDictionary;
 static NSDictionary *alertSequenceDictionary;
 
+static NSDictionary *alertDescriptionForNotificationDictionary;
+
 static EKEventStore *eventStore;
 
 @interface InfoSession()
@@ -58,6 +60,19 @@ static EKEventStore *eventStore;
 
 + (NSString *)getAlertSequence:(NSNumber *)alertChoice {
     return [InfoSession alertSequenceDictionary][[alertChoice stringValue]];
+}
+
++ (NSDictionary *)alertDescriptionForNotificationDictionary {
+    if (alertDescriptionForNotificationDictionary == nil) {
+        alertDescriptionForNotificationDictionary = [[NSDictionary alloc] initWithObjects:[[NSArray alloc] initWithObjects:@"", @"now", @"in 5 minutes", @"in 15 minutes", @"in 30 minutes", @"in 1 hour", @"in 2 hours", @"at tommorrow", @"in 2 days", @"in this week", nil] forKeys:[[NSArray alloc] initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil]];
+        return alertDescriptionForNotificationDictionary;
+    } else {
+        return alertDescriptionForNotificationDictionary;
+    }
+}
+
++ (NSString *)getAlertDescriptionForNitification:(NSNumber *)alertChoice {
+    return [InfoSession alertDescriptionForNotificationDictionary][[alertChoice stringValue]];
 }
 
 #pragma make - Initiate a new InfoSession instance
@@ -491,14 +506,14 @@ static EKEventStore *eventStore;
                 NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
                 [timeFormatter setDateFormat:@"h:mm a, MMM d"];
                 
-                localNotification.alertBody = [NSString stringWithFormat:@"%@ %@ at %@", self.employer, [timeFormatter stringFromDate:self.startTime], self.location];
+                // prepare for alertBody
+                NSString *timeString = [InfoSession getAlertDescriptionForNitification:eachAlert[@"alertChoice"]];
+                
+                localNotification.alertBody = [NSString stringWithFormat:@"%@ %@ at %@", self.employer, timeString, self.location];
                 localNotification.soundName = UILocalNotificationDefaultSoundName;
                 localNotification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
-                localNotification.userInfo = [NSMutableDictionary dictionaryWithObjects:@[[self getIdentifier], [NSNumber numberWithInteger:i]] forKeys:@[@"InfoId", @"Count"]];
+                localNotification.userInfo = [NSMutableDictionary dictionaryWithObjects:@[[self getIdentifier], self.employer] forKeys:@[@"InfoId", @"Employer"]];
                 [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-                
-//                localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:4];
-//                [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
             }
         }
     }
