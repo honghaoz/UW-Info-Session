@@ -39,8 +39,6 @@
 		1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */; };
 		1B37453718A5BA28007CF08C /* InfoSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37453618A5BA28007CF08C /* InfoSession.m */; };
 		1B37453C18A5D0CE007CF08C /* AFUwaterlooApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37453B18A5D0CE007CF08C /* AFUwaterlooApiClient.m */; };
-		1B4DD55218AC8625009B0214 /* map_colour300.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B4DD55018AC8625009B0214 /* map_colour300.png */; };
-		1B4DD55318AC8625009B0214 /* map_colour600.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B4DD55118AC8625009B0214 /* map_colour600.png */; };
 		1B4DD55618AC90B4009B0214 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4DD55518AC90B4009B0214 /* MapViewController.m */; };
 		1B59BB2018C441AA00D6112B /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B59BB1F18C441AA00D6112B /* SearchViewController.m */; };
 		1B6EDE4E18C66DB800EBFEB9 /* UWTodayButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B6EDE4D18C66DB800EBFEB9 /* UWTodayButton.m */; };
@@ -69,6 +67,8 @@
 		1BD83AB918A59F1D00EDBB6D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9818A59F1C00EDBB6D /* UIKit.framework */; };
 		1BD83AC118A59F1D00EDBB6D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1BD83ABF18A59F1D00EDBB6D /* InfoPlist.strings */; };
 		1BD83AC318A59F1D00EDBB6D /* UW_InfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BD83AC218A59F1D00EDBB6D /* UW_InfoTests.m */; };
+		1BD967CB18C8D7850097FCD6 /* map_colour300.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD967C918C8D7850097FCD6 /* map_colour300.png */; };
+		1BD967CC18C8D7850097FCD6 /* map_colour600.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD967CA18C8D7850097FCD6 /* map_colour600.png */; };
 		1BF0542318A93ECC005C04B2 /* DetailSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */; };
 /* End PBXBuildFile section */
 
@@ -147,8 +147,6 @@
 		1B37453618A5BA28007CF08C /* InfoSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSession.m; path = Model/InfoSession.m; sourceTree = "<group>"; };
 		1B37453A18A5D0CE007CF08C /* AFUwaterlooApiClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFUwaterlooApiClient.h; sourceTree = "<group>"; };
 		1B37453B18A5D0CE007CF08C /* AFUwaterlooApiClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFUwaterlooApiClient.m; sourceTree = "<group>"; };
-		1B4DD55018AC8625009B0214 /* map_colour300.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_colour300.png; sourceTree = "<group>"; };
-		1B4DD55118AC8625009B0214 /* map_colour600.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_colour600.png; sourceTree = "<group>"; };
 		1B4DD55418AC90B4009B0214 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapViewController.h; path = ViewController/MapViewController.h; sourceTree = "<group>"; };
 		1B4DD55518AC90B4009B0214 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = ViewController/MapViewController.m; sourceTree = "<group>"; };
 		1B59BB1E18C441AA00D6112B /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchViewController.h; path = ViewController/SearchViewController.h; sourceTree = "<group>"; };
@@ -194,6 +192,8 @@
 		1BD83ABE18A59F1D00EDBB6D /* UW InfoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UW InfoTests-Info.plist"; sourceTree = "<group>"; };
 		1BD83AC018A59F1D00EDBB6D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1BD83AC218A59F1D00EDBB6D /* UW_InfoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UW_InfoTests.m; sourceTree = "<group>"; };
+		1BD967C918C8D7850097FCD6 /* map_colour300.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map_colour300.png; path = Resources/map_colour300.png; sourceTree = "<group>"; };
+		1BD967CA18C8D7850097FCD6 /* map_colour600.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map_colour600.png; path = Resources/map_colour600.png; sourceTree = "<group>"; };
 		1BF0542118A93ECC005C04B2 /* DetailSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSwitchCell.h; path = TableViewCell/DetailSwitchCell.h; sourceTree = "<group>"; };
 		1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSwitchCell.m; path = TableViewCell/DetailSwitchCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -442,8 +442,7 @@
 		1BD83A8818A59F1C00EDBB6D = {
 			isa = PBXGroup;
 			children = (
-				1B4DD55018AC8625009B0214 /* map_colour300.png */,
-				1B4DD55118AC8625009B0214 /* map_colour600.png */,
+				1BD967C818C8D7770097FCD6 /* Resources */,
 				1B2040B518B3F75300C72D51 /* ProgressHUD */,
 				1BD83A9A18A59F1C00EDBB6D /* UW Info */,
 				1BD83ABC18A59F1D00EDBB6D /* UW InfoTests */,
@@ -521,6 +520,15 @@
 				1BD83ABF18A59F1D00EDBB6D /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		1BD967C818C8D7770097FCD6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1BD967C918C8D7850097FCD6 /* map_colour300.png */,
+				1BD967CA18C8D7850097FCD6 /* map_colour600.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -603,11 +611,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B4DD55218AC8625009B0214 /* map_colour300.png in Resources */,
 				1BD83AB018A59F1C00EDBB6D /* Images.xcassets in Resources */,
 				1B2040B918B3F75300C72D51 /* ProgressHUD.bundle in Resources */,
 				1BD83A9F18A59F1C00EDBB6D /* InfoPlist.strings in Resources */,
-				1B4DD55318AC8625009B0214 /* map_colour600.png in Resources */,
+				1BD967CC18C8D7850097FCD6 /* map_colour600.png in Resources */,
+				1BD967CB18C8D7850097FCD6 /* map_colour300.png in Resources */,
 				1BD83AA818A59F1C00EDBB6D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -33,8 +33,6 @@
         tabController.targetIndexTobeSelectedInMyInfoVC = -1;
     }
     
-    // clear badge number
-    application.applicationIconBadgeNumber = 0;
     return YES;
 }
 							
@@ -61,8 +59,7 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-//    [_receivedNotificationForIndoIds removeAllObjects];
-    //[UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    // clear badge number
     application.applicationIconBadgeNumber = 0;
 }
 
