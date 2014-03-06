@@ -191,7 +191,7 @@ const NSString *myApiKey = @"77881122";
  *
  *  @return -1, if not found, else, return index
  */
-+ (NSInteger)findInfoSession:(InfoSession *)infoSession in:(NSMutableArray *)array {
++ (NSInteger)findInfoSession:(InfoSession *)infoSession in:(NSArray *)array {
     NSInteger existIndex = -1;
     for (int i = 0; i < [array count]; i++) {
         InfoSession *eachInfoSession = [array objectAtIndex:i];
@@ -261,11 +261,18 @@ const NSString *myApiKey = @"77881122";
     }
 }
 
-+ (UW)deleteInfoSession:(InfoSession *)infoSession in:(NSMutableArray *)array {
-    NSInteger existIndex = [InfoSessionModel findInfoSession:infoSession in:array];
+- (UW)deleteInfoSessionInMyInfo:(InfoSession *)infoSession{
+    NSInteger existIndex = [InfoSessionModel findInfoSession:infoSession in:self.myInfoSessions];
     if (existIndex != -1) {
         [infoSession cancelNotifications];
-        [array removeObjectAtIndex:existIndex];
+        // if infoSessions in tab1 contains infoSession to be delete, clear the user defined information
+        NSInteger existIndexInInfoSessions = [InfoSessionModel findInfoSession:infoSession in:self.infoSessions];
+        if (existIndexInInfoSessions != -1) {
+            InfoSession *theInfo = self.infoSessions[existIndexInInfoSessions];
+            theInfo.alertIsOn = NO;
+            theInfo.note = nil;
+        }
+        [self.myInfoSessions removeObjectAtIndex:existIndex];
         return UWDeleted;
     }
     return UWNonthing;

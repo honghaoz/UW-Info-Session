@@ -111,7 +111,7 @@
     } else {
         LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
         cell.loadingIndicator.hidden = YES;
-        cell.loadingLabel.text = [NSString stringWithFormat:@"%i Info Sessions", [_infoSessionModel.myInfoSessions count]];
+        cell.loadingLabel.text = [NSString stringWithFormat:@"%lu Info Sessions", (unsigned long)[_infoSessionModel.myInfoSessions count]];
         [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
         [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
         return cell;
@@ -251,8 +251,7 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         InfoSession *infoSessionToBeDeleted = _infoSessionModel.myInfoSessions[indexPath.row];
-        if ([InfoSessionModel deleteInfoSession:infoSessionToBeDeleted in:_infoSessionModel.myInfoSessions] == UWDeleted) {
-            NSLog(@"deleted");
+        if ([_infoSessionModel deleteInfoSessionInMyInfo:infoSessionToBeDeleted] == UWDeleted) {
             [_tabBarController setBadge];
             
             UINavigationController *infoSessionVCNavigationController = _tabBarController.infoSessionsViewController.navigationController;

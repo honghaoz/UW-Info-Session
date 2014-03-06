@@ -53,10 +53,11 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 
 + (NSURLSessionTask *)infoSessions:(NSInteger)year andTerm:(NSString *)term withBlock:(void (^)(NSArray *sessions, NSString *currentTerm, NSError *error))block;
 
-+ (NSInteger)findInfoSession:(InfoSession *)infoSession in:(NSMutableArray *)array;
++ (NSInteger)findInfoSession:(InfoSession *)infoSession in:(NSArray *)array;
 + (NSInteger)findInfoSessionIdentifier:(NSString *)infoSessionId in:(NSMutableArray *)array;
 + (UW)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array;
-+ (UW)deleteInfoSession:(InfoSession *)infoSession in:(NSMutableArray *)array;
+
+- (UW)deleteInfoSessionInMyInfo:(InfoSession *)infoSession;
 
 + (NSString*)documentsDirectory;;
 + (NSString*)dataFilePath:(NSString *)fileName;

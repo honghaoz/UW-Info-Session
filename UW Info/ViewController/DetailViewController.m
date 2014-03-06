@@ -891,7 +891,7 @@
  *  @param sender none
  */
 - (void)deleteOperation:(id)sender {
-    if ([InfoSessionModel deleteInfoSession:_infoSession in:_infoSessionModel.myInfoSessions] == UWDeleted) {
+    if ([_infoSessionModel deleteInfoSessionInMyInfo:_infoSession] == UWDeleted) {
         
         //UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
         
@@ -1079,7 +1079,8 @@
  */
 - (IBAction)addToMyInfo:(id)sender {
     UW addResult = UWNonthing;
-    
+    // if note cell is editing, resign keyboard
+    [self.noteCell.contentText resignFirstResponder];
     // this case is first time open an infosession from InfoSessionsVC or SearchViewController
     // only this situation, openedMyInfo == NO
     if (([_caller isEqualToString:@"InfoSessionsViewController"] || [_caller isEqualToString:@"SearchViewController"]) && openedMyInfo == NO) {
