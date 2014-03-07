@@ -54,6 +54,9 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(reloadTable) forControlEvents:UIControlEventValueChanged];
     [self reloadTable];
+    
+    // receive every minute from notification center
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshEveryMinute) name:@"OneMinute" object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,6 +70,10 @@
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     // end refreshControl
     [self.refreshControl endRefreshing];
+}
+
+- (void)refreshEveryMinute {
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -170,8 +177,16 @@
     NSMutableAttributedString *locationString = [[NSMutableAttributedString alloc] initWithString:infoSession.location];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+    // set the locale to fix the formate to read and write;
+    NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    [dateFormatter setLocale:enUSPOSIXLocale];
+    [timeFormatter setLocale:enUSPOSIXLocale];
     [dateFormatter setDateFormat:@"MMM d"];
     [timeFormatter setDateFormat:@"h:mm a"];
+    // set timezone to EST
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+    // set timezone to EST
+    [timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
     
     NSString *dateNSString = [NSString stringWithFormat:@"%@, %@ - %@", [dateFormatter stringFromDate:infoSession.date], [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime]];
     NSMutableAttributedString *dateString = [[NSMutableAttributedString alloc] initWithString:dateNSString];

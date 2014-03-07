@@ -35,7 +35,19 @@
     } else {
         tabController.targetIndexTobeSelectedInMyInfoVC = -1;
     }
-    NSLog(@"start");
+    
+    // get time interval of seconds in minute
+    NSTimeInterval roundedInterval = round([[NSDate date] timeIntervalSinceReferenceDate] / 60.0) * 60.0;
+    // date of next minute
+    NSDate *date = [NSDate dateWithTimeIntervalSinceReferenceDate:roundedInterval + 60];
+    
+    NSTimer *timer = [[NSTimer alloc] initWithFireDate:date
+                                              interval:60
+                                                target:self
+                                              selector:@selector(handleEveryMinutes:)
+                                              userInfo:nil
+                                               repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     
     return YES;
 }
@@ -110,6 +122,12 @@
     //NSMutableDictionary *theTargetAlert = [theTargetInfo getAlertForChoice:[notification.userInfo objectForKey:@"AlertIndex"]];
     NSMutableDictionary *theTargetAlert = [theTargetInfo.alerts objectAtIndex:[[notification.userInfo objectForKey:@"AlertIndex"] integerValue]];
     [theTargetAlert setValue:[NSNumber numberWithBool:YES] forKey:@"isNotified"];
+}
+
+
+- (void)handleEveryMinutes:(NSTimer *)timer {
+    // post notification every minute
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"OneMinute" object:self];
 }
 
 @end

@@ -115,9 +115,12 @@
 //                                               object:nil];
     _statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, 320, 20)];
     _statusBarView.backgroundColor=UWGold;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollToFirstRow) name:@"infoSessionsChanged" object:nil];
 }
 
 - (void)scrollToFirstRow{
+    NSLog(@"scroll to 1st");
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 

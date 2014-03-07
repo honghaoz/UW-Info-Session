@@ -115,6 +115,7 @@ const NSString *myApiKey = @"77881122";
             }];
             
             //[mutableInfoSessions sortedArrayUsingSelector:@selector(compareTo:)];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"infoSessionsChanged" object:self];
             block([NSArray arrayWithArray:mutableInfoSessions], currentTerm, nil);
         }
     } failure:^(NSURLSessionDataTask *__unused task, NSError *error) {
@@ -480,7 +481,9 @@ const NSString *myApiKey = @"77881122";
         if ([[NSDate date] timeIntervalSinceDate:lastQueriedTime] > intervalForRefresh) {
             return false;
         } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"infoSessionsChanged" object:self];
             _infoSessions = [self.termInfoDic[term] copy];
+            [self.infoSessionsDictionary removeAllObjects];
             [self processInfoSessionsDictionary:self.infoSessionsDictionary withInfoSessions:self.infoSessions];
             _currentTerm = [term copy];
             [self setYearAndTerm];
