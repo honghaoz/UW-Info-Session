@@ -41,6 +41,7 @@
     CGFloat lastContentOffset;
     CGFloat previousScrollViewYOffset;
     BOOL isReloading;
+    NSString *classOfRefreshSender;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -63,6 +64,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _infoSessionModel.delegate = self;
     _tabBarController.lastTapped = -1;
     
     [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
@@ -122,15 +124,14 @@
  *  @param sender
  */
 - (void)reload:(__unused id)sender {
+    classOfRefreshSender = NSStringFromClass([sender class]);
     if (isReloading == NO) {
-        NSLog(@"RELOAD");
         isReloading = YES;
         // if reload sender is not UIRefreshControll, do not clear table
-        if (![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"]) {
+        if (![classOfRefreshSender isEqualToString:@"UIRefreshControl"]) {
             // reload ended, end refreshing
             [self.refreshControl endRefreshing];
             self.refreshControl = nil;
-            NSLog(@"enable = no");
             [_infoSessionModel clearInfoSessions];
             [self.tableView reloadData];
             [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
@@ -139,7 +140,7 @@
         [_termMenu setDetailLabel];
         
         // if sender is from choosed term, set show year and term
-        if ([NSStringFromClass([sender class]) isEqualToString:@"__NSDictionaryI"]){
+        if ([classOfRefreshSender isEqualToString:@"__NSDictionaryI"]){
             _shownYear = [sender[@"Year"] integerValue];
             _shownTerm = sender[@"Term"];
         }
@@ -156,11 +157,9 @@
         self.navigationItem.leftBarButtonItem.enabled = NO;
         
         // if the target term is already saved in _infoSessionModel.termInfoDic, then read it directly.
-        if (![NSStringFromClass([sender class]) isEqualToString:@"UIBarButtonItem"] &&
-            ![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"] &&
+        if (![classOfRefreshSender isEqualToString:@"UIBarButtonItem"] &&
+            ![classOfRefreshSender isEqualToString:@"UIRefreshControl"] &&
             [_infoSessionModel readInfoSessionsWithTerm:[NSString stringWithFormat:@"%li %@", (long)_shownYear, _shownTerm]]) {
-            
-            NSLog(@"NO network");
             
             // set termMenu
             _termMenu.infoSessionModel = _infoSessionModel;
@@ -188,55 +187,33 @@
         }
         // else, no infoSession saved for this target term, need update
         else {
-            NSURLSessionTask *task = [InfoSessionModel infoSessions:_shownYear andTerm:_shownTerm withBlock:^(NSArray *sessions, NSString *currentTerm,  NSError *error) {
-                if (!error) {
-                    NSLog(@"network");
-                    // initiate infoSessionModel
-                    _infoSessionModel.infoSessions = sessions;
-                    _infoSessionModel.currentTerm = currentTerm;
-                    [_infoSessionModel setYearAndTerm];
-                    
-                    // set termMenu
-                    _termMenu.infoSessionModel = _infoSessionModel;
-                    [_termMenu setDetailLabel];
-                    
-                    // process infoSessionsDictionary, used for dividing infoSessions into different weeks
-                    [_infoSessionModel.infoSessionsDictionary removeAllObjects];
-                    [_infoSessionModel processInfoSessionsDictionary:_infoSessionModel.infoSessionsDictionary withInfoSessions:_infoSessionModel.infoSessions];
-                    // update my infoSessions, if same info sessions have been saved before, update to newest information
-                    [_infoSessionModel updateMyInfoSessions];
-                    
-                    // save to TermDic.
-                    [_infoSessionModel saveToTermInfoDic];
-                    
-                    // reload TableView data
-                    [self.tableView reloadData];
-                    // scroll TableView to current date
-                    if (![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"]) {
-                        [self scrollToToday];
-                    }
-                    // reload sections animations
-                    [self reloadSection:-1 WithAnimation:UITableViewRowAnimationBottom];
-                    // end refreshControl
-                    [self.refreshControl endRefreshing];
-                    
-                }
-                self.navigationItem.rightBarButtonItem.enabled = YES;
-                self.navigationItem.leftBarButtonItem.enabled = YES;
-                isReloading = NO;
-                //self.refreshControl.enabled = YES;
-                self.refreshControl = [[UIRefreshControl alloc] init];
-                [self.refreshControl addTarget:self action:@selector(reload:) forControlEvents:UIControlEventValueChanged];
-                
-            }];
-            [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
-            //[self.refreshControl setRefreshingWithStateOfTask:task];
-            
-            //need change
-            UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            [activityIndicatorView setAnimatingWithStateOfTask:task];
+            [_infoSessionModel updateInfoSessionsWithYear:_shownYear andTerm:_shownTerm];
         }
     }
+}
+
+- (void)infoSessionModeldidUpdateInfoSessions:(InfoSessionModel *)model{
+    // set termMenu
+    _termMenu.infoSessionModel = _infoSessionModel;
+    [_termMenu setDetailLabel];
+    
+    // reload TableView data
+    [self.tableView reloadData];
+    // scroll TableView to current date
+    if (![classOfRefreshSender isEqualToString:@"UIRefreshControl"]) {
+        [self scrollToToday];
+    }
+    // reload sections animations
+    [self reloadSection:-1 WithAnimation:UITableViewRowAnimationBottom];
+    // end refreshControl
+    [self.refreshControl endRefreshing];
+    
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+    self.navigationItem.leftBarButtonItem.enabled = YES;
+    isReloading = NO;
+    //self.refreshControl.enabled = YES;
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(reload:) forControlEvents:UIControlEventValueChanged];
 }
 
 /**
@@ -358,7 +335,7 @@
         NSDate *beginningOfNextWeek = [gregorian dateFromComponents:component];
         NSString *endDate = [dateFormatter stringFromDate: beginningOfNextWeek];
         
-        return [NSString stringWithFormat:@"%@ - %@ (Week: %i)", beginDate, endDate, section + 1];
+        return [NSString stringWithFormat:@"%@ - %@ (Week: %d)", beginDate, endDate, section + 1];
     }
 }
 

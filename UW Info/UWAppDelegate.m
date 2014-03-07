@@ -10,6 +10,7 @@
 #import "InfoSessionModel.h"
 #import "UWTabBarController.h"
 #import "MyInfoViewController.h"
+#import "AFNetworkActivityIndicatorManager.h"
 
 @implementation UWAppDelegate {
     InfoSessionModel *_infoSessionModel;
@@ -17,6 +18,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    
     // Override point for customization after application launch.
     UWTabBarController *tabController = (UWTabBarController *)self.window.rootViewController;
     // initiate infoSessionModel

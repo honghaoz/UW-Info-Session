@@ -7,7 +7,7 @@
 //
 
 #import "AFHTTPRequestOperation.h"
-#import "AFUwaterlooApiClient.h"
+#import "UWInfoSessionClient.h"
 
 #import "InfoSessionModel.h"
 #import "InfoSession.h"
@@ -83,47 +83,47 @@ const NSString *myApiKey = @"77881122";
  *
  *  @return
  */
-+ (NSURLSessionTask *)infoSessions:(NSInteger)year andTerm:(NSString *)term withBlock:(void (^)(NSArray *sessions, NSString *currentTerm, NSError *error))block{
-    NSString *getTarget;
-    if (year == 0 || term == nil) {
-        getTarget = @"infosessions.json";
-    } else {
-        getTarget = [NSString stringWithFormat:@"infosessions/%li%@.json", (long)year, term];
-    }
-    return [[AFUwaterlooApiClient sharedClient] GET:getTarget parameters:@{@"key" : myApiKey} success:^(NSURLSessionDataTask * __unused task, id JSON) {
-        //response array from jason
-        NSArray *infoSessionsFromResponse = [JSON valueForKeyPath:@"data"];
-        NSString *currentTerm = [JSON valueForKeyPath:@"meta.term"];
-
-        // new empty array to store infoSessions
-        NSMutableArray *mutableInfoSessions = [NSMutableArray arrayWithCapacity:[infoSessionsFromResponse count]];
-        
-        for (NSDictionary *attributes in infoSessionsFromResponse) {
-            InfoSession *infoSession = [[InfoSession alloc] initWithAttributes:attributes];
-            // if start time < end time or date is nil, do not add
-            if (!([infoSession.startTime compare:infoSession.endTime] != NSOrderedAscending ||
-                  infoSession.date == nil ||
-                  [infoSession.employer length] == 0)) {
-                [mutableInfoSessions addObject:infoSession];
-            }
-        }
-        
-        if (block) {
-            // sorted info sessions in ascending order with start time
-            [mutableInfoSessions sortUsingComparator:^(InfoSession *info1, InfoSession *info2){
-                return [info1 compareTo:info2];
-            }];
-            
-            //[mutableInfoSessions sortedArrayUsingSelector:@selector(compareTo:)];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"infoSessionsChanged" object:self];
-            block([NSArray arrayWithArray:mutableInfoSessions], currentTerm, nil);
-        }
-    } failure:^(NSURLSessionDataTask *__unused task, NSError *error) {
-        if (block) {
-            block([NSArray array], nil, error);
-        }
-    }];
-}
+//+ (NSURLSessionTask *)infoSessions:(NSInteger)year andTerm:(NSString *)term withBlock:(void (^)(NSArray *sessions, NSString *currentTerm, NSError *error))block{
+//    NSString *getTarget;
+//    if (year == 0 || term == nil) {
+//        getTarget = @"infosessions.json";
+//    } else {
+//        getTarget = [NSString stringWithFormat:@"infosessions/%ld%@.json", (long)year, term];
+//    }
+//    return [[UWInfoSessionClient sharedInfoSessionClient] GET:getTarget parameters:@{@"key" : myApiKey} success:^(NSURLSessionDataTask * __unused task, id JSON) {
+//        //response array from jason
+//        NSArray *infoSessionsFromResponse = [JSON valueForKeyPath:@"data"];
+//        NSString *currentTerm = [JSON valueForKeyPath:@"meta.term"];
+//
+//        // new empty array to store infoSessions
+//        NSMutableArray *mutableInfoSessions = [NSMutableArray arrayWithCapacity:[infoSessionsFromResponse count]];
+//        
+//        for (NSDictionary *attributes in infoSessionsFromResponse) {
+//            InfoSession *infoSession = [[InfoSession alloc] initWithAttributes:attributes];
+//            // if start time < end time or date is nil, do not add
+//            if (!([infoSession.startTime compare:infoSession.endTime] != NSOrderedAscending ||
+//                  infoSession.date == nil ||
+//                  [infoSession.employer length] == 0)) {
+//                [mutableInfoSessions addObject:infoSession];
+//            }
+//        }
+//        
+//        if (block) {
+//            // sorted info sessions in ascending order with start time
+//            [mutableInfoSessions sortUsingComparator:^(InfoSession *info1, InfoSession *info2){
+//                return [info1 compareTo:info2];
+//            }];
+//            
+//            //[mutableInfoSessions sortedArrayUsingSelector:@selector(compareTo:)];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"infoSessionsChanged" object:self];
+//            block([NSArray arrayWithArray:mutableInfoSessions], currentTerm, nil);
+//        }
+//    } failure:^(NSURLSessionDataTask *__unused task, NSError *error) {
+//        if (block) {
+//            block([NSArray array], nil, error);
+//        }
+//    }];
+//}
 
 /**
  *  To be called after self.infoSessions is initiated.
@@ -182,6 +182,7 @@ const NSString *myApiKey = @"77881122";
         }
         return compareResult;
     }];
+    NSLog(@"processed: %d", [_infoSessionsIndexDic count]);
 }
 
 /**
@@ -490,6 +491,61 @@ const NSString *myApiKey = @"77881122";
             return true;
         }
     }
+}
+
+- (void)updateInfoSessionsWithYear:(NSInteger)year andTerm:(NSString *)term {
+    UWInfoSessionClient *client = [UWInfoSessionClient sharedInfoSessionClient];
+    client.delegate = self;
+    [client updateInfoSessionsForYear:year andTerm:term];
+}
+
+-(void)infoSessionClient:(UWInfoSessionClient *)client didUpdateWithData:(id)data {
+    NSArray *infoSessionsFromResponse = [data valueForKeyPath:@"data"];
+    NSString *currentTerm = [data valueForKeyPath:@"meta.term"];
+    
+    // new empty array to store infoSessions
+    NSMutableArray *mutableInfoSessions = [NSMutableArray arrayWithCapacity:[infoSessionsFromResponse count]];
+    
+    for (NSDictionary *attributes in infoSessionsFromResponse) {
+        InfoSession *infoSession = [[InfoSession alloc] initWithAttributes:attributes];
+        // if start time < end time or date is nil, do not add
+        if (!([infoSession.startTime compare:infoSession.endTime] != NSOrderedAscending ||
+              infoSession.date == nil ||
+              [infoSession.employer length] == 0)) {
+            [mutableInfoSessions addObject:infoSession];
+        }
+    }
+    
+    // sorted info sessions in ascending order with start time
+    [mutableInfoSessions sortUsingComparator:^(InfoSession *info1, InfoSession *info2){
+        return [info1 compareTo:info2];
+    }];
+    
+    //[mutableInfoSessions sortedArrayUsingSelector:@selector(compareTo:)];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"infoSessionsChanged" object:self];
+    
+    self.infoSessions = mutableInfoSessions;
+    self.currentTerm = currentTerm;
+    [self setYearAndTerm];
+    
+    // process infoSessionsDictionary, used for dividing infoSessions into different weeks
+    [self.infoSessionsDictionary removeAllObjects];
+    [self processInfoSessionsDictionary:self.infoSessionsDictionary withInfoSessions:self.infoSessions];
+    // update my infoSessions, if same info sessions have been saved before, update to newest information
+    [self updateMyInfoSessions];
+    
+    // save to TermDic.
+    [self saveToTermInfoDic];
+    [self.delegate infoSessionModeldidUpdateInfoSessions:self];
+
+}
+
+-(void)infoSessionClient:(UWInfoSessionClient *)client didFailWithError:(NSError *)error {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Info Sessions"
+                                                        message:[NSString stringWithFormat:@"%@",error]
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alertView show];
 }
 
 @end

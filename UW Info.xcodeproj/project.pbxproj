@@ -38,7 +38,7 @@
 		1B2F748918AF66210042322B /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F748118AF66210042322B /* UIWebView+AFNetworking.m */; };
 		1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */; };
 		1B37453718A5BA28007CF08C /* InfoSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37453618A5BA28007CF08C /* InfoSession.m */; };
-		1B37453C18A5D0CE007CF08C /* AFUwaterlooApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37453B18A5D0CE007CF08C /* AFUwaterlooApiClient.m */; };
+		1B37453C18A5D0CE007CF08C /* UWInfoSessionClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37453B18A5D0CE007CF08C /* UWInfoSessionClient.m */; };
 		1B4DD55618AC90B4009B0214 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4DD55518AC90B4009B0214 /* MapViewController.m */; };
 		1B59BB2018C441AA00D6112B /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B59BB1F18C441AA00D6112B /* SearchViewController.m */; };
 		1B6EDE4E18C66DB800EBFEB9 /* UWTodayButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B6EDE4D18C66DB800EBFEB9 /* UWTodayButton.m */; };
@@ -145,8 +145,8 @@
 		1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSessionsViewController.m; path = ViewController/InfoSessionsViewController.m; sourceTree = "<group>"; };
 		1B37453518A5BA28007CF08C /* InfoSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InfoSession.h; path = Model/InfoSession.h; sourceTree = "<group>"; };
 		1B37453618A5BA28007CF08C /* InfoSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSession.m; path = Model/InfoSession.m; sourceTree = "<group>"; };
-		1B37453A18A5D0CE007CF08C /* AFUwaterlooApiClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFUwaterlooApiClient.h; sourceTree = "<group>"; };
-		1B37453B18A5D0CE007CF08C /* AFUwaterlooApiClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFUwaterlooApiClient.m; sourceTree = "<group>"; };
+		1B37453A18A5D0CE007CF08C /* UWInfoSessionClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWInfoSessionClient.h; sourceTree = "<group>"; };
+		1B37453B18A5D0CE007CF08C /* UWInfoSessionClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWInfoSessionClient.m; sourceTree = "<group>"; };
 		1B4DD55418AC90B4009B0214 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapViewController.h; path = ViewController/MapViewController.h; sourceTree = "<group>"; };
 		1B4DD55518AC90B4009B0214 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = ViewController/MapViewController.m; sourceTree = "<group>"; };
 		1B59BB1E18C441AA00D6112B /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchViewController.h; path = ViewController/SearchViewController.h; sourceTree = "<group>"; };
@@ -386,8 +386,8 @@
 		1B37453D18A5D0D6007CF08C /* Networking Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				1B37453A18A5D0CE007CF08C /* AFUwaterlooApiClient.h */,
-				1B37453B18A5D0CE007CF08C /* AFUwaterlooApiClient.m */,
+				1B37453A18A5D0CE007CF08C /* UWInfoSessionClient.h */,
+				1B37453B18A5D0CE007CF08C /* UWInfoSessionClient.m */,
 			);
 			name = "Networking Extensions";
 			path = ..;
@@ -656,7 +656,7 @@
 				1B2F748218AF66210042322B /* AFNetworkActivityIndicatorManager.m in Sources */,
 				1B2F748418AF66210042322B /* UIAlertView+AFNetworking.m in Sources */,
 				1B050C8818BFBD1700DCC342 /* REMenu.m in Sources */,
-				1B37453C18A5D0CE007CF08C /* AFUwaterlooApiClient.m in Sources */,
+				1B37453C18A5D0CE007CF08C /* UWInfoSessionClient.m in Sources */,
 				1B050C8B18BFBD1700DCC342 /* REMenuContainerView.m in Sources */,
 				1B19834918A618A60022A285 /* DetailViewController.m in Sources */,
 				1B2F746818AF66190042322B /* AFHTTPRequestOperationManager.m in Sources */,

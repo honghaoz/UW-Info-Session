@@ -7,6 +7,9 @@
 //
 
 #import "InfoSession.h"
+#import "UWInfoSessionClient.h"
+@class InfoSessionModel;
+
 typedef NS_ENUM(NSUInteger, UW){
     UWAdded,
     UWReplaced,
@@ -20,7 +23,15 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
     UWFall
 };
 
-@interface InfoSessionModel : InfoSession <NSCoding>
+@protocol InfoSessionModelDelegate <NSObject>
+
+- (void)infoSessionModeldidUpdateInfoSessions:(InfoSessionModel *)model;
+
+@end
+
+@interface InfoSessionModel : InfoSession <NSCoding, UWInfoSessionClientDelegate>
+
+@property (nonatomic, weak) id <InfoSessionModelDelegate> delegate;
 
 // info sessions data retrived from api
 @property (nonatomic, strong) NSArray *infoSessions;
@@ -51,7 +62,7 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 
 - (void)processInfoSessionsIndexDic;
 
-+ (NSURLSessionTask *)infoSessions:(NSInteger)year andTerm:(NSString *)term withBlock:(void (^)(NSArray *sessions, NSString *currentTerm, NSError *error))block;
+//+ (NSURLSessionTask *)infoSessions:(NSInteger)year andTerm:(NSString *)term withBlock:(void (^)(NSArray *sessions, NSString *currentTerm, NSError *error))block;
 
 + (NSInteger)findInfoSession:(InfoSession *)infoSession in:(NSArray *)array;
 + (NSInteger)findInfoSessionIdentifier:(NSString *)infoSessionId in:(NSMutableArray *)array;
@@ -74,5 +85,7 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 
 - (void)saveToTermInfoDic;
 - (BOOL)readInfoSessionsWithTerm:(NSString *)term;
+
+- (void)updateInfoSessionsWithYear:(NSInteger)year andTerm:(NSString *)term;
 
 @end
