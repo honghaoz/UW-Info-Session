@@ -14,15 +14,23 @@
 
 @property (nonatomic, weak) id <UWInfoSessionClientDelegate>delegate;
 
-+ (instancetype)sharedInfoSessionClient;
++ (instancetype)sharedApiKeyClient;
++ (instancetype)infoSessionClientWithBaseURL:(NSURL *)url;
 - (instancetype)initWithBaseURL:(NSURL *)url;
-- (void)updateInfoSessionsForYear:(NSInteger)year andTerm:(NSString *)term;
+
+- (void)getApiKey;
+- (void)updateInfoSessionsForYear:(NSInteger)year andTerm:(NSString *)term andApiKey:(NSString *)apiKey;
 
 @end
 
 @protocol UWInfoSessionClientDelegate <NSObject>
 
 @optional
+
 -(void)infoSessionClient:(UWInfoSessionClient *)client didUpdateWithData:(id)data;
 -(void)infoSessionClient:(UWInfoSessionClient *)client didFailWithError:(NSError *)error;
+
+-(void)apiClient:(UWInfoSessionClient *)client didUpdateWithApiKey:(NSString *)apiKey;
+-(void)apiClient:(UWInfoSessionClient *)client didFailWithError:(NSError *)error;
+
 @end

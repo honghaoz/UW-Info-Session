@@ -587,6 +587,7 @@
  *  @param indexPath indexPath
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     // Refreshing cell
     if ([_infoSessionModel.infoSessionsDictionary count] == 0) {
         return;

@@ -178,11 +178,79 @@ class Json(BasicHandler):
             self.write(response)
         else:
             self.write(json.dumps(renderResponse([])))
-        
 
+class Keys(ndb.Model):
+    number_of_keys = ndb.IntegerProperty(required = True)
+    totoal_uses = ndb.IntegerProperty(required = True)
+
+class aKey(ndb.Model):
+    uses = ndb.IntegerProperty(required = True)
+
+class GetKey(BasicHandler):
+    def get(self):
+        key = self.request.get("key")
+        self.response.headers["Content-Type"] = "application/json"
+        if key == '77881122':
+            newKey = 0
+            # get the only one Keys DB, if not exists, creat one
+            alreadyExistedKeys = Keys.get_by_id(1000)
+            if alreadyExistedKeys == None:
+                Keys(id = 1000, number_of_keys = 1, totoal_uses = 0).put()
+                newKey = 1
+                updateNumberOfKeys(newKey)
+                logging.info("Key: %d", newKey)
+            else :
+                newKey = alreadyExistedKeys.number_of_keys + 1
+                totoal_uses = alreadyExistedKeys.totoal_uses
+                Keys(id = 1000, number_of_keys = newKey, totoal_uses = totoal_uses).put()
+                updateNumberOfKeys(newKey)
+                logging.info("Key: %d", newKey)
+
+            response = {"key" : newKey, "status" : "valid"}
+            self.write(json.dumps(response))
+        else:
+            response = {'key': 0, "status" : "invalid"}
+            self.write(json.dumps(response))
+
+# PRE: Keys must exist one
+class Logkey(BasicHandler):
+    def get(self):
+        key = int(self.request.get("key"))
+        alreadyExistedKeys = Keys.get_by_id(1000)
+        Keys(id = 1000, number_of_keys = alreadyExistedKeys.number_of_keys, totoal_uses = alreadyExistedKeys.totoal_uses + 1).put()
+        existAKey = aKey.get_by_id(key)
+        if existAKey == None:
+            aKey(id = key, uses = 1).put()
+            logging.info("Key: %d, Uses: %d", key, 1)
+            self.write("log")
+        else:
+            newUses = existAKey.uses + 1
+            aKey(id = key, uses = newUses).put()
+            logging.info("Key: %d, Uses: %d", key, newUses)
+            self.write("log")
+
+
+class getNumberOfKeys(BasicHandler):
+    def get(self):
+        alreadyExistedKeys = Keys.get_by_id(1000)
+        if alreadyExistedKeys == None:
+            response = {"number_of_keys" : 0}
+            self.write(json.dumps(response))
+        else :
+            response = {"number_of_keys" : alreadyExistedKeys.number_of_keys}
+            self.write(json.dumps(response))
+
+def updateNumberOfKeys(number_of_keys):
+    queryURL1 = "http://uw-info1.appspot.com/set_number_of_keys?num=" + str(number_of_keys)
+    queryURL2 = "http://uw-info2.appspot.com/set_number_of_keys?num=" + str(number_of_keys)
+    urllib2.urlopen(queryURL1)
+    urllib2.urlopen(queryURL2)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+    ('/getkey', GetKey),
+    ('/logkey', Logkey),
+    ('/get_number_of_keys', getNumberOfKeys),
     ('/infosessions/([0-9]{4}[A-Z]{1}[a-z]{2}).json', JsonOneMonth),
     ('/infosessions.json', Json)
 ], debug=True)

@@ -14,7 +14,14 @@
 
 //const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 //const NSString *apiKey1 =  @"913034dae16d7233dd1683713cbb4721";
-const NSString *myApiKey = @"77881122";
+
+@interface InfoSessionModel()
+
+@property (nonatomic, copy) NSString *apiKey;
+@property (nonatomic, copy) NSString *infoSessionBaseURLString;
+
+@end
+
 
 @implementation InfoSessionModel
 
@@ -74,6 +81,30 @@ const NSString *myApiKey = @"77881122";
     _infoSessionsDictionary = nil;
     _currentTerm = nil;
     [self setYearAndTerm];
+}
+
+- (NSString *)apiKey {
+    if (_apiKey == nil) {
+        _apiKey = @"0";
+    }
+    return _apiKey;
+}
+
+- (NSString *)infoSessionBaseURLString {
+    if (_infoSessionBaseURLString == nil) {
+        _infoSessionBaseURLString = @"http://uw-info1.appspot.com/";
+    }
+    return _infoSessionBaseURLString;
+}
+
+- (void)switchInfoSessionBaseURLString {
+    NSLog(@"switch!");
+    if ([self.infoSessionBaseURLString isEqual:@"http://uw-info1.appspot.com/"]) {
+        self.infoSessionBaseURLString = @"http://uw-info2.appspot.com/";
+    } else if ([self.infoSessionBaseURLString isEqual:@"http://uw-info2.appspot.com/"]) {
+        self.infoSessionBaseURLString = @"http://uw-info1.appspot.com/";
+    }
+    NSLog(@"switched to %@", self.infoSessionBaseURLString);
 }
 
 /**
@@ -182,7 +213,6 @@ const NSString *myApiKey = @"77881122";
         }
         return compareResult;
     }];
-    NSLog(@"processed: %d", [_infoSessionsIndexDic count]);
 }
 
 /**
@@ -350,6 +380,7 @@ const NSString *myApiKey = @"77881122";
     [archiver encodeInteger:_year forKey:@"year"];
     [archiver encodeObject:_term forKey:@"term"];
     [archiver encodeObject:_termInfoDic forKey:@"termInfoDic"];
+    [archiver encodeObject:_apiKey forKey:@"apiKey"];
     [archiver finishEncoding];
     [data writeToFile:[InfoSessionModel dataFilePath:@"InfoSession.plist"] atomically:YES];
 }
@@ -366,6 +397,7 @@ const NSString *myApiKey = @"77881122";
         _year = [unarchiver decodeIntegerForKey:@"year"];
         _term = [unarchiver decodeObjectForKey:@"term"];
         _termInfoDic = [unarchiver decodeObjectForKey:@"termInfoDic"];
+        _apiKey = [unarchiver decodeObjectForKey:@"apiKey"];
         [unarchiver finishDecoding];
     }else{
         //self.lists = [[NSMutableArray alloc]initWithCapacity:20];
@@ -413,6 +445,7 @@ const NSString *myApiKey = @"77881122";
         self.year = [aDecoder decodeIntegerForKey:@"year"];
         self.term = [aDecoder decodeObjectForKey:@"term"];
         self.termInfoDic = [aDecoder decodeObjectForKey:@"termInfoDic"];
+        self.apiKey = [aDecoder decodeObjectForKey:@"apiKey"];
         
     }
     return self;
@@ -426,6 +459,7 @@ const NSString *myApiKey = @"77881122";
     [aCoder encodeInteger:self.year forKey:@"year"];
     [aCoder encodeObject:self.term forKey:@"term"];
     [aCoder encodeObject:self.termInfoDic forKey:@"termInfoDic"];
+    [aCoder encodeObject:self.apiKey forKey:@"apiKey"];
 }
 
 /**
@@ -493,10 +527,27 @@ const NSString *myApiKey = @"77881122";
     }
 }
 
+- (void)setApiKey {
+    UWInfoSessionClient *apiClient = [UWInfoSessionClient sharedApiKeyClient];
+    apiClient.delegate = self;
+    [apiClient getApiKey];
+}
+
 - (void)updateInfoSessionsWithYear:(NSInteger)year andTerm:(NSString *)term {
-    UWInfoSessionClient *client = [UWInfoSessionClient sharedInfoSessionClient];
-    client.delegate = self;
-    [client updateInfoSessionsForYear:year andTerm:term];
+//    NSLog(@"start to update");
+    _year = year;
+    _term = term;
+    if ([self.apiKey isEqualToString:@"0"]) {
+//        NSLog(@"key is 0");
+        [self setApiKey];
+    }
+    else {
+//        NSLog(@"key is %@", self.apiKey);
+        
+        UWInfoSessionClient *client = [UWInfoSessionClient infoSessionClientWithBaseURL:[NSURL URLWithString:self.infoSessionBaseURLString]];
+        client.delegate = self;
+        [client updateInfoSessionsForYear:year andTerm:term andApiKey:self.apiKey];
+    }
 }
 
 -(void)infoSessionClient:(UWInfoSessionClient *)client didUpdateWithData:(id)data {
@@ -521,9 +572,6 @@ const NSString *myApiKey = @"77881122";
         return [info1 compareTo:info2];
     }];
     
-    //[mutableInfoSessions sortedArrayUsingSelector:@selector(compareTo:)];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"infoSessionsChanged" object:self];
-    
     self.infoSessions = mutableInfoSessions;
     self.currentTerm = currentTerm;
     [self setYearAndTerm];
@@ -536,12 +584,31 @@ const NSString *myApiKey = @"77881122";
     
     // save to TermDic.
     [self saveToTermInfoDic];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"infoSessionsChanged" object:self];
     [self.delegate infoSessionModeldidUpdateInfoSessions:self];
 
 }
 
+// only called when 503 is return
 -(void)infoSessionClient:(UWInfoSessionClient *)client didFailWithError:(NSError *)error {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Info Sessions"
+//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Info Sessions"
+//                                                        message:[NSString stringWithFormat:@"%@",error]
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//    [alertView show];
+    [self switchInfoSessionBaseURLString];
+    [self updateInfoSessionsWithYear:_year andTerm:_term];
+}
+
+-(void)apiClient:(UWInfoSessionClient *)client didUpdateWithApiKey:(NSString *)apiKey {
+//    NSLog(@"set key %@", apiKey);
+    self.apiKey = (NSString *)[apiKey copy];
+//    NSLog(@"update again");
+    [self updateInfoSessionsWithYear:_year andTerm:_term];
+}
+
+-(void)apiClient:(UWInfoSessionClient *)client didFailWithError:(NSError *)error {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving API key"
                                                         message:[NSString stringWithFormat:@"%@",error]
                                                        delegate:nil
                                               cancelButtonTitle:@"OK" otherButtonTitles:nil];

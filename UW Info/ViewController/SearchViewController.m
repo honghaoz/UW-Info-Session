@@ -120,7 +120,6 @@
 }
 
 - (void)scrollToFirstRow{
-    NSLog(@"scroll to 1st");
     [self reloadTable];
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
@@ -128,7 +127,6 @@
 - (void)reloadTable {
     [_infoSessionModel processInfoSessionsIndexDic];
     [self setSectionIndex];
-    NSLog(@"%d", [_infoSessionModel.infoSessionsIndexDic count]);
     _detailLabel.text = _infoSessionModel.currentTerm;
     [self.tableView reloadData];
     [self.tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
