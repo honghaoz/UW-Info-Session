@@ -182,9 +182,13 @@ class Json(BasicHandler):
 class Keys(ndb.Model):
     number_of_keys = ndb.IntegerProperty(required = True)
     totoal_uses = ndb.IntegerProperty(required = True)
+    created_time = ndb.DateTimeProperty(auto_now_add = True)
+    last_modified = ndb.DateTimeProperty(auto_now = True)
 
 class aKey(ndb.Model):
     uses = ndb.IntegerProperty(required = True)
+    created_time = ndb.DateTimeProperty(auto_now_add = True)
+    last_modified = ndb.DateTimeProperty(auto_now = True)
 
 class GetKey(BasicHandler):
     def get(self):
@@ -195,17 +199,19 @@ class GetKey(BasicHandler):
             # get the only one Keys DB, if not exists, creat one
             alreadyExistedKeys = Keys.get_by_id(1000)
             if alreadyExistedKeys == None:
+                logging.info("create")
                 Keys(id = 1000, number_of_keys = 1, totoal_uses = 0).put()
                 newKey = 1
                 updateNumberOfKeys(newKey)
                 logging.info("Key: %d", newKey)
             else :
+                logging.info("update")
                 newKey = alreadyExistedKeys.number_of_keys + 1
-                totoal_uses = alreadyExistedKeys.totoal_uses
-                Keys(id = 1000, number_of_keys = newKey, totoal_uses = totoal_uses).put()
+                alreadyExistedKeys.number_of_keys = newKey
+                alreadyExistedKeys.put()
+                #Keys(id = 1000, number_of_keys = newKey, totoal_uses = totoal_uses).put()
                 updateNumberOfKeys(newKey)
                 logging.info("Key: %d", newKey)
-
             response = {"key" : newKey, "status" : "valid"}
             self.write(json.dumps(response))
         else:
@@ -222,12 +228,10 @@ class Logkey(BasicHandler):
         if existAKey == None:
             aKey(id = key, uses = 1).put()
             logging.info("Key: %d, Uses: %d", key, 1)
-            self.write("log")
         else:
             newUses = existAKey.uses + 1
             aKey(id = key, uses = newUses).put()
             logging.info("Key: %d, Uses: %d", key, newUses)
-            self.write("log")
 
 
 class getNumberOfKeys(BasicHandler):
@@ -242,9 +246,9 @@ class getNumberOfKeys(BasicHandler):
 
 def updateNumberOfKeys(number_of_keys):
     queryURL1 = "http://uw-info1.appspot.com/set_number_of_keys?num=" + str(number_of_keys)
-    queryURL2 = "http://uw-info2.appspot.com/set_number_of_keys?num=" + str(number_of_keys)
+    #queryURL2 = "http://uw-info2.appspot.com/set_number_of_keys?num=" + str(number_of_keys)
     urllib2.urlopen(queryURL1)
-    urllib2.urlopen(queryURL2)
+    #urllib2.urlopen(queryURL2)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),

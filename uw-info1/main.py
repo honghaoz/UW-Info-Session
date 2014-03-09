@@ -200,13 +200,34 @@ def getMonthsOfTerm(theTerm):
 
 class Keys(ndb.Model):
     number_of_keys = ndb.IntegerProperty(required = True)
+    totoal_uses = ndb.IntegerProperty(required = True)
+    created_time = ndb.DateTimeProperty(auto_now_add = True)
+    last_modified = ndb.DateTimeProperty(auto_now = True)
+class aKey(ndb.Model):
+    uses = ndb.IntegerProperty(required = True)
+    created_time = ndb.DateTimeProperty(auto_now_add = True)
+    last_modified = ndb.DateTimeProperty(auto_now = True)
 
 class setNumberOfKeys(BasicHandler):
     """json format one month"""
     def get(self):
         num = int(self.request.get("num"))
         logging.info('set num of keys: %d', num)
-        Keys(id = 1000, number_of_keys = num).put()
+        alreadyExistedKeys = Keys.get_by_id(1000)
+        totoal_uses = 0
+        if alreadyExistedKeys == None:
+            logging.info("create")
+            totoal_uses = 0
+            Keys(id = 1000, number_of_keys = num, totoal_uses = totoal_uses).put()
+        else :
+            logging.info("update")
+            alreadyExistedKeys.number_of_keys = num
+            alreadyExistedKeys.put()
+            # totoal_uses = alreadyExistedKeys.totoal_uses
+        # Keys(id = 1000, number_of_keys = num, totoal_uses = totoal_uses).put()
+        # add new key
+        logging.info("add new aKey: %d", num)
+        aKey(id = num, uses = 0).put()
 
 # PRE: Keys exists
 def getMaxNumberOfKeys():
@@ -214,14 +235,35 @@ def getMaxNumberOfKeys():
     # queryResult = urllib2.urlopen(queryURL).read()
     # jsonResult = json.loads(queryResult)
     # return int(jsonResult['number_of_keys'])
-
     alreadyExistedKeys = Keys.get_by_id(1000)
     if not alreadyExistedKeys == None:
         return alreadyExistedKeys.number_of_keys
+    else :
+        logging.error("getMaxNumberOfKeys error: Keys is not queried")
+        return 0
 
 def logKeyUsage(key):
-    queryURL = "http://uw-info.appspot.com/logkey"
-    urllib2.urlopen(queryURL + '?key=' + str(key))
+    alreadyExistedKeys = Keys.get_by_id(1000)
+    if not alreadyExistedKeys == None:
+        alreadyExistedKeys.totoal_uses += 1
+        alreadyExistedKeys.put()
+        #Keys(id = 1000, number_of_keys = alreadyExistedKeys.number_of_keys, totoal_uses = alreadyExistedKeys.totoal_uses + 1).put()
+    else :
+        logging.error("logKeyUsage error: Keys is not queried")
+    existAKey = aKey.get_by_id(key)
+    if existAKey == None:
+        logging.error("logKeyUsage error: aKey is not queried")
+        aKey(id = key, uses = 1).put()
+        logging.error("Key: %d, Uses: %d", key, 1)
+    else:
+        newUses = existAKey.uses + 1
+        existAKey.uses = newUses
+        existAKey.put()
+        #aKey(id = key, uses = newUses).put()
+        logging.info("Key: %d, Uses: %d", key, newUses)
+#def sendKeyUsage():
+    # queryURL = "http://uw-info.appspot.com/logkey"
+    # urllib2.urlopen(queryURL + '?key=' + str(key))
 
 class JsonOneMonth(BasicHandler):
     """json format one month"""
