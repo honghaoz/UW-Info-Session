@@ -210,7 +210,7 @@ class GetKey(BasicHandler):
                 Keys(id = 1000, number_of_keys = 1, totoal_uses = 0).put()
                 newKey = 1
                 updateNumberOfKeys(newKey)
-                logging.info("Key: %d", newKey)
+                #logging.info("Key: %d", newKey)
             else :
                 logging.info("update")
                 newKey = alreadyExistedKeys.number_of_keys + 1
@@ -218,7 +218,7 @@ class GetKey(BasicHandler):
                 alreadyExistedKeys.put()
                 #Keys(id = 1000, number_of_keys = newKey, totoal_uses = totoal_uses).put()
                 updateNumberOfKeys(newKey)
-                logging.info("Key: %d", newKey)
+                #logging.info("Key: %d", newKey)
             response = {"key" : newKey, "status" : "valid"}
             self.write(json.dumps(response))
         else:
@@ -260,7 +260,7 @@ class SumUpUsage(BasicHandler):
                         eachid = each_usage['key']
                         uses = each_usage['uses']
                         totoal_uses += uses
-                        eachAKey = aKey.get_by_id(eachid)
+                        eachAKey = aKey.get_by_id(int(eachid))
                         if eachAKey == None:
                             aKey(id = eachid, uses = uses).put()
                             logging.info("create usage: key: %s uses: %s", eachid, uses)
@@ -320,6 +320,9 @@ def get_uses_from_usage_list(key, usage):
 #             self.write(json.dumps(response))
 
 def updateNumberOfKeys(number_of_keys):
+    # add new key
+    logging.info("add new aKey: %d", number_of_keys)
+    aKey(id = number_of_keys, uses = 0).put()
     queryURL1 = "http://uw-info1.appspot.com/set_number_of_keys?num=" + str(number_of_keys)
     queryURL2 = "http://uw-info2.appspot.com/set_number_of_keys?num=" + str(number_of_keys)
     try:
