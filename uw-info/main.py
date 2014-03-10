@@ -84,7 +84,14 @@ def renderResponse(listOfMonths):
     sessions = []
     numbers = []
     for month in listOfMonths:
-        html = urllib2.urlopen(CECA_URL%month).read()
+        try:
+            html = urllib2.urlopen(CECA_URL%month).read()
+        except urllib2.HTTPError, e:
+            logging.error('render CECA_URL error: Exception thrown')
+            logging.error(e.code)
+            logging.error(e.msg)
+            logging.error(e.headers)
+            logging.error(e.fp.read())
 
         logging.info(month)
         # find all the fields individually. note the order matters.
@@ -218,43 +225,126 @@ class GetKey(BasicHandler):
             response = {'key': 0, "status" : "invalid"}
             self.write(json.dumps(response))
 
+class SumUpUsage(BasicHandler):
+    def get(self):
+        queryURL1 = "http://uw-info1.appspot.com/get_key_usage"
+        queryURL2 = "http://uw-info2.appspot.com/get_key_usage"
+        # query from info1
+        urlOpen = urllib2.urlopen(queryURL1)
+        queryResult = urlOpen.read()
+        jsonResult = json.loads(queryResult)
+        # if info1 status is valid
+        try:
+            if urlOpen.getcode() == 200 and jsonResult['status'] == 'valid':
+                logging.info('info1 SumUpUsage: status valid')
+                usage1 = jsonResult['usage']
+                # query from info2
+                urlOpen = urllib2.urlopen(queryURL2)
+                queryResult = urlOpen.read()
+                jsonResult = json.loads(queryResult)
+                totoal_uses = 0;
+                logging.info(urlOpen.getcode())
+                # if info2 status is valid
+                if urlOpen.getcode() == 200 and jsonResult['status'] == 'valid':
+                    logging.info('info2 SumUpUsage: status valid')
+                    usage2 = jsonResult['usage']
+                    usage = []
+                    for each_usage in usage1:
+                        eachid = each_usage['key']
+                        uses = each_usage['uses']
+                        # sum uses for same key from two usages
+                        uses += get_uses_from_usage_list(eachid, usage2)
+                        usage.append({'key' : eachid, 'uses': uses})
+
+                    for each_usage in usage:
+                        eachid = each_usage['key']
+                        uses = each_usage['uses']
+                        totoal_uses += uses
+                        eachAKey = aKey.get_by_id(eachid)
+                        if eachAKey == None:
+                            aKey(id = eachid, uses = uses).put()
+                            logging.info("create usage: key: %s uses: %s", eachid, uses)
+                        else:
+                            eachAKey.uses = uses
+                            eachAKey.put()
+                            logging.info("update usage: key: %s uses: %s", eachid, uses)
+                    alreadyExistedKeys = Keys.get_by_id(1000)
+                    if not alreadyExistedKeys == None:
+                        alreadyExistedKeys.totoal_uses = totoal_uses
+                        alreadyExistedKeys.put()
+                        logging.info('update totoal_uses: %d', totoal_uses)
+                    else :
+                        logging.error("update totoal_uses error")
+                else:
+                    logging.error('info2 SumUpUsage error: status invalid')
+            else:
+                logging.error('info1 SumUpUsage error: status invalid')
+        except urllib2.HTTPError, e:
+            logging.error('SumUpUsage error: Exception thrown')
+            logging.error(e.code)
+            logging.error(e.msg)
+            logging.error(e.headers)
+            logging.error(e.fp.read())
+
+def get_uses_from_usage_list(key, usage):
+    for each_usage in usage:
+        eachid = each_usage['key']
+        if eachid == key:
+            return each_usage['uses']
+    return 0
+
 # PRE: Keys must exist one
-class Logkey(BasicHandler):
-    def get(self):
-        key = int(self.request.get("key"))
-        alreadyExistedKeys = Keys.get_by_id(1000)
-        Keys(id = 1000, number_of_keys = alreadyExistedKeys.number_of_keys, totoal_uses = alreadyExistedKeys.totoal_uses + 1).put()
-        existAKey = aKey.get_by_id(key)
-        if existAKey == None:
-            aKey(id = key, uses = 1).put()
-            logging.info("Key: %d, Uses: %d", key, 1)
-        else:
-            newUses = existAKey.uses + 1
-            aKey(id = key, uses = newUses).put()
-            logging.info("Key: %d, Uses: %d", key, newUses)
+# class Logkey(BasicHandler):
+#     def get(self):
+#         key = int(self.request.get("key"))
+#         alreadyExistedKeys = Keys.get_by_id(1000)
+#         Keys(id = 1000, number_of_keys = alreadyExistedKeys.number_of_keys, totoal_uses = alreadyExistedKeys.totoal_uses + 1).put()
+#         existAKey = aKey.get_by_id(key)
+#         if existAKey == None:
+#             aKey(id = key, uses = 1).put()
+#             logging.info("Key: %d, Uses: %d", key, 1)
+#         else:
+#             newUses = existAKey.uses + 1
+#             aKey(id = key, uses = newUses).put()
+#             logging.info("Key: %d, Uses: %d", key, newUses)
 
 
-class getNumberOfKeys(BasicHandler):
-    def get(self):
-        alreadyExistedKeys = Keys.get_by_id(1000)
-        if alreadyExistedKeys == None:
-            response = {"number_of_keys" : 0}
-            self.write(json.dumps(response))
-        else :
-            response = {"number_of_keys" : alreadyExistedKeys.number_of_keys}
-            self.write(json.dumps(response))
+# class getNumberOfKeys(BasicHandler):
+#     def get(self):
+#         alreadyExistedKeys = Keys.get_by_id(1000)
+#         if alreadyExistedKeys == None:
+#             response = {"number_of_keys" : 0}
+#             self.write(json.dumps(response))
+#         else :
+#             response = {"number_of_keys" : alreadyExistedKeys.number_of_keys}
+#             self.write(json.dumps(response))
 
 def updateNumberOfKeys(number_of_keys):
     queryURL1 = "http://uw-info1.appspot.com/set_number_of_keys?num=" + str(number_of_keys)
-    #queryURL2 = "http://uw-info2.appspot.com/set_number_of_keys?num=" + str(number_of_keys)
-    urllib2.urlopen(queryURL1)
-    #urllib2.urlopen(queryURL2)
+    queryURL2 = "http://uw-info2.appspot.com/set_number_of_keys?num=" + str(number_of_keys)
+    try:
+        urllib2.urlopen(queryURL1)
+    except urllib2.HTTPError, e:
+        logging.error('info1 updateNumberOfKeys error: Exception thrown')
+        logging.error(e.code)
+        logging.error(e.msg)
+        logging.error(e.headers)
+        logging.error(e.fp.read())
+    try:
+        urllib2.urlopen(queryURL2)
+    except urllib2.HTTPError, e:
+        logging.error('info1 updateNumberOfKeys error: Exception thrown')
+        logging.error(e.code)
+        logging.error(e.msg)
+        logging.error(e.headers)
+        logging.error(e.fp.read())
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/getkey', GetKey),
-    ('/logkey', Logkey),
-    ('/get_number_of_keys', getNumberOfKeys),
+    ('/sum_up_usage', SumUpUsage),
+    #('/logkey', Logkey),
+    #('/get_number_of_keys', getNumberOfKeys),
     ('/infosessions/([0-9]{4}[A-Z]{1}[a-z]{2}).json', JsonOneMonth),
     ('/infosessions.json', Json)
 ], debug=True)

@@ -88,8 +88,14 @@ def renderResponse(listOfMonths):
     sessions = []
     numbers = []
     for month in listOfMonths:
-        html = urllib2.urlopen(CECA_URL%month).read()
-
+        try:
+            html = urllib2.urlopen(CECA_URL%month).read()
+        except urllib2.HTTPError, e:
+            logging.error('render CECA_URL error: Exception thrown')
+            logging.error(e.code)
+            logging.error(e.msg)
+            logging.error(e.headers)
+            logging.error(e.fp.read())
         logging.info(month)
         # find all the fields individually. note the order matters.
         ids = get_ids(html)
@@ -261,9 +267,10 @@ def logKeyUsage(key):
         existAKey.put()
         #aKey(id = key, uses = newUses).put()
         logging.info("Key: %d, Uses: %d", key, newUses)
-#def sendKeyUsage():
-    # queryURL = "http://uw-info.appspot.com/logkey"
-    # urllib2.urlopen(queryURL + '?key=' + str(key))
+
+# def getKeyUsage():
+    #queryURL = "http://uw-info.appspot.com/logkey"
+    #urllib2.urlopen(queryURL + '?key=' + str(key))
 
 class JsonOneMonth(BasicHandler):
     """json format one month"""
@@ -313,9 +320,19 @@ class Json(BasicHandler):
         else:
             self.write(json.dumps(renderResponse([])))
 
+class getKeyUsage(BasicHandler):
+    def get(self):
+        #aKeys = ndb.gql("SELECT * FROM aKey")
+        aKeys = aKey.query()
+        usage = []
+        for each in aKeys.iter():
+            #logging.info(each.key.id())
+            usage.append({"key" : str(each.key.id()), "uses" : each.uses})
+        self.write(json.dumps({'usage': usage, 'status' : 'valid'}))
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+    ('/get_key_usage', getKeyUsage),
     ('/set_number_of_keys', setNumberOfKeys),
     ('/infosessions/([0-9]{4}[A-Z]{1}[a-z]{2}).json', JsonOneMonth),
     ('/infosessions/([0-9]{4}[A-Z]{1}[a-z]+).json', JsonOneTerm),
