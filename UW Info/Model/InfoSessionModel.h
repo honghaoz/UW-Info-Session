@@ -26,6 +26,7 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 @protocol InfoSessionModelDelegate <NSObject>
 
 - (void)infoSessionModeldidUpdateInfoSessions:(InfoSessionModel *)model;
+- (void)infoSessionModeldidUpdateFailed:(InfoSessionModel *)model;
 
 @end
 
@@ -87,5 +88,7 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 - (BOOL)readInfoSessionsWithTerm:(NSString *)term;
 
 - (void)updateInfoSessionsWithYear:(NSInteger)year andTerm:(NSString *)term;
+
+- (void)setOfflineMode:(BOOL)isOff;
 
 @end

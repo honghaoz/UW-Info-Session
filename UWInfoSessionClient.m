@@ -61,7 +61,7 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
 }
 
 - (void)getApiKey {
-    NSLog(@"get api key");
+    NSLog(@"get api key...");
     [self GET:@"getkey" parameters:@{@"key" : @"77881122"} success:^(NSURLSessionDataTask * __unused task, id responseObject) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
         if (httpResponse.statusCode == 200) {
@@ -69,6 +69,7 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
             if ([isValid isEqualToString:@"valid"]) {
                 NSString  *apiKey = [[responseObject valueForKeyPath:@"key"] stringValue];
                 if ([self.delegate respondsToSelector:@selector(apiClient:didUpdateWithApiKey:)]) {
+                    NSLog(@"key is %@", apiKey);
                     [self.delegate apiClient:self didUpdateWithApiKey:apiKey];
                 }
             }
@@ -81,6 +82,9 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
 //        else {
 //            //NSLog(@"key failed");
 //        }
+        if ([self.delegate respondsToSelector:@selector(apiClient:didFailWithError:)]) {
+            [self.delegate apiClient:self didFailWithError:error];
+        }
     }];
 }
 
@@ -94,10 +98,11 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
     } else {
         getTarget = [NSString stringWithFormat:@"infosessions/%ld%@.json", (long)year, term];
     }
+    NSLog(@"%@", getTarget);
     [self GET:getTarget parameters:@{@"key" : apiKey} success:^(NSURLSessionDataTask * __unused task, id responseObject) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
         //NSLog(@"%@" ,[httpResponse allHeaderFields]);
-        
+        NSLog(@"success");
         if (httpResponse.statusCode == 200) {
             if ([self.delegate respondsToSelector:@selector(infoSessionClient:didUpdateWithData:)]) {
                 [self.delegate infoSessionClient:self didUpdateWithData:responseObject];
@@ -121,12 +126,12 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
         if (httpResponse.statusCode == 503) {
             //NSLog(@"503");
             
-            if ([self.delegate respondsToSelector:@selector(infoSessionClient:didFailWithError:)]) {
-                [self.delegate infoSessionClient:self didFailWithError:error];
+            if ([self.delegate respondsToSelector:@selector(infoSessionClient:didFailWithCode:)]) {
+                [self.delegate infoSessionClient:self didFailWithCode:503];
             }
         }
         else {
-            [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:self cancelButtonTitle:@"Try again" otherButtonTitles: nil];
+            [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:self cancelButtonTitle:@"Offline data" otherButtonTitles:@"Try again", nil];
         }
     }];
 }
@@ -134,7 +139,17 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
 #pragma mark - UIAlertViewDelegate methods
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    [self updateInfoSessionsForYear:yearToQuery andTerm:termToQuery andApiKey:apiKeyToUse];
+    NSLog(@"buttonIndex: %d", buttonIndex);
+    if (buttonIndex == 1) {
+        //[self updateInfoSessionsForYear:yearToQuery andTerm:termToQuery andApiKey:apiKeyToUse];
+        if ([self.delegate respondsToSelector:@selector(infoSessionClient:didFailWithCode:)]) {
+            [self.delegate infoSessionClient:self didFailWithCode:1];
+        }
+    } else {
+        if ([self.delegate respondsToSelector:@selector(infoSessionClient:didFailWithCode:)]) {
+            [self.delegate infoSessionClient:self didFailWithCode:-1];
+        }
+    }
 }
 
 @end

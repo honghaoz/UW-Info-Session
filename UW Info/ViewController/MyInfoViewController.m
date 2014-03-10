@@ -105,7 +105,7 @@
         if (_infoSessionModel == nil || [_infoSessionModel.myInfoSessions count] == 0) {
             LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
             cell.loadingIndicator.hidden = YES;
-            cell.loadingLabel.text = @"No info session saved";
+            cell.loadingLabel.text = @"No Info Sessions Saved";
             [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
             [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
             return cell;
@@ -286,16 +286,16 @@
             [_infoSessionModel saveInfoSessions];
         }
         if ([_infoSessionModel.myInfoSessions count] != 0) {
-            NSLog(@"not 0");
+            //NSLog(@"not 0");
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
         // if last item is deleted
         else {
-            NSLog(@"is 0");
+            //NSLog(@"is 0");
             [tableView reloadData];
             [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            NSLog(@"reloaded");
+            //NSLog(@"reloaded");
             if ([self.tableView isEditing]){
                 [self enterEditMode:nil];
             }

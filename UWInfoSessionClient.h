@@ -28,7 +28,7 @@
 @optional
 
 -(void)infoSessionClient:(UWInfoSessionClient *)client didUpdateWithData:(id)data;
--(void)infoSessionClient:(UWInfoSessionClient *)client didFailWithError:(NSError *)error;
+-(void)infoSessionClient:(UWInfoSessionClient *)client didFailWithCode:(NSInteger)code;
 
 -(void)apiClient:(UWInfoSessionClient *)client didUpdateWithApiKey:(NSString *)apiKey;
 -(void)apiClient:(UWInfoSessionClient *)client didFailWithError:(NSError *)error;

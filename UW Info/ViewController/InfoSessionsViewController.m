@@ -125,14 +125,24 @@
  */
 - (void)reload:(__unused id)sender {
     classOfRefreshSender = NSStringFromClass([sender class]);
+    //NSLog(@"sender: %@", classOfRefreshSender);
+    if ([classOfRefreshSender isEqualToString:@"UIBarButtonItem"] ||
+        [classOfRefreshSender isEqualToString:@"UIRefreshControl"]) {
+        [_infoSessionModel setOfflineMode:NO];
+    }
     if (isReloading == NO) {
+        //NSLog(@"reload");
         isReloading = YES;
         // if reload sender is not UIRefreshControll, do not clear table
         if (![classOfRefreshSender isEqualToString:@"UIRefreshControl"]) {
             // reload ended, end refreshing
             [self.refreshControl endRefreshing];
             self.refreshControl = nil;
-            [_infoSessionModel clearInfoSessions];
+            //[_infoSessionModel clearInfoSessions];
+            _infoSessionModel.infoSessions = nil;
+            _infoSessionModel.infoSessionsDictionary = nil;
+            _infoSessionModel.currentTerm = nil;
+            [_infoSessionModel setYearAndTerm];
             [self.tableView reloadData];
             [self reloadSection:0 WithAnimation:UITableViewRowAnimationBottom];
         }
@@ -158,35 +168,35 @@
         
         // if the target term is already saved in _infoSessionModel.termInfoDic, then read it directly.
         if (![classOfRefreshSender isEqualToString:@"UIBarButtonItem"] &&
-            ![classOfRefreshSender isEqualToString:@"UIRefreshControl"] &&
-            [_infoSessionModel readInfoSessionsWithTerm:[NSString stringWithFormat:@"%li %@", (long)_shownYear, _shownTerm]]) {
+            ![classOfRefreshSender isEqualToString:@"UIRefreshControl"] && [_infoSessionModel readInfoSessionsWithTerm:[NSString stringWithFormat:@"%li %@", (long)_shownYear, _shownTerm]]) {
+        
+//            // set termMenu
+//            _termMenu.infoSessionModel = _infoSessionModel;
+//            [_termMenu setDetailLabel];
             
-            // set termMenu
-            _termMenu.infoSessionModel = _infoSessionModel;
-            [_termMenu setDetailLabel];
+//            // reload ended, end refreshing
+//            [self.refreshControl endRefreshing];
+//            // reload TableView data
+//            [self.tableView reloadData];
+//            // is sender is not UIRefreshControl, scroll TableView to current date
+//            if (![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"]) {
+//                [self scrollToToday];
+//            }
             
-            // reload ended, end refreshing
-            [self.refreshControl endRefreshing];
-            // reload TableView data
-            [self.tableView reloadData];
-            // is sender is not UIRefreshControl, scroll TableView to current date
-            if (![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"]) {
-                [self scrollToToday];
-            }
-            
-            // reload sections animations
-            [self reloadSection:-1 WithAnimation:UITableViewRowAnimationAutomatic];
-            
-            // restore left and right buttons
-            self.navigationItem.rightBarButtonItem.enabled = YES;
-            self.navigationItem.leftBarButtonItem.enabled = YES;
-            isReloading = NO;
-            //self.refreshControl.enabled = YES;
-            self.refreshControl = [[UIRefreshControl alloc] init];
-            [self.refreshControl addTarget:self action:@selector(reload:) forControlEvents:UIControlEventValueChanged];
+//            // reload sections animations
+//            [self reloadSection:-1 WithAnimation:UITableViewRowAnimationAutomatic];
+//            
+//            // restore left and right buttons
+//            self.navigationItem.rightBarButtonItem.enabled = YES;
+//            self.navigationItem.leftBarButtonItem.enabled = YES;
+//            isReloading = NO;
+//            //self.refreshControl.enabled = YES;
+//            self.refreshControl = [[UIRefreshControl alloc] init];
+//            [self.refreshControl addTarget:self action:@selector(reload:) forControlEvents:UIControlEventValueChanged];
         }
         // else, no infoSession saved for this target term, need update
         else {
+            //NSLog(@"updateInfoSessionsWithYear");
             [_infoSessionModel updateInfoSessionsWithYear:_shownYear andTerm:_shownTerm];
         }
     }
@@ -204,7 +214,7 @@
         [self scrollToToday];
     }
     // reload sections animations
-    [self reloadSection:-1 WithAnimation:UITableViewRowAnimationBottom];
+    [self reloadSection:-1 WithAnimation:UITableViewRowAnimationAutomatic];
     // end refreshControl
     [self.refreshControl endRefreshing];
     
@@ -212,6 +222,21 @@
     self.navigationItem.leftBarButtonItem.enabled = YES;
     isReloading = NO;
     //self.refreshControl.enabled = YES;
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(reload:) forControlEvents:UIControlEventValueChanged];
+}
+
+- (void)infoSessionModeldidUpdateFailed:(InfoSessionModel *)model {
+    //NSLog(@"infoSessionModel did Update Failed");
+    // reload TableView data
+    [self.tableView reloadData];
+    // reload sections animations
+    [self reloadSection:-1 WithAnimation:UITableViewRowAnimationBottom];
+    // end refreshControl
+    [self.refreshControl endRefreshing];
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+    self.navigationItem.leftBarButtonItem.enabled = YES;
+    isReloading = NO;
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(reload:) forControlEvents:UIControlEventValueChanged];
 }
@@ -291,7 +316,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     // if no any one infoSession in this term, show "No info sessions"
     if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions != nil) {
-        return @"No info sessions";
+        return @"No Info Sessions";
     }
     // if there's info sessions, so for certain week with no info session
     else if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions == nil) {
@@ -367,7 +392,7 @@
     if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions != nil) {
         LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
         cell.loadingIndicator.hidden = YES;
-        cell.loadingLabel.text = @"No info sessions";
+        cell.loadingLabel.text = @"No Info Sessions";
         [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
         [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
         return cell;
@@ -393,7 +418,7 @@
         if ([[self getInfoSessionsAccordingSection:indexPath.section] count] == 0) {
             LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
             cell.loadingIndicator.hidden = YES;
-            cell.loadingLabel.text = @"No info sessions";
+            cell.loadingLabel.text = @"No Info Sessions";
             [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
             [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
             return cell;

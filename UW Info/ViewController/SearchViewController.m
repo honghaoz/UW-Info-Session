@@ -242,7 +242,7 @@
             }
             
             if ([_searchResult count] == 0) {
-                cell.loadingLabel.text =  @"No info sessions";
+                cell.loadingLabel.text =  @"No Info Sessions";
             } else {
                 cell.loadingLabel.text = [NSString stringWithFormat:@"%lu Info Sessions", (unsigned long)[_searchResult count]];
             }
@@ -278,7 +278,7 @@
             }
             
             if ([_infoSessionModel.infoSessions count] == 0) {
-                cell.loadingLabel.text =  @"No info sessions";
+                cell.loadingLabel.text =  @"No Info Sessions";
             } else {
                 cell.loadingLabel.text = [NSString stringWithFormat:@"%lu Info Sessions", (unsigned long)[_infoSessionModel.infoSessions count]];
             }

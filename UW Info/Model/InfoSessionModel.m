@@ -15,7 +15,7 @@
 //const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 //const NSString *apiKey1 =  @"913034dae16d7233dd1683713cbb4721";
 
-@interface InfoSessionModel()
+@interface InfoSessionModel() <UIAlertViewDelegate>
 
 @property (nonatomic, copy) NSString *apiKey;
 @property (nonatomic, copy) NSString *infoSessionBaseURLString;
@@ -23,11 +23,14 @@
 @end
 
 
-@implementation InfoSessionModel
+@implementation InfoSessionModel {
+    bool isOffLineMode;
+}
 
 -(id)init {
     if ((self = [super init])) {
         //NSLog(@"InfoSessionModel Initiated!");
+        isOffLineMode = NO;
         [self loadInfoSessions];
         [self handleFirstTime];
     }
@@ -77,10 +80,11 @@
 }
 
 - (void)clearInfoSessions {
-    _infoSessions = nil;
+    _infoSessions = @[];
     _infoSessionsDictionary = nil;
     _currentTerm = nil;
     [self setYearAndTerm];
+    [self.delegate infoSessionModeldidUpdateFailed:self];
 }
 
 - (NSString *)apiKey {
@@ -493,9 +497,10 @@
  *
  *  @param term term string
  *
- *  @return true if info session is set successfully, false otherwise
+ *  @return YES if info session is set successfully, NO otherwise
  */
 - (BOOL)readInfoSessionsWithTerm:(NSString *)term{
+    //NSLog(@"readInfoSessionsWithTerm: %@", term);
     NSInteger existIndex = -1;
     NSInteger index = 0;
     for (NSString *key in self.termInfoDic) {
@@ -507,25 +512,31 @@
     }
     // this term not exists
     if (existIndex == -1) {
-        return false;
+        return NO;
     } else {
         // if last queried time is 20m ago, then need connect to network to refresh
         NSInteger intervalForRefresh = 60 * 20;
         NSDate *lastQueriedTime = [self.termInfoDic objectForKey:[NSString stringWithFormat:@"%@ - QueriedTime", term]];
         ;
-        if ([[NSDate date] timeIntervalSinceDate:lastQueriedTime] > intervalForRefresh) {
-            return false;
+        if (isOffLineMode == NO && [[NSDate date] timeIntervalSinceDate:lastQueriedTime] > intervalForRefresh) {
+            //NSLog(@"data is too old");
+            return NO;
         } else {
+            //NSLog(@"read term successfully");
             [[NSNotificationCenter defaultCenter] postNotificationName:@"infoSessionsChanged" object:self];
             _infoSessions = [self.termInfoDic[term] copy];
             [self.infoSessionsDictionary removeAllObjects];
             [self processInfoSessionsDictionary:self.infoSessionsDictionary withInfoSessions:self.infoSessions];
             _currentTerm = [term copy];
             [self setYearAndTerm];
-            return true;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"infoSessionsChanged" object:self];
+            [self.delegate infoSessionModeldidUpdateInfoSessions:self];
+            return YES;
         }
     }
 }
+
+#pragma mark - UWInfoSessionClient connection
 
 - (void)setApiKey {
     UWInfoSessionClient *apiClient = [UWInfoSessionClient sharedApiKeyClient];
@@ -534,20 +545,25 @@
 }
 
 - (void)updateInfoSessionsWithYear:(NSInteger)year andTerm:(NSString *)term {
-//    NSLog(@"start to update");
-    _year = year;
-    _term = term;
-    if ([self.apiKey isEqualToString:@"0"]) {
-//        NSLog(@"key is 0");
-        [self setApiKey];
+    if (isOffLineMode == NO) {
+        //    NSLog(@"start to update");
+        _year = year;
+        _term = term;
+        if ([self.apiKey isEqualToString:@"0"]) {
+            //        NSLog(@"key is 0");
+            [self setApiKey];
+        }
+        else {
+            //        NSLog(@"key is %@", self.apiKey);
+            
+            UWInfoSessionClient *client = [UWInfoSessionClient infoSessionClientWithBaseURL:[NSURL URLWithString:self.infoSessionBaseURLString]];
+            client.delegate = self;
+            [client updateInfoSessionsForYear:year andTerm:term andApiKey:self.apiKey];
+        }
+    } else {
+        [self updateUnderOfflineMode:year andTerm:term];
     }
-    else {
-//        NSLog(@"key is %@", self.apiKey);
-        
-        UWInfoSessionClient *client = [UWInfoSessionClient infoSessionClientWithBaseURL:[NSURL URLWithString:self.infoSessionBaseURLString]];
-        client.delegate = self;
-        [client updateInfoSessionsForYear:year andTerm:term andApiKey:self.apiKey];
-    }
+
 }
 
 -(void)infoSessionClient:(UWInfoSessionClient *)client didUpdateWithData:(id)data {
@@ -590,14 +606,21 @@
 }
 
 // only called when 503 is return
--(void)infoSessionClient:(UWInfoSessionClient *)client didFailWithError:(NSError *)error {
+-(void)infoSessionClient:(UWInfoSessionClient *)client didFailWithCode:(NSInteger)code {
 //    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Info Sessions"
 //                                                        message:[NSString stringWithFormat:@"%@",error]
 //                                                       delegate:nil
 //                                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
 //    [alertView show];
-    [self switchInfoSessionBaseURLString];
+    if (code == 503) {
+        [self switchInfoSessionBaseURLString];
+    } else if (code == -1) {
+        isOffLineMode = YES;
+    } else if (code == 1) {
+        //retry
+    }
     [self updateInfoSessionsWithYear:_year andTerm:_term];
+    
 }
 
 -(void)apiClient:(UWInfoSessionClient *)client didUpdateWithApiKey:(NSString *)apiKey {
@@ -608,11 +631,38 @@
 }
 
 -(void)apiClient:(UWInfoSessionClient *)client didFailWithError:(NSError *)error {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving API key"
-                                                        message:[NSString stringWithFormat:@"%@",error]
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Internet connection error"
+                                                        message:@"Please check your Internet connection and try again"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Try again" otherButtonTitles:nil];
+    alertView.tag = 1;
     [alertView show];
+}
+
+- (void)setOfflineMode:(BOOL)isOff {
+    isOffLineMode = isOff;
+}
+
+- (void)updateUnderOfflineMode:(NSInteger)year andTerm:(NSString *)term {
+    if ([self readInfoSessionsWithTerm:[NSString stringWithFormat:@"%d %@", year, term]] == YES) {
+        //NSLog(@"offline Mode updated successfully");
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No offline data available"
+                                                            message:@""
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+        [self clearInfoSessions];
+    }
+}
+
+#pragma mark - UIAlertViewDelegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    // api key retrive failed, try again
+    if (alertView.tag == 1 && buttonIndex == 0) {
+        [self updateInfoSessionsWithYear:_year andTerm:_term];
+    }
 }
 
 @end
