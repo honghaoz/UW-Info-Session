@@ -427,12 +427,13 @@
             DetailNormalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Date";
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-            [dateFormatter setLocale:enUSPOSIXLocale];
+//            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//            NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+//            [dateFormatter setLocale:enUSPOSIXLocale];
+            NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
             [dateFormatter setDateFormat:@"cccc, MMM d, y"];
             // set timezone to EST
-            [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+            //[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
             cell.contentLabel.text = [dateFormatter stringFromDate:_infoSession.date];
             return cell;
         }
@@ -440,12 +441,13 @@
             DetailNormalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Time";
-            NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-            NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-            [timeFormatter setLocale:enUSPOSIXLocale];
+//            NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+//            NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+//            [timeFormatter setLocale:enUSPOSIXLocale];
+            NSDateFormatter *timeFormatter = [InfoSession estDateFormatter];
             [timeFormatter setDateFormat:@"h:mm a"];
             // set timezone to EST
-            [timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+            //[timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
             cell.contentLabel.text = [NSString stringWithFormat:@"%@ - %@", [timeFormatter stringFromDate:_infoSession.startTime], [timeFormatter stringFromDate:_infoSession.endTime]];
             return cell;
         }
@@ -1301,16 +1303,16 @@
  *  @param scrollView scrollView
  */
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    NSLog(@"scroll did begin");
+    //NSLog(@"scroll did begin");
     //[self.noteCell.contentText resignFirstResponder];
     startContentOffset = scrollView.contentOffset.y;
-    NSLog(@"startContentOffset: %f", startContentOffset);
-    if (startContentOffset < -10.0) {
-        NSLog(@"scroll tableview");
+    //NSLog(@"startContentOffset: %f", startContentOffset);
+    //if (startContentOffset < -10.0) {
+       // NSLog(@"scroll tableview");
         //NSLog(@"%@", NSStringFromCGRect(self.tableView.contentOffset));
         //[self.tableView scrollRectToVisible:CGRectMake(0, self.tableView.contentOffset.y - 100, 320, 320) animated:YES];
         //[self.tableView scrollRectToVisible:<#(CGRect)#> animated:<#(BOOL)#>];
-    }
+    //}
 //    NSMutableArray *indexPathToReload = [[NSMutableArray alloc] init];
 //    [indexPathToReload addObject:[NSIndexPath indexPathForRow:0 inSection:3]];
 //    [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationFade];

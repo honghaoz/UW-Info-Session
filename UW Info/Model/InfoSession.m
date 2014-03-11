@@ -14,8 +14,9 @@ static NSDictionary *alertChoiceDictionary;
 static NSDictionary *alertIntervalDictionary;
 static NSDictionary *alertSequenceDictionary;
 
+// used for notification "*** in 30 minutes ***"
 static NSDictionary *alertDescriptionForNotificationDictionary;
-
+// only one eventStore for all infoSession
 static EKEventStore *eventStore;
 
 @interface InfoSession()
@@ -102,12 +103,7 @@ static EKEventStore *eventStore;
         self.isCancelled = YES;
     }
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    // set the locale to fix the formate to read and write;
-    NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    [dateFormatter setLocale:enUSPOSIXLocale];
-    // set timezone to EST
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+    NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
     
     // set date format: September 5, 2013
     [dateFormatter setDateFormat:@"MMMM d, y"];
@@ -117,6 +113,8 @@ static EKEventStore *eventStore;
     [dateFormatter setDateFormat:@"h:mm a, MMMM d, y"];
     
     self.startTime = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@, %@", [attributes valueForKeyPath:@"start_time"], [attributes valueForKeyPath:@"date"]]];
+    //NSLog(@"should: %@, in fact: %@", [attributes valueForKeyPath:@"start_time"], [dateFormatter stringFromDate:self.startTime]);
+    //NSLog(@"now: %@", [dateFormatter stringFromDate:[NSDate date]]);
     self.endTime = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@, %@", [attributes valueForKeyPath:@"end_time"], [attributes valueForKeyPath:@"date"]]];
     
     self.weekNum = [self getWeekNumber:self.date];
@@ -140,6 +138,216 @@ static EKEventStore *eventStore;
 //    return [NSURL URLWithString:[NSString stringWithFormat:@"http://g.etfv.co/%@", self.website]];
 //}
 
+#pragma mark - Alerts related methods
+
+/**
+ *  Create new alert Dictionary, which is an elements of self.alerts
+ *
+ *  @param choice alertChoice, to match the alertChoiceDictionary
+ *
+ *  @return return the a new alertDictionary
+ */
+- (NSMutableDictionary *)createNewAlertDictionaryWithChoice:(NSInteger)choice {
+    return [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:choice], [NSNumber numberWithDouble:[[InfoSession alertIntervalDictionary][NSIntegerToString(choice)] doubleValue]], [NSNumber numberWithBool:NO]] forKeys:@[@"alertChoice", @"alertInterval", @"isNotified"]];
+}
+
+/**
+ *  Add a new alert Dictionary to self.alerts
+ *
+ *  @return if self.alerts if full, return false, otherwise, true
+ */
+- (BOOL)addOneAlert {
+    if (![self alertsIsFull]) {
+        NSMutableDictionary *oneAlert = [self createNewAlertDictionaryWithChoice:[self.alerts count] + 1];
+        [self.alerts addObject:oneAlert];
+        return YES;
+    } else {
+        return NO;
+    }
+    
+}
+
+/**
+ *  check whether self.alerts is full
+ *
+ *  @return ture - self.alerts is full, false, otherwise
+ */
+- (BOOL)alertsIsFull {
+    if ([self.alerts count] < MAX_NUM_OF_ALERTS) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
+/**
+ *  Use index in self.alerts and key to get the value store in the alertDictionary
+ *
+ *  @param index index in self.alerts
+ *  @param key   key in alertDictionary
+ *
+ *  @return value for that key
+ */
+- (id)getValueFromAlertDictionaryAtIndex:(NSInteger)index ForKey:(NSString *)key{
+    NSMutableDictionary *theAlert = self.alerts[index];
+    return theAlert[key];
+}
+
+/**
+ *  Set the alertChoice for the alertDictionary at the index of self.alerts
+ *
+ *  @param index       index in self.alerts
+ *  @param alertChoice the choice want to change to.
+ */
+- (void)setAlertChoiceForAlertDictionaryAtIndex:(NSInteger)index newChoice:(NSInteger)alertChoice {
+    NSMutableDictionary *theAlert = self.alerts[index];
+    theAlert[@"alertChoice"] = [NSNumber numberWithInteger:alertChoice];
+    theAlert[@"isNotified"] = [NSNumber numberWithBool:NO];
+}
+
+/**
+ *  refreshAlertArray, if some alert(NSDictionary) is set alertChoice to 0 : None,
+ *  remove this alert and return true;
+ *  @return if removed return true.
+ */
+- (BOOL)isRemovedAfterRefreshingAlerts {
+    BOOL isRemoved = NO;
+    NSInteger alertsCount = [self.alerts count];
+    //NSLog(@"alert count: %i", alertsCount);
+    for (int i = 0; i < alertsCount; i++) {
+        NSLog(@"i: %i", i);
+        // get each alert
+        NSMutableDictionary *theAlert = self.alerts[i];
+        NSNumber *alertChoice = theAlert[@"alertChoice"];
+        // update alertInterval
+        theAlert[@"alertInterval"] = [NSNumber numberWithDouble:[[InfoSession alertIntervalDictionary][NSIntegerToString([alertChoice integerValue])] doubleValue]];
+        // if choice is 0, delete this alert
+        if ([alertChoice integerValue] == 0) {
+            NSLog(@"remove an alert");
+            [self.alerts removeObjectAtIndex:i];
+            i--;
+            alertsCount--;
+            isRemoved = YES;
+        }
+    }
+    // is no alerts is set, switch off
+    if ([self.alerts count] == 0) {
+        self.alertIsOn = NO;
+    }
+    return isRemoved;
+}
+
+/**
+ *  Get an array of EKAlarm, used for set calendar event's alerts
+ *
+ *  @return an array of EKAlarm from self.alerts
+ */
+- (NSArray *)getEKAlarms {
+    if (self.alertIsOn) {
+        NSMutableArray *ekalarms = [[NSMutableArray alloc] init];
+        for (NSMutableDictionary *eachAlert in self.alerts) {
+            //NSLog(@"offset %f", [eachAlert[@"alertInterval"] doubleValue]);
+            [ekalarms addObject:[EKAlarm alarmWithRelativeOffset:[eachAlert[@"alertInterval"] doubleValue]]];
+        }
+        return ekalarms;
+    }
+    return nil;
+}
+
+#pragma mark - UILocalNotification related methods
+/**
+ *  get a unique identifier string for this info session
+ *
+ *  @return NSString for identifier
+ */
+- (NSString *)getIdentifier {
+    NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
+    
+    // set date format: 09 5, 2013
+    [dateFormatter setDateFormat:@"MM-d-y"];
+    
+    NSString *dateString = [dateFormatter stringFromDate:self.date];
+    
+    // set time format: 1:00 PM, September 5, 2013
+    [dateFormatter setDateFormat:@"HH:mm"];
+    NSString *startString = [dateFormatter stringFromDate:self.startTime];
+    NSString *endString = [dateFormatter stringFromDate:self.endTime];
+    return [NSString stringWithFormat:@"%lu-%@-%@-%@-%@", (unsigned long)self.sessionId, self.employer, dateString, startString, endString];
+}
+
+/**
+ *  cancel all notification
+ */
+- (void)cancelNotifications {
+    NSMutableArray *existingNotifications = [self notificationsForThisInfoSession];
+    if (existingNotifications != nil) {
+        for (UILocalNotification *eachNotification in existingNotifications) {
+            [[UIApplication sharedApplication] cancelLocalNotification:eachNotification];
+        }
+    }
+}
+
+/**
+ *  schedule notifications for this info session
+ */
+- (void)scheduleNotifications {
+    // if found notification, cancel all of them
+    [self cancelNotifications];
+    
+    // then reschedule notifications
+    if (self.alertIsOn) {
+        NSMutableDictionary *eachAlert;
+        NSInteger alertsCount = [self.alerts count];
+        for (NSInteger i = 0; i < alertsCount; i++) {
+            eachAlert = self.alerts[i];
+            [eachAlert[@"isNotified"] boolValue] ? NSLog(@"isNotified") : NSLog(@"not isNotified");
+            if ([eachAlert[@"alertChoice"] integerValue] > 0 && [eachAlert[@"isNotified"] boolValue] == NO) {
+                UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+                localNotification.fireDate = [self.startTime dateByAddingTimeInterval:[eachAlert[@"alertInterval"] doubleValue]];
+                localNotification.timeZone = [NSTimeZone timeZoneWithName:@"EST"];
+                
+                //NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+                //[timeFormatter setDateFormat:@"h:mm a, MMM d"];
+                
+                // prepare for alertBody
+                NSString *timeString = [InfoSession getAlertDescriptionForNitification:eachAlert[@"alertChoice"]];
+                
+                localNotification.alertBody = [NSString stringWithFormat:@"%@ %@ at %@", self.employer, timeString, self.location];
+                localNotification.soundName = @"alarm.caf";
+                localNotification.alertAction = @"view";
+//                localNotification.alertLaunchImage = [UIImage imageNamed:@""]
+                localNotification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
+                localNotification.userInfo = [NSMutableDictionary dictionaryWithObjects:@[[self getIdentifier], self.employer, [NSNumber numberWithInteger:i]] forKeys:@[@"InfoId", @"Employer", @"AlertIndex"]];
+                [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+                //                localNotification.fireDate = [[NSDate date] dateByAddingTimeInterval:4];
+                //                [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+                
+            }
+        }
+    }
+}
+
+/**
+ *  get notifications for this info session
+ *
+ *  @return NSMutableArray of notifications
+ */
+- (NSMutableArray*)notificationsForThisInfoSession{
+    NSMutableArray *resultNotifications = [[NSMutableArray alloc] init];
+    NSArray *allNotifications = [[UIApplication sharedApplication]scheduledLocalNotifications];
+    for(UILocalNotification *notification in allNotifications){
+        NSString *infoIdentifier = [notification.userInfo objectForKey:@"InfoId"];
+        if([infoIdentifier isEqual:[self getIdentifier]]){
+            [resultNotifications addObject:notification];
+        }
+    }
+    if ([resultNotifications count] == 0) {
+        return nil;
+    } else {
+        return resultNotifications;
+    }
+}
+
 #pragma mark - Other helper methods
 
 /**
@@ -150,7 +358,8 @@ static EKEventStore *eventStore;
  *  @return NSUInteger
  */
 - (NSUInteger)getWeekNumber:(NSDate *)date {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
     [dateFormatter setDateFormat:@"w"];
     return [[dateFormatter stringFromDate:date] intValue];
 }
@@ -227,116 +436,29 @@ static EKEventStore *eventStore;
     } else {
         return eventStore;
     }
-
-}
-
-#pragma mark - Alerts related methods
-
-/**
- *  Create new alert Dictionary, which is an elements of self.alerts
- *
- *  @param choice alertChoice, to match the alertChoiceDictionary
- *
- *  @return return the a new alertDictionary
- */
-- (NSMutableDictionary *)createNewAlertDictionaryWithChoice:(NSInteger)choice {
-    return [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:choice], [NSNumber numberWithDouble:[[InfoSession alertIntervalDictionary][NSIntegerToString(choice)] doubleValue]], [NSNumber numberWithBool:NO]] forKeys:@[@"alertChoice", @"alertInterval", @"isNotified"]];
-}
-
-/**
- *  Add a new alert Dictionary to self.alerts
- *
- *  @return if self.alerts if full, return false, otherwise, true
- */
-- (BOOL)addOneAlert {
-    if (![self alertsIsFull]) {
-        NSMutableDictionary *oneAlert = [self createNewAlertDictionaryWithChoice:[self.alerts count] + 1];
-        [self.alerts addObject:oneAlert];
-        return YES;
-    } else {
-        return NO;
-    }
     
 }
 
-/**
- *  check whether self.alerts is full
- *
- *  @return ture - self.alerts is full, false, otherwise
- */
-- (BOOL)alertsIsFull {
-    if ([self.alerts count] < MAX_NUM_OF_ALERTS) {
-        return NO;
-    } else {
-        return YES;
-    }
-}
++ (NSDateFormatter *)estDateFormatter {
+//    static NSDateFormatter *dateFormatter = nil;
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        dateFormatter = [[NSDateFormatter alloc] init];
+//        // set the locale to fix the formate to read and write;
+//        NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+//        [dateFormatter setLocale:enUSPOSIXLocale];
+//        // set timezone to EST
+//        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+//    });
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    // set the locale to fix the formate to read and write;
+    NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    [dateFormatter setLocale:enUSPOSIXLocale];
+    // set timezone to EST
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"EST"]];
+    //[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
 
-/**
- *  Use index in self.alerts and key to get the value store in the alertDictionary
- *
- *  @param index index in self.alerts
- *  @param key   key in alertDictionary
- *
- *  @return value for that key
- */
-- (id)getValueFromAlertDictionaryAtIndex:(NSInteger)index ForKey:(NSString *)key{
-    NSMutableDictionary *theAlert = self.alerts[index];
-    return theAlert[key];
-}
-
-/**
- *  Set the alertChoice for the alertDictionary at the index of self.alerts
- *
- *  @param index       index in self.alerts
- *  @param alertChoice the choice want to change to.
- */
-- (void)setAlertChoiceForAlertDictionaryAtIndex:(NSInteger)index newChoice:(NSInteger)alertChoice {
-    NSMutableDictionary *theAlert = self.alerts[index];
-    theAlert[@"alertChoice"] = [NSNumber numberWithInteger:alertChoice];
-    theAlert[@"isNotified"] = [NSNumber numberWithBool:NO];
-}
-
-/**
- *  refreshAlertArray, if some alert(NSDictionary) is set alertChoice to 0 : None,
- *  remove this alert and return true;
- *  @return if removed return true.
- */
-- (BOOL)isRemovedAfterRefreshingAlerts {
-    BOOL isRemoved = NO;
-    for (int i = 0; i < [self.alerts count]; i++) {
-        NSMutableDictionary *theAlert = self.alerts[i];
-        NSNumber *alertChoice = theAlert[@"alertChoice"];
-        
-        theAlert[@"alertInterval"] = [NSNumber numberWithDouble:[[InfoSession alertIntervalDictionary][NSIntegerToString([alertChoice integerValue])] doubleValue]];
-        
-        if ([alertChoice integerValue] == 0) {
-            [self.alerts removeObjectAtIndex:i];
-            i--;
-            isRemoved = YES;
-        }
-    }
-    if ([self.alerts count] == 0) {
-        self.alertIsOn = NO;
-    }
-    return isRemoved;
-}
-
-/**
- *  Get an array of EKAlarm, used for set calendar event's alerts
- *
- *  @return an array of EKAlarm from self.alerts
- */
-- (NSArray *)getEKAlarms {
-    if (self.alertIsOn) {
-        NSMutableArray *ekalarms = [[NSMutableArray alloc] init];
-        for (NSMutableDictionary *eachAlert in self.alerts) {
-            //NSLog(@"offset %f", [eachAlert[@"alertInterval"] doubleValue]);
-            [ekalarms addObject:[EKAlarm alarmWithRelativeOffset:[eachAlert[@"alertInterval"] doubleValue]]];
-        }
-        return ekalarms;
-    }
-    return nil;
+    return dateFormatter;
 }
 
 #pragma mark - NSCopying Protocol method
@@ -451,104 +573,4 @@ static EKEventStore *eventStore;
     [aCoder encodeObject:self.note forKey:@"note"];
 
 }
-
-#pragma mark - UILocalNotification related methods
-/**
- *  get a unique identifier string for this info session
- *
- *  @return NSString for identifier
- */
-- (NSString *)getIdentifier {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    // set the locale to fix the formate to read and write;
-    NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    [dateFormatter setLocale:enUSPOSIXLocale];
-    // set timezone to EST
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
-    
-    // set date format: 09 5, 2013
-    [dateFormatter setDateFormat:@"MM-d-y"];
-    
-    NSString *dateString = [dateFormatter stringFromDate:self.date];
-
-    // set time format: 1:00 PM, September 5, 2013
-    [dateFormatter setDateFormat:@"HH:mm"];
-    NSString *startString = [dateFormatter stringFromDate:self.startTime];
-    NSString *endString = [dateFormatter stringFromDate:self.endTime];
-    return [NSString stringWithFormat:@"%lu-%@-%@-%@-%@", (unsigned long)self.sessionId, self.employer, dateString, startString, endString];
-}
-
-/**
- *  cancel all notification
- */
-- (void)cancelNotifications {
-    NSMutableArray *existingNotifications = [self notificationsForThisInfoSession];
-    if (existingNotifications != nil) {
-        for (UILocalNotification *eachNotification in existingNotifications) {
-            [[UIApplication sharedApplication] cancelLocalNotification:eachNotification];
-        }
-    }
-}
-
-/**
- *  schedule notifications for this info session
- */
-- (void)scheduleNotifications {
-    // if found notification, cancel all of them
-    [self cancelNotifications];
-    
-    // then reschedule notifications
-    if (self.alertIsOn) {
-        NSMutableDictionary *eachAlert;
-        for (NSInteger i = 0; i < [self.alerts count]; i++) {
-            eachAlert = self.alerts[i];
-            [eachAlert[@"isNotified"] boolValue] ? NSLog(@"isNotified") : NSLog(@"not isNotified");
-            if ([eachAlert[@"alertChoice"] integerValue] > 0 && [eachAlert[@"isNotified"] boolValue] == NO) {
-                UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-                localNotification.fireDate = [self.startTime dateByAddingTimeInterval:[eachAlert[@"alertInterval"] doubleValue]];
-                localNotification.timeZone = [NSTimeZone timeZoneWithName:@"EST"];
-                
-                NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-                [timeFormatter setDateFormat:@"h:mm a, MMM d"];
-                
-                // prepare for alertBody
-                NSString *timeString = [InfoSession getAlertDescriptionForNitification:eachAlert[@"alertChoice"]];
-                
-                localNotification.alertBody = [NSString stringWithFormat:@"%@ %@ at %@", self.employer, timeString, self.location];
-                localNotification.soundName = @"alarm.caf";
-                localNotification.alertAction = @"view";
-                //localNotification.alertLaunchImage =
-                localNotification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
-                localNotification.userInfo = [NSMutableDictionary dictionaryWithObjects:@[[self getIdentifier], self.employer, [NSNumber numberWithInteger:i]] forKeys:@[@"InfoId", @"Employer", @"AlertIndex"]];
-                [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-                
-//                localNotification.fireDate = [[NSDate date] dateByAddingTimeInterval:4];
-//                [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-                
-            }
-        }
-    }
-}
-
-/**
- *  get notifications for this info session
- *
- *  @return NSMutableArray of notifications
- */
-- (NSMutableArray*)notificationsForThisInfoSession{
-    NSMutableArray *resultNotifications = [[NSMutableArray alloc] init];
-    NSArray *allNotifications = [[UIApplication sharedApplication]scheduledLocalNotifications];
-    for(UILocalNotification *notification in allNotifications){
-        NSString *infoIdentifier = [notification.userInfo objectForKey:@"InfoId"];
-        if([infoIdentifier isEqual:[self getIdentifier]]){
-            [resultNotifications addObject:notification];
-        }
-    }
-    if ([resultNotifications count] == 0) {
-        return nil;
-    } else {
-        return resultNotifications;
-    }
-}
-
 @end

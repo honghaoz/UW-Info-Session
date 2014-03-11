@@ -252,7 +252,8 @@
  *  @return NSUInteger, week number of the date
  */
 - (NSUInteger)getWeekNumber:(NSDate *)date {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
     [dateFormatter setDateFormat:@"w"];
     return [[dateFormatter stringFromDate:date] intValue];
 }
@@ -351,7 +352,8 @@
         [component setWeekday:2]; //Monday
         
         // initialize begin monday string
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         
         NSDate *beginningOfWeek = [gregorian dateFromComponents:component];
@@ -441,6 +443,38 @@
 - (void)configureCell:(InfoSessionCell *)cell withIndexPath:(NSIndexPath *)indexPath {
     InfoSession *infoSession = [self getInfoSessionAccordingIndexPath:indexPath];
     // if current time is befor start time, set dark (future sessions)
+    
+//    NSDate* currentDate = [NSDate date];
+//    NSTimeZone* currentTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+//    NSTimeZone* nowTimeZone = [NSTimeZone systemTimeZone];
+//    
+//    NSInteger currentGMTOffset = [currentTimeZone secondsFromGMTForDate:currentDate];
+//    NSInteger nowGMTOffset = [nowTimeZone secondsFromGMTForDate:currentDate];
+//    
+//    NSTimeInterval interval = nowGMTOffset - currentGMTOffset;
+//    NSDate* nowDate = [[NSDate alloc] initWithTimeInterval:interval sinceDate:currentDate];
+    
+    NSDate* sourceDate = [NSDate date];
+//    
+//    NSTimeZone* sourceTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+//    NSTimeZone* destinationTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"EST"];
+//    
+//    NSInteger sourceGMTOffset = [sourceTimeZone secondsFromGMTForDate:sourceDate];
+//    NSInteger destinationGMTOffset = [destinationTimeZone secondsFromGMTForDate:sourceDate];
+//    NSTimeInterval interval = destinationGMTOffset - sourceGMTOffset;
+//    
+//    NSLog(@"%f", interval);
+//    
+//    NSDate* destinationDate = [[NSDate alloc] initWithTimeInterval:interval sinceDate:sourceDate];
+    
+//    
+    NSDateFormatter *test = [InfoSession estDateFormatter];
+    [test setDateFormat:@"h:mm a"];
+    NSLog(@"now: %@, startTime: %@", [test stringFromDate:sourceDate],
+          [test stringFromDate:infoSession.startTime]);
+    //NSLog(@"Local Time Zone %@",[[NSTimeZone localTimeZone] name]);
+    //NSLog(@"System Time Zone %@",[[NSTimeZone systemTimeZone] name]);
+    //NSLog(@"%@", [NSTimeZone abbreviationDictionary]);
     if ([[NSDate date] compare:infoSession.startTime] == NSOrderedAscending) {
         [cell.employer setTextColor:[UIColor blackColor]];
         [cell.locationLabel setTextColor:[UIColor darkGrayColor]];
@@ -471,18 +505,20 @@
     }
     NSMutableAttributedString *employerString = [[NSMutableAttributedString alloc] initWithString:infoSession.employer];
     NSMutableAttributedString *locationString = [[NSMutableAttributedString alloc] initWithString:[infoSession.location length] < 2 ? @"No Location Provided" : infoSession.location];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+    //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
+    NSDateFormatter *timeFormatter = [InfoSession estDateFormatter];
     // set the locale to fix the formate to read and write;
-    NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    [dateFormatter setLocale:enUSPOSIXLocale];
-    [timeFormatter setLocale:enUSPOSIXLocale];
+    //NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    //[dateFormatter setLocale:enUSPOSIXLocale];
+    //[timeFormatter setLocale:enUSPOSIXLocale];
     [dateFormatter setDateFormat:@"MMM d"];
     [timeFormatter setDateFormat:@"h:mm a"];
     // set timezone to EST
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+    //[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
     // set timezone to EST
-    [timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+    //[timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
     
     NSString *dateNSString = [NSString stringWithFormat:@"%@, %@ - %@",[dateFormatter stringFromDate:infoSession.date], [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime]];
     NSMutableAttributedString *dateString = [[NSMutableAttributedString alloc] initWithString:dateNSString];

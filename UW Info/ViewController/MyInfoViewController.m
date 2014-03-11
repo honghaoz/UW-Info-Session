@@ -48,6 +48,11 @@
     [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
     self.navigationController.navigationBar.tintColor = UWBlack;
     
+    //UIBarButtonItem *configButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"config"] style:UIBarButtonItemStyleBordered target:self action:@selector(configuration)];
+    
+    //[self.navigationItem setLeftBarButtonItem:configButton];
+    
+    
     // initiate the right buttons
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(enterEditMode:)] animated:YES];
     
@@ -175,18 +180,21 @@
 //    cell.date.text = [NSString stringWithFormat:@"%@ - %@, %@", [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime], [dateFormatter stringFromDate:infoSession.date]];
     NSMutableAttributedString *employerString = [[NSMutableAttributedString alloc] initWithString:infoSession.employer];
     NSMutableAttributedString *locationString = [[NSMutableAttributedString alloc] initWithString:infoSession.location];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+    
+    //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
+    NSDateFormatter *timeFormatter = [InfoSession estDateFormatter];
     // set the locale to fix the formate to read and write;
-    NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    [dateFormatter setLocale:enUSPOSIXLocale];
-    [timeFormatter setLocale:enUSPOSIXLocale];
+    //NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    //[dateFormatter setLocale:enUSPOSIXLocale];
+    //[timeFormatter setLocale:enUSPOSIXLocale];
     [dateFormatter setDateFormat:@"MMM d"];
     [timeFormatter setDateFormat:@"h:mm a"];
     // set timezone to EST
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+    //[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
     // set timezone to EST
-    [timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+    //[timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
     
     NSString *dateNSString = [NSString stringWithFormat:@"%@, %@ - %@", [dateFormatter stringFromDate:infoSession.date], [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime]];
     NSMutableAttributedString *dateString = [[NSMutableAttributedString alloc] initWithString:dateNSString];

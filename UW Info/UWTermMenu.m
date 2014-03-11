@@ -35,13 +35,15 @@
 }
 
 - (NSUInteger)getCurrentYear:(NSDate *)date {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
     [dateFormatter setDateFormat:@"y"];
     return [[dateFormatter stringFromDate:date] intValue];
 }
 
 - (NSString *)getCurrentTermFromDate:(NSDate *)date {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
     [dateFormatter setDateFormat:@"M"];
     NSUInteger month = [[dateFormatter stringFromDate:date] intValue];
     if (1 <= month <= 4) {

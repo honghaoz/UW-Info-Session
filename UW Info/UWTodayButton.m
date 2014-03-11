@@ -7,6 +7,7 @@
 //
 
 #import "UWTodayButton.h"
+#import "InfoSession.h"
 
 @interface UWTodayButton()
 
@@ -55,11 +56,12 @@
         _dateLabel.textColor = UWBlack;
         _dateLabel.highlightedTextColor = [UIColor colorWithWhite:0.0 alpha:0.3];
         
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-        [dateFormatter setLocale:enUSPOSIXLocale];
+        //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
+        //NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+        //[dateFormatter setLocale:enUSPOSIXLocale];
         [dateFormatter setDateFormat:@"MMM d"];
-        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+        //[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
         
         _dateLabel.text = [NSString stringWithFormat:@"%@", [dateFormatter stringFromDate:date]];
         

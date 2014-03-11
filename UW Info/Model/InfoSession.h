@@ -79,4 +79,6 @@
 
 // get an unique identifier string
 - (NSString *)getIdentifier;
+
++ (NSDateFormatter *)estDateFormatter;
 @end
