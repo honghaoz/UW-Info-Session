@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class PSPDFTextView;
 
 @interface DetailDescriptionCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;

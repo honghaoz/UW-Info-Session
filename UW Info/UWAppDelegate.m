@@ -18,6 +18,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[UIApplication sharedApplication] keyWindow].tintColor = UWBlack;
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     
     // Override point for customization after application launch.

@@ -40,6 +40,8 @@
     
     NSMutableDictionary *theAlert = _infoSession.alerts[_alertIndex];
     _checkRow = [theAlert[@"alertChoice"] integerValue];
+    
+    [self.tableView setTintColor:UWBlack];
 }
 
 - (void)didReceiveMemoryWarning

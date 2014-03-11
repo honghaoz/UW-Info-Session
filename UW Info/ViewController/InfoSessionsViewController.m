@@ -37,9 +37,9 @@
 
 @implementation InfoSessionsViewController {
     UIRefreshControl *refreshControl;
-    CGFloat startContentOffset;
-    CGFloat lastContentOffset;
-    CGFloat previousScrollViewYOffset;
+//    CGFloat startContentOffset;
+//    CGFloat lastContentOffset;
+//    CGFloat previousScrollViewYOffset;
     BOOL isReloading;
     NSString *classOfRefreshSender;
 }
@@ -68,6 +68,9 @@
     _tabBarController.lastTapped = -1;
     
     [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
+    //[self.navigationController.navigationBar setTranslucent:YES];
+    //self.navigationController.navigationBar.barTintColor = [UIColor clearColor];
+    //self.navigationController.navigationBar.backgroundColor = UWGold;
     self.navigationController.navigationBar.tintColor = UWBlack;
     
     // show refresh button
@@ -500,7 +503,7 @@
  *  @param tableView tableView
  *  @param indexPath indexPath
  *
- *  @return for LoadingCell, return 44.0f, for InfoSessionCell, return 70.0f
+ *  @return for LoadingCell, return 44.0f, for InfoSessionCell, return 72.0f
  */
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // refreshing cell // no more info sessions // no info session cell
@@ -510,7 +513,7 @@
         return 44.0f;
     }else {
         // info session cell
-        return 70.0f;
+        return 72.0f;
     }
 }
 

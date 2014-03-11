@@ -34,7 +34,10 @@
     _lastTapped = -1;
     
     UITabBar *tabBar = self.tabBar;
-    [tabBar setBarStyle:UIBarStyleBlackOpaque];
+    //[tabBar setBarStyle:UIBarStyleBlackOpaque];
+    tabBar.tintColor = UWGold;
+    //[tabBar setTintColor:UWBlack];
+    tabBar.barTintColor = [UIColor clearColor];
     [tabBar setBackgroundColor:UWBlack];
     //[UIColor colorWithRed:0.26 green:0.28 blue:0.33 alpha:1]
     UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
@@ -44,7 +47,7 @@
     [item1 setSelectedImage:[UIImage imageNamed:@"Bookmarks-selected"]];
     [item2 setSelectedImage:[UIImage imageNamed:@"Search-selected"]];
     
-    self.tabBar.tintColor = [UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0];
+    
 	// Do any additional setup after loading the view.
     self.isHidden = NO;
     

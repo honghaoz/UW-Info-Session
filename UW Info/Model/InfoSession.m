@@ -64,7 +64,7 @@ static EKEventStore *eventStore;
 
 + (NSDictionary *)alertDescriptionForNotificationDictionary {
     if (alertDescriptionForNotificationDictionary == nil) {
-        alertDescriptionForNotificationDictionary = [[NSDictionary alloc] initWithObjects:[[NSArray alloc] initWithObjects:@"", @"now", @"in 5 minutes", @"in 15 minutes", @"in 30 minutes", @"in 1 hour", @"in 2 hours", @"at tommorrow", @"in 2 days", @"in this week", nil] forKeys:[[NSArray alloc] initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil]];
+        alertDescriptionForNotificationDictionary = [[NSDictionary alloc] initWithObjects:[[NSArray alloc] initWithObjects:@"", @"now", @"in 5 minutes", @"in 15 minutes", @"in 30 minutes", @"in 1 hour", @"in 2 hours", @"tommorrow", @"in 2 days", @"in this week", nil] forKeys:[[NSArray alloc] initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil]];
         return alertDescriptionForNotificationDictionary;
     } else {
         return alertDescriptionForNotificationDictionary;

@@ -33,8 +33,13 @@
 #import "ProgressHUD.h"
 
 #import "SearchViewController.h"
+#import "PSPDFTextView.h"
 
 @interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
+
+@property (nonatomic, strong) DetailDescriptionCell *programCell;
+@property (nonatomic, strong) DetailDescriptionCell *descriptionCell;
+@property (nonatomic, strong) DetailDescriptionCell *noteCell;
 
 - (IBAction)addToMyInfo:(id)sender;
 
@@ -42,6 +47,10 @@
 
 @implementation DetailViewController {
     BOOL openedMyInfo;
+    NSInteger noteLines;
+    NSInteger cursorIndex;
+    CGFloat startContentOffset;
+    CGFloat lastContentOffset;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -78,9 +87,15 @@
     [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:addButton, calButton, nil]];
     
     // set tap gesture to resgin first responser
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
-    gestureRecognizer.cancelsTouchesInView = NO;
-    [self.tableView addGestureRecognizer:gestureRecognizer];
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
+    tapGestureRecognizer.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:tapGestureRecognizer];
+    
+//    
+//    UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
+//    [swipeGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionDown];
+//    [self.tableView addGestureRecognizer:swipeGestureRecognizer];
+    
     
     // set notification for entering background
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -89,7 +104,7 @@
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
-    
+    noteLines = [self getHeightForString:_infoSession.note fontSize:15 width:280];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -556,21 +571,32 @@
             [cell.contentText setFont:[UIFont systemFontOfSize:15]];
             [cell.contentText setSelectable:NO];
             cell.titleLabel.text = @"Programs";
+            
             if ([_infoSession.programs length] <= 1) {
                 [cell.contentText setTextColor: [UIColor lightGrayColor]];
                 cell.contentText.text = @"No Programs Infomation";
                 // resize textView height
                 CGRect textViewFrame = cell.contentText.frame;
-                textViewFrame.size.height = 241.0f;
+                textViewFrame.size.height = [self getHeightForString:@"No Programs Infomation" fontSize:15 width:280];
                 cell.contentText.frame = textViewFrame;
             } else {
                 [cell.contentText setTextColor: [UIColor blackColor]];
                 cell.contentText.text = _infoSession.programs;
                 // resize textView height
                 CGRect textViewFrame = cell.contentText.frame;
-                textViewFrame.size.height = 241.0f;
+                CGFloat calculatedHeight = [self getHeightForString:_infoSession.programs fontSize:15 width:280];
+                if (calculatedHeight > 240) {
+                    textViewFrame.size.height = 240;
+                    [cell.contentText setScrollEnabled:YES];
+                } else {
+                    textViewFrame.size.height = calculatedHeight;
+                    [cell.contentText setScrollEnabled:NO];
+                }
+                
                 cell.contentText.frame = textViewFrame;
             }
+            self.programCell = cell;
+            [self.programCell.contentText setDelegate:self];
             return cell;
         }
         else if (indexPath.row == 3) {
@@ -585,16 +611,25 @@
                 cell.contentText.text = @"No Descriptions";
                 // resize textView height
                 CGRect textViewFrame = cell.contentText.frame;
-                textViewFrame.size.height = 241.0f;
+                textViewFrame.size.height = [self getHeightForString:@"No Descriptions" fontSize:15 width:280];
                 cell.contentText.frame = textViewFrame;
             } else {
                 [cell.contentText setTextColor: [UIColor blackColor]];
                 cell.contentText.text = _infoSession.description;
                 // resize textView height
                 CGRect textViewFrame = cell.contentText.frame;
-                textViewFrame.size.height = 241.0f;
+                CGFloat calculatedHeight = [self getHeightForString:_infoSession.description fontSize:15 width:280];
+                if (calculatedHeight > 243) {
+                    textViewFrame.size.height = 243;
+                    [cell.contentText setScrollEnabled:YES];
+                } else {
+                    textViewFrame.size.height = calculatedHeight;
+                    [cell.contentText setScrollEnabled:NO];
+                }
                 cell.contentText.frame = textViewFrame;
             }
+            self.descriptionCell = cell;
+            [self.descriptionCell.contentText setDelegate:self];
             return cell;
         }
     }
@@ -606,7 +641,7 @@
             [cell.contentText setSelectable:YES];
             [cell.contentText setEditable:YES];
             [cell.contentText setFont:[UIFont systemFontOfSize:15]];
-            
+            [cell.contentText setScrollEnabled:NO];
             if (_infoSession.note == nil || [_infoSession.note length] == 0) {
                 cell.contentText.text = @"Take some notes here.";
                 [cell.contentText setTextColor: [UIColor lightGrayColor]];
@@ -617,7 +652,7 @@
             }
             // resize textView height
             CGRect textViewFrame = cell.contentText.frame;
-            textViewFrame.size.height = 2000.0f; // make sure note's height is very large
+            textViewFrame.size.height = [self getHeightForString:_infoSession.note fontSize:15 width:280];
             cell.contentText.frame = textViewFrame;
             
             self.noteCell = cell;
@@ -642,7 +677,7 @@
  *  @param tableView tableView
  *  @param indexPath indexPath
  *
- *  @return for LoadingCell, return 44.0f, for InfoSessionCell, return 70.0f
+ *  @return for LoadingCell, return 44.0f, for InfoSessionCell, return 72.0f
  */
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat height = 0.0f;
@@ -651,17 +686,14 @@
             switch (indexPath.row) {
                 case 0: {
                     // use UITextView to calculate height of this label
-                    UITextView *calculationView = [[UITextView alloc] init];
-                    [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:_infoSession.employer]];
-                    [calculationView setFont:[UIFont systemFontOfSize:16]];
-                    CGSize size = [calculationView sizeThatFits:CGSizeMake(200.0f, FLT_MAX)];
+                    CGFloat calculatedHeight = [self getHeightForString:_infoSession.employer fontSize:16 width:200];
                     // text line = 1
-                    if (size.height < 37.0f) {
+                    if (calculatedHeight < 37.0f) {
                         height = 42.0f;
-                    } else if (size.height < 56.0f) {
+                    } else if (calculatedHeight < 56.0f) {
                         // text line = 2
                         height = 58.0f;
-                    } else if (size.height < 75.0f) {
+                    } else if (calculatedHeight < 75.0f) {
                         // text line = 3
                         height = 74.0f;
                         // text line = 4
@@ -675,22 +707,19 @@
                 case 2: height = 42.0f; break;
                 case 3: {
                     // use UITextView to calculate height of this label
-                    UITextView *calculationView = [[UITextView alloc] init];
-                    [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:_infoSession.location]];
-                    [calculationView setFont:[UIFont systemFontOfSize:16]];
-                    CGSize size = [calculationView sizeThatFits:CGSizeMake(200.0f, FLT_MAX)];
+                    CGFloat calculatedHeight = [self getHeightForString:_infoSession.location fontSize:16 width:200];
                     
                     // text line = 1
-                    if (size.height < 37.0f) {
+                    if (calculatedHeight < 37.0f) {
                         height = 42.0f;
-                    } else if (size.height < 56.0f) {
+                    } else if (calculatedHeight < 56.0f) {
                         // text line = 2
                         height = 58.0f;
-                    } else if (size.height < 75.0f) {
+                    } else if (calculatedHeight < 75.0f) {
                         // text line = 3
                         height = 74.0f;
                         // text line = 4
-                    } else if (size.height < 94.0f) {
+                    } else if (calculatedHeight < 94.0f) {
                         height = 90.0f;
                         // text line = 5
                     } else {
@@ -706,22 +735,19 @@
                 case 0: height = 42.0f; break;
                 case 1: {
                     // use UITextView to calculate height of this label
-                    UITextView *calculationView = [[UITextView alloc] init];
-                    [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:_infoSession.audience]];
-                    [calculationView setFont:[UIFont systemFontOfSize:16]];
-                    CGSize size = [calculationView sizeThatFits:CGSizeMake(200.0f, FLT_MAX)];
+                    CGFloat calculatedHeight = [self getHeightForString:_infoSession.audience fontSize:16 width:200];
                     
                     // text line = 1
-                    if (size.height < 37.0f) {
+                    if (calculatedHeight < 37.0f) {
                         height = 42.0f;
-                    } else if (size.height < 56.0f) {
+                    } else if (calculatedHeight < 56.0f) {
                         // text line = 2
                         height = 58.0f;
-                    } else if (size.height < 75.0f) {
+                    } else if (calculatedHeight < 75.0f) {
                         // text line = 3
                         height = 74.0f;
                         // text line = 4
-                    } else if (size.height < 94.0f) {
+                    } else if (calculatedHeight < 94.0f) {
                         height = 90.0f;
                         // text line = 5
                     } else {
@@ -730,28 +756,22 @@
                     break;
                 }
                 case 2: {
-                    UITextView *calculationView = [[UITextView alloc] init];
-                    [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:_infoSession.programs]];
-                    [calculationView setFont:[UIFont systemFontOfSize:15]];
-                    CGSize size = [calculationView sizeThatFits:CGSizeMake(280.0f, FLT_MAX)];
+                    CGFloat calculatedHeight = [self getHeightForString:_infoSession.programs fontSize:15 width:280];
                     //NSLog(_infoSession.programs);
-                    if (size.height > 240) {
+                    if (calculatedHeight > 240) {
                         height = 240.0f + 55.0f;
                     } else {
-                        height = size.height + 45.0f;
+                        height = calculatedHeight + 45.0f;
                     }
                     break;
                 }
                 case 3: {
-                    UITextView *calculationView = [[UITextView alloc] init];
-                    [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:_infoSession.description]];
-                    [calculationView setFont:[UIFont systemFontOfSize:15]];
-                    CGSize size = [calculationView sizeThatFits:CGSizeMake(280.0f, FLT_MAX)];
+                    CGFloat calculatedHeight = [self getHeightForString:_infoSession.description fontSize:15 width:280];
                     //NSLog(_infoSession.programs);
-                    if (size.height > 240) {
+                    if (calculatedHeight > 240) {
                         height = 240.0f + 60.0f;
                     } else {
-                        height = size.height + 50.0f;
+                        height = calculatedHeight + 50.0f;
                     }
                     break;
                 }
@@ -780,6 +800,13 @@
             } break;
     }
     return height;
+}
+
+- (CGFloat)getHeightForString:(NSString *)string fontSize:(CGFloat)fontSize width:(CGFloat)width {
+    UITextView *calculationView = [[UITextView alloc] init];
+    [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:string == nil? @"" : string]];
+    [calculationView setFont:[UIFont systemFontOfSize:fontSize]];
+    return [calculationView sizeThatFits:CGSizeMake(width, FLT_MAX)].height;
 }
 
 #pragma mark - Table view delegate
@@ -846,6 +873,7 @@
     }
     // select note section
     else if (indexPath.section == 3) {
+        NSLog(@"did select note");
         [self.noteCell.contentText becomeFirstResponder];
     }
     else if (indexPath.section == 4) {
@@ -1041,23 +1069,77 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     _infoSession.note = [textView.text stringByReplacingCharactersInRange:range withString:text];
-    [self.noteCell.contentText setTextColor: [UIColor blackColor]];
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
-    [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell:self.noteCell] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    [self updateNoteCellHeight];
     return YES;
 }
 
-- (void)textViewDidChange:(UITextView *)textView {
-    _infoSession.note = textView.text;
-    //NSLog(@"finishe editing: %@", _infoSession.note);
+//- (void)textViewDidChange:(UITextView *)textView {
+//}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    // set note cell is not scrollable
+    [textView setScrollEnabled:NO];
+//    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationAutomatic];
+//    [self.tableView beginUpdates];
+//    [self.tableView endUpdates];
+    [self.tableView reloadData];
 }
 
-- (void) textViewDidBeginEditing:(UITextView *)textView {
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    // set note cell is scrollable
+    [textView setScrollEnabled:YES];
     if (_infoSession.note == nil || [_infoSession.note length] == 0) {
         textView.text = @"";
+        //NSLog(@"  textview changed: %@", textView.text);
     }
-    [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell:self.noteCell] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    // set note text is black color
+    [self.noteCell.contentText setTextColor: [UIColor blackColor]];
+}
+
+- (void)textViewDidChangeSelection:(UITextView *)textView {
+    // set cursorIndex and scroll to right rect
+    cursorIndex = textView.selectedRange.location;
+    [self scrollToCursor];
+}
+
+- (void)updateNoteCellHeight {
+    // calculate lines of string
+    CGFloat calculatedHeight = [self getHeightForString:_infoSession.note fontSize:15 width:280];
+    NSInteger lines = (NSInteger)(calculatedHeight - 34) / 18 + 1;
+    // is lines changes, need to refresh tableView
+    if (lines != noteLines) {
+        noteLines = lines;
+        CGRect textViewFrame = self.noteCell.contentText.frame;
+        textViewFrame.size.height = calculatedHeight;
+        self.noteCell.contentText.frame = textViewFrame;
+        [self.tableView beginUpdates];
+        [self.tableView endUpdates];
+    }
+}
+
+- (void)scrollToCursor{
+    // get string before cursor
+    NSString *stringBeforCursor;
+    if (_infoSession.note == nil) {
+        stringBeforCursor = @"";
+    } else {
+        @try {
+            stringBeforCursor = [_infoSession.note substringToIndex:cursorIndex];
+        }
+        @catch (NSException *exception) {
+            stringBeforCursor = _infoSession.note;
+        }
+        @finally {
+        }
+    }
+    // calculate lines of string before cursor
+    CGFloat calculatedHeight = [self getHeightForString:stringBeforCursor fontSize:15 width:280];
+    NSInteger lines = (NSInteger)(calculatedHeight - 34) / 18 + 1;
+    NSLog(@"lines : %i", lines);
+    // calculate the offset need to scroll
+    CGRect rectToScroll = CGRectMake(0, self.noteCell.frame.origin.y + lines * 20 - 95, 320, 120);
+    // scroll tableview to rect that cursor is visible
+    [self.tableView scrollRectToVisible:rectToScroll animated:YES];
 }
 
 
@@ -1219,10 +1301,39 @@
  *  @param scrollView scrollView
  */
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [self.noteCell.contentText resignFirstResponder];
-    NSMutableArray *indexPathToReload = [[NSMutableArray alloc] init];
-    [indexPathToReload addObject:[NSIndexPath indexPathForRow:0 inSection:3]];
-    [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationFade];
+    NSLog(@"scroll did begin");
+    //[self.noteCell.contentText resignFirstResponder];
+    startContentOffset = scrollView.contentOffset.y;
+    NSLog(@"startContentOffset: %f", startContentOffset);
+    if (startContentOffset < -10.0) {
+        NSLog(@"scroll tableview");
+        //NSLog(@"%@", NSStringFromCGRect(self.tableView.contentOffset));
+        //[self.tableView scrollRectToVisible:CGRectMake(0, self.tableView.contentOffset.y - 100, 320, 320) animated:YES];
+        //[self.tableView scrollRectToVisible:<#(CGRect)#> animated:<#(BOOL)#>];
+    }
+//    NSMutableArray *indexPathToReload = [[NSMutableArray alloc] init];
+//    [indexPathToReload addObject:[NSIndexPath indexPathForRow:0 inSection:3]];
+//    [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    if (scrollView == self.tableView) {
+//        CGFloat currentOffset = scrollView.contentOffset.y;
+//        CGFloat differenceFromStart = startContentOffset - currentOffset;
+//        CGFloat differenceFromLast = lastContentOffset - currentOffset;
+//        NSLog(@"start: %0.0f, current: %0.0f, last: %0.0f", startContentOffset, currentOffset, lastContentOffset);
+//        //    lastContentOffset = currentOffset;
+//        //
+//        // start < current, scroll down
+//        NSLog(@"diff_start: %0.0f, diff_last: %0.0f", differenceFromStart, differenceFromLast);
+//        if(differenceFromStart > 0)
+//        {
+//            // scroll up
+//            if(!scrollView.isTracking && (abs(differenceFromLast)>3))
+//                [self.noteCell.contentText resignFirstResponder];
+//        }
+//        lastContentOffset = scrollView.contentOffset.y;
+//    }
 }
 
 #pragma mark - AlertViewController Delegate method

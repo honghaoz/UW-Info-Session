@@ -243,7 +243,7 @@ class SumUpUsage(BasicHandler):
                 queryResult = urlOpen.read()
                 jsonResult = json.loads(queryResult)
                 totoal_uses = 0;
-                logging.info(urlOpen.getcode())
+                #logging.info(urlOpen.getcode())
                 # if info2 status is valid
                 if urlOpen.getcode() == 200 and jsonResult['status'] == 'valid':
                     logging.info('info2 SumUpUsage: status valid')

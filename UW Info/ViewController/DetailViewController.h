@@ -20,7 +20,6 @@
 @property (nonatomic, strong) InfoSession *infoSession;
 @property (nonatomic, strong) InfoSession *infoSessionBackup;
 @property (nonatomic, strong) InfoSessionModel *infoSessionModel;
-@property (nonatomic, weak) DetailDescriptionCell *noteCell;
 
 @property (nonatomic, weak) UWTabBarController *tabBarController;
 

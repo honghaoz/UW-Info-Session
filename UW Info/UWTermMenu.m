@@ -229,7 +229,7 @@
 - (void)setMenuWithItems:(NSArray *)items {
     _menu = [[REMenu alloc] initWithItems:items];
     
-//    _menu.backgroundColor = [UIColor colorWithWhite:1 alpha:0.3];
+    _menu.backgroundColor = [UIColor colorWithWhite:0.92 alpha:0.97];
     _menu.font = [UIFont systemFontOfSize:20];
     _menu.textColor = [UIColor darkGrayColor];
     _menu.textShadowColor = [UIColor blackColor];

@@ -23,7 +23,8 @@
 @property (nonatomic, strong) NSArray *sectionIndex;
 @property (nonatomic, strong) UILabel *detailLabel;
 
-@property (nonatomic, strong) UIView *statusBarView;
+@property (nonatomic, strong) UIView *statusBarCoverView;
+@property (nonatomic, strong) UIView *searchBarCoverView;
 
 @property (nonatomic, strong) NSArray *searchResult;
 
@@ -62,9 +63,16 @@
     _searchBar.delegate = self;
     _searchBar.scopeButtonTitles = [[NSArray alloc] initWithObjects:@"Employer", @"Program", @"Note", nil];
     
+    //_searchBar.searchBarStyle = UISearchBarStyleProminent;
+    //_searchBar.placeholder = @"Search employer, program, note.";
     _searchBar.tintColor = UWBlack;
-    _searchBar.backgroundColor = UWGold;
-    
+    _searchBar.placeholder = @"Search Info Session";
+    //_searchBar.barTintColor = UWGold;
+    //_searchBar.backgroundColor = UWGold;
+    //[_searchBar setTranslucent:NO];
+    //_searchBar.backgroundColor = [UIColor clearColor];
+    //_searchBar.backgroundImage = [UIImage imageNamed:@"map_colour300.png"];
+
     // initiate table view
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height)];
     [_tableView setContentInset:UIEdgeInsetsMake(navigationBarHeight, 0, 0, 0)];
@@ -113,8 +121,10 @@
 //                                             selector:@selector(keyboardWillShow:)
 //                                                 name:UIKeyboardWillChangeFrameNotification
 //                                               object:nil];
-    _statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, 320, 20)];
-    _statusBarView.backgroundColor=UWGold;
+    _statusBarCoverView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, 320, 20)];
+    _statusBarCoverView.backgroundColor=UWGold;
+    _searchBarCoverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, _searchBar.frame.size.height)];
+    _searchBarCoverView.backgroundColor=UWGold;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollToFirstRow) name:@"infoSessionsChanged" object:nil];
 }
@@ -337,13 +347,13 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_searchController.searchResultsTableView == tableView) {
         if (indexPath.section == 0) {
-            return 70.0f;
+            return 72.0f;
         } else {
             return 44.0f;
         }
     } else {
         if (indexPath.section < [_infoSessionModel.infoSessionsIndexDic count]) {
-            return 70.0f;
+            return 72.0f;
         } else {
             return 44.0f;
         }
@@ -549,7 +559,8 @@
 - (void)showSearchBar {
     // if search bar is not already shown
     if (_searchBar.frame.origin.y > 20) {
-        [_searchBar addSubview:_statusBarView];
+        [_searchBar addSubview:_statusBarCoverView];
+        [_searchBar addSubview:_searchBarCoverView];
         //move the search bar up to the correct location eg
         [UIView animateWithDuration:.3
                          animations:^{
@@ -565,6 +576,14 @@
                                                                  [UIScreen mainScreen].bounds.size.height - 210)];
                              
                              _searchBar.barTintColor = [UIColor clearColor];
+                             UITextField *textSearchField = [_searchBar valueForKey:@"_searchField"];
+                             NSLog(@"%f, %f", textSearchField.layer.borderWidth, textSearchField.layer.cornerRadius);
+                             textSearchField.layer.borderWidth = 0.5f;
+                             textSearchField.layer.cornerRadius = 5.0f;
+                             textSearchField.layer.borderColor = UWBlack.CGColor;
+                             [_searchBarCoverView addSubview:textSearchField];
+                             _searchBar.scopeBarBackgroundImage = [self imageWithColor:UWGold];
+                        
                          }
                          completion:^(BOOL finished){
                              //whatever else you may need to do
@@ -577,7 +596,7 @@
     NSInteger statusBarHeight = 20;
     NSInteger navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
     if (_searchBar.frame.origin.y < statusBarHeight + navigationBarHeight) {
-        [_statusBarView setFrame:CGRectMake(_statusBarView.frame.origin.x, _statusBarView.frame.origin.y - 22, _statusBarView.frame.size.width, _statusBarView.frame.size.height + 22)];
+        [_statusBarCoverView setFrame:CGRectMake(_statusBarCoverView.frame.origin.x, _statusBarCoverView.frame.origin.y - 22, _statusBarCoverView.frame.size.width, _statusBarCoverView.frame.size.height + 22)];
         //move the search bar down to the correct location eg
         [UIView animateWithDuration:.3
                          animations:^{
@@ -597,16 +616,37 @@
                          completion:^(BOOL finished){
                              //whatever else you may need to do
                              _searchBar.barTintColor = nil;
-                             [_tabBarController showTabBar];
-                             [_statusBarView removeFromSuperview];
+                             [_statusBarCoverView removeFromSuperview];
+                             UITextField *textSearchField = [_searchBar valueForKey:@"_searchField"];
+                             textSearchField.layer.borderWidth = 0;
+                             textSearchField.layer.cornerRadius = 0;
+                             textSearchField.layer.borderColor = nil;
+                             [_searchBar addSubview:textSearchField];
+                             [_searchBarCoverView removeFromSuperview];
                              
-                             [_statusBarView setFrame:CGRectMake(_statusBarView.frame.origin.x, _statusBarView.frame.origin.y + 22, _statusBarView.frame.size.width, _statusBarView.frame.size.height - 22)];
+                             [_statusBarCoverView setFrame:CGRectMake(_statusBarCoverView.frame.origin.x, _statusBarCoverView.frame.origin.y + 22, _statusBarCoverView.frame.size.width, _statusBarCoverView.frame.size.height - 22)];
                          }];
 //        [UIView animateWithDuration:4 animations:^(){
 //            _searchBar.barTintColor = nil;
 //        }];
     }
 }
+
+
+- (UIImage *)imageWithColor:(UIColor *)color {
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
 
 #pragma mark - Navigation
 

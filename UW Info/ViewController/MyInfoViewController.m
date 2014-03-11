@@ -206,7 +206,7 @@
  *  @param tableView tableView
  *  @param indexPath indexPath
  *
- *  @return for LoadingCell, return 44.0f, for InfoSessionCell, return 70.0f
+ *  @return for LoadingCell, return 44.0f, for InfoSessionCell, return 72.0f
  */
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // empty cell
@@ -215,7 +215,7 @@
             return 44.0f;
         } else {
             // info session cell
-            return 70.0f;
+            return 72.0f;
         }
     } else {
         return 44.0f;
