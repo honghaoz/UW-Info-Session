@@ -450,6 +450,38 @@ static EKEventStore *eventStore;
 //        // set timezone to EST
 //        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
 //    });
+    
+    //    NSDate* currentDate = [NSDate date];
+    //    NSTimeZone* currentTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+    //    NSTimeZone* nowTimeZone = [NSTimeZone systemTimeZone];
+    //
+    //    NSInteger currentGMTOffset = [currentTimeZone secondsFromGMTForDate:currentDate];
+    //    NSInteger nowGMTOffset = [nowTimeZone secondsFromGMTForDate:currentDate];
+    //
+    //    NSTimeInterval interval = nowGMTOffset - currentGMTOffset;
+    //    NSDate* nowDate = [[NSDate alloc] initWithTimeInterval:interval sinceDate:currentDate];
+    
+    //NSDate* sourceDate = [NSDate date];
+    //
+    //    NSTimeZone* sourceTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+    //    NSTimeZone* destinationTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"EST"];
+    //
+    //    NSInteger sourceGMTOffset = [sourceTimeZone secondsFromGMTForDate:sourceDate];
+    //    NSInteger destinationGMTOffset = [destinationTimeZone secondsFromGMTForDate:sourceDate];
+    //    NSTimeInterval interval = destinationGMTOffset - sourceGMTOffset;
+    //
+    //    NSLog(@"%f", interval);
+    //
+    //    NSDate* destinationDate = [[NSDate alloc] initWithTimeInterval:interval sinceDate:sourceDate];
+    
+    //    NSDateFormatter *test = [InfoSession estDateFormatter];
+    //    [test setDateFormat:@"h:mm a"];
+    //    NSLog(@"now: %@, startTime: %@", [test stringFromDate:sourceDate],
+    //          [test stringFromDate:infoSession.startTime]);
+    //NSLog(@"Local Time Zone %@",[[NSTimeZone localTimeZone] name]);
+    //NSLog(@"System Time Zone %@",[[NSTimeZone systemTimeZone] name]);
+    //NSLog(@"%@", [NSTimeZone abbreviationDictionary]);
+    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     // set the locale to fix the formate to read and write;
     NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];

@@ -48,9 +48,21 @@
     [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
     self.navigationController.navigationBar.tintColor = UWBlack;
     
-    //UIBarButtonItem *configButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"config"] style:UIBarButtonItemStyleBordered target:self action:@selector(configuration)];
+    UIBarButtonItem *configButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"config"] style:UIBarButtonItemStyleBordered target:self action:@selector(configuration)];
     
-    //[self.navigationItem setLeftBarButtonItem:configButton];
+    [self.navigationItem setLeftBarButtonItem:configButton];
+    
+//    UIBarButtonItem *configButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStyleBordered target:self action:@selector(configuration)];
+//    UIFont *smallerFont = [UIFont systemFontOfSize:[UIFont systemFontSize] - 6.0];
+//    UIFont *regularFont = [UIFont systemFontOfSize:[UIFont systemFontSize] + 10.0];
+//    
+//    // create the attributes
+//    NSDictionary *attrsForSmaller = [NSDictionary dictionaryWithObjectsAndKeys:smallerFont, NSFontAttributeName, nil];
+//    NSDictionary *attrsForRegular = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, nil];
+//    UIFont *customFont = [UIFont fontWithName:@"Helvetica" size:24.0];
+//    NSDictionary *fontDictionary = @{UITextAttributeFont : customFont};
+//    [configButton setTitleTextAttributes:fontDictionary forState:UIControlStateNormal];
+//    [self.navigationItem setLeftBarButtonItem:configButton];
     
     
     // initiate the right buttons

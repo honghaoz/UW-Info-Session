@@ -621,7 +621,8 @@
                 // resize textView height
                 CGRect textViewFrame = cell.contentText.frame;
                 CGFloat calculatedHeight = [self getHeightForString:_infoSession.description fontSize:15 width:280];
-                if (calculatedHeight > 243) {
+                NSLog(@"cal height: %0.0f", calculatedHeight);
+                if (calculatedHeight > 243.0f) {
                     textViewFrame.size.height = 243;
                     [cell.contentText setScrollEnabled:YES];
                 } else {
@@ -629,6 +630,7 @@
                     [cell.contentText setScrollEnabled:NO];
                 }
                 cell.contentText.frame = textViewFrame;
+                NSLog(@"%@", NSStringFromCGRect(cell.contentText.frame));
             }
             self.descriptionCell = cell;
             [self.descriptionCell.contentText setDelegate:self];
@@ -1082,9 +1084,9 @@
     // set note cell is not scrollable
     [textView setScrollEnabled:NO];
 //    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationAutomatic];
-//    [self.tableView beginUpdates];
-//    [self.tableView endUpdates];
-    [self.tableView reloadData];
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+    //[self.tableView reloadData];
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {

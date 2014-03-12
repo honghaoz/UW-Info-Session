@@ -11,6 +11,6 @@
 
 @interface DetailDescriptionCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UITextView *contentText;
+@property (weak, nonatomic) IBOutlet PSPDFTextView *contentText;
 
 @end

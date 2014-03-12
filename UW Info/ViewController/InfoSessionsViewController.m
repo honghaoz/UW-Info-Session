@@ -365,7 +365,7 @@
         NSDate *beginningOfNextWeek = [gregorian dateFromComponents:component];
         NSString *endDate = [dateFormatter stringFromDate: beginningOfNextWeek];
         
-        return [NSString stringWithFormat:@"%@ - %@ (Week: %d)", beginDate, endDate, section + 1];
+        return [NSString stringWithFormat:@"%@ - %@ (Week: %ld)", beginDate, endDate, (long int)section + 1];
     }
 }
 
@@ -443,38 +443,6 @@
 - (void)configureCell:(InfoSessionCell *)cell withIndexPath:(NSIndexPath *)indexPath {
     InfoSession *infoSession = [self getInfoSessionAccordingIndexPath:indexPath];
     // if current time is befor start time, set dark (future sessions)
-    
-//    NSDate* currentDate = [NSDate date];
-//    NSTimeZone* currentTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
-//    NSTimeZone* nowTimeZone = [NSTimeZone systemTimeZone];
-//    
-//    NSInteger currentGMTOffset = [currentTimeZone secondsFromGMTForDate:currentDate];
-//    NSInteger nowGMTOffset = [nowTimeZone secondsFromGMTForDate:currentDate];
-//    
-//    NSTimeInterval interval = nowGMTOffset - currentGMTOffset;
-//    NSDate* nowDate = [[NSDate alloc] initWithTimeInterval:interval sinceDate:currentDate];
-    
-    NSDate* sourceDate = [NSDate date];
-//    
-//    NSTimeZone* sourceTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
-//    NSTimeZone* destinationTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"EST"];
-//    
-//    NSInteger sourceGMTOffset = [sourceTimeZone secondsFromGMTForDate:sourceDate];
-//    NSInteger destinationGMTOffset = [destinationTimeZone secondsFromGMTForDate:sourceDate];
-//    NSTimeInterval interval = destinationGMTOffset - sourceGMTOffset;
-//    
-//    NSLog(@"%f", interval);
-//    
-//    NSDate* destinationDate = [[NSDate alloc] initWithTimeInterval:interval sinceDate:sourceDate];
-    
-//    
-    NSDateFormatter *test = [InfoSession estDateFormatter];
-    [test setDateFormat:@"h:mm a"];
-    NSLog(@"now: %@, startTime: %@", [test stringFromDate:sourceDate],
-          [test stringFromDate:infoSession.startTime]);
-    //NSLog(@"Local Time Zone %@",[[NSTimeZone localTimeZone] name]);
-    //NSLog(@"System Time Zone %@",[[NSTimeZone systemTimeZone] name]);
-    //NSLog(@"%@", [NSTimeZone abbreviationDictionary]);
     if ([[NSDate date] compare:infoSession.startTime] == NSOrderedAscending) {
         [cell.employer setTextColor:[UIColor blackColor]];
         [cell.locationLabel setTextColor:[UIColor darkGrayColor]];

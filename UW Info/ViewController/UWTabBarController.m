@@ -37,7 +37,7 @@
     //[tabBar setBarStyle:UIBarStyleBlackOpaque];
     tabBar.tintColor = UWGold;
     //[tabBar setTintColor:UWBlack];
-    tabBar.barTintColor = [UIColor clearColor];
+    tabBar.barTintColor = [UIColor blackColor];//[UIColor colorWithRed:0.07 green:0.08 blue:0.11 alpha:1];
     [tabBar setBackgroundColor:UWBlack];
     //[UIColor colorWithRed:0.26 green:0.28 blue:0.33 alpha:1]
     UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
