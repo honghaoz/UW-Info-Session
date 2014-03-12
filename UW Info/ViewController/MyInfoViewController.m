@@ -13,6 +13,8 @@
 #import "DetailViewController.h"
 #import "UWTabBarController.h"
 #import "InfoSessionsViewController.h"
+#import "MoreViewController.h"
+#import "MoreNavigationViewController.h"
 
 @interface MyInfoViewController ()
 
@@ -48,9 +50,9 @@
     [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
     self.navigationController.navigationBar.tintColor = UWBlack;
     
-    UIBarButtonItem *configButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"config"] style:UIBarButtonItemStyleBordered target:self action:@selector(configuration)];
+    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"config"] style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreViewController)];
     
-    [self.navigationItem setLeftBarButtonItem:configButton];
+    [self.navigationItem setRightBarButtonItem:moreButton];
     
 //    UIBarButtonItem *configButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStyleBordered target:self action:@selector(configuration)];
 //    UIFont *smallerFont = [UIFont systemFontOfSize:[UIFont systemFontSize] - 6.0];
@@ -65,8 +67,8 @@
 //    [self.navigationItem setLeftBarButtonItem:configButton];
     
     
-    // initiate the right buttons
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(enterEditMode:)] animated:YES];
+    // initiate the left buttons
+    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(enterEditMode:)] animated:YES];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(reloadTable) forControlEvents:UIControlEventValueChanged];
@@ -345,10 +347,10 @@
 - (void)enterEditMode:(id)sender {
     if ([self.tableView isEditing]) {
         [self.tableView setEditing:NO animated:YES];
-        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(enterEditMode:)] animated:YES];
+        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(enterEditMode:)] animated:YES];
     } else {
         [self.tableView setEditing:YES animated:YES];
-        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(enterEditMode:)] animated:YES];
+        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(enterEditMode:)] animated:YES];
     }
 }
 
@@ -365,6 +367,14 @@
     controller.infoSessionModel = sender[2];
     controller.tabBarController = _tabBarController;
 
+}
+
+- (void)showMoreViewController {
+    MoreViewController *newMoreVC = [[MoreViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    MoreNavigationViewController *newMoreNaviVC = [[MoreNavigationViewController alloc] initWithRootViewController:newMoreVC];
+    //[self presentViewController:newMoreVc animated:YES completion:^(){}];
+    //[self.navigationController pushViewController:newMoreNaviVC animated:YES];
+    [self presentViewController:newMoreNaviVC animated:YES completion:^(){}];
 }
 
 

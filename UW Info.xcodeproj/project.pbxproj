@@ -39,6 +39,8 @@
 		1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */; };
 		1B37453718A5BA28007CF08C /* InfoSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37453618A5BA28007CF08C /* InfoSession.m */; };
 		1B4DD55618AC90B4009B0214 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4DD55518AC90B4009B0214 /* MapViewController.m */; };
+		1B527C4218D0241D00A91339 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B527C4118D0241D00A91339 /* MoreViewController.m */; };
+		1B527C4518D026D100A91339 /* MoreNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B527C4418D026D100A91339 /* MoreNavigationViewController.m */; };
 		1B59BB2018C441AA00D6112B /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B59BB1F18C441AA00D6112B /* SearchViewController.m */; };
 		1B6EDE4E18C66DB800EBFEB9 /* UWTodayButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B6EDE4D18C66DB800EBFEB9 /* UWTodayButton.m */; };
 		1B6F54C618AC218600D3DD47 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6F54C518AC218600D3DD47 /* EventKit.framework */; };
@@ -148,6 +150,10 @@
 		1B37453618A5BA28007CF08C /* InfoSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSession.m; path = Model/InfoSession.m; sourceTree = "<group>"; };
 		1B4DD55418AC90B4009B0214 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapViewController.h; path = ViewController/MapViewController.h; sourceTree = "<group>"; };
 		1B4DD55518AC90B4009B0214 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = ViewController/MapViewController.m; sourceTree = "<group>"; };
+		1B527C4018D0241D00A91339 /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoreViewController.h; path = ViewController/MoreViewController.h; sourceTree = "<group>"; };
+		1B527C4118D0241D00A91339 /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoreViewController.m; path = ViewController/MoreViewController.m; sourceTree = "<group>"; };
+		1B527C4318D026D100A91339 /* MoreNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoreNavigationViewController.h; path = ViewController/MoreNavigationViewController.h; sourceTree = "<group>"; };
+		1B527C4418D026D100A91339 /* MoreNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoreNavigationViewController.m; path = ViewController/MoreNavigationViewController.m; sourceTree = "<group>"; };
 		1B59BB1E18C441AA00D6112B /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchViewController.h; path = ViewController/SearchViewController.h; sourceTree = "<group>"; };
 		1B59BB1F18C441AA00D6112B /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = ViewController/SearchViewController.m; sourceTree = "<group>"; };
 		1B6EDE4C18C66DB800EBFEB9 /* UWTodayButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWTodayButton.h; sourceTree = "<group>"; };
@@ -382,6 +388,7 @@
 				1B717E7318A8142A00E20A29 /* DetailViewController */,
 				1B2076E718AAA56E00FE7088 /* MyInfoViewController */,
 				1B2076E818AAA58500FE7088 /* SearchViewController */,
+				1B527C3F18D0223800A91339 /* MoreViewController */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -403,6 +410,17 @@
 				1B4DD55518AC90B4009B0214 /* MapViewController.m */,
 			);
 			name = MapViewController;
+			sourceTree = "<group>";
+		};
+		1B527C3F18D0223800A91339 /* MoreViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1B527C4318D026D100A91339 /* MoreNavigationViewController.h */,
+				1B527C4418D026D100A91339 /* MoreNavigationViewController.m */,
+				1B527C4018D0241D00A91339 /* MoreViewController.h */,
+				1B527C4118D0241D00A91339 /* MoreViewController.m */,
+			);
+			name = MoreViewController;
 			sourceTree = "<group>";
 		};
 		1B717E7218A8140E00E20A29 /* InfoSessionsViewController */ = {
@@ -641,6 +659,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BD83AA518A59F1C00EDBB6D /* UWAppDelegate.m in Sources */,
+				1B527C4218D0241D00A91339 /* MoreViewController.m in Sources */,
 				1BAD97E618A98F65006F4546 /* InfoSessionModel.m in Sources */,
 				1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */,
 				1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */,
@@ -675,6 +694,7 @@
 				1B2F746F18AF66190042322B /* AFURLSessionManager.m in Sources */,
 				1B2076EB18AAA65100FE7088 /* AlertViewController.m in Sources */,
 				1B2F746A18AF66190042322B /* AFNetworkReachabilityManager.m in Sources */,
+				1B527C4518D026D100A91339 /* MoreNavigationViewController.m in Sources */,
 				1B2F746E18AF66190042322B /* AFURLResponseSerialization.m in Sources */,
 				1B8C557C18B7BCB60070CD82 /* EKEvent+NSCoding.m in Sources */,
 				1B050C8718BFBD1700DCC342 /* RECommonFunctions.m in Sources */,
