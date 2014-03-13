@@ -116,6 +116,7 @@
             cell.textLabel.text = @"App Version";
             [cell.textLabel setFont:[UIFont systemFontOfSize:18]];
             cell.detailTextLabel.text = [UIApplication appVersion];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             return cell;
         }
     } else if (indexPath.section == 1) {
@@ -160,6 +161,23 @@
     //lbl.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"my_head_bg"]];
     //lbl.alpha = 0.9;
     return headerLabel;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            
+        }
+    } else if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+        
+        } else if (indexPath.row == 1) {
+            
+        } else if (indexPath.row == 2) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms://itunes.apple.com/app/uw-info-session/id837207884?mt=8"]];
+        }
+    }
 }
 
 
