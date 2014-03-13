@@ -39,6 +39,18 @@
 		1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */; };
 		1B37453718A5BA28007CF08C /* InfoSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37453618A5BA28007CF08C /* InfoSession.m */; };
 		1B4DD55618AC90B4009B0214 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4DD55518AC90B4009B0214 /* MapViewController.m */; };
+		1B505EC418D0C35B00F168F8 /* UIApplication+AppVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B505EC318D0C35B00F168F8 /* UIApplication+AppVersion.m */; };
+		1B505EC718D0C63F00F168F8 /* CenterTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B505EC618D0C63F00F168F8 /* CenterTextCell.m */; };
+		1B505EC918D0E32500F168F8 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B505EC818D0E32500F168F8 /* Parse.framework */; };
+		1B505ECB18D0E36A00F168F8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B505ECA18D0E36A00F168F8 /* AudioToolbox.framework */; };
+		1B505ECD18D0E37700F168F8 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B505ECC18D0E37700F168F8 /* CFNetwork.framework */; };
+		1B505ECF18D0E38400F168F8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B505ECE18D0E38400F168F8 /* CoreLocation.framework */; };
+		1B505ED118D0E38C00F168F8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B505ED018D0E38C00F168F8 /* libz.dylib */; };
+		1B505ED318D0E39300F168F8 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B505ED218D0E39300F168F8 /* MobileCoreServices.framework */; };
+		1B505ED518D0E39900F168F8 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B505ED418D0E39900F168F8 /* QuartzCore.framework */; };
+		1B505ED718D0E39F00F168F8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B505ED618D0E39F00F168F8 /* Security.framework */; };
+		1B505ED918D0E3A400F168F8 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B505ED818D0E3A400F168F8 /* StoreKit.framework */; };
+		1B505EDB18D0E3AB00F168F8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B505EDA18D0E3AB00F168F8 /* SystemConfiguration.framework */; };
 		1B527C4218D0241D00A91339 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B527C4118D0241D00A91339 /* MoreViewController.m */; };
 		1B527C4518D026D100A91339 /* MoreNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B527C4418D026D100A91339 /* MoreNavigationViewController.m */; };
 		1B59BB2018C441AA00D6112B /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B59BB1F18C441AA00D6112B /* SearchViewController.m */; };
@@ -150,6 +162,20 @@
 		1B37453618A5BA28007CF08C /* InfoSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSession.m; path = Model/InfoSession.m; sourceTree = "<group>"; };
 		1B4DD55418AC90B4009B0214 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapViewController.h; path = ViewController/MapViewController.h; sourceTree = "<group>"; };
 		1B4DD55518AC90B4009B0214 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = ViewController/MapViewController.m; sourceTree = "<group>"; };
+		1B505EC218D0C35B00F168F8 /* UIApplication+AppVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIApplication+AppVersion.h"; path = "Category/UIApplication+AppVersion.h"; sourceTree = "<group>"; };
+		1B505EC318D0C35B00F168F8 /* UIApplication+AppVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+AppVersion.m"; path = "Category/UIApplication+AppVersion.m"; sourceTree = "<group>"; };
+		1B505EC518D0C63F00F168F8 /* CenterTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CenterTextCell.h; path = TableViewCell/CenterTextCell.h; sourceTree = "<group>"; };
+		1B505EC618D0C63F00F168F8 /* CenterTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CenterTextCell.m; path = TableViewCell/CenterTextCell.m; sourceTree = "<group>"; };
+		1B505EC818D0E32500F168F8 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		1B505ECA18D0E36A00F168F8 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		1B505ECC18D0E37700F168F8 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		1B505ECE18D0E38400F168F8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		1B505ED018D0E38C00F168F8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		1B505ED218D0E39300F168F8 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		1B505ED418D0E39900F168F8 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		1B505ED618D0E39F00F168F8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		1B505ED818D0E3A400F168F8 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		1B505EDA18D0E3AB00F168F8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		1B527C4018D0241D00A91339 /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoreViewController.h; path = ViewController/MoreViewController.h; sourceTree = "<group>"; };
 		1B527C4118D0241D00A91339 /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoreViewController.m; path = ViewController/MoreViewController.m; sourceTree = "<group>"; };
 		1B527C4318D026D100A91339 /* MoreNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoreNavigationViewController.h; path = ViewController/MoreNavigationViewController.h; sourceTree = "<group>"; };
@@ -212,10 +238,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B505EDB18D0E3AB00F168F8 /* SystemConfiguration.framework in Frameworks */,
+				1B505ED918D0E3A400F168F8 /* StoreKit.framework in Frameworks */,
+				1B505ED718D0E39F00F168F8 /* Security.framework in Frameworks */,
+				1B505ED518D0E39900F168F8 /* QuartzCore.framework in Frameworks */,
+				1B505ED318D0E39300F168F8 /* MobileCoreServices.framework in Frameworks */,
+				1B505ED118D0E38C00F168F8 /* libz.dylib in Frameworks */,
+				1B505ECF18D0E38400F168F8 /* CoreLocation.framework in Frameworks */,
+				1BD83A9718A59F1C00EDBB6D /* CoreGraphics.framework in Frameworks */,
+				1B505ECD18D0E37700F168F8 /* CFNetwork.framework in Frameworks */,
+				1B505ECB18D0E36A00F168F8 /* AudioToolbox.framework in Frameworks */,
 				1B2040BF18B5DCB500C72D51 /* CoreData.framework in Frameworks */,
 				1B6F54C818AC219000D3DD47 /* EventKitUI.framework in Frameworks */,
 				1B6F54C618AC218600D3DD47 /* EventKit.framework in Frameworks */,
-				1BD83A9718A59F1C00EDBB6D /* CoreGraphics.framework in Frameworks */,
+				1B505EC918D0E32500F168F8 /* Parse.framework in Frameworks */,
 				1BD83A9918A59F1C00EDBB6D /* UIKit.framework in Frameworks */,
 				1BD83A9518A59F1C00EDBB6D /* Foundation.framework in Frameworks */,
 			);
@@ -419,6 +455,8 @@
 				1B527C4418D026D100A91339 /* MoreNavigationViewController.m */,
 				1B527C4018D0241D00A91339 /* MoreViewController.h */,
 				1B527C4118D0241D00A91339 /* MoreViewController.m */,
+				1B505EC518D0C63F00F168F8 /* CenterTextCell.h */,
+				1B505EC618D0C63F00F168F8 /* CenterTextCell.m */,
 			);
 			name = MoreViewController;
 			sourceTree = "<group>";
@@ -456,6 +494,8 @@
 			children = (
 				1B8C557A18B7BCB60070CD82 /* EKEvent+NSCoding.h */,
 				1B8C557B18B7BCB60070CD82 /* EKEvent+NSCoding.m */,
+				1B505EC218D0C35B00F168F8 /* UIApplication+AppVersion.h */,
+				1B505EC318D0C35B00F168F8 /* UIApplication+AppVersion.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -484,6 +524,16 @@
 		1BD83A9318A59F1C00EDBB6D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1B505EDA18D0E3AB00F168F8 /* SystemConfiguration.framework */,
+				1B505ED818D0E3A400F168F8 /* StoreKit.framework */,
+				1B505ED618D0E39F00F168F8 /* Security.framework */,
+				1B505ED418D0E39900F168F8 /* QuartzCore.framework */,
+				1B505ED218D0E39300F168F8 /* MobileCoreServices.framework */,
+				1B505ED018D0E38C00F168F8 /* libz.dylib */,
+				1B505ECE18D0E38400F168F8 /* CoreLocation.framework */,
+				1B505ECC18D0E37700F168F8 /* CFNetwork.framework */,
+				1B505ECA18D0E36A00F168F8 /* AudioToolbox.framework */,
+				1B505EC818D0E32500F168F8 /* Parse.framework */,
 				1B2040BE18B5DCB500C72D51 /* CoreData.framework */,
 				1B6F54C718AC219000D3DD47 /* EventKitUI.framework */,
 				1B6F54C518AC218600D3DD47 /* EventKit.framework */,
@@ -666,6 +716,7 @@
 				1B2F746C18AF66190042322B /* AFURLConnectionOperation.m in Sources */,
 				1B2F746B18AF66190042322B /* AFSecurityPolicy.m in Sources */,
 				1B2F748518AF66210042322B /* UIButton+AFNetworking.m in Sources */,
+				1B505EC418D0C35B00F168F8 /* UIApplication+AppVersion.m in Sources */,
 				1B050C7918BFB4BB00DCC342 /* InfoDetailedTitleButton.m in Sources */,
 				1B050C8A18BFBD1700DCC342 /* REMenuItemView.m in Sources */,
 				1BBB045018CE8A4900E208B5 /* PSPDFTextView.m in Sources */,
@@ -690,6 +741,7 @@
 				1B717E7118A80B8200E20A29 /* DetailDescriptionCell.m in Sources */,
 				1B2F746718AF66190042322B /* AFHTTPRequestOperation.m in Sources */,
 				1B050C8918BFBD1700DCC342 /* REMenuItem.m in Sources */,
+				1B505EC718D0C63F00F168F8 /* CenterTextCell.m in Sources */,
 				1B2F748818AF66210042322B /* UIRefreshControl+AFNetworking.m in Sources */,
 				1B2F746F18AF66190042322B /* AFURLSessionManager.m in Sources */,
 				1B2076EB18AAA65100FE7088 /* AlertViewController.m in Sources */,
@@ -835,6 +887,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UW Info/UW Info-Prefix.pch";
 				INFOPLIST_FILE = "UW Info/UW Info-Info.plist";
@@ -851,6 +907,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UW Info/UW Info-Prefix.pch";
 				INFOPLIST_FILE = "UW Info/UW Info-Info.plist";

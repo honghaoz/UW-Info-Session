@@ -27,7 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"MoreNaviVC didLoad");
+    //NSLog(@"MoreNaviVC didLoad");
     // Do any additional setup after loading the view.
     //MoreViewController *newMoreVC = [[MoreViewController alloc] init];
     //[self.navigationController addChildViewController:newMoreVC];

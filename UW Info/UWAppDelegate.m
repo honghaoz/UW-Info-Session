@@ -11,6 +11,7 @@
 #import "UWTabBarController.h"
 #import "MyInfoViewController.h"
 #import "AFNetworkActivityIndicatorManager.h"
+#import <Parse/Parse.h>
 
 @implementation UWAppDelegate {
     InfoSessionModel *_infoSessionModel;
@@ -40,6 +41,7 @@
         tabController.targetIndexTobeSelectedInMyInfoVC = -1;
     }
     
+    // Set timer to refresh cell
     // get time interval of seconds in minute
     NSTimeInterval roundedInterval = round([[NSDate date] timeIntervalSinceReferenceDate] / 60.0) * 60.0;
     // date of next minute
@@ -53,6 +55,10 @@
                                                repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     
+    // Parse service
+    [Parse setApplicationId:@"zytbQR05vLnq2h37zHHBDneLWMzaH47qHB978zfx"
+                  clientKey:@"O107hqVq0uYHr3QLFGSCTJPCCC5YKY5vx2BQXS2q"];
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     return YES;
 }
 							
