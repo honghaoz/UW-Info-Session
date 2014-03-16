@@ -550,6 +550,13 @@
     [self hideSearchBar];
 }
 
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
+    [self filterContentForSearchText:searchBar.text
+                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
+                                      objectAtIndex:[self.searchDisplayController.searchBar
+                                                     selectedScopeButtonIndex]]];
+}
+
 //#pragma mark - other methods
 //- (void)keyboardWillShow:(NSNotification *)notification {
 //    NSLog(@"keyboard changed");

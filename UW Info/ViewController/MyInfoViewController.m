@@ -50,7 +50,7 @@
     [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
     self.navigationController.navigationBar.tintColor = UWBlack;
     
-    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings1"] style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreViewController)];
+    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings"] style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreViewController)];
     
     [self.navigationItem setRightBarButtonItem:moreButton];
     
