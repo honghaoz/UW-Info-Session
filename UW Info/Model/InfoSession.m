@@ -300,7 +300,7 @@ static EKEventStore *eventStore;
         NSInteger alertsCount = [self.alerts count];
         for (NSInteger i = 0; i < alertsCount; i++) {
             eachAlert = self.alerts[i];
-            [eachAlert[@"isNotified"] boolValue] ? NSLog(@"isNotified") : NSLog(@"not isNotified");
+//            [eachAlert[@"isNotified"] boolValue] ? NSLog(@"isNotified") : NSLog(@"not isNotified");
             if ([eachAlert[@"alertChoice"] integerValue] > 0 && [eachAlert[@"isNotified"] boolValue] == NO) {
                 UILocalNotification *localNotification = [[UILocalNotification alloc] init];
                 localNotification.fireDate = [self.startTime dateByAddingTimeInterval:[eachAlert[@"alertInterval"] doubleValue]];

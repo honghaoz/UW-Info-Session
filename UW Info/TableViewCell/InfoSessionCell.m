@@ -24,17 +24,17 @@
         [_locationLabel setTextColor:[UIColor darkGrayColor]];
         [_locationLabel setText:@"Location: "];
         
-        _dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 28, 41, 21)];
-        [_dateLabel setFont:[UIFont systemFontOfSize:14]];
-        [_dateLabel setTextColor:[UIColor darkGrayColor]];
-        [_dateLabel setText:@"Date: "];
+//        _dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 28, 41, 21)];
+//        [_dateLabel setFont:[UIFont systemFontOfSize:14]];
+//        [_dateLabel setTextColor:[UIColor darkGrayColor]];
+//        [_dateLabel setText:@"Date: "];
         
         
         _location= [[UILabel alloc] initWithFrame:CGRectMake(80, 45, 202, 21)];
         [_location setFont:[UIFont systemFontOfSize:14]];
         [_location setTextColor:[UIColor darkGrayColor]];
         
-        _date= [[UILabel alloc] initWithFrame:CGRectMake(56, 28, 226, 21)];
+        _date= [[UILabel alloc] initWithFrame:CGRectMake(15, 28, 267, 21)];
         [_date setFont:[UIFont systemFontOfSize:14]];
         [_date setTextColor:[UIColor darkGrayColor]];
         

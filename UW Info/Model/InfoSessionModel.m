@@ -349,10 +349,16 @@
 
 #pragma mark - documents operations
 
-+ (NSString*)documentsDirectory{
++ (NSString *)documentsDirectory{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     return documentsDirectory;
+}
+
++ (NSString *)cachesDirectory{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cachesDirectory = [paths firstObject];
+    return cachesDirectory;
 }
 
 + (NSString*)dataFilePath:(NSString *)fileName{
@@ -361,16 +367,20 @@
 
 + (void)saveMap {
     NSData *pngData = UIImagePNGRepresentation([UIImage imageNamed:@"map_colour300.png"]);
-    [pngData writeToFile:[self dataFilePath:@"uw_map.png"] atomically:YES];
+//    [pngData writeToFile:[self dataFilePath:@"uw_map.png"] atomically:YES];
+    [pngData writeToFile:[[self cachesDirectory] stringByAppendingPathComponent:@"uw_map.png"] atomically:YES];
 }
 
 + (UIImage *)loadMap {
-    NSData *pngData = [NSData dataWithContentsOfFile:[self dataFilePath:@"uw_map.png"]];
+    
+//    NSData *pngData = [NSData dataWithContentsOfFile:[self dataFilePath:@"uw_map.png"]];
+    NSData *pngData = [NSData dataWithContentsOfFile:[[self cachesDirectory] stringByAppendingPathComponent:@"uw_map.png"]];
     return [UIImage imageWithData:pngData];
 }
 
 + (BOOL)checkMap {
-    NSString *path = [InfoSessionModel dataFilePath:@"uw_map.png"];
+//    NSString *path = [InfoSessionModel dataFilePath:@"uw_map.png"];
+    NSString *path = [[self cachesDirectory] stringByAppendingPathComponent:@"uw_map.png"];
     return [[NSFileManager defaultManager]fileExistsAtPath:path];
 }
 
@@ -644,7 +654,7 @@
 }
 
 - (void)updateUnderOfflineMode:(NSInteger)year andTerm:(NSString *)term {
-    if ([self readInfoSessionsWithTerm:[NSString stringWithFormat:@"%d %@", year, term]] == YES) {
+    if ([self readInfoSessionsWithTerm:[NSString stringWithFormat:@"%ld %@", (long)year, term]] == YES) {
         //NSLog(@"offline Mode updated successfully");
     } else {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No offline data available"

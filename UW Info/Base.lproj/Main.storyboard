@@ -34,13 +34,6 @@
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Jkm-yw-qny">
-                                            <rect key="frame" x="15" y="28" width="41" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(location goes here)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IcB-Ec-tvk">
                                             <rect key="frame" x="80" y="45" width="202" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -49,7 +42,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(date goes here)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RRa-8o-JF0">
-                                            <rect key="frame" x="56" y="28" width="226" height="21"/>
+                                            <rect key="frame" x="15" y="28" width="267" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -59,7 +52,6 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="date" destination="RRa-8o-JF0" id="LEh-va-EBG"/>
-                                    <outlet property="dateLabel" destination="Jkm-yw-qny" id="cGr-dO-bzW"/>
                                     <outlet property="employer" destination="B4c-MD-WcE" id="S47-1j-zG7"/>
                                     <outlet property="location" destination="IcB-Ec-tvk" id="WQU-Fb-JL8"/>
                                     <outlet property="locationLabel" destination="cg5-ET-m0T" id="gYD-b2-piA"/>
@@ -401,13 +393,6 @@
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="981-B9-4jG">
-                                            <rect key="frame" x="15" y="28" width="41" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(location goes here)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5wW-J9-5vR">
                                             <rect key="frame" x="80" y="45" width="202" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -416,7 +401,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(date goes here)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="EkA-m6-DOG">
-                                            <rect key="frame" x="56" y="28" width="226" height="18"/>
+                                            <rect key="frame" x="15" y="28" width="267" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -426,7 +411,6 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="date" destination="EkA-m6-DOG" id="4BV-G3-QEw"/>
-                                    <outlet property="dateLabel" destination="981-B9-4jG" id="NBp-iw-YnJ"/>
                                     <outlet property="employer" destination="toE-4d-Foj" id="4A7-Kc-X3o"/>
                                     <outlet property="location" destination="5wW-J9-5vR" id="k6s-0S-QxR"/>
                                     <outlet property="locationLabel" destination="rba-sT-JP2" id="nDg-Gg-aT4"/>

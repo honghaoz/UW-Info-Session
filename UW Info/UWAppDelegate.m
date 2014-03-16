@@ -12,6 +12,8 @@
 #import "MyInfoViewController.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import <Parse/Parse.h>
+#import "WXApi.h"
+#import "UIDevice-Hardware.h"
 
 @implementation UWAppDelegate {
     InfoSessionModel *_infoSessionModel;
@@ -59,6 +61,50 @@
     [Parse setApplicationId:@"zytbQR05vLnq2h37zHHBDneLWMzaH47qHB978zfx"
                   clientKey:@"O107hqVq0uYHr3QLFGSCTJPCCC5YKY5vx2BQXS2q"];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+//    NSLog(@"deviceName: %@", [[UIDevice currentDevice] name]);
+//    NSLog(@"platformName: %@", [[UIDevice currentDevice] platformString]);
+//    NSLog(@"systemVersion: %@", [[UIDevice currentDevice] systemVersion]);
+    
+//    NSDictionary *dimensions = @{
+//                                 // Define ranges to bucket data points into meaningful segments
+//                                 @"Device_Name": [[UIDevice currentDevice] name],
+//                                 // Did the user filter the query?
+//                                 @"Platform_Name": [[UIDevice currentDevice] systemName],
+//                                 // Do searches happen more often on weekdays or weekends?
+//                                 @"System_Version": [[UIDevice currentDevice] systemVersion]
+//                                 };
+//    [PFAnalytics trackEvent:@"Device_Info" dimensions:dimensions];
+    NSString *deviceName = [[UIDevice currentDevice] name];
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"Device"];
+    [query whereKey:@"Device_Name" equalTo:deviceName];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %lu devices.", (unsigned long)objects.count);
+            if (objects.count == 0) {
+                PFObject *device = [PFObject objectWithClassName:@"Device"];
+                device[@"Device_Name"] = deviceName;
+                device[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
+                device[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
+                device[@"Opens"] = @1;
+                [device saveEventually];
+            }
+            // Do something with the found objects
+            else {
+                for (PFObject *object in objects) {
+                    object[@"Opens"] = [NSNumber numberWithInteger:[object[@"Opens"] integerValue] + 1];
+                    [object saveEventually];
+                }
+            }
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+    // register weixin
+    [WXApi registerApp:@"wxd7e4735bd9b62ea4"];
     return YES;
 }
 							
@@ -138,6 +184,14 @@
 - (void)handleEveryMinutes:(NSTimer *)timer {
     // post notification every minute
     [[NSNotificationCenter defaultCenter] postNotificationName:@"OneMinute" object:self];
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [WXApi handleOpenURL:url delegate:self];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [WXApi handleOpenURL:url delegate:self];
 }
 
 @end

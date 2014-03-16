@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/Model/InfoSessionModel.m"
-            timestampString = "416119529.21601"
+            timestampString = "416615872.932417"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "417"
-            endingLineNumber = "417"
+            startingLineNumber = "427"
+            endingLineNumber = "427"
             landmarkName = "-updateMyInfoSessions"
             landmarkType = "5">
          </BreakpointContent>
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/Model/InfoSessionModel.m"
-            timestampString = "416119529.21601"
+            timestampString = "416615872.932417"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "421"
-            endingLineNumber = "421"
+            startingLineNumber = "431"
+            endingLineNumber = "431"
             landmarkName = "-updateMyInfoSessions"
             landmarkType = "5">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/UWAppDelegate.m"
-            timestampString = "416344406.161338"
+            timestampString = "416609227.206832"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
             landmarkName = "-setNotified:"
             landmarkType = "5">
          </BreakpointContent>

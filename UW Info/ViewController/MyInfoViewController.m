@@ -50,7 +50,7 @@
     [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
     self.navigationController.navigationBar.tintColor = UWBlack;
     
-    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"config"] style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreViewController)];
+    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings1"] style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreViewController)];
     
     [self.navigationItem setRightBarButtonItem:moreButton];
     
@@ -203,7 +203,7 @@
     //NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     //[dateFormatter setLocale:enUSPOSIXLocale];
     //[timeFormatter setLocale:enUSPOSIXLocale];
-    [dateFormatter setDateFormat:@"MMM d"];
+    [dateFormatter setDateFormat:@"MMM d, ccc"];
     [timeFormatter setDateFormat:@"h:mm a"];
     // set timezone to EST
     //[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
