@@ -91,6 +91,7 @@
 		1BE6D46A18D4F68500BE31B0 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE6D46918D4F68500BE31B0 /* FeedbackViewController.m */; };
 		1BE858A318CE4323009A9E57 /* UWInfoSessionClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE858A218CE4323009A9E57 /* UWInfoSessionClient.m */; };
 		1BF0542318A93ECC005C04B2 /* DetailSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */; };
+		1BF84FAC18D6AF9F00F7A86D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF84FAB18D6AF9F00F7A86D /* iAd.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -247,6 +248,7 @@
 		1BE858A218CE4323009A9E57 /* UWInfoSessionClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWInfoSessionClient.m; path = "UW Info/UWInfoSessionClient.m"; sourceTree = "<group>"; };
 		1BF0542118A93ECC005C04B2 /* DetailSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSwitchCell.h; path = TableViewCell/DetailSwitchCell.h; sourceTree = "<group>"; };
 		1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSwitchCell.m; path = TableViewCell/DetailSwitchCell.m; sourceTree = "<group>"; };
+		1BF84FAB18D6AF9F00F7A86D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,6 +256,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BF84FAC18D6AF9F00F7A86D /* iAd.framework in Frameworks */,
 				1B3A337918D4BA5D0046DC73 /* Social.framework in Frameworks */,
 				1B3A33C218D4D7D90046DC73 /* FacebookSDK.framework in Frameworks */,
 				1B505EDB18D0E3AB00F168F8 /* SystemConfiguration.framework in Frameworks */,
@@ -578,6 +581,7 @@
 		1BD83A9318A59F1C00EDBB6D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1BF84FAB18D6AF9F00F7A86D /* iAd.framework */,
 				1B3A33C318D4D7E40046DC73 /* Parse.framework */,
 				1B3A33C118D4D7D90046DC73 /* FacebookSDK.framework */,
 				1B3A337818D4BA5D0046DC73 /* Social.framework */,

@@ -16,8 +16,9 @@
 #import "WXApiObject.h"
 #import "MoreNavigationViewController.h"
 #import "FeedbackViewController.h"
+#import <iAd/iAd.h>
 
-@interface MoreViewController () <UIActionSheetDelegate>
+@interface MoreViewController () <UIActionSheetDelegate, ADBannerViewDelegate>
 
 @end
 
@@ -26,6 +27,8 @@
     NSString *itunesShortURLString;
     NSString *appURLString;
     NSString *sharPostString;
+    
+    ADBannerView *_adBannerView;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -58,6 +61,32 @@
     itunesShortURLString = @"http://goo.gl/bQyyH0";
     appURLString = @"itms://itunes.apple.com/app/uw-info-session/id837207884?mt=8";
     sharPostString = @"UW Info is a great app to search and manage info sessions #UWaterloo, check it out!";
+    
+    //self.canDisplayBannerAds = YES;
+    
+    // On iOS 6 ADBannerView introduces a new initializer, use it when available.
+    if ([ADBannerView instancesRespondToSelector:@selector(initWithAdType:)]) {
+        _adBannerView = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
+    } else {
+        _adBannerView = [[ADBannerView alloc] init];
+    }
+    CGRect contentFrame = self.view.bounds;
+    
+    NSLog(@"%@", NSStringFromCGRect(contentFrame));
+    
+    //CGSize sizeForBanner = [_adBannerView sizeThatFits:contentFrame.size];
+    CGRect bannerFrame = _adBannerView.frame;
+    //NSLog(@"%@", NSStringFromCGRect(bannerFrame));
+    bannerFrame.origin.y = contentFrame.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height;
+    NSLog(@"%@", NSStringFromCGRect(bannerFrame));
+    //bannerFrame.size.height = sizeForBanner.height;
+    //bannerFrame.size.width = sizeForBanner.width;
+    
+    [_adBannerView setFrame:bannerFrame];
+    
+    _adBannerView.delegate = self;
+    [self.view addSubview:_adBannerView];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -455,6 +484,26 @@
 
 - (void)done {
     [self dismissViewControllerAnimated:YES completion:^(){}];
+}
+
+#pragma mark - iAd delegate methods
+
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
+    NSLog(@"banner show");
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:1];
+    [banner setAlpha:1];
+    
+    [UIView commitAnimations];
+}
+
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
+    NSLog(@"banner show error");
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:1];
+    [banner setAlpha:0];
+    
+    [UIView commitAnimations];
 }
 
 @end
