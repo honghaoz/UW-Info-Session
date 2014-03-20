@@ -813,6 +813,81 @@
     return [calculationView sizeThatFits:CGSizeMake(width, FLT_MAX)].height;
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        if (indexPath.row == 3) {
+            if ([_infoSession.location length] <= 1) {
+                return NO;
+            }
+        } else if (indexPath.row == 4) {
+            return NO;
+        }
+    } else if (indexPath.section == 1) {
+        return NO;
+    } else if (indexPath.section == 2) {
+        if (indexPath.row == 0) {
+            if ([_infoSession.website length] <= 7) {
+                return NO;
+            }
+        } else if (indexPath.row == 2) {
+            if ([_infoSession.programs length] <= 1) {
+                return NO;
+            }
+        } else if (indexPath.row == 3) {
+            if ([_infoSession.description length] <= 1) {
+                return NO;
+            }
+        }
+    }
+    return YES;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+    if (action == @selector(copy:)) {
+        return YES;
+    }
+    return NO;
+}
+
+- (void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender
+{
+    if (action == @selector(copy:)) {
+        NSLog(@"%d, %d", indexPath.section, indexPath.row);
+        if (indexPath.section == 0) {
+            NSLog(@"copy");
+            if (indexPath.row == 0) {
+                [UIPasteboard generalPasteboard].string = _infoSession.employer;
+                NSLog(@"%@", _infoSession.employer);
+            } else if (indexPath.row == 1 || indexPath.row == 2) {
+                NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
+                [dateFormatter setDateFormat:@"cccc, MMM d, y"];
+                NSDateFormatter *timeFormatter = [InfoSession estDateFormatter];
+                [timeFormatter setDateFormat:@"h:mm a"];
+                
+                [UIPasteboard generalPasteboard].string = [[dateFormatter stringFromDate:_infoSession.date] stringByAppendingString:[NSString stringWithFormat:@" %@ - %@", [timeFormatter stringFromDate:_infoSession.startTime], [timeFormatter stringFromDate:_infoSession.endTime]]];
+                NSLog(@"time");
+            } else if (indexPath.row == 3) {
+                [UIPasteboard generalPasteboard].string = _infoSession.location;
+                NSLog(@"%@", _infoSession.location);
+            }
+        } else if (indexPath.section == 2) {
+            if (indexPath.row == 0) {
+                [UIPasteboard generalPasteboard].string = _infoSession.website;
+                NSLog(@"%@", _infoSession.website);
+            } else if (indexPath.row == 1) {
+                [UIPasteboard generalPasteboard].string = _infoSession.audience;
+                NSLog(@"%@", _infoSession.audience);
+            } else if (indexPath.row == 2) {
+                [UIPasteboard generalPasteboard].string = _infoSession.programs;
+                NSLog(@"%@", _infoSession.programs);
+            } else if (indexPath.row == 3) {
+                [UIPasteboard generalPasteboard].string = _infoSession.description;
+                NSLog(@"%@", _infoSession.description);
+            }
+        }
+    }
+}
+
 #pragma mark - Table view delegate
 /**
  *  select row at indexPath
