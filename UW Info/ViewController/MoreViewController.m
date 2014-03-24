@@ -258,7 +258,7 @@
             MoreNavigationViewController *newMoreNaviVC = [[MoreNavigationViewController alloc] initWithRootViewController:newFeedbackVC];
             [self presentViewController:newMoreNaviVC animated:YES completion:^(){}];
         } else if (indexPath.row == 2) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:appURLString]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:itunesURLString]];
         }
     }
 }
