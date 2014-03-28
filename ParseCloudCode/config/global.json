@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "UW Info Session": {
+            "applicationId": "zytbQR05vLnq2h37zHHBDneLWMzaH47qHB978zfx", 
+            "masterKey": "BcFSNKOkzfDkYvWkqkZWbzgwAjdNezJhOW0nWyI3"
+        }, 
+        "_default": {
+            "link": "UW Info Session"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.18"
+    }
+}

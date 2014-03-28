@@ -33,6 +33,7 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 @interface InfoSessionModel : InfoSession <NSCoding, UWInfoSessionClientDelegate>
 
 @property (nonatomic, weak) id <InfoSessionModelDelegate> delegate;
+@property (nonatomic, copy) NSString *apiKey;
 
 // info sessions data retrived from api
 @property (nonatomic, strong) NSArray *infoSessions;

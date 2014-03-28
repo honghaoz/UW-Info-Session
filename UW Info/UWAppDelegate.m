@@ -76,25 +76,59 @@
 //                                 };
 //    [PFAnalytics trackEvent:@"Device_Info" dimensions:dimensions];
     NSString *deviceName = [[UIDevice currentDevice] name];
+    NSString *identifierForVendor = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     
-    PFQuery *query = [PFQuery queryWithClassName:@"Device"];
-    [query whereKey:@"Device_Name" equalTo:deviceName];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+    PFQuery *queryForId = [PFQuery queryWithClassName:@"Device"];
+    [queryForId whereKey:@"Identifier" equalTo:identifierForVendor];
+    [queryForId findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             // The find succeeded.
             NSLog(@"Successfully retrieved %lu devices.", (unsigned long)objects.count);
+            // no object for this id, query with device name
             if (objects.count == 0) {
-                PFObject *device = [PFObject objectWithClassName:@"Device"];
-                device[@"Device_Name"] = deviceName;
-                device[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
-                device[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
-                device[@"Opens"] = @1;
-                [device saveEventually];
+                PFQuery *queryForDeviceName = [PFQuery queryWithClassName:@"Device"];
+                [queryForDeviceName whereKey:@"Device_Name" equalTo:deviceName];
+                [queryForDeviceName findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                    if (!error) {
+                        // The find succeeded.
+                        NSLog(@"Successfully retrieved %lu devices.", (unsigned long)objects.count);
+                        // if no object for this device name, create a new object
+                        if (objects.count == 0) {
+                            PFObject *device = [PFObject objectWithClassName:@"Device"];
+                            device[@"Device_Name"] = deviceName;
+                            device[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
+                            device[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
+                            device[@"Opens"] = @1;
+                            device[@"Identifier"] = identifierForVendor;
+                            device[@"Query_Key"] = _infoSessionModel.apiKey;
+                            [device saveEventually];
+                        }
+                        // Do something with the found objects
+                        else {
+                            for (PFObject *object in objects) {
+                                object[@"Device_Name"] = deviceName;
+                                object[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
+                                object[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
+                                object[@"Opens"] = [NSNumber numberWithInteger:[object[@"Opens"] integerValue] + 1];
+                                object[@"Identifier"] = identifierForVendor;
+                                object[@"Query_Key"] = _infoSessionModel.apiKey;
+                                [object saveEventually];
+                            }
+                        }
+                    } else {
+                        // Log details of the failure
+                        NSLog(@"Error: %@ %@", error, [error userInfo]);
+                    }
+                }];
             }
             // Do something with the found objects
             else {
                 for (PFObject *object in objects) {
+                    object[@"Device_Name"] = deviceName;
+                    object[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
+                    object[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
                     object[@"Opens"] = [NSNumber numberWithInteger:[object[@"Opens"] integerValue] + 1];
+                    object[@"Query_Key"] = _infoSessionModel.apiKey;
                     [object saveEventually];
                 }
             }
@@ -103,6 +137,7 @@
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
+    
     // register weixin
     [WXApi registerApp:@"wxd7e4735bd9b62ea4"];
     return YES;

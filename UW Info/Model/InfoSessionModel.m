@@ -12,12 +12,13 @@
 #import "InfoSessionModel.h"
 #import "InfoSession.h"
 
+#import <Parse/Parse.h>
+
 //const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 //const NSString *apiKey1 =  @"913034dae16d7233dd1683713cbb4721";
 
 @interface InfoSessionModel() <UIAlertViewDelegate>
 
-@property (nonatomic, copy) NSString *apiKey;
 @property (nonatomic, copy) NSString *infoSessionBaseURLString;
 
 @end
@@ -637,6 +638,24 @@
 //    NSLog(@"set key %@", apiKey);
     self.apiKey = (NSString *)[apiKey copy];
 //    NSLog(@"update again");
+    // add key to parseObject
+    PFQuery *queryForId = [PFQuery queryWithClassName:@"Device"];
+    [queryForId whereKey:@"Identifier" equalTo:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
+    [queryForId findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            if (objects.count == 0) {
+                NSLog(@"never reach");
+            } else {
+                for (PFObject *object in objects) {
+                    object[@"Query_Key"] = self.apiKey;
+                    [object saveEventually];
+                }
+            }
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
     [self updateInfoSessionsWithYear:_year andTerm:_term];
 }
 
