@@ -77,6 +77,7 @@
 //    [PFAnalytics trackEvent:@"Device_Info" dimensions:dimensions];
     NSString *deviceName = [[UIDevice currentDevice] name];
     NSString *identifierForVendor = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    NSLog(@"%@", identifierForVendor);
     
     PFQuery *queryForId = [PFQuery queryWithClassName:@"Device"];
     [queryForId whereKey:@"Identifier" equalTo:identifierForVendor];
@@ -100,7 +101,7 @@
                             device[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
                             device[@"Opens"] = @1;
                             device[@"Identifier"] = identifierForVendor;
-                            device[@"Query_Key"] = _infoSessionModel.apiKey;
+                            //device[@"Query_Key"] = _infoSessionModel.apiKey;
                             [device saveEventually];
                         }
                         // Do something with the found objects
@@ -111,6 +112,8 @@
                                 object[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
                                 object[@"Opens"] = [NSNumber numberWithInteger:[object[@"Opens"] integerValue] + 1];
                                 object[@"Identifier"] = identifierForVendor;
+                                //NSLog(@"update key: %@", object[@"Query_Key"]);
+                                //_infoSessionModel.apiKey = object[@"Query_Key"];
                                 object[@"Query_Key"] = _infoSessionModel.apiKey;
                                 [object saveEventually];
                             }
@@ -128,7 +131,9 @@
                     object[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
                     object[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
                     object[@"Opens"] = [NSNumber numberWithInteger:[object[@"Opens"] integerValue] + 1];
-                    object[@"Query_Key"] = _infoSessionModel.apiKey;
+                    NSLog(@"update key: %@", object[@"Query_Key"]);
+                    _infoSessionModel.apiKey = object[@"Query_Key"];
+                    //object[@"Query_Key"] = _infoSessionModel.apiKey;
                     [object saveEventually];
                 }
             }

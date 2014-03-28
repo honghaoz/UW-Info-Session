@@ -561,8 +561,56 @@
         _year = year;
         _term = term;
         if ([self.apiKey isEqualToString:@"0"]) {
-            //        NSLog(@"key is 0");
-            [self setApiKey];
+            // if key is not vaild
+            // first to look up parse keys
+            PFQuery *queryForId = [PFQuery queryWithClassName:@"Device"];
+            [queryForId whereKey:@"Identifier" equalTo:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
+            [queryForId findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                if (!error) {
+                    if (objects.count == 0) {
+                        NSLog(@"Queried with identifier, but no match found");
+                        PFQuery *queryForDeviceName = [PFQuery queryWithClassName:@"Device"];
+                        [queryForDeviceName whereKey:@"Device_Name" equalTo:[[UIDevice currentDevice] name]];
+                        [queryForDeviceName findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                            if (!error) {
+                                if (objects.count == 0) {
+                                    NSLog(@"Queried with device name, but no match found");
+                                    [self setApiKey];
+                                } else {
+                                    for (PFObject *object in objects) {
+                                        if (object[@"Query_Key"] == nil) {
+                                            NSLog(@"Queried, Found key: nil");
+                                            [self setApiKey];
+                                        } else {
+                                            self.apiKey = object[@"Query_Key"];
+                                            NSLog(@"Queried, Found key: %@", self.apiKey);
+                                            [self updateInfoSessionsWithYear:_year andTerm:_term];
+                                            return;
+                                        }
+                                    }
+                                }
+                            } else {
+                                // Log details of the failure
+                                NSLog(@"Error: %@ %@", error, [error userInfo]);
+                                [self setApiKey];
+                            }
+                        }];
+                    } else {
+                        for (PFObject *object in objects) {
+                            self.apiKey = object[@"Query_Key"];
+                            NSLog(@"Queried, Found key: %@", self.apiKey);
+                            [self updateInfoSessionsWithYear:_year andTerm:_term];
+                            return;
+                        }
+                    }
+                } else {
+                    // Log details of the failure
+                    NSLog(@"Error: %@ %@", error, [error userInfo]);
+                    [self setApiKey];
+                }
+            }];
+            //  NSLog(@"key is 0");
+            
         }
         else {
             //        NSLog(@"key is %@", self.apiKey);
