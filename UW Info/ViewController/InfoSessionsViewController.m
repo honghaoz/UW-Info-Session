@@ -85,8 +85,10 @@
     _termMenu.infoSessionModel = _infoSessionModel;
     _termMenu.infoSessionViewController = self;
     
+    NSLog(@"%@", [NSDate date]);
     _shownYear = [_termMenu getCurrentYear:[NSDate date]];
     _shownTerm = [_termMenu getCurrentTermFromDate:[NSDate date]];
+    NSLog(@"shown year: %d, shown term: %@", _shownYear, _shownTerm);
     
     self.navigationItem.titleView = (UIView *)[_termMenu getMenuButton];
     
@@ -205,6 +207,11 @@
     }
 }
 
+/**
+ *  Get Called when information is updated through internet
+ *
+ *  @param model InfoSessionModel
+ */
 - (void)infoSessionModeldidUpdateInfoSessions:(InfoSessionModel *)model{
     // set termMenu
     _termMenu.infoSessionModel = _infoSessionModel;
@@ -267,30 +274,38 @@
         InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
         NSUInteger currentWeekNum = [self getWeekNumber:[NSDate date]];
         NSUInteger sectionNumToScroll = currentWeekNum - [firstInfoSession weekNum];
-        
-        NSArray *infoSessionsOfCurrentWeek = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(currentWeekNum)];
         NSInteger rowNumToScroll = -1;
-        for (InfoSession *eachCell in infoSessionsOfCurrentWeek) {
-            // current date is later than startTime
-            if ([[NSDate date] compare:eachCell.endTime] == NSOrderedDescending ) {
-                rowNumToScroll++;
+        
+        if (sectionNumToScroll < [self numberOfSectionsInTableView:self.tableView]) {
+            NSArray *infoSessionsOfCurrentWeek = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(currentWeekNum)];
+            rowNumToScroll = -1;
+            for (InfoSession *eachCell in infoSessionsOfCurrentWeek) {
+                // current date is later than startTime
+                if ([[NSDate date] compare:eachCell.endTime] == NSOrderedDescending ) {
+                    rowNumToScroll++;
+                }
             }
-        }
-        // if current date is the first date of this section
-        if (rowNumToScroll == -1) {
+            // if current date is the first date of this section
+            if (rowNumToScroll == -1) {
+                rowNumToScroll = 0;
+            }
+            // if this week is empty and next week is not empty, show next week's first item
+            //    if (rowNumToScroll + 1 == [infoSessionsOfCurrentWeek count] &&
+            //         ([self numberOfSectionsInTableView:self.tableView] > sectionNumToScroll + 1)) {
+            //        rowNumToScroll = 0;
+            //        sectionNumToScroll += 1;
+            //    }
+            // scroll!
+        } else {
+            NSLog(@"too late");
+            sectionNumToScroll = [self numberOfSectionsInTableView:self.tableView] - 1;
             rowNumToScroll = 0;
         }
-        // if this week is empty and next week is not empty, show next week's first item
-        //    if (rowNumToScroll + 1 == [infoSessionsOfCurrentWeek count] &&
-        //         ([self numberOfSectionsInTableView:self.tableView] > sectionNumToScroll + 1)) {
-        //        rowNumToScroll = 0;
-        //        sectionNumToScroll += 1;
-        //    }
-        // scroll!
+        NSLog(@"scroll to section: %d, row: %d", sectionNumToScroll, rowNumToScroll);
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:rowNumToScroll inSection:sectionNumToScroll] atScrollPosition:UITableViewScrollPositionTop animated:YES];
         // reload current
         //[self reloadSection:sectionNumToScroll WithAnimation:UITableViewRowAnimationFade];
-        [_tabBarController showTabBar];
+        //[_tabBarController showTabBar];
     }
 }
 
@@ -566,6 +581,9 @@
             NSUInteger sectionNumToScroll = sectionToScroll;
             InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
             sectionNumToScroll = [self getWeekNumber:[NSDate date]] - [firstInfoSession weekNum];
+            if (sectionNumToScroll >= [self numberOfSectionsInTableView:self.tableView]) {
+                sectionNumToScroll = [self numberOfSectionsInTableView:self.tableView] - 1;
+            }
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionNumToScroll] withRowAnimation:animation];
             return;
         }

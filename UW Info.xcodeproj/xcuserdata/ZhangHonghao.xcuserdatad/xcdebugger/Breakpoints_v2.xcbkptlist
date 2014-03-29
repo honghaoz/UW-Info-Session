@@ -154,13 +154,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/ViewController/InfoSessionsViewController.m"
-            timestampString = "416215711.666013"
+            timestampString = "417762460.080222"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
-            landmarkName = "-getTodayButtonItem"
-            landmarkType = "5">
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "@implementation InfoSessionsViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/ViewController/InfoSessionsViewController.m"
-            timestampString = "416982979.570054"
+            timestampString = "417764282.859224"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "677"
-            endingLineNumber = "677"
+            startingLineNumber = "694"
+            endingLineNumber = "694"
             landmarkName = "@implementation InfoSessionsViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -218,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/ViewController/InfoSessionsViewController.m"
-            timestampString = "416215711.666013"
+            timestampString = "417762460.080222"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
             landmarkName = "-reload:"
             landmarkType = "5">
          </BreakpointContent>
@@ -272,6 +272,22 @@
             startingLineNumber = "129"
             endingLineNumber = "129"
             landmarkName = "-application:didFinishLaunchingWithOptions:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UW Info/ViewController/InfoSessionsViewController.m"
+            timestampString = "417764082.121119"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
+            landmarkName = "-infoSessionModeldidUpdateInfoSessions:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

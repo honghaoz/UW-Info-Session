@@ -46,9 +46,10 @@
     NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
     [dateFormatter setDateFormat:@"M"];
     NSUInteger month = [[dateFormatter stringFromDate:date] intValue];
-    if (1 <= month <= 4) {
+    NSLog(@"month: %d", month);
+    if (1 <= month && month <= 4) {
         return @"Winter";
-    } else if (5 <= month <= 8) {
+    } else if (5 <= month && month <= 8) {
         return @"Spring";
     } else {
         return @"Fall";
