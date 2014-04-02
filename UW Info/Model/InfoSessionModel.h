@@ -78,6 +78,7 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 + (UIImage *)loadMap;
 
 - (void)saveInfoSessions;
+- (void)saveMyInfoSessions;
 - (void)loadInfoSessions;
 
 - (void)updateMyInfoSessions;

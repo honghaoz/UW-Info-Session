@@ -17,8 +17,12 @@
 #import "MoreNavigationViewController.h"
 #import "FeedbackViewController.h"
 #import <iAd/iAd.h>
+#import "GADBannerView.h"
+#import "GADBannerViewDelegate.h"
 
-@interface MoreViewController () <UIActionSheetDelegate, ADBannerViewDelegate>
+#import "GADAdMobExtras.h"
+
+@interface MoreViewController () <UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate>
 
 @end
 
@@ -29,6 +33,8 @@
     NSString *sharPostString;
     
     ADBannerView *_adBannerView;
+    
+    GADBannerView *_googleBannerView;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -86,7 +92,25 @@
     
     _adBannerView.delegate = self;
     [self.view addSubview:_adBannerView];
+    
+    // Google Ad
+    // Create a view of the standard size at the top of the screen.
+    // Available AdSize constants are explained in GADAdSize.h.
+    _googleBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+    
+    // Specify the ad unit ID.
+    _googleBannerView.adUnitID = @"ca-app-pub-5080537428726834/3638663901";
+    _googleBannerView.rootViewController = self;
+    _googleBannerView.alpha = 0;
 
+    bannerFrame = _googleBannerView.frame;
+    bannerFrame.origin.y = contentFrame.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height;
+    
+    [_googleBannerView setFrame:bannerFrame];
+    
+    [self.view addSubview:_googleBannerView];
+    [_googleBannerView setDelegate:self];
+    //[self showGoogleAd];
 }
 
 - (void)didReceiveMemoryWarning
@@ -489,7 +513,7 @@
 #pragma mark - iAd delegate methods
 
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner {
-    NSLog(@"banner show");
+    NSLog(@"iad banner show");
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:1];
     [banner setAlpha:1];
@@ -498,10 +522,53 @@
 }
 
 - (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
-    NSLog(@"banner show error");
+    
+    GADRequest *request = [GADRequest request];
+    //request.testDevices = [NSArray arrayWithObjects: GAD_SIMULATOR_ID, @"b8ab61a5a3e7e3e252774bab62655fd3", nil];
+    [request setLocationWithDescription:@"N2L3G1 CA"];
+    GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
+    extras.additionalParameters =
+    [NSMutableDictionary dictionaryWithObjectsAndKeys:
+     @"FFFFFF", @"color_bg",
+     @"999999", @"color_bg_top",
+     @"BBBBBB", @"color_border",
+     @"FF9735", @"color_link",
+     @"999999", @"color_text",
+     @"FF9735", @"color_url",
+     nil];
+    
+    [request registerAdNetworkExtras:extras];
+    [_googleBannerView loadRequest:request];
+    
+    NSLog(@"iad banner show error");
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:1];
     [banner setAlpha:0];
+    
+    
+    [UIView commitAnimations];
+    
+}
+
+#pragma mark - Google Ad delegate methods
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+    NSLog(@"google banner show");
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:1];
+    
+    [_googleBannerView setAlpha:1];
+    [UIView commitAnimations];
+    
+}
+
+- (void)adView:(GADBannerView *)bannerView
+didFailToReceiveAdWithError:(GADRequestError *)error {
+    NSLog(@"google banner show error");
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:1];
+    [bannerView setAlpha:0];
     
     [UIView commitAnimations];
 }

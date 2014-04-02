@@ -385,9 +385,11 @@ static EKEventStore *eventStore;
  *  @return BOOL
  */
 - (BOOL)isEqual:(InfoSession *)anotherInfoSession {
+        //NSLog(@"id:%d vs id:%d", self.sessionId, anotherInfoSession.sessionId);
     if (anotherInfoSession == nil) {
         return NO;
     }
+    // ids are equal, maybe 0 = 0, maybe vaild
     else if (self.sessionId == anotherInfoSession.sessionId) {
         // if session ID is valid and same
         if (self.sessionId > 10) {
@@ -400,12 +402,25 @@ static EKEventStore *eventStore;
                 [self.startTime isEqualToDate:anotherInfoSession.startTime] &&
                 [self.endTime isEqualToDate:anotherInfoSession.endTime]) {
                 return YES;
+            } else {
+                return NO;
             }
         }
     } else {
-        return NO;
+        if (self.sessionId < 10 || anotherInfoSession.sessionId < 10) {
+            //NSLog(@"compar");
+            if ([self.employer isEqualToString:anotherInfoSession.employer] &&
+                [self.date isEqualToDate:anotherInfoSession.date] &&
+                [self.startTime isEqualToDate:anotherInfoSession.startTime] &&
+                [self.endTime isEqualToDate:anotherInfoSession.endTime]) {
+                return YES;
+            } else {
+                return NO;
+            }
+        } else {
+            return NO;
+        }
     }
-    return NO;
 }
 
 /**

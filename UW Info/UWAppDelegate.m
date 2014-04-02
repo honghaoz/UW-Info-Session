@@ -214,10 +214,21 @@
  */
 - (void)setNotified:(UILocalNotification *)notification {
     NSInteger targetIndex = [InfoSessionModel findInfoSessionIdentifier:[notification.userInfo objectForKey:@"InfoId"] in:_infoSessionModel.myInfoSessions];
+    NSLog(@"%@", [notification.userInfo objectForKey:@"InfoId"]);
+    NSLog(@"%d", targetIndex);
     InfoSession *theTargetInfo = [_infoSessionModel.myInfoSessions objectAtIndex:targetIndex];
+    NSLog(@"%@, %d", theTargetInfo.employer, [[notification.userInfo objectForKey:@"AlertIndex"] integerValue]);
     //NSMutableDictionary *theTargetAlert = [theTargetInfo getAlertForChoice:[notification.userInfo objectForKey:@"AlertIndex"]];
     NSMutableDictionary *theTargetAlert = [theTargetInfo.alerts objectAtIndex:[[notification.userInfo objectForKey:@"AlertIndex"] integerValue]];
     [theTargetAlert setValue:[NSNumber numberWithBool:YES] forKey:@"isNotified"];
+    [_infoSessionModel saveMyInfoSessions];
+//    for (InfoSession *each in  _infoSessionModel.myInfoSessions) {
+//        for (NSMutableDictionary *eachAlert in each.alerts) {
+//            for (NSString *eachKey in eachAlert ) {
+//                NSLog(@"%@: %@", eachKey, eachAlert[eachKey]);
+//            }
+//        }
+//    }
 }
 
 

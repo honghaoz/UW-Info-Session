@@ -230,7 +230,8 @@
  */
 + (NSInteger)findInfoSession:(InfoSession *)infoSession in:(NSArray *)array {
     NSInteger existIndex = -1;
-    for (int i = 0; i < [array count]; i++) {
+    NSInteger count = [array count];
+    for (int i = 0; i < count; i++) {
         InfoSession *eachInfoSession = [array objectAtIndex:i];
         if ([infoSession isEqual:eachInfoSession]) {
             existIndex = i;
@@ -396,6 +397,14 @@
     [archiver encodeObject:_term forKey:@"term"];
     [archiver encodeObject:_termInfoDic forKey:@"termInfoDic"];
     [archiver encodeObject:_apiKey forKey:@"apiKey"];
+    [archiver finishEncoding];
+    [data writeToFile:[InfoSessionModel dataFilePath:@"InfoSession.plist"] atomically:YES];
+}
+
+- (void)saveMyInfoSessions {
+    NSMutableData *data = [[NSMutableData alloc]init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    [archiver encodeObject:_myInfoSessions forKey:@"myInfoSessions"];
     [archiver finishEncoding];
     [data writeToFile:[InfoSessionModel dataFilePath:@"InfoSession.plist"] atomically:YES];
 }
