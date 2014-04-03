@@ -12,6 +12,7 @@
 #import "LoadingCell.h"
 #import "UWTabBarController.h"
 #import "DetailViewController.h"
+#import "UWGoogleAnalytics.h"
 
 @interface SearchViewController ()
 
@@ -127,6 +128,9 @@
     _searchBarCoverView.backgroundColor=UWGold;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollToFirstRow) name:@"infoSessionsChanged" object:nil];
+    
+    // Google Analytics
+    [UWGoogleAnalytics analyticScreen:@"Search Screen"];
 }
 
 - (void)scrollToFirstRow{

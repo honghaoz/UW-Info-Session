@@ -26,6 +26,7 @@
 
 #import "REMenu.h"
 #import "UWTodayButton.h"
+#import "UWGoogleAnalytics.h"
 
 @interface InfoSessionsViewController ()
 
@@ -101,6 +102,10 @@
     
     // receive every minute from notification center
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshEveryMinute) name:@"OneMinute" object:nil];
+    
+    // Google Analytics
+    [UWGoogleAnalytics analyticScreen:@"UW Info Session Screen"];
+    
 }
 
 - (void)didReceiveMemoryWarning

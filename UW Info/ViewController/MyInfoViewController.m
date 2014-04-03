@@ -15,6 +15,7 @@
 #import "InfoSessionsViewController.h"
 #import "MoreViewController.h"
 #import "MoreNavigationViewController.h"
+#import "UWGoogleAnalytics.h"
 
 @interface MyInfoViewController ()
 
@@ -76,6 +77,9 @@
     
     // receive every minute from notification center
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshEveryMinute) name:@"OneMinute" object:nil];
+    
+    // Google Analytics
+    [UWGoogleAnalytics analyticScreen:@"My Info Session Screen"];
 }
 
 - (void)didReceiveMemoryWarning

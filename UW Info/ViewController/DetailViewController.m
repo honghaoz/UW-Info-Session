@@ -34,6 +34,7 @@
 
 #import "SearchViewController.h"
 #import "PSPDFTextView.h"
+#import "UWGoogleAnalytics.h"
 
 @interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
 
@@ -105,6 +106,9 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     noteLines = [self getHeightForString:_infoSession.note fontSize:15 width:280];
+    
+    // Google Analytics
+    [UWGoogleAnalytics analyticScreen:@"Detail Screen"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

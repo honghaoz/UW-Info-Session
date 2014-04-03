@@ -9,6 +9,7 @@
 #import "AlertViewController.h"
 #import "InfoSession.h"
 #import "InfoSessionModel.h"
+#import "UWGoogleAnalytics.h"
 
 @interface AlertViewController ()
 
@@ -42,6 +43,8 @@
     _checkRow = [theAlert[@"alertChoice"] integerValue];
     
     [self.tableView setTintColor:UWBlack];
+    // Google Analytics
+    [UWGoogleAnalytics analyticScreen:@"Alert Screen"];
 }
 
 - (void)didReceiveMemoryWarning

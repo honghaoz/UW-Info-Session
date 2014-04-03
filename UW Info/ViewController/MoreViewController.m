@@ -21,6 +21,7 @@
 #import "GADBannerViewDelegate.h"
 
 #import "GADAdMobExtras.h"
+#import "UWGoogleAnalytics.h"
 
 @interface MoreViewController () <UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate>
 
@@ -111,6 +112,9 @@
     [self.view addSubview:_googleBannerView];
     [_googleBannerView setDelegate:self];
     //[self showGoogleAd];
+    
+    // Google Analytics
+    [UWGoogleAnalytics analyticScreen:@"More Screen"];
 }
 
 - (void)didReceiveMemoryWarning

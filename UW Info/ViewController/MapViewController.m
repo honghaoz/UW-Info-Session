@@ -9,6 +9,7 @@
 #import "MapViewController.h"
 #import "InfoSessionModel.h"
 #import "UWTabBarController.h"
+#import "UWGoogleAnalytics.h"
 
 @interface MapViewController () <UIScrollViewAccessibilityDelegate, UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
@@ -89,6 +90,9 @@
     [self.scrollView setContentOffset:CGPointMake(825, 375) animated:NO];
 
     self->barIsHidden = NO;
+    
+    // Google Analytics
+    [UWGoogleAnalytics analyticScreen:@"Map Screen"];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

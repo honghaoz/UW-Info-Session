@@ -15,6 +15,8 @@
 #import "WXApi.h"
 #import "UIDevice-Hardware.h"
 
+#import "GAI.h"
+
 @implementation UWAppDelegate {
     InfoSessionModel *_infoSessionModel;
 }
@@ -145,6 +147,19 @@
     
     // register weixin
     [WXApi registerApp:@"wxd7e4735bd9b62ea4"];
+    
+    // Google Analytics
+    // Optional: automatically send uncaught exceptions to Google Analytics.
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    
+    // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
+    [GAI sharedInstance].dispatchInterval = 20;
+    
+    // Optional: set Logger to VERBOSE for debug information.
+    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
+    
+    // Initialize tracker. Replace with your tracking ID.
+    [[GAI sharedInstance] trackerWithTrackingId:@"UA-45146473-2"];
     return YES;
 }
 							

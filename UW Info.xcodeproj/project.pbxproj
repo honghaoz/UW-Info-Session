@@ -93,6 +93,8 @@
 		1BDD366E18EC73700098EAAF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDD366D18EC73700098EAAF /* AVFoundation.framework */; };
 		1BDD367018EC73820098EAAF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDD366F18EC73820098EAAF /* CoreTelephony.framework */; };
 		1BDD367218EC73880098EAAF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDD367118EC73880098EAAF /* MessageUI.framework */; };
+		1BDD367B18ECE7D70098EAAF /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDD367A18ECE7D70098EAAF /* libGoogleAnalyticsServices.a */; };
+		1BDD368118ECFAF10098EAAF /* UWGoogleAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BDD368018ECFAF10098EAAF /* UWGoogleAnalytics.m */; };
 		1BE6D46A18D4F68500BE31B0 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE6D46918D4F68500BE31B0 /* FeedbackViewController.m */; };
 		1BE858A318CE4323009A9E57 /* UWInfoSessionClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE858A218CE4323009A9E57 /* UWInfoSessionClient.m */; };
 		1BF0542318A93ECC005C04B2 /* DetailSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */; };
@@ -261,6 +263,15 @@
 		1BDD366D18EC73700098EAAF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1BDD366F18EC73820098EAAF /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		1BDD367118EC73880098EAAF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		1BDD367418ECE7D70098EAAF /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAI.h; path = ThridPartySDK/GoogleAnalytics/GAI.h; sourceTree = "<group>"; };
+		1BDD367518ECE7D70098EAAF /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAIDictionaryBuilder.h; path = ThridPartySDK/GoogleAnalytics/GAIDictionaryBuilder.h; sourceTree = "<group>"; };
+		1BDD367618ECE7D70098EAAF /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAIFields.h; path = ThridPartySDK/GoogleAnalytics/GAIFields.h; sourceTree = "<group>"; };
+		1BDD367718ECE7D70098EAAF /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAILogger.h; path = ThridPartySDK/GoogleAnalytics/GAILogger.h; sourceTree = "<group>"; };
+		1BDD367818ECE7D70098EAAF /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITrackedViewController.h; path = ThridPartySDK/GoogleAnalytics/GAITrackedViewController.h; sourceTree = "<group>"; };
+		1BDD367918ECE7D70098EAAF /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITracker.h; path = ThridPartySDK/GoogleAnalytics/GAITracker.h; sourceTree = "<group>"; };
+		1BDD367A18ECE7D70098EAAF /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalyticsServices.a; path = ThridPartySDK/GoogleAnalytics/libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
+		1BDD367F18ECFAF10098EAAF /* UWGoogleAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWGoogleAnalytics.h; sourceTree = "<group>"; };
+		1BDD368018ECFAF10098EAAF /* UWGoogleAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWGoogleAnalytics.m; sourceTree = "<group>"; };
 		1BE6D46818D4F68500BE31B0 /* FeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeedbackViewController.h; path = ViewController/FeedbackViewController.h; sourceTree = "<group>"; };
 		1BE6D46918D4F68500BE31B0 /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeedbackViewController.m; path = ViewController/FeedbackViewController.m; sourceTree = "<group>"; };
 		1BE858A118CE4323009A9E57 /* UWInfoSessionClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWInfoSessionClient.h; path = "UW Info/UWInfoSessionClient.h"; sourceTree = "<group>"; };
@@ -275,27 +286,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B505ED118D0E38C00F168F8 /* libz.dylib in Frameworks */,
 				1B505EDB18D0E3AB00F168F8 /* SystemConfiguration.framework in Frameworks */,
+				1B2040BF18B5DCB500C72D51 /* CoreData.framework in Frameworks */,
+				1BDD366C18EC735F0098EAAF /* AdSupport.framework in Frameworks */,
 				1B505ED918D0E3A400F168F8 /* StoreKit.framework in Frameworks */,
 				1BDD367218EC73880098EAAF /* MessageUI.framework in Frameworks */,
+				1BDD367B18ECE7D70098EAAF /* libGoogleAnalyticsServices.a in Frameworks */,
 				1BDD367018EC73820098EAAF /* CoreTelephony.framework in Frameworks */,
 				1BD83A9718A59F1C00EDBB6D /* CoreGraphics.framework in Frameworks */,
 				1BDD366E18EC73700098EAAF /* AVFoundation.framework in Frameworks */,
 				1B505ECB18D0E36A00F168F8 /* AudioToolbox.framework in Frameworks */,
-				1BDD366C18EC735F0098EAAF /* AdSupport.framework in Frameworks */,
 				1BF84FAC18D6AF9F00F7A86D /* iAd.framework in Frameworks */,
 				1B3A337918D4BA5D0046DC73 /* Social.framework in Frameworks */,
 				1B3A33C218D4D7D90046DC73 /* FacebookSDK.framework in Frameworks */,
 				1B505ED718D0E39F00F168F8 /* Security.framework in Frameworks */,
 				1B505ED518D0E39900F168F8 /* QuartzCore.framework in Frameworks */,
 				1B505ED318D0E39300F168F8 /* MobileCoreServices.framework in Frameworks */,
-				1B505ED118D0E38C00F168F8 /* libz.dylib in Frameworks */,
 				1B505ECF18D0E38400F168F8 /* CoreLocation.framework in Frameworks */,
 				1BDD366A18EC732C0098EAAF /* libGoogleAdMobAds.a in Frameworks */,
 				1B505ECD18D0E37700F168F8 /* CFNetwork.framework in Frameworks */,
 				1B3A338218D4D66C0046DC73 /* libWeChatSDK.a in Frameworks */,
 				1B3A33C418D4D7E40046DC73 /* Parse.framework in Frameworks */,
-				1B2040BF18B5DCB500C72D51 /* CoreData.framework in Frameworks */,
 				1B6F54C818AC219000D3DD47 /* EventKitUI.framework in Frameworks */,
 				1B6F54C618AC218600D3DD47 /* EventKit.framework in Frameworks */,
 				1BD83A9918A59F1C00EDBB6D /* UIKit.framework in Frameworks */,
@@ -497,6 +509,7 @@
 		1B3A338318D4D67C0046DC73 /* ThirdPartySDK */ = {
 			isa = PBXGroup;
 			children = (
+				1BDD367318ECE7C90098EAAF /* GoogleAnalytics */,
 				1BDD365F18EC73100098EAAF /* GoogleAd */,
 				1B2F745318AF66190042322B /* AFNetworking */,
 				1B2F747018AF66210042322B /* UIKit+AFNetworking */,
@@ -640,6 +653,8 @@
 				1B37453D18A5D0D6007CF08C /* Networking Extensions */,
 				1BD83AA318A59F1C00EDBB6D /* UWAppDelegate.h */,
 				1BD83AA418A59F1C00EDBB6D /* UWAppDelegate.m */,
+				1BDD367F18ECFAF10098EAAF /* UWGoogleAnalytics.h */,
+				1BDD368018ECFAF10098EAAF /* UWGoogleAnalytics.m */,
 				1B8C557918B72B490070CD82 /* Categories */,
 				1B37453818A5BA2C007CF08C /* Models */,
 				1B37453918A5BA3D007CF08C /* Controllers */,
@@ -704,6 +719,20 @@
 				1BDD366918EC732C0098EAAF /* libGoogleAdMobAds.a */,
 			);
 			name = GoogleAd;
+			sourceTree = "<group>";
+		};
+		1BDD367318ECE7C90098EAAF /* GoogleAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				1BDD367418ECE7D70098EAAF /* GAI.h */,
+				1BDD367518ECE7D70098EAAF /* GAIDictionaryBuilder.h */,
+				1BDD367618ECE7D70098EAAF /* GAIFields.h */,
+				1BDD367718ECE7D70098EAAF /* GAILogger.h */,
+				1BDD367818ECE7D70098EAAF /* GAITrackedViewController.h */,
+				1BDD367918ECE7D70098EAAF /* GAITracker.h */,
+				1BDD367A18ECE7D70098EAAF /* libGoogleAnalyticsServices.a */,
+			);
+			name = GoogleAnalytics;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -820,6 +849,7 @@
 				1B3A33B218D4D7690046DC73 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */,
 				1B3A33B318D4D7690046DC73 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				1BDD368118ECFAF10098EAAF /* UWGoogleAnalytics.m in Sources */,
 				1B3A33F218D4D8B30046DC73 /* REMenuContainerView.m in Sources */,
 				1B3A33B718D4D7690046DC73 /* UIProgressView+AFNetworking.m in Sources */,
 				1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */,
@@ -1005,6 +1035,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/ThridPartySDK/WeChatSDK_1.4.2-1.1",
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleAdMobAdsSdkiOS-6.8.0",
+					"$(PROJECT_DIR)/ThridPartySDK/GoogleAnalytics",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1033,6 +1064,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/ThridPartySDK/WeChatSDK_1.4.2-1.1",
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleAdMobAdsSdkiOS-6.8.0",
+					"$(PROJECT_DIR)/ThridPartySDK/GoogleAnalytics",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
