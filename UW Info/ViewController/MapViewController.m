@@ -93,6 +93,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    [self showBars];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -128,40 +129,48 @@
     
     // hidden -> show
     if (self->barIsHidden) {
-        //NSLog(@"hidden -> show");
-        //[self showStatusBar:YES];
-        self->barIsHidden = NO;
-        
-        //    [[UIApplication sharedApplication]setStatusBarHidden:![[UIApplication sharedApplication]isStatusBarHidden] withAnimation:UIStatusBarAnimationSlide];
-        [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-        [UIView animateWithDuration:0.5 animations:^
-         {
-             [self.navigationController.navigationBar setAlpha:1.0];
-             //[self.navigationController.toolbar setAlpha:alpha];
-             [_tabBarController showTabBar];
-
-         } completion:^(BOOL finished)
-         {
-             
-         }];
+        [self showBars];
     }
     // show -> hidden
     else {
-        //NSLog(@"show -> hidden");
-        //[self showStatusBar:NO];
-        self->barIsHidden = YES;
-        
-        [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-        [UIView animateWithDuration:0.5 animations:^
-         {
-             [self.navigationController.navigationBar setAlpha:0.0];
-             //[self.navigationController.toolbar setAlpha:alpha];
-             [_tabBarController hideTabBar];
-         } completion:^(BOOL finished)
-         {
-             
-         }];
+        [self hideBars];
     }
+}
+
+- (void)showBars {
+    //NSLog(@"hidden -> show");
+    //[self showStatusBar:YES];
+    self->barIsHidden = NO;
+    
+    //    [[UIApplication sharedApplication]setStatusBarHidden:![[UIApplication sharedApplication]isStatusBarHidden] withAnimation:UIStatusBarAnimationSlide];
+    [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+    [UIView animateWithDuration:0.5 animations:^
+     {
+         [self.navigationController.navigationBar setAlpha:1.0];
+         //[self.navigationController.toolbar setAlpha:alpha];
+         [_tabBarController showTabBar];
+         
+     } completion:^(BOOL finished)
+     {
+         
+     }];
+}
+
+- (void)hideBars {
+    //NSLog(@"show -> hidden");
+    //[self showStatusBar:NO];
+    self->barIsHidden = YES;
+    
+    [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    [UIView animateWithDuration:0.5 animations:^
+     {
+         [self.navigationController.navigationBar setAlpha:0.0];
+         //[self.navigationController.toolbar setAlpha:alpha];
+         [_tabBarController hideTabBar];
+     } completion:^(BOOL finished)
+     {
+         
+     }];
 }
 
 #pragma mark - Zoom methods
