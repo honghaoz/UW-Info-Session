@@ -533,7 +533,7 @@
     GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
     extras.additionalParameters =
     [NSMutableDictionary dictionaryWithObjectsAndKeys:
-     @"FFFFFF", @"color_bg",
+     @"DDDDDD", @"color_bg",
      @"999999", @"color_bg_top",
      @"BBBBBB", @"color_border",
      @"FF9735", @"color_link",
