@@ -41,6 +41,8 @@
 #import "GADBannerViewDelegate.h"
 #import "GADAdMobExtras.h"
 
+#import "UWAds.h"
+
 @interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate>
 
 @property (nonatomic, strong) DetailDescriptionCell *programCell;
@@ -58,9 +60,10 @@
     CGFloat startContentOffset;
     CGFloat lastContentOffset;
     
-    ADBannerView *_adBannerView;
-    GADBannerView *_googleBannerView;
-    BOOL googleAdRequested;
+//    ADBannerView *_adBannerView;
+//    GADBannerView *_googleBannerView;
+//    BOOL googleAdRequested;
+    UWAds *ad;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -125,14 +128,31 @@
 //    } else {
 //        _adBannerView = [[ADBannerView alloc] init];
 //    }
+//    _adBannerView.backgroundColor = [UIColor clearColor];
 //    CGRect bannerFrame = _adBannerView.frame;
-//    NSLog(@"tableview: %0.2f", self.tableView.frame.size.height);
-//    NSLog(@"banner: %0.2f", bannerFrame.size.height);
-//    bannerFrame.origin.y = self.tableView.contentSize.height - bannerFrame.size.height;
-//    NSLog(@"y: %0.2f",  bannerFrame.origin.y);
-//    //    bannerFrame.origin.y = [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height - 5;
+//    //bannerFrame.origin.y = [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height - 5;
+//    bannerFrame.origin.y = - 30;
 //    [_adBannerView setFrame:bannerFrame];
 //    _adBannerView.delegate = self;
+//    //[self.view addSubview:_adBannerView];
+//    
+//    // Google Ad
+//    _googleBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+//    _googleBannerView.adUnitID = @"ca-app-pub-5080537428726834/9792615501";
+//    _googleBannerView.rootViewController = self;
+//    _googleBannerView.alpha = 1;
+//    googleAdRequested = NO;
+//    
+//    bannerFrame = _googleBannerView.frame;
+//    bannerFrame.origin.y = - 30;
+////    bannerFrame.origin.y = [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height - 5;
+//    [_googleBannerView setFrame:bannerFrame];
+//    
+//    [_googleBannerView setDelegate:self];
+//    //[self.view addSubview:_googleBannerView];
+    
+    [self.tableView setContentInset:UIEdgeInsetsMake(30, 0, 0, 0)];
+    //self.tableView.tableHeaderView = _adBannerView;
 //    [self.tableView addSubview:_adBannerView];
 }
 
@@ -141,6 +161,8 @@
     [super viewWillAppear:animated];
     _performedNavigation = @"";
     [self.tableView reloadData];
+    ad = [UWAds singleton];
+    [ad resetAdView:self OriginY:-30];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -945,25 +967,26 @@
         if (_infoSession.isCancelled || !([_infoSession.startTime compare:[NSDate date]] == NSOrderedDescending)) {
             [ProgressHUD showError:@"Reminder not available!" Interacton:YES];
              //showSuccess:@"Modified successfully!" Interacton:YES];
-        }
-        
-        // select alert setting rows
-        if (1 <= indexPath.row && indexPath.row <= [_infoSession.alerts count]) {
-            [self performSegueWithIdentifier:@"ShowAlert" sender:indexPath];
-        }
-        // select "add more alert" row
-        else if (indexPath.row == [_infoSession.alerts count] + 1) {
-            [_infoSession addOneAlert];
-            
-            NSMutableArray *indexPathToInsert = [[NSMutableArray alloc] init];
-            [indexPathToInsert addObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]];
-            if (![_infoSession alertsIsFull]) {
-                // add new alert item and need to insert this new row
-                [self.tableView insertRowsAtIndexPaths:indexPathToInsert withRowAnimation:UITableViewRowAnimationBottom];
+        } else {
+            // select alert setting rows
+            if (1 <= indexPath.row && indexPath.row <= [_infoSession.alerts count]) {
+                [self performSegueWithIdentifier:@"ShowAlert" sender:indexPath];
             }
-            else {
-                // add new alert item and need to insert this new row, if alerts is full, replace the "add" row
-                [self.tableView reloadRowsAtIndexPaths:indexPathToInsert withRowAnimation:UITableViewRowAnimationBottom];
+            // select "add more alert" row
+            else if (indexPath.row == [_infoSession.alerts count] + 1) {
+                
+                [_infoSession addOneAlert];
+                
+                NSMutableArray *indexPathToInsert = [[NSMutableArray alloc] init];
+                [indexPathToInsert addObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]];
+                if (![_infoSession alertsIsFull]) {
+                    // add new alert item and need to insert this new row
+                    [self.tableView insertRowsAtIndexPaths:indexPathToInsert withRowAnimation:UITableViewRowAnimationBottom];
+                }
+                else {
+                    // add new alert item and need to insert this new row, if alerts is full, replace the "add" row
+                    [self.tableView reloadRowsAtIndexPaths:indexPathToInsert withRowAnimation:UITableViewRowAnimationBottom];
+                }
             }
         }
     }
@@ -1516,27 +1539,54 @@
         controller.infoSessionModel = _infoSessionModel;
     }
 }
-//
-//#pragma mark - Google Ad delegate methods
-//
-//- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
-//    NSLog(@"google banner show");
-//    //    [UIView beginAnimations:nil context:nil];
-//    //    [UIView setAnimationDuration:1];
-//    //
-//    //    [_googleBannerView setAlpha:1];
-//    //    [UIView commitAnimations];
-//    
-//}
-//
-//- (void)adView:(GADBannerView *)bannerView
-//didFailToReceiveAdWithError:(GADRequestError *)error {
-//    NSLog(@"google banner show error");
-//    //    [UIView beginAnimations:nil context:nil];
-//    //    [UIView setAnimationDuration:1];
-//    //    [bannerView setAlpha:0];
-//    //
-//    //    [UIView commitAnimations];
-//}
 
+#pragma mark - iAd delegate methods
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
+    NSLog(@"iad banner show");
+    //[self.navigationController.navigationBar addSubview:_adBannerView];
+    //self.tableView.tableHeaderView = _adBannerView;
+    //[self.tableView addSubview:ad.iAdBannerView];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
+    //[banner setAlpha:1];
+    [self.tableView setContentInset:UIEdgeInsetsMake(banner.frame.size.height + 43, 0, self.tabBarController.tabBar.frame.size.height, 0)];
+    [UIView commitAnimations];
+}
+
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
+    NSLog(@"iad banner show error");
+//    [banner removeFromSuperview];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
+    //[banner setAlpha:0];
+    [UIView commitAnimations];
+    
+}
+
+#pragma mark - Google Ad delegate methods
+
+- (void)adViewDidReceiveAd:(GADBannerView *)banner {
+    NSLog(@"google banner show");
+    //[self.navigationController.navigationBar addSubview:_googleBannerView];
+    //self.tableView.tableHeaderView = _googleBannerView;
+    //[self.tableView addSubview:ad.googleBannerView];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
+    //[banner setAlpha:1];
+    [self.tableView setContentInset:UIEdgeInsetsMake(banner.frame.size.height + 44, 0, self.tabBarController.tabBar.frame.size.height, 0)];
+    [UIView commitAnimations];
+    
+}
+
+- (void)adView:(GADBannerView *)banner
+didFailToReceiveAdWithError:(GADRequestError *)error {
+    self.tableView.tableHeaderView = nil;
+    NSLog(@"google banner show error");
+    //[banner removeFromSuperview];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
+    //[banner setAlpha:0];
+    [self.tableView setContentInset:UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height + 10, 0, self.tabBarController.tabBar.frame.size.height, 0)];
+    [UIView commitAnimations];
+}
 @end

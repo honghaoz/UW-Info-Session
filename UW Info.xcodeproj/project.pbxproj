@@ -60,6 +60,7 @@
 		1B505EDB18D0E3AB00F168F8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B505EDA18D0E3AB00F168F8 /* SystemConfiguration.framework */; };
 		1B527C4218D0241D00A91339 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B527C4118D0241D00A91339 /* MoreViewController.m */; };
 		1B527C4518D026D100A91339 /* MoreNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B527C4418D026D100A91339 /* MoreNavigationViewController.m */; };
+		1B58C36118F0634E003D9F9F /* UWAds.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B58C36018F0634E003D9F9F /* UWAds.m */; };
 		1B59BB2018C441AA00D6112B /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B59BB1F18C441AA00D6112B /* SearchViewController.m */; };
 		1B6F54C618AC218600D3DD47 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6F54C518AC218600D3DD47 /* EventKit.framework */; };
 		1B6F54C818AC219000D3DD47 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6F54C718AC219000D3DD47 /* EventKitUI.framework */; };
@@ -206,6 +207,8 @@
 		1B527C4118D0241D00A91339 /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoreViewController.m; path = ViewController/MoreViewController.m; sourceTree = "<group>"; };
 		1B527C4318D026D100A91339 /* MoreNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoreNavigationViewController.h; path = ViewController/MoreNavigationViewController.h; sourceTree = "<group>"; };
 		1B527C4418D026D100A91339 /* MoreNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoreNavigationViewController.m; path = ViewController/MoreNavigationViewController.m; sourceTree = "<group>"; };
+		1B58C35F18F0634E003D9F9F /* UWAds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWAds.h; sourceTree = "<group>"; };
+		1B58C36018F0634E003D9F9F /* UWAds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWAds.m; sourceTree = "<group>"; };
 		1B59BB1E18C441AA00D6112B /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchViewController.h; path = ViewController/SearchViewController.h; sourceTree = "<group>"; };
 		1B59BB1F18C441AA00D6112B /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = ViewController/SearchViewController.m; sourceTree = "<group>"; };
 		1B6F54C518AC218600D3DD47 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
@@ -655,6 +658,8 @@
 				1BD83AA418A59F1C00EDBB6D /* UWAppDelegate.m */,
 				1BDD367F18ECFAF10098EAAF /* UWGoogleAnalytics.h */,
 				1BDD368018ECFAF10098EAAF /* UWGoogleAnalytics.m */,
+				1B58C35F18F0634E003D9F9F /* UWAds.h */,
+				1B58C36018F0634E003D9F9F /* UWAds.m */,
 				1B8C557918B72B490070CD82 /* Categories */,
 				1B37453818A5BA2C007CF08C /* Models */,
 				1B37453918A5BA3D007CF08C /* Controllers */,
@@ -885,6 +890,7 @@
 				1B59BB2018C441AA00D6112B /* SearchViewController.m in Sources */,
 				1B717E5F18A7F7DC00E20A29 /* DetailLinkCell.m in Sources */,
 				1B717E6518A809F900E20A29 /* DetailRSVPCell.m in Sources */,
+				1B58C36118F0634E003D9F9F /* UWAds.m in Sources */,
 				1B717E6D18A80A7A00E20A29 /* InfoSessionCell.m in Sources */,
 				1B3A33B918D4D7690046DC73 /* UIWebView+AFNetworking.m in Sources */,
 				1B3A33FF18D4D9B40046DC73 /* UWTermMenu.m in Sources */,
