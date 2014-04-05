@@ -28,7 +28,11 @@
 #import "UWTodayButton.h"
 #import "UWGoogleAnalytics.h"
 
-@interface InfoSessionsViewController ()
+//#import "GADBannerView.h"
+#import "GADBannerViewDelegate.h"
+//#import "GADAdMobExtras.h"
+
+@interface InfoSessionsViewController () <GADBannerViewDelegate>
 
 @property (nonatomic, strong) UWTermMenu *termMenu;
 @property (nonatomic, assign) NSInteger shownYear;
@@ -43,6 +47,8 @@
 //    CGFloat previousScrollViewYOffset;
     BOOL isReloading;
     NSString *classOfRefreshSender;
+    
+//    GADBannerView *_googleBannerView;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -106,6 +112,37 @@
     // Google Analytics
     [UWGoogleAnalytics analyticScreen:@"UW Info Session Screen"];
     
+//    
+//    // Google Ad
+//    _googleBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+//    _googleBannerView.adUnitID = @"ca-app-pub-5080537428726834/3638663901";
+//    _googleBannerView.rootViewController = self;
+//    _googleBannerView.alpha = 0;
+//    
+//    CGRect contentFrame = self.view.bounds;
+//    CGRect bannerFrame = _googleBannerView.frame;
+//    bannerFrame.origin.y = contentFrame.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height;
+//    
+//    [_googleBannerView setFrame:bannerFrame];
+//    
+//    //[self.view addSubview:_googleBannerView];
+//    [_googleBannerView setDelegate:self];
+//    
+//    GADRequest *request = [GADRequest request];
+//    [request setLocationWithDescription:@"N2L3G1 CA"];
+////    GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
+////    extras.additionalParameters =
+////    [NSMutableDictionary dictionaryWithObjectsAndKeys:
+////     @"DDDDDD", @"color_bg",
+////     @"999999", @"color_bg_top",
+////     @"BBBBBB", @"color_border",
+////     @"FF9735", @"color_link",
+////     @"999999", @"color_text",
+////     @"FF9735", @"color_url",
+////     nil];
+//    
+////    [request registerAdNetworkExtras:extras];
+//    [_googleBannerView loadRequest:request];
 }
 
 - (void)didReceiveMemoryWarning
@@ -810,5 +847,27 @@
     controller.infoSessionModel = sender[2];
     controller.tabBarController = _tabBarController;
 }
+
+//#pragma mark - Google Ad delegate methods
+//
+//- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+//    NSLog(@"google banner show");
+////    [UIView beginAnimations:nil context:nil];
+////    [UIView setAnimationDuration:1];
+////    
+////    [_googleBannerView setAlpha:1];
+////    [UIView commitAnimations];
+//    
+//}
+//
+//- (void)adView:(GADBannerView *)bannerView
+//didFailToReceiveAdWithError:(GADRequestError *)error {
+//    NSLog(@"google banner show error");
+////    [UIView beginAnimations:nil context:nil];
+////    [UIView setAnimationDuration:1];
+////    [bannerView setAlpha:0];
+////    
+////    [UIView commitAnimations];
+//}
 
 @end

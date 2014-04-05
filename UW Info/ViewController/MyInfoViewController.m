@@ -17,13 +17,19 @@
 #import "MoreNavigationViewController.h"
 #import "UWGoogleAnalytics.h"
 
-@interface MyInfoViewController ()
+//#import "GADBannerView.h"
+#import "GADBannerViewDelegate.h"
+//#import "GADAdMobExtras.h"
+
+@interface MyInfoViewController () <GADBannerViewDelegate>
 
 @end
 
 @implementation MyInfoViewController {
     UIRefreshControl *refreshControl;
     UIBarButtonItem *editButton;
+    
+    GADBannerView *_googleBannerView;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -80,6 +86,37 @@
     
     // Google Analytics
     [UWGoogleAnalytics analyticScreen:@"My Info Session Screen"];
+//    
+//    // Google Ad
+//    _googleBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+//    _googleBannerView.adUnitID = @"ca-app-pub-5080537428726834/3638663901";
+//    _googleBannerView.rootViewController = self;
+//    _googleBannerView.alpha = 0;
+//    
+//    CGRect contentFrame = self.view.bounds;
+//    CGRect bannerFrame = _googleBannerView.frame;
+//    bannerFrame.origin.y = contentFrame.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height;
+//    
+//    [_googleBannerView setFrame:bannerFrame];
+//    
+//    //[self.view addSubview:_googleBannerView];
+//    [_googleBannerView setDelegate:self];
+//    
+//    GADRequest *request = [GADRequest request];
+//    [request setLocationWithDescription:@"N2L3G1 CA"];
+//    //    GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
+//    //    extras.additionalParameters =
+//    //    [NSMutableDictionary dictionaryWithObjectsAndKeys:
+//    //     @"DDDDDD", @"color_bg",
+//    //     @"999999", @"color_bg_top",
+//    //     @"BBBBBB", @"color_border",
+//    //     @"FF9735", @"color_link",
+//    //     @"999999", @"color_text",
+//    //     @"FF9735", @"color_url",
+//    //     nil];
+//    
+//    //    [request registerAdNetworkExtras:extras];
+//    [_googleBannerView loadRequest:request];
 }
 
 - (void)didReceiveMemoryWarning

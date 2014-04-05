@@ -34,8 +34,8 @@
     NSString *sharPostString;
     
     ADBannerView *_adBannerView;
-    
     GADBannerView *_googleBannerView;
+    BOOL googleAdRequested;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -92,7 +92,7 @@
     [_adBannerView setFrame:bannerFrame];
     
     _adBannerView.delegate = self;
-    [self.view addSubview:_adBannerView];
+//    [self.view addSubview:_adBannerView];
     
     // Google Ad
     // Create a view of the standard size at the top of the screen.
@@ -103,13 +103,14 @@
     _googleBannerView.adUnitID = @"ca-app-pub-5080537428726834/3638663901";
     _googleBannerView.rootViewController = self;
     _googleBannerView.alpha = 0;
+    googleAdRequested = NO;
 
     bannerFrame = _googleBannerView.frame;
     bannerFrame.origin.y = contentFrame.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height;
     
     [_googleBannerView setFrame:bannerFrame];
     
-    [self.view addSubview:_googleBannerView];
+//    [self.view addSubview:_googleBannerView];
     [_googleBannerView setDelegate:self];
     //[self showGoogleAd];
     
@@ -518,6 +519,7 @@
 
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner {
     NSLog(@"iad banner show");
+    [self.view addSubview:_adBannerView];
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:1];
     [banner setAlpha:1];
@@ -526,23 +528,30 @@
 }
 
 - (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
-    
-    GADRequest *request = [GADRequest request];
-    //request.testDevices = [NSArray arrayWithObjects: GAD_SIMULATOR_ID, @"b8ab61a5a3e7e3e252774bab62655fd3", nil];
-    [request setLocationWithDescription:@"N2L3G1 CA"];
-    GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
-    extras.additionalParameters =
-    [NSMutableDictionary dictionaryWithObjectsAndKeys:
-     @"DDDDDD", @"color_bg",
-     @"999999", @"color_bg_top",
-     @"BBBBBB", @"color_border",
-     @"FF9735", @"color_link",
-     @"999999", @"color_text",
-     @"FF9735", @"color_url",
-     nil];
-    
-    [request registerAdNetworkExtras:extras];
-    [_googleBannerView loadRequest:request];
+    [_adBannerView removeFromSuperview];
+    if (_googleBannerView.alpha == 0) {
+        googleAdRequested = NO;
+    }
+    if (googleAdRequested == NO) {
+        GADRequest *request = [GADRequest request];
+        //request.testDevices = [NSArray arrayWithObjects: GAD_SIMULATOR_ID, @"b8ab61a5a3e7e3e252774bab62655fd3", nil];
+        [request setLocationWithDescription:@"N2L3G1 CA"];
+        GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
+        extras.additionalParameters =
+        [NSMutableDictionary dictionaryWithObjectsAndKeys:
+         @"DDDDDD", @"color_bg",
+         @"999999", @"color_bg_top",
+         @"BBBBBB", @"color_border",
+         @"FF9735", @"color_link",
+         @"999999", @"color_text",
+         @"FF9735", @"color_url",
+         nil];
+        
+        [request registerAdNetworkExtras:extras];
+        [request setKeywords:[NSMutableArray arrayWithObjects:@"UWaterloo", @"Waterloo", @"Job", @"Internship", nil]];
+        [_googleBannerView loadRequest:request];
+        googleAdRequested = YES;
+    }
     
     NSLog(@"iad banner show error");
     [UIView beginAnimations:nil context:nil];
@@ -558,7 +567,7 @@
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
     NSLog(@"google banner show");
-    
+    [self.view addSubview:_googleBannerView];
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:1];
     
@@ -570,6 +579,7 @@
 - (void)adView:(GADBannerView *)bannerView
 didFailToReceiveAdWithError:(GADRequestError *)error {
     NSLog(@"google banner show error");
+    [_googleBannerView removeFromSuperview];
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:1];
     [bannerView setAlpha:0];
