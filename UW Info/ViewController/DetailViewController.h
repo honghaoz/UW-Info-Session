@@ -19,6 +19,9 @@
 @property (nonatomic, strong) NSString *caller;
 @property (nonatomic, strong) InfoSession *infoSession;
 @property (nonatomic, strong) InfoSession *infoSessionBackup;
+// orginal is the infoSession in tab0, if caller is myInfoSessionView, then nil
+@property (nonatomic, strong) InfoSession *originalInfoSession;
+@property (nonatomic, assign) BOOL openedMyInfo;
 @property (nonatomic, strong) InfoSessionModel *infoSessionModel;
 
 @property (nonatomic, weak) UWTabBarController *tabBarController;

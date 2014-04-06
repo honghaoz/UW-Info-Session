@@ -93,7 +93,7 @@
             </objects>
             <point key="canvasLocation" x="1139" y="-175"/>
         </scene>
-        <!--Detail View Controller - Details-->
+        <!--Detail View Controller-->
         <scene sceneID="OEM-rf-BN2">
             <objects>
                 <tableViewController id="B2h-A1-by6" customClass="DetailViewController" sceneMemberID="viewController">
@@ -257,7 +257,7 @@
                             <outlet property="delegate" destination="B2h-A1-by6" id="dFa-IM-H5C"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Details" id="YQK-MW-n9B">
+                    <navigationItem key="navigationItem" id="YQK-MW-n9B">
                         <barButtonItem key="rightBarButtonItem" title="Add" id="DVB-4w-eQp">
                             <connections>
                                 <action selector="addToMyInfo:" destination="B2h-A1-by6" id="avC-2f-zNA"/>
@@ -363,7 +363,7 @@
             </objects>
             <point key="canvasLocation" x="653" y="-175"/>
         </scene>
-        <!--My Info View Controller - My Info Sessions-->
+        <!--My Info View Controller - Favorites-->
         <scene sceneID="cOf-af-iOY">
             <objects>
                 <tableViewController id="Qxe-gJ-UM1" customClass="MyInfoViewController" sceneMemberID="viewController">
@@ -447,7 +447,7 @@
                             <outlet property="delegate" destination="Qxe-gJ-UM1" id="gAZ-Mv-pQ7"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="My Info Sessions" id="93M-R1-Iv9"/>
+                    <navigationItem key="navigationItem" title="Favorites" id="93M-R1-Iv9"/>
                     <connections>
                         <segue destination="B2h-A1-by6" kind="push" identifier="ShowDetailFromMyInfoSessions" id="fT1-AS-H6Z"/>
                     </connections>
@@ -476,11 +476,11 @@
             </objects>
             <point key="canvasLocation" x="106" y="498"/>
         </scene>
-        <!--Navigation Controller - My Info Sessions-->
+        <!--Navigation Controller - Favorites-->
         <scene sceneID="MXo-gj-2uf">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="R6T-l0-TWx" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="1" title="My Info Sessions" image="Bookmarks" id="Z7h-1E-pvt"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="Favorites" image="star-tab" id="Z7h-1E-pvt"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="js0-b5-dhf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -549,9 +549,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Bookmarks" width="25" height="22"/>
         <image name="List" width="26" height="25"/>
         <image name="Search" width="25" height="24"/>
+        <image name="star-tab" width="27" height="26"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

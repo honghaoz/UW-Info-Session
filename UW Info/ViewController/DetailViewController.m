@@ -55,7 +55,6 @@
 @end
 
 @implementation DetailViewController {
-    BOOL openedMyInfo;
     NSInteger noteLines;
     NSInteger cursorIndex;
     CGFloat startContentOffset;
@@ -79,26 +78,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"Details";
+    //self.title = @"Details";
     
     // if caller is Info
     if ([_caller isEqualToString:@"InfoSessionsViewController"] || [_caller isEqualToString:@"SearchViewController"]) {
+        _openedMyInfo = NO;
+        // backup infoSession in tab1
+        _originalInfoSession = _infoSession;
         NSInteger existIndex = [InfoSessionModel findInfoSession:_infoSession in:_infoSessionModel.myInfoSessions];
-        openedMyInfo = NO;
         if (existIndex != -1) {
             _infoSession = _infoSessionModel.myInfoSessions[existIndex];
-            openedMyInfo = YES;
+            _openedMyInfo = YES;
         }
     } else {
-        openedMyInfo = YES;
+        _openedMyInfo = YES;
     }
     
     [self backupInfoSession];
-    
-    // initiate the right buttons
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Download"] style:UIBarButtonItemStyleBordered target:self action:@selector(addToMyInfo:)];
-    UIBarButtonItem *calButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Calendar"] style:UIBarButtonItemStylePlain target:self action:@selector(addToCalendar:)];
-    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:addButton, calButton, nil]];
+    [self setBarIcon];
     
     // set tap gesture to resgin first responser
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
@@ -123,45 +120,42 @@
     // Google Analytics
     [UWGoogleAnalytics analyticScreen:@"Detail Screen"];
     
-//    // iAd
-//    if ([ADBannerView instancesRespondToSelector:@selector(initWithAdType:)]) {
-//        _adBannerView = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
-//    } else {
-//        _adBannerView = [[ADBannerView alloc] init];
-//    }
-//    _adBannerView.backgroundColor = [UIColor clearColor];
-//    CGRect bannerFrame = _adBannerView.frame;
-//    //bannerFrame.origin.y = [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height - 5;
-//    bannerFrame.origin.y = - 30;
-//    [_adBannerView setFrame:bannerFrame];
-//    _adBannerView.delegate = self;
-//    //[self.view addSubview:_adBannerView];
-//    
-//    // Google Ad
-//    _googleBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
-//    _googleBannerView.adUnitID = @"ca-app-pub-5080537428726834/9792615501";
-//    _googleBannerView.rootViewController = self;
-//    _googleBannerView.alpha = 1;
-//    googleAdRequested = NO;
-//    
-//    bannerFrame = _googleBannerView.frame;
-//    bannerFrame.origin.y = - 30;
-////    bannerFrame.origin.y = [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height - 5;
-//    [_googleBannerView setFrame:bannerFrame];
-//    
-//    [_googleBannerView setDelegate:self];
-//    //[self.view addSubview:_googleBannerView];
-    
+    // because ads exist, need set insets
     [self.tableView setContentInset:UIEdgeInsetsMake(30, 0, 0, 0)];
-    //self.tableView.tableHeaderView = _adBannerView;
-//    [self.tableView addSubview:_adBannerView];
+}
+
+- (void)setBarIcon {
+    // initiate the right buttons
+    UIBarButtonItem *favButton;
+    if (_openedMyInfo == NO) {
+        favButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star"] style:UIBarButtonItemStyleBordered target:self action:@selector(favoritesButton:)];
+    } else {
+        favButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star-selected"] style:UIBarButtonItemStyleBordered target:self action:@selector(favoritesButton:)];
+    }
+    UIBarButtonItem *calButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButton:)];
+    
+    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Calendar"] style:UIBarButtonItemStylePlain target:self action:@selector(addToCalendar:)];
+    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:favButton, shareButton, calButton, nil]];
+    //[self.navigationItem.rightBarButtonItems]
+}
+
+- (void)updateBarIcon {
+    if (_openedMyInfo == NO) {
+//        UIBarButtonItem *favButton = self.navigationItem.rightBarButtonItems[0];
+//        favButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star"] style:UIBarButtonItemStyleBordered target:self action:@selector(favoritesButton:)];
+        [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star"] style:UIBarButtonItemStyleBordered target:self action:@selector(favoritesButton:)], self.navigationItem.rightBarButtonItems[1], self.navigationItem.rightBarButtonItems[2], nil]];
+    } else {
+        [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star-selected"] style:UIBarButtonItemStyleBordered target:self action:@selector(favoritesButton:)], self.navigationItem.rightBarButtonItems[1], self.navigationItem.rightBarButtonItems[2], nil]];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    NSLog(@"detailView appear");
     _tabBarController.lastTapped = -1;
     [super viewWillAppear:animated];
     _performedNavigation = @"";
     [self.tableView reloadData];
+    [self updateBarIcon];
     ad = [UWAds singleton];
     [ad resetAdView:self OriginY:-30];
 }
@@ -417,10 +411,11 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // if showing infoSession is deleted, then pop up
-    if (_infoSessionBackup == nil) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    if (openedMyInfo == YES) {
+//    if (_infoSessionBackup == nil) {
+//        NSLog(@"pop up");
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }
+    if (_openedMyInfo == YES) {
         return 5;
     } else {
         return 4;
@@ -1054,14 +1049,24 @@
  *  @param sender none
  */
 - (void)deleteOperation:(id)sender {
+    NSString *senderClass = NSStringFromClass([sender class]);
     if ([_infoSessionModel deleteInfoSessionInMyInfo:_infoSession] == UWDeleted) {
-        
-        //UINavigationController *navigation = (UINavigationController *)_tabBarController.viewControllers[1];
         
         [UIView animateWithDuration:0.2 animations:^{
             self.performedNavigation = @"DeleteInfoSession";
-            [self.navigationController popViewControllerAnimated:YES];
+            if (![NSStringFromClass([sender class]) isEqualToString:@"UIBarButtonItem"] || ([_caller isEqualToString:@"MyInfoViewController"])) {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
         }completion:^(BOOL finished) {
+            InfoSession *infoSessionDeleted = _infoSession;
+            if ([senderClass isEqualToString:@"UIBarButtonItem"]) {
+                // restore to original info session
+                _infoSession = _originalInfoSession;
+                _openedMyInfo = NO;
+                [self updateBarIcon];
+                [self.tableView reloadData];
+                [self backupInfoSession];
+            }
             // set badge for second barItem
             [_tabBarController setBadge];
             _infoSessionBackup = nil;
@@ -1079,8 +1084,14 @@
                         // get the tabbar item0's detailViewController
                         DetailViewController *detailController = (DetailViewController *)controller;
                         // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
-                        if ([_infoSession isEqual:detailController.infoSession]) {
-                            detailController.infoSessionBackup = nil;
+                        if ([infoSessionDeleted isEqual:detailController.infoSession]) {
+                            NSLog(@"tab1->tab0");
+                            //if ([senderClass isEqualToString:@"UIBarButtonItem"]) {
+                            detailController.infoSession = detailController.originalInfoSession;
+                            detailController.openedMyInfo = NO;
+                            //} else {
+                              //  detailController.infoSessionBackup = nil;
+                            //}
                         }
                     }
                 }
@@ -1093,8 +1104,16 @@
                         // get the tabbar item0's detailViewController
                         DetailViewController *detailController = (DetailViewController *)controller;
                         // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
-                        if ([_infoSession isEqual:detailController.infoSession]) {
-                            detailController.infoSessionBackup = nil;
+                        if ([infoSessionDeleted isEqual:detailController.infoSession]) {
+                            NSLog(@"tab1->tab2");
+                            detailController.infoSession = detailController.originalInfoSession;
+                            detailController.openedMyInfo = NO;
+//                            if ([senderClass isEqualToString:@"UIBarButtonItem"]) {
+//                                detailController.infoSession = detailController.originalInfoSession;
+//                                detailController.openedMyInfo = NO;
+//                            } else {
+//                                detailController.infoSessionBackup = nil;
+//                            }
                         }
                     }
                 }
@@ -1105,8 +1124,10 @@
                     UITableViewController *controller = myInfoVCNavigationController.viewControllers[1];
                     if ([controller isKindOfClass:[DetailViewController class]]) {
                         DetailViewController *detailController = (DetailViewController *)controller;
-                        if ([_infoSession isEqual:detailController.infoSession]) {
+                        if ([infoSessionDeleted isEqual:detailController.infoSession]) {
+                            NSLog(@"tab0->tab1");
                             detailController.infoSessionBackup = nil;
+                            [myInfoVCNavigationController popViewControllerAnimated:NO];
                         }
                     }
                 }
@@ -1119,8 +1140,11 @@
                         // get the tabbar item0's detailViewController
                         DetailViewController *detailController = (DetailViewController *)controller;
                         // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
-                        if ([_infoSession isEqual:detailController.infoSession]) {
-                            detailController.infoSessionBackup = nil;
+                        if ([infoSessionDeleted isEqual:detailController.infoSession]) {
+                            NSLog(@"tab0->tab2");
+                            detailController.infoSession = detailController.originalInfoSession;
+                            detailController.openedMyInfo = NO;
+//                            detailController.infoSessionBackup = nil;
                         }
                     }
                 }
@@ -1134,8 +1158,11 @@
                         // get the tabbar item0's detailViewController
                         DetailViewController *detailController = (DetailViewController *)controller;
                         // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
-                        if ([_infoSession isEqual:detailController.infoSession]) {
-                            detailController.infoSessionBackup = nil;
+                        if ([infoSessionDeleted isEqual:detailController.infoSession]) {
+                            NSLog(@"tab2->tab0");
+                            detailController.infoSession = detailController.originalInfoSession;
+                            detailController.openedMyInfo = NO;
+                            //detailController.infoSessionBackup = nil;
                         }
                     }
                 }
@@ -1146,8 +1173,9 @@
                     UITableViewController *controller = myInfoVCNavigationController.viewControllers[1];
                     if ([controller isKindOfClass:[DetailViewController class]]) {
                         DetailViewController *detailController = (DetailViewController *)controller;
-                        if ([_infoSession isEqual:detailController.infoSession]) {
+                        if ([infoSessionDeleted isEqual:detailController.infoSession]) {
                             detailController.infoSessionBackup = nil;
+                            [myInfoVCNavigationController popViewControllerAnimated:NO];
                         }
                     }
                 }
@@ -1288,6 +1316,13 @@
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
+- (void)favoritesButton:(id)sender {
+    if (_openedMyInfo == YES) {
+        [self deleteOperation:sender];
+    } else {
+        [self addToMyInfo:sender];
+    }
+}
 
 /**
  *  Add to my info sessions button
@@ -1297,13 +1332,12 @@
 - (IBAction)addToMyInfo:(id)sender {
     // log event
     [[iRate sharedInstance] logEvent:NO];
-    
     UW addResult = UWNonthing;
     // if note cell is editing, resign keyboard
     [self.noteCell.contentText resignFirstResponder];
     // this case is first time open an infosession from InfoSessionsVC or SearchViewController
     // only this situation, openedMyInfo == NO
-    if (([_caller isEqualToString:@"InfoSessionsViewController"] || [_caller isEqualToString:@"SearchViewController"]) && openedMyInfo == NO) {
+    if (([_caller isEqualToString:@"InfoSessionsViewController"] || [_caller isEqualToString:@"SearchViewController"]) && _openedMyInfo == NO) {
         addResult = [InfoSessionModel addInfoSessionInOrder:[_infoSession copy] to:_infoSessionModel.myInfoSessions];
         // if first time to add, the below if statement must be true!
         if (addResult == UWAdded) {
@@ -1316,22 +1350,63 @@
             [UIView animateWithDuration:0.2 animations:^{
                 [self animateSnapshotOfView:self.view.window toTab:_tabBarController.viewControllers[1]];
                 // set badge
-                [_tabBarController setBadge];
             }completion:^(BOOL finished) {
-                
+                [_tabBarController setBadge];
                 // if added, replace _infoSession to the added infoSession in myInfoSession
                 NSInteger existIndex = [InfoSessionModel findInfoSession:_infoSession in:_infoSessionModel.myInfoSessions];
+                InfoSession *infoSessionReplaced = _infoSession;
                 _infoSession = _infoSessionModel.myInfoSessions[existIndex];
                 // at this time, the data from myInfo, so set YES
-                openedMyInfo = YES;
+                
+                NSLog(@"open = yes");
+                _openedMyInfo = YES;
+                [self updateBarIcon];
                 // reload tabale
                 [self.tableView reloadData];
+                
+                // update if other view is show this infosession
+                if ([_caller isEqualToString:@"InfoSessionsViewController"]) {
+                    UINavigationController *searchVCNavigationController = self.tabBarController.searchViewController.navigationController;
+                    // if count > 1, means detailView is shown
+                    if ([searchVCNavigationController.viewControllers count] > 1) {
+                        UITableViewController *controller = searchVCNavigationController.viewControllers[1];
+                        if ([controller isKindOfClass:[DetailViewController class]]) {
+                            // get the tabbar item0's detailViewController
+                            DetailViewController *detailController = (DetailViewController *)controller;
+                            // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
+                            if ([infoSessionReplaced isEqual:detailController.infoSession]) {
+                                NSLog(@"add: tab0->tab2");
+                                detailController.infoSession = _infoSession;
+                                detailController.openedMyInfo = YES;
+                                //                            detailController.infoSessionBackup = nil;
+                            }
+                        }
+                    }
+                } else if ([_caller isEqualToString:@"SearchViewController"]) {
+                    UINavigationController *infoSessionVCNavigationController = self.tabBarController.infoSessionsViewController.navigationController;
+                    // if count > 1, means detailView is shown
+                    if ([infoSessionVCNavigationController.viewControllers count] > 1) {
+                        UITableViewController *controller = infoSessionVCNavigationController.viewControllers[1];
+                        if ([controller isKindOfClass:[DetailViewController class]]) {
+                            // get the tabbar item0's detailViewController
+                            DetailViewController *detailController = (DetailViewController *)controller;
+                            // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
+                            if ([infoSessionReplaced isEqual:detailController.infoSession]) {
+                                NSLog(@"tab2->tab0");
+                                detailController.infoSession = _infoSession;
+                                detailController.openedMyInfo = YES;
+                                //detailController.infoSessionBackup = nil;
+                            }
+                        }
+                    }
+                }
+                
                 // save to file
                 [_infoSessionModel saveInfoSessions];
             }];
         }
     }
-    else if (openedMyInfo == YES) {
+    else if (_openedMyInfo == YES) {
         // if opend saved one, then detect whether some changes made.
         if ([_infoSessionBackup isChangedCompareTo:_infoSession]) {
             [ProgressHUD showSuccess:@"Modified successfully!" Interacton:YES];
@@ -1427,6 +1502,10 @@
     // back up a copy of the infosession, used for detecting changes
     // guarrentee when pop up, any unsaved changes will be save.
     self.infoSessionBackup = [self.infoSession copy];
+}
+
+- (void)shareButton:(id)sender {
+    
 }
 
 #pragma mark - UIScrollView Delegate method

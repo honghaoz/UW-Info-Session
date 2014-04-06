@@ -44,7 +44,7 @@
     UITabBarItem *item1 = [tabBar.items objectAtIndex:1];
     UITabBarItem *item2 = [tabBar.items objectAtIndex:2];
     [item0 setSelectedImage:[UIImage imageNamed:@"List-selected"]];
-    [item1 setSelectedImage:[UIImage imageNamed:@"Bookmarks-selected"]];
+    [item1 setSelectedImage:[UIImage imageNamed:@"star-tab-selected"]];
     [item2 setSelectedImage:[UIImage imageNamed:@"Search-selected"]];
     
     
