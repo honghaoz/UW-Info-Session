@@ -42,6 +42,7 @@
 #import "GADAdMobExtras.h"
 
 #import "UWAds.h"
+#import "iRate.h"
 
 @interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate>
 
@@ -1294,6 +1295,9 @@
  *  @param sender Button "Add"
  */
 - (IBAction)addToMyInfo:(id)sender {
+    // log event
+    [[iRate sharedInstance] logEvent:NO];
+    
     UW addResult = UWNonthing;
     // if note cell is editing, resign keyboard
     [self.noteCell.contentText resignFirstResponder];

@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "WXApi.h"
+#import "iRate.h"
 
-@interface UWAppDelegate : UIResponder <UIApplicationDelegate, WXApiDelegate>
+@interface UWAppDelegate : UIResponder <UIApplicationDelegate, WXApiDelegate, iRateDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

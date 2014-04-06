@@ -646,7 +646,8 @@
         // if start time < end time or date is nil, do not add
         if (!([infoSession.startTime compare:infoSession.endTime] != NSOrderedAscending ||
               infoSession.date == nil ||
-              [infoSession.employer length] == 0)) {
+              [infoSession.employer length] == 0 ||
+              [infoSession.employer isEqualToString:@"First day of lectures"] || [infoSession.employer isEqualToString:@"Last day of lectures"])) {
             [mutableInfoSessions addObject:infoSession];
         }
     }

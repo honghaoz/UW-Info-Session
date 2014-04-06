@@ -24,15 +24,19 @@
 #import "UWGoogleAnalytics.h"
 #import "UWAds.h"
 
+#import "iRate.h"
+
 @interface MoreViewController () <UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate>
 
 @end
 
 @implementation MoreViewController {
     NSString *itunesURLString;
+    NSString *itunesRateURLString;
     NSString *itunesShortURLString;
     NSString *appURLString;
     NSString *sharPostString;
+    
     
 //    ADBannerView *_adBannerView;
 //    GADBannerView *_googleBannerView;
@@ -67,6 +71,7 @@
     //[self.tableView registerClass:[CenterTextCell class] forCellReuseIdentifier:@"CenterCell"];
     
     itunesURLString = @"http://itunes.apple.com/app/uw-info-session/id837207884?mt=8";
+    itunesRateURLString = @"itms-apps://itunes.apple.com/app/id837207884";
     itunesShortURLString = @"http://goo.gl/bQyyH0";
     appURLString = @"itms://itunes.apple.com/app/uw-info-session/id837207884?mt=8";
     sharPostString = @"UW Info is a great app to search and manage info sessions #UWaterloo, check it out!";
@@ -295,7 +300,8 @@
             MoreNavigationViewController *newMoreNaviVC = [[MoreNavigationViewController alloc] initWithRootViewController:newFeedbackVC];
             [self presentViewController:newMoreNaviVC animated:YES completion:^(){}];
         } else if (indexPath.row == 2) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:itunesURLString]];
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:itunesRateURLString]];
+            [[iRate sharedInstance] openRatingsPageInAppStore];
         }
     }
 }

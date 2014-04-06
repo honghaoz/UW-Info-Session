@@ -16,6 +16,8 @@
 #import "UIDevice-Hardware.h"
 
 #import "GAI.h"
+#import "iRate.h"
+#import "HSLUpdateChecker.h"
 
 @implementation UWAppDelegate {
     InfoSessionModel *_infoSessionModel;
@@ -64,19 +66,6 @@
                   clientKey:@"O107hqVq0uYHr3QLFGSCTJPCCC5YKY5vx2BQXS2q"];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
-//    NSLog(@"deviceName: %@", [[UIDevice currentDevice] name]);
-//    NSLog(@"platformName: %@", [[UIDevice currentDevice] platformString]);
-//    NSLog(@"systemVersion: %@", [[UIDevice currentDevice] systemVersion]);
-    
-//    NSDictionary *dimensions = @{
-//                                 // Define ranges to bucket data points into meaningful segments
-//                                 @"Device_Name": [[UIDevice currentDevice] name],
-//                                 // Did the user filter the query?
-//                                 @"Platform_Name": [[UIDevice currentDevice] systemName],
-//                                 // Do searches happen more often on weekdays or weekends?
-//                                 @"System_Version": [[UIDevice currentDevice] systemVersion]
-//                                 };
-//    [PFAnalytics trackEvent:@"Device_Info" dimensions:dimensions];
     NSString *deviceName = [[UIDevice currentDevice] name];
     NSString *identifierForVendor = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     NSLog(@"%@", identifierForVendor);
@@ -161,6 +150,21 @@
     // Initialize tracker. Replace with your tracking ID.
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-45146473-2"];
     return YES;
+    
+    // check update
+    [HSLUpdateChecker checkForUpdate];
+}
+
++ (void)initialize {
+    //configure iRate
+    [iRate sharedInstance].daysUntilPrompt = 4;
+    [iRate sharedInstance].usesUntilPrompt = 15;
+    [iRate sharedInstance].eventsUntilPrompt = 5;
+    [iRate sharedInstance].remindPeriod = 1;
+    [iRate sharedInstance].message = @"If you find UW Info is helpful, would you mind taking a moment to rate it? It's your support makes me do better! Thanks!";
+    [iRate sharedInstance].promptForNewVersionIfUserRated = YES;
+    [iRate sharedInstance].onlyPromptIfLatestVersion = NO;
+    //[iRate sharedInstance].previewMode = YES;
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -237,13 +241,6 @@
     NSMutableDictionary *theTargetAlert = [theTargetInfo.alerts objectAtIndex:[[notification.userInfo objectForKey:@"AlertIndex"] integerValue]];
     [theTargetAlert setValue:[NSNumber numberWithBool:YES] forKey:@"isNotified"];
     [_infoSessionModel saveMyInfoSessions];
-//    for (InfoSession *each in  _infoSessionModel.myInfoSessions) {
-//        for (NSMutableDictionary *eachAlert in each.alerts) {
-//            for (NSString *eachKey in eachAlert ) {
-//                NSLog(@"%@: %@", eachKey, eachAlert[eachKey]);
-//            }
-//        }
-//    }
 }
 
 
@@ -259,5 +256,6 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return [WXApi handleOpenURL:url delegate:self];
 }
+
 
 @end
