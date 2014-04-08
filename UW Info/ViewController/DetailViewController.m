@@ -44,6 +44,19 @@
 #import "UWAds.h"
 #import "iRate.h"
 
+#import <FacebookSDK/FacebookSDK.h>
+#import <Social/Social.h>
+#import "WXApi.h"
+#import "WXApiObject.h"
+
+#import "UWShareView.h"
+#import "WeixinActivity.h"
+#import "LINEActivity.h"
+#import "JNJGoogleMapsActivity.h"
+#import "TTAppleMapsActivity.h"
+
+#import "NSString+Contain.h"
+
 @interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate>
 
 @property (nonatomic, strong) DetailDescriptionCell *programCell;
@@ -64,6 +77,10 @@
 //    GADBannerView *_googleBannerView;
 //    BOOL googleAdRequested;
     UWAds *ad;
+    // stores latitude and longitude for building
+    NSNumber *latitude;
+    NSNumber *longitude;
+    NSString *building;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -122,6 +139,48 @@
     
     // because ads exist, need set insets
     [self.tableView setContentInset:UIEdgeInsetsMake(30, 0, 0, 0)];
+    
+    // set gps info
+    latitude = nil;
+    longitude = nil;
+    if ([_infoSession.location length] > 1) {
+        NSRange range = [_infoSession.location rangeOfString:@" "];
+        if (range.length == 0) {
+            building = [_infoSession.location copy];
+        } else {
+            building = [_infoSession.location substringToIndex:range.location];
+        }
+        
+        if ([building isEqualToString:@"TC"]) {
+            latitude = @(43.469);
+            longitude = @(-80.541324);
+        } else if ([building isEqualToString:@"SCH"] || [building isEqualToString:@"Laurel"]) {
+            building = @"SCH";
+            latitude = @(43.46915917);
+            longitude = @(-80.5405839);
+        } else if ([building isEqualToString:@"DC"]) {
+            latitude = @(43.472761);
+            longitude = @(-80.542164);
+        } else if ([building isEqualToString:@"SLC"]) {
+            latitude = @(43.471601);
+            longitude = @(-80.545455);
+        } else if ([building isEqualToString:@"QNC"]) {
+            latitude = @(43.471174);
+            longitude = @(-80.544476);
+        } else {
+            NSLog(@"building: %@!!!!", building);
+            NSMutableArray *buildings = [[NSMutableArray alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"uw_building" ofType:@"plist"]];
+            //NSLog(@"buildings: %d", [buildings count]);
+            for (NSDictionary *eachBuilding in buildings) {
+                if ([((NSString *)eachBuilding[@"building_code"]) containsString:building] || [((NSString *)eachBuilding[@"alternate_building_names"]) containsString:building]) {
+                    //NSLog(@"found %@", building);
+                    latitude = [(NSNumber *)eachBuilding[@"latitude"] copy];
+                    longitude = [(NSNumber *)eachBuilding[@"longitude"] copy];
+                    break;
+                }
+            }
+        }
+    }
 }
 
 - (void)setBarIcon {
@@ -1505,7 +1564,50 @@
 }
 
 - (void)shareButton:(id)sender {
+    NSArray *activity;
+    if ([_infoSession.location length] <= 1 || [_infoSession.location isEqualToString:@"TBD*"] || [_infoSession.location isEqualToString:@"TBD"]) {
+        activity = @[[[WeixinSessionActivity alloc] init], [[WeixinTimelineActivity alloc] init], [[LINEActivity alloc] init]];
+    } else {
+        // google map
+        JNJGoogleMapsActivity *googleMapsActivity = [[JNJGoogleMapsActivity alloc] init];
+        if (latitude != nil) {
+            NSLog(@"set GPS");
+            googleMapsActivity.latitude = latitude;
+            googleMapsActivity.longitude = longitude;
+            googleMapsActivity.zoomLevel = 15;
+            googleMapsActivity.building = building;
+        }
+        
+        // apple map
+        TTAppleMapsActivity *appleMapsActivity = [[TTAppleMapsActivity alloc] init];
+        if (latitude != nil) {
+            appleMapsActivity.latitude = latitude;
+            appleMapsActivity.longitude = longitude;
+            appleMapsActivity.building = building;
+        }
+        activity = @[[[WeixinSessionActivity alloc] init], [[WeixinTimelineActivity alloc] init], [[LINEActivity alloc] init], googleMapsActivity, appleMapsActivity];
+    }
     
+    NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
+    [dateFormatter setDateFormat:@"cccc, MMM d"];
+    NSDateFormatter *timeFormatter = [InfoSession estDateFormatter];
+    [timeFormatter setDateFormat:@"h:mm a"];
+    NSString *timeString = [NSString stringWithFormat:@"%@ - %@", [timeFormatter stringFromDate:_infoSession.startTime], [timeFormatter stringFromDate:_infoSession.endTime]];
+    NSString *dateString = [dateFormatter stringFromDate:_infoSession.date];
+    
+    NSString *postText = [NSString stringWithFormat:@"%@, %@, %@, at %@", _infoSession.employer, timeString, dateString, _infoSession.location];
+    //UIImage *postImage = [UIImage imageNamed:@"AppIcon-Rounded.png"];
+    NSURL *postURL = [NSURL URLWithString:@"http://goo.gl/bQyyH0"];
+    NSArray *location = [[NSArray alloc] initWithObjects:latitude, longitude, nil];
+    
+    NSArray *activityItems = @[postText, /*postImage,*/ postURL, location];
+    NSArray *excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePrint, UIActivityTypeAirDrop, UIActivityTypeCopyToPasteboard, UIActivityTypeSaveToCameraRoll, UIActivityTypeAddToReadingList];
+    
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activity];
+    activityController.excludedActivityTypes = excludeActivities;
+    
+    [self presentViewController:activityController
+                       animated:YES completion:nil];
 }
 
 #pragma mark - UIScrollView Delegate method

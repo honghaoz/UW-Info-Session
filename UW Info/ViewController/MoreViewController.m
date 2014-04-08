@@ -25,6 +25,8 @@
 #import "UWAds.h"
 
 #import "iRate.h"
+#import "WeixinActivity.h"
+#import "LINEActivity.h"
 
 @interface MoreViewController () <UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate>
 
@@ -37,10 +39,6 @@
     NSString *appURLString;
     NSString *sharPostString;
     
-    
-//    ADBannerView *_adBannerView;
-//    GADBannerView *_googleBannerView;
-//    BOOL googleAdRequested;
     UWAds *ad;
 }
 
@@ -170,17 +168,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-//        if (indexPath.row == 0) {
-//            NSString *resueIdentifier = @"AccessoryCell";
-//            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:resueIdentifier];
-//            if (cell == nil) {
-//                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:resueIdentifier];
-//            }
-//            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-//            cell.textLabel.text = @"Help";
-//            [cell.textLabel setFont:[UIFont systemFontOfSize:18]];
-//            return cell;
-//        }
         if (indexPath.row == 0) {
             NSString *resueIdentifier = @"Value1Cell";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:resueIdentifier];
@@ -307,17 +294,16 @@
 }
 
 - (void)showActivityViewController {
+    NSArray *activity = @[[[WeixinSessionActivity alloc] init], [[WeixinTimelineActivity alloc] init], [[LINEActivity alloc] init]];
     NSString *postText = sharPostString;
     UIImage *postImage = [UIImage imageNamed:@"AppIcon-Rounded.png"];
     NSURL *postURL = [NSURL URLWithString:itunesShortURLString];
     
     NSArray *activityItems = @[postText, postImage, postURL];
-    NSArray *excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypeCopyToPasteboard, UIActivityTypePrint, UIActivityTypeAirDrop, UIActivityTypeSaveToCameraRoll, UIActivityTypeAddToReadingList];
+    NSArray *excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePrint, UIActivityTypeAirDrop, UIActivityTypeCopyToPasteboard, UIActivityTypeSaveToCameraRoll, UIActivityTypeAddToReadingList];
     
-    UIActivityViewController *activityController =
-    [[UIActivityViewController alloc]
-     initWithActivityItems:activityItems
-     applicationActivities:nil];
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:activityItems
+     applicationActivities:activity];
     activityController.excludedActivityTypes = excludeActivities;
     
     [self presentViewController:activityController
@@ -467,7 +453,7 @@
 }
 
 - (void)shareOnWechatTo:(int)scene {
-    if ([WXApi isWXAppInstalled]) {
+    if ([WXApi isWXAppInstalled] && [WXApi isWXAppSupportApi]) {
         // prepare WXMediaMessage
         WXMediaMessage *message = [WXMediaMessage message];
         message.title = @"UW Info Session";

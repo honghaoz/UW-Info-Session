@@ -75,7 +75,7 @@
     [queryForId findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             // The find succeeded.
-            NSLog(@"Successfully retrieved %lu devices.", (unsigned long)objects.count);
+            NSLog(@"delegate Successfully retrieved %lu devices.", (unsigned long)objects.count);
             // no object for this id, query with device name
             if (objects.count == 0) {
                 PFQuery *queryForDeviceName = [PFQuery queryWithClassName:@"Device"];
@@ -83,7 +83,7 @@
                 [queryForDeviceName findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
                     if (!error) {
                         // The find succeeded.
-                        NSLog(@"Successfully retrieved %lu devices.", (unsigned long)objects.count);
+                        NSLog(@"delegate Successfully retrieved %lu devices.", (unsigned long)objects.count);
                         // if no object for this device name, create a new object
                         if (objects.count == 0) {
                             PFObject *device = [PFObject objectWithClassName:@"Device"];
@@ -104,8 +104,9 @@
                                 object[@"Opens"] = [NSNumber numberWithInteger:[object[@"Opens"] integerValue] + 1];
                                 object[@"Identifier"] = identifierForVendor;
                                 //NSLog(@"update key: %@", object[@"Query_Key"]);
-                                //_infoSessionModel.apiKey = object[@"Query_Key"];
-                                object[@"Query_Key"] = _infoSessionModel.apiKey;
+                                _infoSessionModel.apiKey = object[@"Query_Key"];
+                                // for retrive old key stored in device
+                                //object[@"Query_Key"] = _infoSessionModel.apiKey;
                                 [object saveEventually];
                             }
                         }

@@ -32,6 +32,8 @@
 #import "GADBannerViewDelegate.h"
 //#import "GADAdMobExtras.h"
 
+#import "UWAds.h"
+
 @interface InfoSessionsViewController () <GADBannerViewDelegate>
 
 @property (nonatomic, strong) UWTermMenu *termMenu;
@@ -143,6 +145,8 @@
 //    
 ////    [request registerAdNetworkExtras:extras];
 //    [_googleBannerView loadRequest:request];
+    // fast the ad load
+    //[[UWAds singleton] resetAdView:nil OriginY:-30];
 }
 
 - (void)didReceiveMemoryWarning

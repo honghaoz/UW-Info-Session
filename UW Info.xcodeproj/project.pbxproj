@@ -71,6 +71,8 @@
 		1B717E7118A80B8200E20A29 /* DetailDescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E7018A80B8200E20A29 /* DetailDescriptionCell.m */; };
 		1B717E7618A8294600E20A29 /* DetailNormalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E7518A8294600E20A29 /* DetailNormalCell.m */; };
 		1B8C557C18B7BCB60070CD82 /* EKEvent+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C557B18B7BCB60070CD82 /* EKEvent+NSCoding.m */; };
+		1B8EE15E18F238DC00DE8BD8 /* UWShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8EE15D18F238DC00DE8BD8 /* UWShareView.m */; };
+		1B8EE16118F23DDD00DE8BD8 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8EE16018F23DDD00DE8BD8 /* UIImage+ImageEffects.m */; };
 		1BA1795718F1A4BD00FA5D05 /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1BA1795418F1A4BD00FA5D05 /* iRate.bundle */; };
 		1BA1795818F1A4BD00FA5D05 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BA1795618F1A4BD00FA5D05 /* iRate.m */; };
 		1BA1795C18F1AE5400FA5D05 /* HSLUpdateChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BA1795B18F1AE5400FA5D05 /* HSLUpdateChecker.m */; };
@@ -78,6 +80,29 @@
 		1BAD97E918A9CAE2006F4546 /* UWTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */; };
 		1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */; };
 		1BB1A12018C908BB00823A0D /* alarm.caf in Resources */ = {isa = PBXBuildFile; fileRef = 1BB1A11F18C9040C00823A0D /* alarm.caf */; };
+		1BC7F35518F38F6900C21CFD /* LINEActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F34018F38F6900C21CFD /* LINEActivity.m */; };
+		1BC7F35618F38F6900C21CFD /* LINEActivityIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34118F38F6900C21CFD /* LINEActivityIcon.png */; };
+		1BC7F35718F38F6900C21CFD /* LINEActivityIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34218F38F6900C21CFD /* LINEActivityIcon@2x.png */; };
+		1BC7F35818F38F6900C21CFD /* LINEActivityIcon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34318F38F6900C21CFD /* LINEActivityIcon@2x~ipad.png */; };
+		1BC7F35918F38F6900C21CFD /* LINEActivityIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34418F38F6900C21CFD /* LINEActivityIcon~ipad.png */; };
+		1BC7F35A18F38F6900C21CFD /* icon_session.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34718F38F6900C21CFD /* icon_session.png */; };
+		1BC7F35B18F38F6900C21CFD /* icon_session@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34818F38F6900C21CFD /* icon_session@2x.png */; };
+		1BC7F35C18F38F6900C21CFD /* icon_timeline.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34918F38F6900C21CFD /* icon_timeline.png */; };
+		1BC7F35F18F38F6900C21CFD /* icon_timeline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34C18F38F6900C21CFD /* icon_timeline@2x.png */; };
+		1BC7F36018F38F6900C21CFD /* WeixinActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F34E18F38F6900C21CFD /* WeixinActivity.m */; };
+		1BC7F36118F38F6900C21CFD /* WeixinActivityBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F35018F38F6900C21CFD /* WeixinActivityBase.m */; };
+		1BC7F36218F38F6900C21CFD /* WeixinSessionActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F35218F38F6900C21CFD /* WeixinSessionActivity.m */; };
+		1BC7F36318F38F6900C21CFD /* WeixinTimelineActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F35418F38F6900C21CFD /* WeixinTimelineActivity.m */; };
+		1BC7F36918F3981E00C21CFD /* JNJGoogleMapsActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F36618F3981E00C21CFD /* JNJGoogleMapsActivity.m */; };
+		1BC7F36A18F3981E00C21CFD /* JNJGoogleMapsActivityMask.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F36718F3981E00C21CFD /* JNJGoogleMapsActivityMask.png */; };
+		1BC7F36B18F3981E00C21CFD /* JNJGoogleMapsActivityMask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F36818F3981E00C21CFD /* JNJGoogleMapsActivityMask@2x.png */; };
+		1BC7F37318F39C4D00C21CFD /* TTAppleMapsActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F36E18F39C4D00C21CFD /* TTAppleMapsActivity.m */; };
+		1BC7F37418F39C4D00C21CFD /* TTAppleMapsActivity.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F36F18F39C4D00C21CFD /* TTAppleMapsActivity.png */; };
+		1BC7F37518F39C4D00C21CFD /* TTAppleMapsActivity@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F37018F39C4D00C21CFD /* TTAppleMapsActivity@2x.png */; };
+		1BC7F37618F39C4D00C21CFD /* TTAppleMapsActivity@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F37118F39C4D00C21CFD /* TTAppleMapsActivity@2x~ipad.png */; };
+		1BC7F37718F39C4D00C21CFD /* TTAppleMapsActivity~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F37218F39C4D00C21CFD /* TTAppleMapsActivity~ipad.png */; };
+		1BC7F37B18F3A25300C21CFD /* uw_building.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F37A18F3A25300C21CFD /* uw_building.plist */; };
+		1BC7F37E18F3A62000C21CFD /* NSString+Contain.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F37D18F3A62000C21CFD /* NSString+Contain.m */; };
 		1BD83A9518A59F1C00EDBB6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9418A59F1C00EDBB6D /* Foundation.framework */; };
 		1BD83A9718A59F1C00EDBB6D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9618A59F1C00EDBB6D /* CoreGraphics.framework */; };
 		1BD83A9918A59F1C00EDBB6D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9818A59F1C00EDBB6D /* UIKit.framework */; };
@@ -230,6 +255,10 @@
 		1B717E7518A8294600E20A29 /* DetailNormalCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailNormalCell.m; path = TableViewCell/DetailNormalCell.m; sourceTree = "<group>"; };
 		1B8C557A18B7BCB60070CD82 /* EKEvent+NSCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EKEvent+NSCoding.h"; path = "Category/EKEvent+NSCoding.h"; sourceTree = "<group>"; };
 		1B8C557B18B7BCB60070CD82 /* EKEvent+NSCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "EKEvent+NSCoding.m"; path = "Category/EKEvent+NSCoding.m"; sourceTree = "<group>"; };
+		1B8EE15C18F238DC00DE8BD8 /* UWShareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWShareView.h; path = OtherViews/UWShareView.h; sourceTree = "<group>"; };
+		1B8EE15D18F238DC00DE8BD8 /* UWShareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWShareView.m; path = OtherViews/UWShareView.m; sourceTree = "<group>"; };
+		1B8EE15F18F23DDD00DE8BD8 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+ImageEffects.h"; path = "Category/UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		1B8EE16018F23DDD00DE8BD8 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ImageEffects.m"; path = "Category/UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		1BA1795418F1A4BD00FA5D05 /* iRate.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iRate.bundle; sourceTree = "<group>"; };
 		1BA1795518F1A4BD00FA5D05 /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
 		1BA1795618F1A4BD00FA5D05 /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
@@ -242,6 +271,37 @@
 		1BAD97ED18A9DEF6006F4546 /* MyInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyInfoViewController.h; path = ViewController/MyInfoViewController.h; sourceTree = "<group>"; };
 		1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyInfoViewController.m; path = ViewController/MyInfoViewController.m; sourceTree = "<group>"; };
 		1BB1A11F18C9040C00823A0D /* alarm.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = alarm.caf; path = Resources/alarm.caf; sourceTree = "<group>"; };
+		1BC7F33F18F38F6900C21CFD /* LINEActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LINEActivity.h; sourceTree = "<group>"; };
+		1BC7F34018F38F6900C21CFD /* LINEActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LINEActivity.m; sourceTree = "<group>"; };
+		1BC7F34118F38F6900C21CFD /* LINEActivityIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LINEActivityIcon.png; sourceTree = "<group>"; };
+		1BC7F34218F38F6900C21CFD /* LINEActivityIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LINEActivityIcon@2x.png"; sourceTree = "<group>"; };
+		1BC7F34318F38F6900C21CFD /* LINEActivityIcon@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LINEActivityIcon@2x~ipad.png"; sourceTree = "<group>"; };
+		1BC7F34418F38F6900C21CFD /* LINEActivityIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LINEActivityIcon~ipad.png"; sourceTree = "<group>"; };
+		1BC7F34718F38F6900C21CFD /* icon_session.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_session.png; sourceTree = "<group>"; };
+		1BC7F34818F38F6900C21CFD /* icon_session@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_session@2x.png"; sourceTree = "<group>"; };
+		1BC7F34918F38F6900C21CFD /* icon_timeline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_timeline.png; sourceTree = "<group>"; };
+		1BC7F34C18F38F6900C21CFD /* icon_timeline@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_timeline@2x.png"; sourceTree = "<group>"; };
+		1BC7F34D18F38F6900C21CFD /* WeixinActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeixinActivity.h; sourceTree = "<group>"; };
+		1BC7F34E18F38F6900C21CFD /* WeixinActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeixinActivity.m; sourceTree = "<group>"; };
+		1BC7F34F18F38F6900C21CFD /* WeixinActivityBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeixinActivityBase.h; sourceTree = "<group>"; };
+		1BC7F35018F38F6900C21CFD /* WeixinActivityBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeixinActivityBase.m; sourceTree = "<group>"; };
+		1BC7F35118F38F6900C21CFD /* WeixinSessionActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeixinSessionActivity.h; sourceTree = "<group>"; };
+		1BC7F35218F38F6900C21CFD /* WeixinSessionActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeixinSessionActivity.m; sourceTree = "<group>"; };
+		1BC7F35318F38F6900C21CFD /* WeixinTimelineActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeixinTimelineActivity.h; sourceTree = "<group>"; };
+		1BC7F35418F38F6900C21CFD /* WeixinTimelineActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeixinTimelineActivity.m; sourceTree = "<group>"; };
+		1BC7F36518F3981E00C21CFD /* JNJGoogleMapsActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNJGoogleMapsActivity.h; sourceTree = "<group>"; };
+		1BC7F36618F3981E00C21CFD /* JNJGoogleMapsActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNJGoogleMapsActivity.m; sourceTree = "<group>"; };
+		1BC7F36718F3981E00C21CFD /* JNJGoogleMapsActivityMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = JNJGoogleMapsActivityMask.png; sourceTree = "<group>"; };
+		1BC7F36818F3981E00C21CFD /* JNJGoogleMapsActivityMask@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "JNJGoogleMapsActivityMask@2x.png"; sourceTree = "<group>"; };
+		1BC7F36D18F39C4D00C21CFD /* TTAppleMapsActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAppleMapsActivity.h; sourceTree = "<group>"; };
+		1BC7F36E18F39C4D00C21CFD /* TTAppleMapsActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAppleMapsActivity.m; sourceTree = "<group>"; };
+		1BC7F36F18F39C4D00C21CFD /* TTAppleMapsActivity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TTAppleMapsActivity.png; sourceTree = "<group>"; };
+		1BC7F37018F39C4D00C21CFD /* TTAppleMapsActivity@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TTAppleMapsActivity@2x.png"; sourceTree = "<group>"; };
+		1BC7F37118F39C4D00C21CFD /* TTAppleMapsActivity@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TTAppleMapsActivity@2x~ipad.png"; sourceTree = "<group>"; };
+		1BC7F37218F39C4D00C21CFD /* TTAppleMapsActivity~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TTAppleMapsActivity~ipad.png"; sourceTree = "<group>"; };
+		1BC7F37A18F3A25300C21CFD /* uw_building.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = uw_building.plist; sourceTree = "<group>"; };
+		1BC7F37C18F3A62000C21CFD /* NSString+Contain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Contain.h"; sourceTree = "<group>"; };
+		1BC7F37D18F3A62000C21CFD /* NSString+Contain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Contain.m"; sourceTree = "<group>"; };
 		1BD83A9118A59F1C00EDBB6D /* UW Info.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UW Info.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BD83A9418A59F1C00EDBB6D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1BD83A9618A59F1C00EDBB6D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -532,6 +592,7 @@
 		1B3A338418D4D6A50046DC73 /* OpenSource */ = {
 			isa = PBXGroup;
 			children = (
+				1BC7F33D18F38EFB00C21CFD /* UIActivity */,
 				1BA1795918F1AE5400FA5D05 /* HSLUpdateChecker */,
 				1BA1795318F1A4BD00FA5D05 /* iRate */,
 				1B3A33C518D4D8230046DC73 /* PSPDFTextView.h */,
@@ -587,6 +648,8 @@
 			children = (
 				1B19834718A618A60022A285 /* DetailViewController.h */,
 				1B19834818A618A60022A285 /* DetailViewController.m */,
+				1B8EE15C18F238DC00DE8BD8 /* UWShareView.h */,
+				1B8EE15D18F238DC00DE8BD8 /* UWShareView.m */,
 				1B4DD55718AC90B8009B0214 /* MapViewController */,
 				1B2076EC18AAA67000FE7088 /* AlertViewController */,
 				1B050C7B18BFB4E700DCC342 /* Cells */,
@@ -597,12 +660,16 @@
 		1B8C557918B72B490070CD82 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				1BC7F37C18F3A62000C21CFD /* NSString+Contain.h */,
+				1BC7F37D18F3A62000C21CFD /* NSString+Contain.m */,
 				1B8C557A18B7BCB60070CD82 /* EKEvent+NSCoding.h */,
 				1B8C557B18B7BCB60070CD82 /* EKEvent+NSCoding.m */,
 				1B505EC218D0C35B00F168F8 /* UIApplication+AppVersion.h */,
 				1B505EC318D0C35B00F168F8 /* UIApplication+AppVersion.m */,
 				1B3A340318D4E2570046DC73 /* UIDevice-Hardware.h */,
 				1B3A340418D4E2570046DC73 /* UIDevice-Hardware.m */,
+				1B8EE15F18F23DDD00DE8BD8 /* UIImage+ImageEffects.h */,
+				1B8EE16018F23DDD00DE8BD8 /* UIImage+ImageEffects.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -626,6 +693,85 @@
 			);
 			name = HSLUpdateChecker;
 			path = OpenSource/HSLUpdateChecker;
+			sourceTree = "<group>";
+		};
+		1BC7F33D18F38EFB00C21CFD /* UIActivity */ = {
+			isa = PBXGroup;
+			children = (
+				1BC7F36C18F39C4D00C21CFD /* TTAppleMapsActivity */,
+				1BC7F36418F3981E00C21CFD /* JNJGoogleMapsActivity */,
+				1BC7F33E18F38F6900C21CFD /* LINEActivity */,
+				1BC7F34518F38F6900C21CFD /* WechatActivity */,
+			);
+			name = UIActivity;
+			sourceTree = "<group>";
+		};
+		1BC7F33E18F38F6900C21CFD /* LINEActivity */ = {
+			isa = PBXGroup;
+			children = (
+				1BC7F33F18F38F6900C21CFD /* LINEActivity.h */,
+				1BC7F34018F38F6900C21CFD /* LINEActivity.m */,
+				1BC7F34118F38F6900C21CFD /* LINEActivityIcon.png */,
+				1BC7F34218F38F6900C21CFD /* LINEActivityIcon@2x.png */,
+				1BC7F34318F38F6900C21CFD /* LINEActivityIcon@2x~ipad.png */,
+				1BC7F34418F38F6900C21CFD /* LINEActivityIcon~ipad.png */,
+			);
+			name = LINEActivity;
+			path = OpenSource/UIActivity/LINEActivity;
+			sourceTree = "<group>";
+		};
+		1BC7F34518F38F6900C21CFD /* WechatActivity */ = {
+			isa = PBXGroup;
+			children = (
+				1BC7F34618F38F6900C21CFD /* Resources */,
+				1BC7F34D18F38F6900C21CFD /* WeixinActivity.h */,
+				1BC7F34E18F38F6900C21CFD /* WeixinActivity.m */,
+				1BC7F34F18F38F6900C21CFD /* WeixinActivityBase.h */,
+				1BC7F35018F38F6900C21CFD /* WeixinActivityBase.m */,
+				1BC7F35118F38F6900C21CFD /* WeixinSessionActivity.h */,
+				1BC7F35218F38F6900C21CFD /* WeixinSessionActivity.m */,
+				1BC7F35318F38F6900C21CFD /* WeixinTimelineActivity.h */,
+				1BC7F35418F38F6900C21CFD /* WeixinTimelineActivity.m */,
+			);
+			name = WechatActivity;
+			path = OpenSource/UIActivity/WechatActivity;
+			sourceTree = "<group>";
+		};
+		1BC7F34618F38F6900C21CFD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1BC7F34718F38F6900C21CFD /* icon_session.png */,
+				1BC7F34818F38F6900C21CFD /* icon_session@2x.png */,
+				1BC7F34918F38F6900C21CFD /* icon_timeline.png */,
+				1BC7F34C18F38F6900C21CFD /* icon_timeline@2x.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		1BC7F36418F3981E00C21CFD /* JNJGoogleMapsActivity */ = {
+			isa = PBXGroup;
+			children = (
+				1BC7F36518F3981E00C21CFD /* JNJGoogleMapsActivity.h */,
+				1BC7F36618F3981E00C21CFD /* JNJGoogleMapsActivity.m */,
+				1BC7F36718F3981E00C21CFD /* JNJGoogleMapsActivityMask.png */,
+				1BC7F36818F3981E00C21CFD /* JNJGoogleMapsActivityMask@2x.png */,
+			);
+			name = JNJGoogleMapsActivity;
+			path = OpenSource/UIActivity/JNJGoogleMapsActivity;
+			sourceTree = "<group>";
+		};
+		1BC7F36C18F39C4D00C21CFD /* TTAppleMapsActivity */ = {
+			isa = PBXGroup;
+			children = (
+				1BC7F36D18F39C4D00C21CFD /* TTAppleMapsActivity.h */,
+				1BC7F36E18F39C4D00C21CFD /* TTAppleMapsActivity.m */,
+				1BC7F36F18F39C4D00C21CFD /* TTAppleMapsActivity.png */,
+				1BC7F37018F39C4D00C21CFD /* TTAppleMapsActivity@2x.png */,
+				1BC7F37118F39C4D00C21CFD /* TTAppleMapsActivity@2x~ipad.png */,
+				1BC7F37218F39C4D00C21CFD /* TTAppleMapsActivity~ipad.png */,
+			);
+			name = TTAppleMapsActivity;
+			path = OpenSource/UIActivity/TTAppleMapsActivity;
 			sourceTree = "<group>";
 		};
 		1BD83A8818A59F1C00EDBB6D = {
@@ -708,6 +854,7 @@
 				1BD83A9D18A59F1C00EDBB6D /* InfoPlist.strings */,
 				1BD83AA018A59F1C00EDBB6D /* main.m */,
 				1BD83AA218A59F1C00EDBB6D /* UW Info-Prefix.pch */,
+				1BC7F37A18F3A25300C21CFD /* uw_building.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -852,13 +999,28 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BD83AB018A59F1C00EDBB6D /* Images.xcassets in Resources */,
+				1BC7F35618F38F6900C21CFD /* LINEActivityIcon.png in Resources */,
 				1BA1795718F1A4BD00FA5D05 /* iRate.bundle in Resources */,
+				1BC7F35818F38F6900C21CFD /* LINEActivityIcon@2x~ipad.png in Resources */,
+				1BC7F37B18F3A25300C21CFD /* uw_building.plist in Resources */,
 				1B3A33BB18D4D7A10046DC73 /* AppIcon-Rounded.png in Resources */,
+				1BC7F35C18F38F6900C21CFD /* icon_timeline.png in Resources */,
+				1BC7F36B18F3981E00C21CFD /* JNJGoogleMapsActivityMask@2x.png in Resources */,
 				1B3A33BF18D4D7B70046DC73 /* ProgressHUD.bundle in Resources */,
 				1BD83A9F18A59F1C00EDBB6D /* InfoPlist.strings in Resources */,
+				1BC7F35F18F38F6900C21CFD /* icon_timeline@2x.png in Resources */,
+				1BC7F35718F38F6900C21CFD /* LINEActivityIcon@2x.png in Resources */,
+				1BC7F37618F39C4D00C21CFD /* TTAppleMapsActivity@2x~ipad.png in Resources */,
 				1BD967CB18C8D7850097FCD6 /* map_colour300.png in Resources */,
+				1BC7F37718F39C4D00C21CFD /* TTAppleMapsActivity~ipad.png in Resources */,
+				1BC7F35A18F38F6900C21CFD /* icon_session.png in Resources */,
 				1BB1A12018C908BB00823A0D /* alarm.caf in Resources */,
+				1BC7F35918F38F6900C21CFD /* LINEActivityIcon~ipad.png in Resources */,
+				1BC7F36A18F3981E00C21CFD /* JNJGoogleMapsActivityMask.png in Resources */,
+				1BC7F37418F39C4D00C21CFD /* TTAppleMapsActivity.png in Resources */,
+				1BC7F35B18F38F6900C21CFD /* icon_session@2x.png in Resources */,
 				1BD83AA818A59F1C00EDBB6D /* Main.storyboard in Resources */,
+				1BC7F37518F39C4D00C21CFD /* TTAppleMapsActivity@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -879,11 +1041,13 @@
 			files = (
 				1BD83AA518A59F1C00EDBB6D /* UWAppDelegate.m in Sources */,
 				1B527C4218D0241D00A91339 /* MoreViewController.m in Sources */,
+				1BC7F37E18F3A62000C21CFD /* NSString+Contain.m in Sources */,
 				1B3A33F418D4D8B30046DC73 /* REMenuItemView.m in Sources */,
 				1B3A33F018D4D8B30046DC73 /* RECommonFunctions.m in Sources */,
 				1BAD97E618A98F65006F4546 /* InfoSessionModel.m in Sources */,
 				1B3A339E18D4D7600046DC73 /* AFURLRequestSerialization.m in Sources */,
 				1B3A33B218D4D7690046DC73 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				1BC7F36018F38F6900C21CFD /* WeixinActivity.m in Sources */,
 				1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */,
 				1B3A33B318D4D7690046DC73 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				1BDD368118ECFAF10098EAAF /* UWGoogleAnalytics.m in Sources */,
@@ -891,6 +1055,7 @@
 				1B3A33B718D4D7690046DC73 /* UIProgressView+AFNetworking.m in Sources */,
 				1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */,
 				1BE6D46A18D4F68500BE31B0 /* FeedbackViewController.m in Sources */,
+				1BC7F36218F38F6900C21CFD /* WeixinSessionActivity.m in Sources */,
 				1B505EC418D0C35B00F168F8 /* UIApplication+AppVersion.m in Sources */,
 				1BF0542318A93ECC005C04B2 /* DetailSwitchCell.m in Sources */,
 				1B37453718A5BA28007CF08C /* InfoSession.m in Sources */,
@@ -900,6 +1065,7 @@
 				1BE858A318CE4323009A9E57 /* UWInfoSessionClient.m in Sources */,
 				1B717E6E18A80A7A00E20A29 /* LoadingCell.m in Sources */,
 				1B3A33B818D4D7690046DC73 /* UIRefreshControl+AFNetworking.m in Sources */,
+				1B8EE15E18F238DC00DE8BD8 /* UWShareView.m in Sources */,
 				1BA1795818F1A4BD00FA5D05 /* iRate.m in Sources */,
 				1B19834918A618A60022A285 /* DetailViewController.m in Sources */,
 				1B3A33B418D4D7690046DC73 /* UIAlertView+AFNetworking.m in Sources */,
@@ -912,12 +1078,15 @@
 				1B3A339B18D4D7600046DC73 /* AFNetworkReachabilityManager.m in Sources */,
 				1B527C4518D026D100A91339 /* MoreNavigationViewController.m in Sources */,
 				1B3A33F318D4D8B30046DC73 /* REMenuItem.m in Sources */,
+				1BC7F37318F39C4D00C21CFD /* TTAppleMapsActivity.m in Sources */,
 				1B3A33F118D4D8B30046DC73 /* REMenu.m in Sources */,
 				1B8C557C18B7BCB60070CD82 /* EKEvent+NSCoding.m in Sources */,
 				1B3A339918D4D7600046DC73 /* AFHTTPRequestOperationManager.m in Sources */,
 				1B3A340018D4D9B40046DC73 /* UWTodayButton.m in Sources */,
 				1B3A33C718D4D8230046DC73 /* PSPDFTextView.m in Sources */,
+				1BC7F36318F38F6900C21CFD /* WeixinTimelineActivity.m in Sources */,
 				1B3A339818D4D7600046DC73 /* AFHTTPRequestOperation.m in Sources */,
+				1BC7F35518F38F6900C21CFD /* LINEActivity.m in Sources */,
 				1B3A33F718D4D9250046DC73 /* AlertViewController.m in Sources */,
 				1B3A33C018D4D7B70046DC73 /* ProgressHUD.m in Sources */,
 				1B59BB2018C441AA00D6112B /* SearchViewController.m in Sources */,
@@ -927,10 +1096,13 @@
 				1B717E6D18A80A7A00E20A29 /* InfoSessionCell.m in Sources */,
 				1BA1795C18F1AE5400FA5D05 /* HSLUpdateChecker.m in Sources */,
 				1B3A33B918D4D7690046DC73 /* UIWebView+AFNetworking.m in Sources */,
+				1BC7F36118F38F6900C21CFD /* WeixinActivityBase.m in Sources */,
 				1B3A33FF18D4D9B40046DC73 /* UWTermMenu.m in Sources */,
+				1BC7F36918F3981E00C21CFD /* JNJGoogleMapsActivity.m in Sources */,
 				1B3A340C18D4E2570046DC73 /* UIDevice-Hardware.m in Sources */,
 				1B4DD55618AC90B4009B0214 /* MapViewController.m in Sources */,
 				1B3A33B618D4D7690046DC73 /* UIImageView+AFNetworking.m in Sources */,
+				1B8EE16118F23DDD00DE8BD8 /* UIImage+ImageEffects.m in Sources */,
 				1BD83AA118A59F1C00EDBB6D /* main.m in Sources */,
 				1B3A339A18D4D7600046DC73 /* AFHTTPSessionManager.m in Sources */,
 				1B3A339F18D4D7600046DC73 /* AFURLResponseSerialization.m in Sources */,
