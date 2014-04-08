@@ -30,7 +30,6 @@
 + (void)checkForUpdate
 {
     [self checkForUpdateWithHandler:^(NSString *appStoreVersion, NSString *localVersion, NSString *releaseNotes, NSString *updateURL) {
-
         // Remember the URL for the alert delegate
         [HSLUpdateChecker sharedUpdateChecker].updateUrl = updateURL;
 

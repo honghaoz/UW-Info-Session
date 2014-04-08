@@ -150,10 +150,11 @@
     
     // Initialize tracker. Replace with your tracking ID.
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-45146473-2"];
-    return YES;
     
     // check update
     [HSLUpdateChecker checkForUpdate];
+    
+    return YES;
 }
 
 + (void)initialize {
