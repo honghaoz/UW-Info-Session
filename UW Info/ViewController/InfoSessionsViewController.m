@@ -33,6 +33,7 @@
 //#import "GADAdMobExtras.h"
 
 #import "UWAds.h"
+#import "SVProgressHUD.h"
 
 @interface InfoSessionsViewController () <GADBannerViewDelegate>
 
@@ -146,7 +147,7 @@
 ////    [request registerAdNetworkExtras:extras];
 //    [_googleBannerView loadRequest:request];
     // fast the ad load
-    //[[UWAds singleton] resetAdView:nil OriginY:-30];
+    [[UWAds singleton] resetAdView:nil OriginY:0];
 }
 
 - (void)didReceiveMemoryWarning

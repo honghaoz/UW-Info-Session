@@ -31,8 +31,6 @@
 		1B3A33B818D4D7690046DC73 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A33AF18D4D7690046DC73 /* UIRefreshControl+AFNetworking.m */; };
 		1B3A33B918D4D7690046DC73 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A33B118D4D7690046DC73 /* UIWebView+AFNetworking.m */; };
 		1B3A33BB18D4D7A10046DC73 /* AppIcon-Rounded.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B3A33BA18D4D7A10046DC73 /* AppIcon-Rounded.png */; };
-		1B3A33BF18D4D7B70046DC73 /* ProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1B3A33BC18D4D7B70046DC73 /* ProgressHUD.bundle */; };
-		1B3A33C018D4D7B70046DC73 /* ProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A33BE18D4D7B70046DC73 /* ProgressHUD.m */; };
 		1B3A33C218D4D7D90046DC73 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3A33C118D4D7D90046DC73 /* FacebookSDK.framework */; };
 		1B3A33C418D4D7E40046DC73 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3A33C318D4D7E40046DC73 /* Parse.framework */; };
 		1B3A33C718D4D8230046DC73 /* PSPDFTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A33C618D4D8230046DC73 /* PSPDFTextView.m */; };
@@ -103,6 +101,8 @@
 		1BC7F37718F39C4D00C21CFD /* TTAppleMapsActivity~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F37218F39C4D00C21CFD /* TTAppleMapsActivity~ipad.png */; };
 		1BC7F37B18F3A25300C21CFD /* uw_building.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F37A18F3A25300C21CFD /* uw_building.plist */; };
 		1BC7F37E18F3A62000C21CFD /* NSString+Contain.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F37D18F3A62000C21CFD /* NSString+Contain.m */; };
+		1BD12BAE18F484B3003BAA8C /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1BD12BAB18F484B3003BAA8C /* SVProgressHUD.bundle */; };
+		1BD12BAF18F484B3003BAA8C /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BD12BAD18F484B3003BAA8C /* SVProgressHUD.m */; };
 		1BD83A9518A59F1C00EDBB6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9418A59F1C00EDBB6D /* Foundation.framework */; };
 		1BD83A9718A59F1C00EDBB6D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9618A59F1C00EDBB6D /* CoreGraphics.framework */; };
 		1BD83A9918A59F1C00EDBB6D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9818A59F1C00EDBB6D /* UIKit.framework */; };
@@ -189,9 +189,6 @@
 		1B3A33B018D4D7690046DC73 /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIWebView+AFNetworking.h"; path = "ThridPartySDK/UIKit+AFNetworking/UIWebView+AFNetworking.h"; sourceTree = SOURCE_ROOT; };
 		1B3A33B118D4D7690046DC73 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIWebView+AFNetworking.m"; path = "ThridPartySDK/UIKit+AFNetworking/UIWebView+AFNetworking.m"; sourceTree = SOURCE_ROOT; };
 		1B3A33BA18D4D7A10046DC73 /* AppIcon-Rounded.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIcon-Rounded.png"; path = "Resources/AppIcon-Rounded.png"; sourceTree = "<group>"; };
-		1B3A33BC18D4D7B70046DC73 /* ProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ProgressHUD.bundle; path = OpenSource/ProgressHUD/ProgressHUD.bundle; sourceTree = SOURCE_ROOT; };
-		1B3A33BD18D4D7B70046DC73 /* ProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgressHUD.h; path = OpenSource/ProgressHUD/ProgressHUD.h; sourceTree = SOURCE_ROOT; };
-		1B3A33BE18D4D7B70046DC73 /* ProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProgressHUD.m; path = OpenSource/ProgressHUD/ProgressHUD.m; sourceTree = SOURCE_ROOT; };
 		1B3A33C118D4D7D90046DC73 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ThridPartySDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		1B3A33C318D4D7E40046DC73 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = ThridPartySDK/Parse.framework; sourceTree = "<group>"; };
 		1B3A33C518D4D8230046DC73 /* PSPDFTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PSPDFTextView.h; path = OpenSource/PSPDFTextView.h; sourceTree = "<group>"; };
@@ -302,6 +299,10 @@
 		1BC7F37A18F3A25300C21CFD /* uw_building.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = uw_building.plist; sourceTree = "<group>"; };
 		1BC7F37C18F3A62000C21CFD /* NSString+Contain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Contain.h"; sourceTree = "<group>"; };
 		1BC7F37D18F3A62000C21CFD /* NSString+Contain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Contain.m"; sourceTree = "<group>"; };
+		1BD12BAA18F484B3003BAA8C /* SVProgressHUD-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
+		1BD12BAB18F484B3003BAA8C /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
+		1BD12BAC18F484B3003BAA8C /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
+		1BD12BAD18F484B3003BAA8C /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		1BD83A9118A59F1C00EDBB6D /* UW Info.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UW Info.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BD83A9418A59F1C00EDBB6D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1BD83A9618A59F1C00EDBB6D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -443,16 +444,6 @@
 			);
 			name = REMenu;
 			path = "UW Info";
-			sourceTree = "<group>";
-		};
-		1B2040B518B3F75300C72D51 /* ProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				1B3A33BC18D4D7B70046DC73 /* ProgressHUD.bundle */,
-				1B3A33BD18D4D7B70046DC73 /* ProgressHUD.h */,
-				1B3A33BE18D4D7B70046DC73 /* ProgressHUD.m */,
-			);
-			path = ProgressHUD;
 			sourceTree = "<group>";
 		};
 		1B2076E718AAA56E00FE7088 /* MyInfoViewController */ = {
@@ -598,7 +589,7 @@
 				1B3A33C518D4D8230046DC73 /* PSPDFTextView.h */,
 				1B3A33C618D4D8230046DC73 /* PSPDFTextView.m */,
 				1B050C7C18BFBD0A00DCC342 /* REMenu */,
-				1B2040B518B3F75300C72D51 /* ProgressHUD */,
+				1BD12BA918F484B3003BAA8C /* SVProgressHUD */,
 			);
 			name = OpenSource;
 			sourceTree = "<group>";
@@ -772,6 +763,18 @@
 			);
 			name = TTAppleMapsActivity;
 			path = OpenSource/UIActivity/TTAppleMapsActivity;
+			sourceTree = "<group>";
+		};
+		1BD12BA918F484B3003BAA8C /* SVProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				1BD12BAA18F484B3003BAA8C /* SVProgressHUD-Prefix.pch */,
+				1BD12BAB18F484B3003BAA8C /* SVProgressHUD.bundle */,
+				1BD12BAC18F484B3003BAA8C /* SVProgressHUD.h */,
+				1BD12BAD18F484B3003BAA8C /* SVProgressHUD.m */,
+			);
+			name = SVProgressHUD;
+			path = "../../../Downloads/SVProgressHUD-master/SVProgressHUD";
 			sourceTree = "<group>";
 		};
 		1BD83A8818A59F1C00EDBB6D = {
@@ -1006,7 +1009,6 @@
 				1B3A33BB18D4D7A10046DC73 /* AppIcon-Rounded.png in Resources */,
 				1BC7F35C18F38F6900C21CFD /* icon_timeline.png in Resources */,
 				1BC7F36B18F3981E00C21CFD /* JNJGoogleMapsActivityMask@2x.png in Resources */,
-				1B3A33BF18D4D7B70046DC73 /* ProgressHUD.bundle in Resources */,
 				1BD83A9F18A59F1C00EDBB6D /* InfoPlist.strings in Resources */,
 				1BC7F35F18F38F6900C21CFD /* icon_timeline@2x.png in Resources */,
 				1BC7F35718F38F6900C21CFD /* LINEActivityIcon@2x.png in Resources */,
@@ -1017,6 +1019,7 @@
 				1BB1A12018C908BB00823A0D /* alarm.caf in Resources */,
 				1BC7F35918F38F6900C21CFD /* LINEActivityIcon~ipad.png in Resources */,
 				1BC7F36A18F3981E00C21CFD /* JNJGoogleMapsActivityMask.png in Resources */,
+				1BD12BAE18F484B3003BAA8C /* SVProgressHUD.bundle in Resources */,
 				1BC7F37418F39C4D00C21CFD /* TTAppleMapsActivity.png in Resources */,
 				1BC7F35B18F38F6900C21CFD /* icon_session@2x.png in Resources */,
 				1BD83AA818A59F1C00EDBB6D /* Main.storyboard in Resources */,
@@ -1044,6 +1047,7 @@
 				1BC7F37E18F3A62000C21CFD /* NSString+Contain.m in Sources */,
 				1B3A33F418D4D8B30046DC73 /* REMenuItemView.m in Sources */,
 				1B3A33F018D4D8B30046DC73 /* RECommonFunctions.m in Sources */,
+				1BD12BAF18F484B3003BAA8C /* SVProgressHUD.m in Sources */,
 				1BAD97E618A98F65006F4546 /* InfoSessionModel.m in Sources */,
 				1B3A339E18D4D7600046DC73 /* AFURLRequestSerialization.m in Sources */,
 				1B3A33B218D4D7690046DC73 /* AFNetworkActivityIndicatorManager.m in Sources */,
@@ -1088,7 +1092,6 @@
 				1B3A339818D4D7600046DC73 /* AFHTTPRequestOperation.m in Sources */,
 				1BC7F35518F38F6900C21CFD /* LINEActivity.m in Sources */,
 				1B3A33F718D4D9250046DC73 /* AlertViewController.m in Sources */,
-				1B3A33C018D4D7B70046DC73 /* ProgressHUD.m in Sources */,
 				1B59BB2018C441AA00D6112B /* SearchViewController.m in Sources */,
 				1B717E5F18A7F7DC00E20A29 /* DetailLinkCell.m in Sources */,
 				1B717E6518A809F900E20A29 /* DetailRSVPCell.m in Sources */,

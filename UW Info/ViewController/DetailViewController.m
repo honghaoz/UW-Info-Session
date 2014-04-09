@@ -30,7 +30,7 @@
 #import "UWTabBarController.h"
 #import "MapViewController.h"
 
-#import "ProgressHUD.h"
+#import "SVProgressHUD.h"
 
 #import "SearchViewController.h"
 #import "PSPDFTextView.h"
@@ -1020,8 +1020,9 @@
     // select alert section
     else if (indexPath.section == 1) {
         if (_infoSession.isCancelled || !([_infoSession.startTime compare:[NSDate date]] == NSOrderedDescending)) {
-            [ProgressHUD showError:@"Reminder not available!" Interacton:YES];
-             //showSuccess:@"Modified successfully!" Interacton:YES];
+//            [ProgressHUD showError:@"Reminder not available!" Interacton:YES];
+            [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
+            [SVProgressHUD showErrorWithStatus:@"Reminder not available!"];
         } else {
             // select alert setting rows
             if (1 <= indexPath.row && indexPath.row <= [_infoSession.alerts count]) {
@@ -1468,7 +1469,9 @@
     else if (_openedMyInfo == YES) {
         // if opend saved one, then detect whether some changes made.
         if ([_infoSessionBackup isChangedCompareTo:_infoSession]) {
-            [ProgressHUD showSuccess:@"Modified successfully!" Interacton:YES];
+            [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
+            [SVProgressHUD showSuccessWithStatus:@"Modified successfully!"];
+//            [ProgressHUD showSuccess:@"Modified successfully!" Interacton:YES];
             [_infoSession scheduleNotifications];
             [self backupInfoSession];
             // save to file

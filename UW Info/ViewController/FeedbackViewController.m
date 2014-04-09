@@ -9,7 +9,7 @@
 #import "FeedbackViewController.h"
 #import "PSPDFTextView.h"
 #import <Parse/Parse.h>
-#import "ProgressHUD.h"
+#import "SVProgressHUD.h"
 #import "UIApplication+AppVersion.h"
 
 @implementation FeedbackViewController1
@@ -80,8 +80,10 @@
 
 - (void)done {
     [self sendFeedback];
-    [ProgressHUD setAnimationDuration:3];
-    [ProgressHUD showSuccess:@"Thanks for your precious feedback!" Interacton:YES];
+    //[ProgressHUD setAnimationDuration:3];
+    //[ProgressHUD showSuccess:@"Thanks for your precious feedback!" Interacton:YES];
+    [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
+    [SVProgressHUD showSuccessWithStatus:@"Thanks for your precious feedback!"];
     [self dismissViewControllerAnimated:YES completion:^(){}];
 }
 
