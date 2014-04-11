@@ -150,6 +150,11 @@
     [[UWAds singleton] resetAdView:nil OriginY:0];
 }
 
+//- (void)viewDidAppear:(BOOL)animated {
+//    [super viewDidAppear:animated];
+//    
+//}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

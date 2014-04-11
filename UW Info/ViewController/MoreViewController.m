@@ -201,26 +201,26 @@
             if (cell == nil) {
                 cell = [[CenterTextCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:resueIdentifier];
             }
-            cell.centerTextLabel.text = @"     Share on ";
+            cell.centerTextLabel.text = @"    Share on ";
             [cell.centerTextLabel setFrame:CGRectMake(10, 15, 280, 24)];
             [cell.centerTextLabel setTextAlignment:NSTextAlignmentLeft];
             
-            CGFloat leftX = 120;
-            CGFloat buttonSize = 35;
+            CGFloat leftX = 115;
+            CGFloat buttonSize = 39;
             
-            UIButton *facebookButton = [[UIButton alloc] initWithFrame:CGRectMake(leftX, 10, buttonSize, buttonSize)];
-            [facebookButton setBackgroundImage:[UIImage imageNamed:@"facebook"] forState:UIControlStateNormal];
+            UIButton *facebookButton = [[UIButton alloc] initWithFrame:CGRectMake(leftX, 8, buttonSize, buttonSize)];
+            [facebookButton setBackgroundImage:[UIImage imageNamed:@"uiactivity_facebook"] forState:UIControlStateNormal];
             [facebookButton addTarget:self action:@selector(shareOnFacebook) forControlEvents:UIControlEventTouchUpInside];
-            UIButton *twitterButton = [[UIButton alloc] initWithFrame:CGRectMake(leftX + 45, 10, buttonSize, buttonSize)];
-            [twitterButton setBackgroundImage:[UIImage imageNamed:@"twitter"] forState:UIControlStateNormal];
+            UIButton *twitterButton = [[UIButton alloc] initWithFrame:CGRectMake(leftX + 45, 8, buttonSize, buttonSize)];
+            [twitterButton setBackgroundImage:[UIImage imageNamed:@"uiactivity_twitter"] forState:UIControlStateNormal];
             [twitterButton addTarget:self action:@selector(shareOnTwitter) forControlEvents:UIControlEventTouchUpInside];
             
-            UIButton *wechatButton = [[UIButton alloc] initWithFrame:CGRectMake(leftX + 90, 10, buttonSize, buttonSize)];
-            [wechatButton setBackgroundImage:[UIImage imageNamed:@"wechat"] forState:UIControlStateNormal];
+            UIButton *wechatButton = [[UIButton alloc] initWithFrame:CGRectMake(leftX + 90, 8, buttonSize, buttonSize)];
+            [wechatButton setBackgroundImage:[UIImage imageNamed:@"uiactivity_wechat"] forState:UIControlStateNormal];
             [wechatButton addTarget:self action:@selector(shareOnWechat) forControlEvents:UIControlEventTouchUpInside];
             
-            UIButton *weiboButton = [[UIButton alloc] initWithFrame:CGRectMake(leftX + 135, 10, buttonSize, buttonSize)];
-            [weiboButton setBackgroundImage:[UIImage imageNamed:@"weibo"] forState:UIControlStateNormal];
+            UIButton *weiboButton = [[UIButton alloc] initWithFrame:CGRectMake(leftX + 135, 8, buttonSize, buttonSize)];
+            [weiboButton setBackgroundImage:[UIImage imageNamed:@"uiactivity_weibo"] forState:UIControlStateNormal];
             [weiboButton addTarget:self action:@selector(shareOnWeibo) forControlEvents:UIControlEventTouchUpInside];
             
             [cell.contentView addSubview:facebookButton];
@@ -484,7 +484,7 @@
 }
 
 - (void)shareOnWeibo {
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeSinaWeibo])
     {
         SLComposeViewController *composeController = [SLComposeViewController
                                                       composeViewControllerForServiceType:SLServiceTypeSinaWeibo];

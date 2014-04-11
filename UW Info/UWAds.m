@@ -80,6 +80,7 @@
     
     // Always keep track of currentDelegate for notification forwarding
     _currentDelegate = rootViewController;
+    NSLog(@"%@", rootViewController);
     
     // iAd
     if (_iAdBannerView.bannerLoaded) {
@@ -91,13 +92,13 @@
         [_iAdBannerView removeFromSuperview];
         // Google Ad
         // Ad already requested, simply add it into the view
-        if (_googleAdisLoaded) {
+        //if (_googleAdisLoaded) {
+            NSLog(@"UWAds add google banner");
             [rootViewController.view addSubview:_googleBannerView];
-        }
-        else {
+        //}
+        //else {
             _googleBannerView.rootViewController = rootViewController;
-            
-            NSLog(@"google ad request");
+            NSLog(@"UWAds google ad request");
             GADRequest *request = [GADRequest request];
             //request.testDevices = [NSArray arrayWithObjects: GAD_SIMULATOR_ID, @"b8ab61a5a3e7e3e252774bab62655fd3", nil];
             [request setLocationWithDescription:@"N2L3G1 CA"];
@@ -116,8 +117,8 @@
             [_googleBannerView loadRequest:request];
             
             [rootViewController.view addSubview:_googleBannerView];
-            _googleAdisLoaded = YES;
-        }
+            //_googleAdisLoaded = YES;
+        //}
     }
 }
 
@@ -157,6 +158,7 @@
 - (void)adView:(GADBannerView *)banner
 didFailToReceiveAdWithError:(GADRequestError *)error {
     NSLog(@"UWAds google ad load failed");
+    //_googleAdisLoaded = NO;
     [_googleBannerView removeFromSuperview];
     if ([_currentDelegate respondsToSelector:@selector(adView:didFailToReceiveAdWithError:)]){
         [_currentDelegate adView:banner didFailToReceiveAdWithError:error];

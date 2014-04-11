@@ -13,6 +13,7 @@
 #import "DetailViewController.h"
 #import "UWTabBarController.h"
 #import "InfoSessionsViewController.h"
+#import "SearchViewController.h"
 #import "MoreViewController.h"
 #import "MoreNavigationViewController.h"
 #import "UWGoogleAnalytics.h"
@@ -332,7 +333,7 @@
         if ([_infoSessionModel deleteInfoSessionInMyInfo:infoSessionToBeDeleted] == UWDeleted) {
             [_tabBarController setBadge];
             
-            UINavigationController *infoSessionVCNavigationController = _tabBarController.infoSessionsViewController.navigationController;
+            UINavigationController *infoSessionVCNavigationController = self.tabBarController.infoSessionsViewController.navigationController;
             // if count > 1, means detailView is shown
             if ([infoSessionVCNavigationController.viewControllers count] > 1) {
                 UITableViewController *controller = infoSessionVCNavigationController.viewControllers[1];
@@ -341,10 +342,52 @@
                     DetailViewController *detailController = (DetailViewController *)controller;
                     // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
                     if ([infoSessionToBeDeleted isEqual:detailController.infoSession]) {
-                        detailController.infoSessionBackup = nil;
+                        NSLog(@"tab1->tab0");
+                        //if ([senderClass isEqualToString:@"UIBarButtonItem"]) {
+                        detailController.infoSession = detailController.originalInfoSession;
+                        detailController.openedMyInfo = NO;
+                        //} else {
+                        //  detailController.infoSessionBackup = nil;
+                        //}
                     }
                 }
             }
+            
+            UINavigationController *searchVCNavigationController = self.tabBarController.searchViewController.navigationController;
+            // if count > 1, means detailView is shown
+            if ([searchVCNavigationController.viewControllers count] > 1) {
+                UITableViewController *controller = searchVCNavigationController.viewControllers[1];
+                if ([controller isKindOfClass:[DetailViewController class]]) {
+                    // get the tabbar item0's detailViewController
+                    DetailViewController *detailController = (DetailViewController *)controller;
+                    // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
+                    if ([infoSessionToBeDeleted isEqual:detailController.infoSession]) {
+                        NSLog(@"tab1->tab2");
+                        detailController.infoSession = detailController.originalInfoSession;
+                        detailController.openedMyInfo = NO;
+                        //                            if ([senderClass isEqualToString:@"UIBarButtonItem"]) {
+                        //                                detailController.infoSession = detailController.originalInfoSession;
+                        //                                detailController.openedMyInfo = NO;
+                        //                            } else {
+                        //                                detailController.infoSessionBackup = nil;
+                        //                            }
+                    }
+                }
+            }
+//            
+//            UINavigationController *infoSessionVCNavigationController = _tabBarController.infoSessionsViewController.navigationController;
+//            // if count > 1, means detailView is shown
+//            if ([infoSessionVCNavigationController.viewControllers count] > 1) {
+//                UITableViewController *controller = infoSessionVCNavigationController.viewControllers[1];
+//                if ([controller isKindOfClass:[DetailViewController class]]) {
+//                    // get the tabbar item0's detailViewController
+//                    DetailViewController *detailController = (DetailViewController *)controller;
+//                    // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
+//                    if ([infoSessionToBeDeleted isEqual:detailController.infoSession]) {
+//                        detailController.infoSessionBackup = nil;
+//                    }
+//                }
+//            }
             // save to file
             [_infoSessionModel saveInfoSessions];
         }
