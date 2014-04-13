@@ -22,6 +22,7 @@
 
 @implementation UWAppDelegate {
     InfoSessionModel *_infoSessionModel;
+    PFObject *currentDevice;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -94,7 +95,10 @@
                             device[@"Opens"] = @1;
                             device[@"Identifier"] = identifierForVendor;
                             device[@"App_Version"] = [UIApplication appVersion];
+                            device[@"Installation"] = [PFInstallation currentInstallation];
+//                            device[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
                             //device[@"Query_Key"] = _infoSessionModel.apiKey;
+                            currentDevice = device;
                             [device saveEventually];
                         }
                         // Do something with the found objects
@@ -107,9 +111,12 @@
                                 object[@"Identifier"] = identifierForVendor;
                                 //NSLog(@"update key: %@", object[@"Query_Key"]);
                                 object[@"App_Version"] = [UIApplication appVersion];
+                                object[@"Installation"] = [PFInstallation currentInstallation];
+//                                object[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
                                 _infoSessionModel.apiKey = object[@"Query_Key"];
                                 // for retrive old key stored in device
                                 //object[@"Query_Key"] = _infoSessionModel.apiKey;
+                                currentDevice = object;
                                 [object saveEventually];
                             }
                         }
@@ -127,9 +134,12 @@
                     object[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
                     object[@"Opens"] = [NSNumber numberWithInteger:[object[@"Opens"] integerValue] + 1];
                     object[@"App_Version"] = [UIApplication appVersion];
+                    object[@"Installation"] = [PFInstallation currentInstallation];
+//                    object[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
                     NSLog(@"update key: %@", object[@"Query_Key"]);
                     _infoSessionModel.apiKey = object[@"Query_Key"];
                     //object[@"Query_Key"] = _infoSessionModel.apiKey;
+                    currentDevice = object;
                     [object saveEventually];
                 }
             }
@@ -157,6 +167,14 @@
     
     // check update
     [HSLUpdateChecker checkForUpdate];
+    
+    // Register push notification
+    [application registerForRemoteNotificationTypes:
+     UIRemoteNotificationTypeBadge |
+     UIRemoteNotificationTypeAlert |
+     UIRemoteNotificationTypeSound];
+    
+    application.applicationIconBadgeNumber = 0;
     
     return YES;
 }
@@ -205,6 +223,11 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    if (currentInstallation.badge != 0) {
+        currentInstallation.badge = 0;
+        [currentInstallation saveEventually];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -263,5 +286,24 @@
     return [WXApi handleOpenURL:url delegate:self];
 }
 
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
+    NSLog(@"register push");
+    // Store the deviceToken in the current installation and save it to Parse.
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    currentInstallation.badge = application.applicationIconBadgeNumber;
+    [currentInstallation addUniqueObject:@"Info_News" forKey:@"channels"];
+    [currentInstallation setDeviceTokenFromData:newDeviceToken];
+    currentInstallation[@"Device_Name"] = [[UIDevice currentDevice] name];
+    [currentInstallation saveInBackground];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    application.applicationIconBadgeNumber = 0;
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    currentInstallation.badge = 0;
+    currentInstallation[@"Device_Name"] = [[UIDevice currentDevice] name];
+    [currentInstallation saveInBackground];
+    [PFPush handlePush:userInfo];
+}
 
 @end

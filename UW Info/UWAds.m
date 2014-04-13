@@ -14,8 +14,10 @@
     if (self = [super init]) {
         // iAd
         if ([ADBannerView instancesRespondToSelector:@selector(initWithAdType:)]) {
-            _iAdBannerView = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
+            NSLog(@"iad 1");
+            _iAdBannerView = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];//[[ADBannerView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
         } else {
+            NSLog(@"iad 2");
             _iAdBannerView = [[ADBannerView alloc] init];
         }
         _iAdBannerView.backgroundColor = [UIColor clearColor];
