@@ -138,6 +138,7 @@
                     } else {
                         // Log details of the failure
                         NSLog(@"Error: %@ %@", error, [error userInfo]);
+                        [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"query device name error: %@ %@", error, [error userInfo]]];
                     }
                 }];
             }
@@ -172,6 +173,7 @@
         } else {
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
+            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"query device identifier error: %@ %@", error, [error userInfo]]];
         }
     }];
     
