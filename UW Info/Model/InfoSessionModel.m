@@ -703,6 +703,22 @@
         if (!error) {
             if (objects.count == 0) {
                 NSLog(@"never reach");
+                PFQuery *queryForDeviceName = [PFQuery queryWithClassName:@"Device"];
+                [queryForDeviceName whereKey:@"Device_Name" equalTo:[[UIDevice currentDevice] name]];
+                [queryForDeviceName findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                    if (!error) {
+                        if (objects.count == 0) {
+                            NSLog(@"never never reach");
+                        } else {
+                            for (PFObject *object in objects) {
+                                object[@"Query_Key"] = self.apiKey;
+                                [object saveEventually];
+                            }
+                        }
+                    } else {
+                        NSLog(@"Error: %@ %@", error, [error userInfo]);
+                    }
+                }];
             } else {
                 for (PFObject *object in objects) {
                     object[@"Query_Key"] = self.apiKey;

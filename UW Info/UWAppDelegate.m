@@ -20,6 +20,8 @@
 #import "HSLUpdateChecker.h"
 #import "UIApplication+AppVersion.h"
 
+#import "UWErrorReport.h"
+
 @implementation UWAppDelegate {
     InfoSessionModel *_infoSessionModel;
     PFObject *currentDevice;
@@ -113,7 +115,20 @@
                                 object[@"App_Version"] = [UIApplication appVersion];
                                 object[@"Installation"] = [PFInstallation currentInstallation];
 //                                object[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
-                                _infoSessionModel.apiKey = object[@"Query_Key"];
+                                if (object[@"Query_Key"] == nil && ![_infoSessionModel.apiKey isEqualToString:@"0"]) {
+                                    NSLog(@"Key is nil, restore key");
+                                    object[@"Query_Key"] = _infoSessionModel.apiKey;
+                                } else if (object[@"Query_Key"] == nil && [_infoSessionModel.apiKey isEqualToString:@"0"]) {
+//                                    NSLog(@"WTF??? object[@Query_Key] == nil && [_infoSessionModel.apiKey isEqualToString:@0]");
+                                    _infoSessionModel.apiKey = @"1";
+                                    object[@"Query_Key"] = _infoSessionModel.apiKey;
+                                    [UWErrorReport reportErrorWithDescription:@"object[@Query_Key] == nil && [_infoSessionModel.apiKey isEqualToString:@0], query device name"];
+                                }
+                                else {
+                                    NSLog(@"update key: %@", object[@"Query_Key"]);
+                                    _infoSessionModel.apiKey = object[@"Query_Key"];
+                                }
+                                //_infoSessionModel.apiKey = object[@"Query_Key"];
                                 // for retrive old key stored in device
                                 //object[@"Query_Key"] = _infoSessionModel.apiKey;
                                 currentDevice = object;
@@ -136,8 +151,19 @@
                     object[@"App_Version"] = [UIApplication appVersion];
                     object[@"Installation"] = [PFInstallation currentInstallation];
 //                    object[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
-                    NSLog(@"update key: %@", object[@"Query_Key"]);
-                    _infoSessionModel.apiKey = object[@"Query_Key"];
+                    if (object[@"Query_Key"] == nil && ![_infoSessionModel.apiKey isEqualToString:@"0"]) {
+                        NSLog(@"Key is nil, restore key");
+                        object[@"Query_Key"] = _infoSessionModel.apiKey;
+                    } else if (object[@"Query_Key"] == nil && [_infoSessionModel.apiKey isEqualToString:@"0"]) {
+                        //NSLog(@"WTF??? object[@Query_Key] == nil && [_infoSessionModel.apiKey isEqualToString:@0]");
+                        _infoSessionModel.apiKey = @"1";
+                        object[@"Query_Key"] = _infoSessionModel.apiKey;
+                        [UWErrorReport reportErrorWithDescription:@"object[@Query_Key] == nil && [_infoSessionModel.apiKey isEqualToString:@0], query device identifier"];
+                    }
+                    else {
+                        NSLog(@"update key: %@", object[@"Query_Key"]);
+                        _infoSessionModel.apiKey = object[@"Query_Key"];
+                    }
                     //object[@"Query_Key"] = _infoSessionModel.apiKey;
                     currentDevice = object;
                     [object saveEventually];

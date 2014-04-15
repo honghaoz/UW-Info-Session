@@ -10,6 +10,7 @@
 #import "UWInfoSessionClient.h"
 #import "UIAlertView+AFNetworking.h"
 //#import "UIAlertView+Blocks.h"
+#import "UWErrorReport.h"
 
 ////static NSString * const AFUwaterlooApiBaseURLString = @"https://api.uwaterloo.ca/v2/";
 ////static NSString * const getFaviconBaseURLString = @"http://g.etfv.co/";
@@ -82,6 +83,7 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
 //        else {
 //            //NSLog(@"key failed");
 //        }
+        [UWErrorReport reportErrorWithDescription:@"Query key error"];
         if ([self.delegate respondsToSelector:@selector(apiClient:didFailWithError:)]) {
             [self.delegate apiClient:self didFailWithError:error];
         }
@@ -125,12 +127,13 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
         if (httpResponse.statusCode == 503) {
             //NSLog(@"503");
-            
+            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat: @"Query error: 503, Error: %@", error.description]];
             if ([self.delegate respondsToSelector:@selector(infoSessionClient:didFailWithCode:)]) {
                 [self.delegate infoSessionClient:self didFailWithCode:503];
             }
         }
         else {
+            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat: @"Query error: %d, Error: %@", httpResponse.statusCode, error.description]];
             [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:self cancelButtonTitle:@"Offline data" otherButtonTitles:@"Try again", nil];
         }
     }];
