@@ -1319,7 +1319,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ThridPartySDK/WeChatSDK_1.4.2-1.1",
-					"$(PROJECT_DIR)/ThridPartySDK/GoogleAdMobAdsSdkiOS-6.8.0",
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleAnalytics",
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2",
 				);
@@ -1349,7 +1348,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ThridPartySDK/WeChatSDK_1.4.2-1.1",
-					"$(PROJECT_DIR)/ThridPartySDK/GoogleAdMobAdsSdkiOS-6.8.0",
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleAnalytics",
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2",
 				);

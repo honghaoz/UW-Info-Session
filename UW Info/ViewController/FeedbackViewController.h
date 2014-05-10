@@ -1,5 +1,5 @@
 //
-//  FeedbackViewController1.h
+//  FeedbackViewController.h
 //  UW Info
 //
 //  Created by Zhang Honghao on 3/15/14.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @class PSPDFTextView;
 
-@interface FeedbackViewController1 : UIViewController
+@interface FeedbackViewController : UIViewController
 
 @property (nonatomic, strong) PSPDFTextView *feedbackTextView;
 

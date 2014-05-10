@@ -1,5 +1,5 @@
 //
-//  FeedbackViewController1.m
+//  FeedbackViewController.m
 //  UW Info
 //
 //  Created by Zhang Honghao on 3/15/14.
@@ -13,7 +13,7 @@
 #import "UIApplication+AppVersion.h"
 #import "UIDevice-Hardware.h"
 
-@implementation FeedbackViewController1
+@implementation FeedbackViewController
 
 - (void)viewDidLoad
 {

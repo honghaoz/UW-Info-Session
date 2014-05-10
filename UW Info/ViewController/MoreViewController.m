@@ -27,8 +27,9 @@
 #import "iRate.h"
 #import "WeixinActivity.h"
 #import "LINEActivity.h"
+#import "UWErrorReport.h"
 
-@interface MoreViewController () <UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate>
+@interface MoreViewController () <UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate, UIAlertViewDelegate>
 
 @end
 
@@ -40,6 +41,7 @@
     NSString *sharPostString;
     
     UWAds *ad;
+    NSInteger toManager_tappedTimes;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -121,6 +123,7 @@
     
     // Google Analytics
     [UWGoogleAnalytics analyticScreen:@"More Screen"];
+    toManager_tappedTimes = 0;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -276,6 +279,16 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
 //            [self preformTransitionToViewController:self direction:kCATransitionFromBottom];
+            toManager_tappedTimes++;
+            NSLog(@"%d", toManager_tappedTimes);
+            if (toManager_tappedTimes % 12 == 0) {
+                UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"UW Info Manager Login" message:@"Enter Username & Password" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
+                alert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+                [alert addButtonWithTitle:@"Login"];
+                [alert show];
+                
+            }
+            
         } else if (indexPath.row == 1){
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://twitter.com/zhh358"]];
         }
@@ -283,7 +296,7 @@
         if (indexPath.row == 0) {
             [self showActivityViewController];
         } else if (indexPath.row == 1) {
-            FeedbackViewController1 *newFeedbackVC = [[FeedbackViewController1 alloc] init];
+            FeedbackViewController *newFeedbackVC = [[FeedbackViewController alloc] init];
             MoreNavigationViewController *newMoreNaviVC = [[MoreNavigationViewController alloc] initWithRootViewController:newFeedbackVC];
             [self presentViewController:newMoreNaviVC animated:YES completion:^(){}];
         } else if (indexPath.row == 2) {
@@ -293,9 +306,100 @@
     }
 }
 
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 1) {
+        UITextField *usernameTextField = [alertView textFieldAtIndex:0];
+        UITextField *passwordTextField = [alertView textFieldAtIndex:1];
+        NSString *username = usernameTextField.text;
+        NSString *password = passwordTextField.text;
+        
+        if ([username length] >= 1) {
+            PFQuery *queryForId = [PFQuery queryWithClassName:@"ManagerUsers"];
+            [queryForId whereKey:@"Username" equalTo:username];
+            [queryForId findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                if (!error) {
+                    // The find succeeded.
+                    // no object for this id, query with device name
+                    if (objects.count == 0) {
+                        [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"Error Manager user: %@, password: %@", username, password]];
+                        UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"No username matched"
+                                                                         message:@""
+                                                                        delegate:self
+                                                               cancelButtonTitle:@"OK"
+                                                               otherButtonTitles: nil];
+                        //                    [alert addButtonWithTitle:@"GOO"];
+                        [alert show];
+                    }
+                    else {
+                        for (PFObject *object in objects) {
+                            // only one user is matched
+                            NSString *passwordFromPase = object[@"Password"];
+                            if ([passwordFromPase isEqualToString:password]) {
+                                [self showManagerView];
+                            }
+                            else {
+                                UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Username/Password doesn't matched"
+                                                                                 message:@""
+                                                                                delegate:self
+                                                                       cancelButtonTitle:@"OK"
+                                                                       otherButtonTitles: nil];
+                                //                    [alert addButtonWithTitle:@"GOO"];
+                                [alert show];
+                            }
+                        }
+                    }
+                } else {
+                    NSLog(@"Error: %@ %@", error, [error userInfo]);
+                }
+            }];
+        }
+        else {
+            UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Please input at least one character"
+                                                             message:@""
+                                                            delegate:self
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles: nil];
+            //                    [alert addButtonWithTitle:@"GOO"];
+            [alert show];
+        }
+    }
+}
+
+- (void)showManagerView {
+//    PFQuery *query = [PFQuery queryWithClassName:@"Installation"];
+//    //[queryForId whereKey:@"Installation" notEqualTo:nil];
+//    [query setLimit: 1000];
+//    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//        if (!error) {
+//            // The find succeeded.
+//            // no object for this id, query with device name
+//            if (objects.count == 0) {
+//                NSLog(@"found 0 installation");
+//            }
+//            else {
+//                for (PFObject *object in objects) {
+//                    NSLog(@"%@", object[@"appName"]);
+//                }
+//                NSLog(@"Count: %d", [objects count]);
+//            }
+//        } else {
+//            NSLog(@"Error: %@ %@", error, [error userInfo]);
+//        }
+//    }];
+//    FeedbackViewController *newFeedbackVC = [[FeedbackViewController alloc] init];
+//    MoreNavigationViewController *newMoreNaviVC = [[MoreNavigationViewController alloc] initWithRootViewController:newFeedbackVC];
+//    [self presentViewController:newMoreNaviVC animated:YES completion:^(){}];
+    // Send a notification to all devices subscribed to the "Giants" channel.
+    PFPush *push = [[PFPush alloc] init];
+    [push setChannel:@"test"];
+    [push setMessage:@"YES! YES! YES!"];
+    [push sendPushInBackground];
+}
+
 //- (void)preformTransitionToViewController:(UIViewController*)dest direction:(NSString*)direction {
 //	//NSLog(@"segue identifier: %@, source: %@, destination: %@", self.identifier, sourceViewController, destinationController);
-//	
+//
 //	CATransition* transition = [CATransition animation];
 //	transition.duration = 0.5;
 //	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];

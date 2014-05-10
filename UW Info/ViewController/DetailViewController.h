@@ -31,11 +31,11 @@
 // performedNavigation is a string records what navigation action causes DetailView disappears
 @property (nonatomic, copy) NSString *performedNavigation;
 
-// add pull up/down to prev/next
-@property(nonatomic) PullHeaderView *prevPullHeaderView;
-
-- (void)goNext:(id)sender;
-- (void)goPrevious:(id)sender;
-- (void)preformTransitionToViewController:(UIViewController*)view direction:(NSString*)direction;
+//// add pull up/down to prev/next
+//@property(nonatomic) PullHeaderView *prevPullHeaderView;
+//
+//- (void)goNext:(id)sender;
+//- (void)goPrevious:(id)sender;
+//- (void)preformTransitionToViewController:(UIViewController*)view direction:(NSString*)direction;
 
 @end
