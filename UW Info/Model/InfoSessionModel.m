@@ -594,6 +594,10 @@
                                         } else {
                                             self.apiKey = object[@"Query_Key"];
                                             NSLog(@"Queried, Found key: %@", self.apiKey);
+                                            if ([self.apiKey isEqualToString:@"0"]) {
+                                                self.apiKey = @"1";
+                                                [UWErrorReport reportErrorWithDescription:@"Wrong key: 0, set 1 insted (Set key: Device_Name)"];
+                                            }
                                             [self updateInfoSessionsWithYear:_year andTerm:_term];
                                             return;
                                         }
@@ -611,6 +615,10 @@
                         for (PFObject *object in objects) {
                             self.apiKey = object[@"Query_Key"];
                             NSLog(@"Queried, Found key: %@", self.apiKey);
+                            if ([self.apiKey isEqualToString:@"0"]) {
+                                self.apiKey = @"1";
+                                [UWErrorReport reportErrorWithDescription:@"Wrong key: 0, set 1 insted (Set key: Device_Identifier)"];
+                            }
                             [self updateInfoSessionsWithYear:_year andTerm:_term];
                             return;
                         }
