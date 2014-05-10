@@ -29,6 +29,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.window.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1];
     [[UIApplication sharedApplication] keyWindow].tintColor = UWBlack;
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     
@@ -72,7 +73,12 @@
     
     NSString *deviceName = [[UIDevice currentDevice] name];
     NSString *identifierForVendor = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    NSLog(@"%@", identifierForVendor);
+    //NSLog(@"%@", identifierForVendor);
+//    NSLog(@"%@", [[UIDevice currentDevice] platform]);
+//    NSLog(@"%@", [[UIDevice currentDevice] platformString]);
+//    NSLog(@"%@", [[UIDevice currentDevice] hwmodel]);
+    NSString *deviceType = [NSString stringWithFormat:@"%@ %@(%@)", [[UIDevice currentDevice] platformString], [[UIDevice currentDevice] platform], [[UIDevice currentDevice] hwmodel]];
+    NSLog(@"%@", deviceType);
     
     PFQuery *queryForId = [PFQuery queryWithClassName:@"Device"];
     [queryForId whereKey:@"Identifier" equalTo:identifierForVendor];
@@ -92,12 +98,13 @@
                         if (objects.count == 0) {
                             PFObject *device = [PFObject objectWithClassName:@"Device"];
                             device[@"Device_Name"] = deviceName;
-                            device[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
+                            //device[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
                             device[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
                             device[@"Opens"] = @1;
                             device[@"Identifier"] = identifierForVendor;
                             device[@"App_Version"] = [UIApplication appVersion];
                             device[@"Installation"] = [PFInstallation currentInstallation];
+                            device[@"Device_Type"] = deviceType;
 //                            device[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
                             //device[@"Query_Key"] = _infoSessionModel.apiKey;
                             currentDevice = device;
@@ -107,13 +114,14 @@
                         else {
                             for (PFObject *object in objects) {
                                 object[@"Device_Name"] = deviceName;
-                                object[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
+                                //object[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
                                 object[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
                                 object[@"Opens"] = [NSNumber numberWithInteger:[object[@"Opens"] integerValue] + 1];
                                 object[@"Identifier"] = identifierForVendor;
                                 //NSLog(@"update key: %@", object[@"Query_Key"]);
                                 object[@"App_Version"] = [UIApplication appVersion];
                                 object[@"Installation"] = [PFInstallation currentInstallation];
+                                object[@"Device_Type"] = deviceType;
 //                                object[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
                                 if (object[@"Query_Key"] == nil && ![_infoSessionModel.apiKey isEqualToString:@"0"]) {
                                     NSLog(@"Key is nil, restore key");
@@ -121,6 +129,9 @@
                                 } else if (object[@"Query_Key"] == nil && [_infoSessionModel.apiKey isEqualToString:@"0"]) {
 //                                    NSLog(@"WTF??? object[@Query_Key] == nil && [_infoSessionModel.apiKey isEqualToString:@0]");
                                     _infoSessionModel.apiKey = @"1";
+                                    
+                                    [UWErrorReport reportErrorWithDescription:@"Delegate: Wrong key: 0, set 1 insted"];
+                                    
                                     object[@"Query_Key"] = _infoSessionModel.apiKey;
                                     [UWErrorReport reportErrorWithDescription:@"object[@Query_Key] == nil && [_infoSessionModel.apiKey isEqualToString:@0], query device name"];
                                 }
@@ -138,18 +149,21 @@
                     } else {
                         // Log details of the failure
                         NSLog(@"Error: %@ %@", error, [error userInfo]);
+                        [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"query device name error: %@ %@", error, [error userInfo]]];
                     }
                 }];
             }
             // Do something with the found objects
             else {
                 for (PFObject *object in objects) {
+                    //NSLog(@"%@", object[@"Installation"][@"deviceToken"]);
                     object[@"Device_Name"] = deviceName;
-                    object[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
+                    //object[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
                     object[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
                     object[@"Opens"] = [NSNumber numberWithInteger:[object[@"Opens"] integerValue] + 1];
                     object[@"App_Version"] = [UIApplication appVersion];
                     object[@"Installation"] = [PFInstallation currentInstallation];
+                    object[@"Device_Type"] = deviceType;
 //                    object[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
                     if (object[@"Query_Key"] == nil && ![_infoSessionModel.apiKey isEqualToString:@"0"]) {
                         NSLog(@"Key is nil, restore key");
@@ -172,6 +186,7 @@
         } else {
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
+            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"query device identifier error: %@ %@", error, [error userInfo]]];
         }
     }];
     

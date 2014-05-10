@@ -13,6 +13,7 @@
 #import "InfoSession.h"
 
 #import <Parse/Parse.h>
+#import "UWErrorReport.h"
 
 //const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 //const NSString *apiKey1 =  @"913034dae16d7233dd1683713cbb4721";
@@ -593,6 +594,10 @@
                                         } else {
                                             self.apiKey = object[@"Query_Key"];
                                             NSLog(@"Queried, Found key: %@", self.apiKey);
+                                            if ([self.apiKey isEqualToString:@"0"]) {
+                                                self.apiKey = @"1";
+                                                [UWErrorReport reportErrorWithDescription:@"Wrong key: 0, set 1 insted (Set key: Device_Name)"];
+                                            }
                                             [self updateInfoSessionsWithYear:_year andTerm:_term];
                                             return;
                                         }
@@ -601,13 +606,19 @@
                             } else {
                                 // Log details of the failure
                                 NSLog(@"Error: %@ %@", error, [error userInfo]);
+                                [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"Set Key, device name error: %@ %@", error, [error userInfo]]];
                                 [self setApiKey];
+                                
                             }
                         }];
                     } else {
                         for (PFObject *object in objects) {
                             self.apiKey = object[@"Query_Key"];
                             NSLog(@"Queried, Found key: %@", self.apiKey);
+                            if ([self.apiKey isEqualToString:@"0"]) {
+                                self.apiKey = @"1";
+                                [UWErrorReport reportErrorWithDescription:@"Wrong key: 0, set 1 insted (Set key: Device_Identifier)"];
+                            }
                             [self updateInfoSessionsWithYear:_year andTerm:_term];
                             return;
                         }
@@ -615,6 +626,7 @@
                 } else {
                     // Log details of the failure
                     NSLog(@"Error: %@ %@", error, [error userInfo]);
+                    [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"Set Key, device identifier error: %@ %@", error, [error userInfo]]];
                     [self setApiKey];
                 }
             }];
@@ -703,6 +715,7 @@
         if (!error) {
             if (objects.count == 0) {
                 NSLog(@"never reach");
+                [UWErrorReport reportErrorWithDescription:@"didUpdateWithApiKey, but identifier not found"];
                 PFQuery *queryForDeviceName = [PFQuery queryWithClassName:@"Device"];
                 [queryForDeviceName whereKey:@"Device_Name" equalTo:[[UIDevice currentDevice] name]];
                 [queryForDeviceName findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -717,6 +730,7 @@
                         }
                     } else {
                         NSLog(@"Error: %@ %@", error, [error userInfo]);
+                        [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"didUpdateWithApiKey, device name error: %@ %@", error, [error userInfo]]];
                     }
                 }];
             } else {
@@ -728,6 +742,7 @@
         } else {
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
+            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"didUpdateWithApiKey, device identifier error: %@ %@", error, [error userInfo]]];
         }
     }];
     [self updateInfoSessionsWithYear:_year andTerm:_term];

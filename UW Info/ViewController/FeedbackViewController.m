@@ -11,6 +11,7 @@
 #import <Parse/Parse.h>
 #import "SVProgressHUD.h"
 #import "UIApplication+AppVersion.h"
+#import "UIDevice-Hardware.h"
 
 @implementation FeedbackViewController1
 
@@ -90,10 +91,14 @@
 - (void)sendFeedback {
     PFObject *feedback = [PFObject objectWithClassName:@"Feedback"];
     feedback[@"Device_Name"] = [[UIDevice currentDevice] name];
-    feedback[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
+    //feedback[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
     feedback[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
     feedback[@"App_Version"] = [UIApplication appVersion];
     feedback[@"Feedback"] = _feedbackTextView.text;
+    
+    NSString *deviceType = [NSString stringWithFormat:@"%@ %@(%@)", [[UIDevice currentDevice] platformString], [[UIDevice currentDevice] platform], [[UIDevice currentDevice] hwmodel]];
+    feedback[@"Device_Type"] = deviceType;
+    
     [feedback saveEventually];
 }
 

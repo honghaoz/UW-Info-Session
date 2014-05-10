@@ -275,7 +275,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            
+//            [self preformTransitionToViewController:self direction:kCATransitionFromBottom];
         } else if (indexPath.row == 1){
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://twitter.com/zhh358"]];
         }
@@ -292,6 +292,25 @@
         }
     }
 }
+
+//- (void)preformTransitionToViewController:(UIViewController*)dest direction:(NSString*)direction {
+//	//NSLog(@"segue identifier: %@, source: %@, destination: %@", self.identifier, sourceViewController, destinationController);
+//	
+//	CATransition* transition = [CATransition animation];
+//	transition.duration = 0.5;
+//	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+//	transition.type = kCATransitionPush; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+//	transition.subtype = direction; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+//	
+////	[self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+//    [self.tableView.layer addAnimation:transition forKey:kCATransition];
+//	
+//	NSMutableArray *stack = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+//	[stack removeLastObject];
+//	[stack addObject:dest];
+//	//	  [sourceViewController.navigationController pushViewController:destinationController animated:NO];
+//	[self.navigationController setViewControllers:stack animated:NO];
+//}
 
 - (void)showActivityViewController {
     NSArray *activity = @[[[WeixinSessionActivity alloc] init], [[WeixinTimelineActivity alloc] init], [[LINEActivity alloc] init]];
@@ -461,7 +480,7 @@
         [message setThumbImage:[UIImage imageNamed:@"AppIcon-Rounded.png"]];
         
         WXWebpageObject *ext = [WXWebpageObject object];
-        ext.webpageUrl = itunesURLString;
+        ext.webpageUrl = @"http://uw-info.honghaoz.com"; //itunesURLString;
         
         message.mediaObject = ext;
         
