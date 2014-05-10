@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "AlertViewController.h"
+#import "PullHeaderView.h"
+
 @class InfoSession;
 @class InfoSessionModel;
 @class DetailViewController;
@@ -28,5 +30,12 @@
 
 // performedNavigation is a string records what navigation action causes DetailView disappears
 @property (nonatomic, copy) NSString *performedNavigation;
+
+// add pull up/down to prev/next
+@property(nonatomic) PullHeaderView *prevPullHeaderView;
+
+- (void)goNext:(id)sender;
+- (void)goPrevious:(id)sender;
+- (void)preformTransitionToViewController:(UIViewController*)view direction:(NSString*)direction;
 
 @end
