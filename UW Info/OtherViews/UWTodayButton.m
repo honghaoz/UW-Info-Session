@@ -82,4 +82,15 @@
     _dateLabel.highlighted = highlighted;
 }
 
+- (void)setEnabled:(BOOL)enabled {
+    super.enabled = enabled;
+    if (enabled) {
+        _todayLabel.textColor = UWBlack;
+        _dateLabel.textColor = UWBlack;
+    } else {
+        _todayLabel.textColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:0.5];
+        _dateLabel.textColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:0.5];
+    }
+}
+
 @end

@@ -34,6 +34,13 @@
     return _titleButton;
 }
 
+/**
+ *  Get year number from NSDate
+ *
+ *  @param date NSDate object
+ *
+ *  @return NSUInteger for year of NSDate
+ */
 - (NSUInteger)getCurrentYear:(NSDate *)date {
     //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
@@ -41,12 +48,19 @@
     return [[dateFormatter stringFromDate:date] intValue];
 }
 
+/**
+ *  Get term string from NSDate
+ *
+ *  @param date NSDate object
+ *
+ *  @return NSString term string
+ */
 - (NSString *)getCurrentTermFromDate:(NSDate *)date {
     //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
     [dateFormatter setDateFormat:@"M"];
     NSUInteger month = [[dateFormatter stringFromDate:date] intValue];
-    NSLog(@"month: %d", month);
+    //NSLog(@"month: %d", month);
     if (1 <= month && month <= 4) {
         return @"Winter";
     } else if (5 <= month && month <= 8) {
@@ -56,7 +70,14 @@
     }
 }
 
-- (NSString *)getCurrentTermFromUWTerm:(UWTerm)term {
+/**
+ *  Convert UWTerm toNSString formatted term
+ *
+ *  @param term UWTerm like UWSpring
+ *
+ *  @return　NSString like ＠"Spring"
+ */
+- (NSString *)convertUWTermToTermString:(UWTerm)term {
     if (term == UWWinter) {
         return @"Winter";
     } else if (term == UWSpring) {
@@ -66,6 +87,46 @@
     }
 }
 
+/**
+ *  Convert NSString formatted term to UWTerm
+ *
+ *  @param term NSString like ＠"Spring"
+ *
+ *  @return UWTerm like UWSpring
+ */
+- (UWTerm)convertTermStringToUWTerm:(NSString *)term {
+    if ([term isEqualToString:@"Winter"]) {
+        return UWWinter;
+    } else if ([term isEqualToString:@"Spring"]) {
+        return UWSpring;
+    } else {
+        return UWFall;
+    }
+}
+
+/**
+ *  Get UWTerm: UWSpring From term string like 2014 Spring
+ *
+ *  @param termString term string like 2014 Spring
+ *
+ *  @return UWTerm, like UWSpring
+ */
+- (UWTerm)getTermFromString:(NSString *)termString {
+    NSLog(@"%@ %d", termString, [termString length]);
+    NSRange range = [termString rangeOfString:@" "];
+    NSLog(@"%@", NSStringFromRange(range));
+    NSString *term = [termString substringFromIndex:range.location + 1];
+    NSLog(@"%@ %d", term, [term length]);
+    return [self convertTermStringToUWTerm:term];
+}
+
+/**
+ *  Get next term from a NSString term, eg: return @"Fall" if passed in @"Spring"
+ *
+ *  @param term NSString like "Spring"
+ *
+ *  @return NSString like "Spring"
+ */
 - (NSString *)getNextTermFromString:(NSString *)term {
     if ([term isEqualToString:@"Winter"]) {
         return @"Spring";
@@ -76,6 +137,13 @@
     }
 }
 
+/**
+ *  Get next term from a UWTerm, eg: return UWFall if passed in UWSpring
+ *
+ *  @param term UWTerm, like UWSpring
+ *
+ *  @return UWTerm, like UWSpring
+ */
 - (NSString *)getNextTermFromUWTerm:(UWTerm)term {
     if (term == UWWinter) {
         return @"Spring";
@@ -107,18 +175,22 @@
         [menuItems addObject:yearItem];
     }
     for (int i = UWWinter; i <= UWFall; i++) {
-        REMenuItem *termIterm = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%li %@", (long)year, [self getCurrentTermFromUWTerm:i]]
+        REMenuItem *termIterm = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%li %@", (long)year, [self convertUWTermToTermString:i]]
                                                            image:nil
                                                 highlightedImage:nil
                                                           action:^(REMenuItem *item) {
-                                                              [self tapTermAction:year term:[self getCurrentTermFromUWTerm:i]];
+                                                              [self tapTermAction:year term:[self convertUWTermToTermString:i]];
                                                           }];
-        if ([currentTerm isEqualToString:[self getCurrentTermFromUWTerm:i]]) {
+        if ([currentTerm isEqualToString:[self convertUWTermToTermString:i]]) {
             termIterm.font = [UIFont boldSystemFontOfSize:20];
             termIterm.textColor = [UIColor blackColor];
             termIterm.highlightedTextColor = [UIColor blackColor];
         }
-        termIterm.textColor = [UIColor blackColor];
+        if (i < [self convertTermStringToUWTerm:currentTerm] ) {
+            termIterm.textColor = [UIColor lightGrayColor];
+        } else {
+            termIterm.textColor = [UIColor blackColor];
+        }
         [menuItems addObject:termIterm];
     }
     
@@ -153,11 +225,11 @@
     NSMutableArray *menuItems = [[NSMutableArray alloc] init];
     
     for (int i = UWWinter; i <= UWFall; i++) {
-        REMenuItem *termIterm = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%li %@", (long)year, [self getCurrentTermFromUWTerm:i]]
+        REMenuItem *termIterm = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%li %@", (long)year, [self convertUWTermToTermString:i]]
                                                             image:nil
                                                  highlightedImage:nil
                                                            action:^(REMenuItem *item) {
-                                                               [self tapTermAction:year term:[self getCurrentTermFromUWTerm:i]];
+                                                               [self tapTermAction:year term:[self convertUWTermToTermString:i]];
                                                            }];
         termIterm.textColor = [UIColor blackColor];
         [menuItems addObject:termIterm];
