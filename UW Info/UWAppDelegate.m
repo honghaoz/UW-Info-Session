@@ -104,6 +104,7 @@
                             device[@"Identifier"] = identifierForVendor;
                             device[@"App_Version"] = [UIApplication appVersion];
                             device[@"Installation"] = [PFInstallation currentInstallation];
+                            //device[@"channels"] = [PFInstallation currentInstallation][];
                             device[@"Device_Type"] = deviceType;
 //                            device[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
                             //device[@"Query_Key"] = _infoSessionModel.apiKey;

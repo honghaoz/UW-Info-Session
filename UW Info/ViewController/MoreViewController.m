@@ -28,6 +28,7 @@
 #import "WeixinActivity.h"
 #import "LINEActivity.h"
 #import "UWErrorReport.h"
+#import "UWManagerViewController.h"
 
 @interface MoreViewController () <UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate, UIAlertViewDelegate>
 
@@ -367,7 +368,23 @@
 }
 
 - (void)showManagerView {
-//    PFQuery *query = [PFQuery queryWithClassName:@"Installation"];
+//    PFQuery *query = [PFQuery queryWithClassName:@"GameScore"];
+//    [query whereKey:@"playerName" equalTo:@"Dan Stemkoski"];
+//    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//        if (!error) {
+//            // The find succeeded.
+//            NSLog(@"Successfully retrieved %d scores.", objects.count);
+//            // Do something with the found objects
+//            for (PFObject *object in objects) {
+//                NSLog(@"%@", object.objectId);
+//            }
+//        } else {
+//            // Log details of the failure
+//            NSLog(@"Error: %@ %@", error, [error userInfo]);
+//        }
+//    }];
+    
+//    PFQuery *query = [PFQuery queryWithClassName:@"Device"];
 //    //[queryForId whereKey:@"Installation" notEqualTo:nil];
 //    [query setLimit: 1000];
 //    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -379,7 +396,11 @@
 //            }
 //            else {
 //                for (PFObject *object in objects) {
-//                    NSLog(@"%@", object[@"appName"]);
+//                    PFObject *aInstall = [object[@"Installation"] fetchIfNeeded];
+//                    //NSLog(@"%@", aInstall[@"appName"]);
+//                    if (aInstall != nil) {
+//                        NSLog(@"%@", aInstall[@"appName"]);
+//                    }
 //                }
 //                NSLog(@"Count: %d", [objects count]);
 //            }
@@ -391,10 +412,14 @@
 //    MoreNavigationViewController *newMoreNaviVC = [[MoreNavigationViewController alloc] initWithRootViewController:newFeedbackVC];
 //    [self presentViewController:newMoreNaviVC animated:YES completion:^(){}];
     // Send a notification to all devices subscribed to the "Giants" channel.
-    PFPush *push = [[PFPush alloc] init];
-    [push setChannel:@"test"];
-    [push setMessage:@"YES! YES! YES!"];
-    [push sendPushInBackground];
+//    PFPush *push = [[PFPush alloc] init];
+//    [push setChannel:@"test"];
+//    [push setMessage:@"YES! YES! YES!"];
+//    [push sendPushInBackground];
+    
+    UWManagerViewController *newManagerView = [[UWManagerViewController alloc] init];
+    MoreNavigationViewController *newNaviVC = [[MoreNavigationViewController alloc] initWithRootViewController:newManagerView];
+    [self presentViewController:newNaviVC animated:YES completion:^(){}];
 }
 
 //- (void)preformTransitionToViewController:(UIViewController*)dest direction:(NSString*)direction {

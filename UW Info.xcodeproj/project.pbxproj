@@ -78,6 +78,9 @@
 		1B78A981191E81C000A4A8AD /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B78A979191E81C000A4A8AD /* whiteArrow.png */; };
 		1B78A982191E81C000A4A8AD /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B78A97A191E81C000A4A8AD /* whiteArrow@2x.png */; };
 		1B78A990191E88B200A4A8AD /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B78A98F191E88B200A4A8AD /* libGoogleAdMobAds.a */; };
+		1B78A993191F0D8700A4A8AD /* UWManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A992191F0D8700A4A8AD /* UWManagerViewController.m */; };
+		1B78A996191F1E7100A4A8AD /* UWDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A995191F1E7100A4A8AD /* UWDevice.m */; };
+		1B78A999191F24E800A4A8AD /* UWDeviceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A998191F24E800A4A8AD /* UWDeviceCell.m */; };
 		1B8C557C18B7BCB60070CD82 /* EKEvent+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C557B18B7BCB60070CD82 /* EKEvent+NSCoding.m */; };
 		1B8EE15E18F238DC00DE8BD8 /* UWShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8EE15D18F238DC00DE8BD8 /* UWShareView.m */; };
 		1B8EE16118F23DDD00DE8BD8 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8EE16018F23DDD00DE8BD8 /* UIImage+ImageEffects.m */; };
@@ -283,6 +286,12 @@
 		1B78A98D191E88B200A4A8AD /* GADRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADRequest.h; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/GADRequest.h"; sourceTree = "<group>"; };
 		1B78A98E191E88B200A4A8AD /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADRequestError.h; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/GADRequestError.h"; sourceTree = "<group>"; };
 		1B78A98F191E88B200A4A8AD /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAdMobAds.a; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/libGoogleAdMobAds.a"; sourceTree = "<group>"; };
+		1B78A991191F0D8700A4A8AD /* UWManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWManagerViewController.h; path = ViewController/UWManagerViewController.h; sourceTree = "<group>"; };
+		1B78A992191F0D8700A4A8AD /* UWManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWManagerViewController.m; path = ViewController/UWManagerViewController.m; sourceTree = "<group>"; };
+		1B78A994191F1E7100A4A8AD /* UWDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWDevice.h; path = Model/UWDevice.h; sourceTree = "<group>"; };
+		1B78A995191F1E7100A4A8AD /* UWDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWDevice.m; path = Model/UWDevice.m; sourceTree = "<group>"; };
+		1B78A997191F24E800A4A8AD /* UWDeviceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWDeviceCell.h; path = TableViewCell/UWDeviceCell.h; sourceTree = "<group>"; };
+		1B78A998191F24E800A4A8AD /* UWDeviceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWDeviceCell.m; path = TableViewCell/UWDeviceCell.m; sourceTree = "<group>"; };
 		1B8C557A18B7BCB60070CD82 /* EKEvent+NSCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EKEvent+NSCoding.h"; path = "Category/EKEvent+NSCoding.h"; sourceTree = "<group>"; };
 		1B8C557B18B7BCB60070CD82 /* EKEvent+NSCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "EKEvent+NSCoding.m"; path = "Category/EKEvent+NSCoding.m"; sourceTree = "<group>"; };
 		1B8EE15C18F238DC00DE8BD8 /* UWShareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWShareView.h; path = OtherViews/UWShareView.h; sourceTree = "<group>"; };
@@ -555,6 +564,8 @@
 				1B37453618A5BA28007CF08C /* InfoSession.m */,
 				1BAD97E418A98F65006F4546 /* InfoSessionModel.h */,
 				1BAD97E518A98F65006F4546 /* InfoSessionModel.m */,
+				1B78A994191F1E7100A4A8AD /* UWDevice.h */,
+				1B78A995191F1E7100A4A8AD /* UWDevice.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -634,12 +645,16 @@
 			children = (
 				1B527C4318D026D100A91339 /* MoreNavigationViewController.h */,
 				1B527C4418D026D100A91339 /* MoreNavigationViewController.m */,
-				1B527C4018D0241D00A91339 /* MoreViewController.h */,
-				1B527C4118D0241D00A91339 /* MoreViewController.m */,
 				1B505EC518D0C63F00F168F8 /* CenterTextCell.h */,
 				1B505EC618D0C63F00F168F8 /* CenterTextCell.m */,
+				1B527C4018D0241D00A91339 /* MoreViewController.h */,
+				1B527C4118D0241D00A91339 /* MoreViewController.m */,
 				1BE6D46818D4F68500BE31B0 /* FeedbackViewController.h */,
 				1BE6D46918D4F68500BE31B0 /* FeedbackViewController.m */,
+				1B78A997191F24E800A4A8AD /* UWDeviceCell.h */,
+				1B78A998191F24E800A4A8AD /* UWDeviceCell.m */,
+				1B78A991191F0D8700A4A8AD /* UWManagerViewController.h */,
+				1B78A992191F0D8700A4A8AD /* UWManagerViewController.m */,
 			);
 			name = MoreViewController;
 			sourceTree = "<group>";
@@ -1160,11 +1175,14 @@
 				1BC7F35518F38F6900C21CFD /* LINEActivity.m in Sources */,
 				1B3A33F718D4D9250046DC73 /* AlertViewController.m in Sources */,
 				1B59BB2018C441AA00D6112B /* SearchViewController.m in Sources */,
+				1B78A999191F24E800A4A8AD /* UWDeviceCell.m in Sources */,
 				1B717E5F18A7F7DC00E20A29 /* DetailLinkCell.m in Sources */,
 				1B717E6518A809F900E20A29 /* DetailRSVPCell.m in Sources */,
 				1B58C36118F0634E003D9F9F /* UWAds.m in Sources */,
+				1B78A996191F1E7100A4A8AD /* UWDevice.m in Sources */,
 				1B717E6D18A80A7A00E20A29 /* InfoSessionCell.m in Sources */,
 				1BA1795C18F1AE5400FA5D05 /* HSLUpdateChecker.m in Sources */,
+				1B78A993191F0D8700A4A8AD /* UWManagerViewController.m in Sources */,
 				1B3A33B918D4D7690046DC73 /* UIWebView+AFNetworking.m in Sources */,
 				1BC7F36118F38F6900C21CFD /* WeixinActivityBase.m in Sources */,
 				1B3A33FF18D4D9B40046DC73 /* UWTermMenu.m in Sources */,
