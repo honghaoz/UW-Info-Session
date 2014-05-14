@@ -25,6 +25,7 @@
 @implementation UWAppDelegate {
     InfoSessionModel *_infoSessionModel;
     PFObject *currentDevice;
+    NSArray *pushChannels;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -73,10 +74,7 @@
     
     NSString *deviceName = [[UIDevice currentDevice] name];
     NSString *identifierForVendor = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    //NSLog(@"%@", identifierForVendor);
-//    NSLog(@"%@", [[UIDevice currentDevice] platform]);
-//    NSLog(@"%@", [[UIDevice currentDevice] platformString]);
-//    NSLog(@"%@", [[UIDevice currentDevice] hwmodel]);
+
     NSString *deviceType = [NSString stringWithFormat:@"%@ %@(%@)", [[UIDevice currentDevice] platformString], [[UIDevice currentDevice] platform], [[UIDevice currentDevice] hwmodel]];
     NSLog(@"%@", deviceType);
     
@@ -124,6 +122,15 @@
                                 object[@"Installation"] = [PFInstallation currentInstallation];
                                 object[@"Device_Type"] = deviceType;
 //                                object[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
+                                // initiate channels
+                                if (object[@"Channels"] != nil) {
+                                    NSLog(@"set channels");
+                                    [[PFInstallation currentInstallation] removeObjectForKey:@"channels"];
+                                    [[PFInstallation currentInstallation] addUniqueObjectsFromArray:object[@"Channels"] forKey:@"channels"];
+//                                    pushChannels = object[@"channels"];
+                                } else {
+//                                    pushChannels = nil;
+                                }
                                 if (object[@"Query_Key"] == nil && ![_infoSessionModel.apiKey isEqualToString:@"0"]) {
                                     NSLog(@"Key is nil, restore key");
                                     object[@"Query_Key"] = _infoSessionModel.apiKey;
@@ -164,6 +171,16 @@
                     object[@"Opens"] = [NSNumber numberWithInteger:[object[@"Opens"] integerValue] + 1];
                     object[@"App_Version"] = [UIApplication appVersion];
                     object[@"Installation"] = [PFInstallation currentInstallation];
+                    // initiate channels
+                    NSLog(@"start to set channels");
+                    if (object[@"Channels"] != nil) {
+                        NSLog(@"set channels");
+                        [[PFInstallation currentInstallation] removeObjectForKey:@"channels"];
+                        [[PFInstallation currentInstallation] addUniqueObjectsFromArray:object[@"Channels"] forKey:@"channels"];
+//                        pushChannels = object[@"channels"];
+                    } else {
+//                        pushChannels = nil;
+                    }
                     object[@"Device_Type"] = deviceType;
 //                    object[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
                     if (object[@"Query_Key"] == nil && ![_infoSessionModel.apiKey isEqualToString:@"0"]) {

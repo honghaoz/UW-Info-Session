@@ -13,7 +13,6 @@
 #import "DetailDescriptionCell.h"
 #import "DetailSwitchCell.h"
 
-
 #import "InfoSession.h"
 #import "InfoSessionModel.h"
 

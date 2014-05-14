@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B0A98821923BF61006AF24B /* UWCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B0A98811923BF61006AF24B /* UWCellScrollView.m */; };
 		1B19834918A618A60022A285 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19834818A618A60022A285 /* DetailViewController.m */; };
 		1B2040BF18B5DCB500C72D51 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2040BE18B5DCB500C72D51 /* CoreData.framework */; };
 		1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */; };
@@ -81,6 +82,7 @@
 		1B78A993191F0D8700A4A8AD /* UWManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A992191F0D8700A4A8AD /* UWManagerViewController.m */; };
 		1B78A996191F1E7100A4A8AD /* UWDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A995191F1E7100A4A8AD /* UWDevice.m */; };
 		1B78A999191F24E800A4A8AD /* UWDeviceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A998191F24E800A4A8AD /* UWDeviceCell.m */; };
+		1B78A99C192309A100A4A8AD /* UWGridTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A99B192309A100A4A8AD /* UWGridTableView.m */; };
 		1B8C557C18B7BCB60070CD82 /* EKEvent+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C557B18B7BCB60070CD82 /* EKEvent+NSCoding.m */; };
 		1B8EE15E18F238DC00DE8BD8 /* UWShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8EE15D18F238DC00DE8BD8 /* UWShareView.m */; };
 		1B8EE16118F23DDD00DE8BD8 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8EE16018F23DDD00DE8BD8 /* UIImage+ImageEffects.m */; };
@@ -154,6 +156,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1B0A98801923BF61006AF24B /* UWCellScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWCellScrollView.h; path = OtherViews/UWCellScrollView.h; sourceTree = "<group>"; };
+		1B0A98811923BF61006AF24B /* UWCellScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWCellScrollView.m; path = OtherViews/UWCellScrollView.m; sourceTree = "<group>"; };
 		1B19834718A618A60022A285 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ViewController/DetailViewController.h; sourceTree = "<group>"; };
 		1B19834818A618A60022A285 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController.m; path = ViewController/DetailViewController.m; sourceTree = "<group>"; };
 		1B2040BE18B5DCB500C72D51 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -292,6 +296,8 @@
 		1B78A995191F1E7100A4A8AD /* UWDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWDevice.m; path = Model/UWDevice.m; sourceTree = "<group>"; };
 		1B78A997191F24E800A4A8AD /* UWDeviceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWDeviceCell.h; path = TableViewCell/UWDeviceCell.h; sourceTree = "<group>"; };
 		1B78A998191F24E800A4A8AD /* UWDeviceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWDeviceCell.m; path = TableViewCell/UWDeviceCell.m; sourceTree = "<group>"; };
+		1B78A99A192309A100A4A8AD /* UWGridTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWGridTableView.h; path = OtherViews/UWGridTableView.h; sourceTree = "<group>"; };
+		1B78A99B192309A100A4A8AD /* UWGridTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWGridTableView.m; path = OtherViews/UWGridTableView.m; sourceTree = "<group>"; };
 		1B8C557A18B7BCB60070CD82 /* EKEvent+NSCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EKEvent+NSCoding.h"; path = "Category/EKEvent+NSCoding.h"; sourceTree = "<group>"; };
 		1B8C557B18B7BCB60070CD82 /* EKEvent+NSCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "EKEvent+NSCoding.m"; path = "Category/EKEvent+NSCoding.m"; sourceTree = "<group>"; };
 		1B8EE15C18F238DC00DE8BD8 /* UWShareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWShareView.h; path = OtherViews/UWShareView.h; sourceTree = "<group>"; };
@@ -651,10 +657,14 @@
 				1B527C4118D0241D00A91339 /* MoreViewController.m */,
 				1BE6D46818D4F68500BE31B0 /* FeedbackViewController.h */,
 				1BE6D46918D4F68500BE31B0 /* FeedbackViewController.m */,
+				1B0A98801923BF61006AF24B /* UWCellScrollView.h */,
+				1B0A98811923BF61006AF24B /* UWCellScrollView.m */,
 				1B78A997191F24E800A4A8AD /* UWDeviceCell.h */,
 				1B78A998191F24E800A4A8AD /* UWDeviceCell.m */,
 				1B78A991191F0D8700A4A8AD /* UWManagerViewController.h */,
 				1B78A992191F0D8700A4A8AD /* UWManagerViewController.m */,
+				1B78A99A192309A100A4A8AD /* UWGridTableView.h */,
+				1B78A99B192309A100A4A8AD /* UWGridTableView.m */,
 			);
 			name = MoreViewController;
 			sourceTree = "<group>";
@@ -1137,6 +1147,7 @@
 				1B3A33B318D4D7690046DC73 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				1BDD368118ECFAF10098EAAF /* UWGoogleAnalytics.m in Sources */,
 				1B3A33F218D4D8B30046DC73 /* REMenuContainerView.m in Sources */,
+				1B78A99C192309A100A4A8AD /* UWGridTableView.m in Sources */,
 				1B3A33B718D4D7690046DC73 /* UIProgressView+AFNetworking.m in Sources */,
 				1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */,
 				1BE6D46A18D4F68500BE31B0 /* FeedbackViewController.m in Sources */,
@@ -1176,6 +1187,7 @@
 				1B3A33F718D4D9250046DC73 /* AlertViewController.m in Sources */,
 				1B59BB2018C441AA00D6112B /* SearchViewController.m in Sources */,
 				1B78A999191F24E800A4A8AD /* UWDeviceCell.m in Sources */,
+				1B0A98821923BF61006AF24B /* UWCellScrollView.m in Sources */,
 				1B717E5F18A7F7DC00E20A29 /* DetailLinkCell.m in Sources */,
 				1B717E6518A809F900E20A29 /* DetailRSVPCell.m in Sources */,
 				1B58C36118F0634E003D9F9F /* UWAds.m in Sources */,

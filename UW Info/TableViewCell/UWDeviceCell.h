@@ -7,11 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+@class UWCellScrollView;
 
 @interface UWDeviceCell : UITableViewCell
 
-@property (nonatomic, strong) UILabel *deviceNameTextLabel;
-@property (nonatomic, strong) UILabel *queryKeyTextLabel;
-@property (nonatomic, strong) UILabel *openTimesTextLabel;
+@property (nonatomic, strong) UILabel *deviceName;
+@property (nonatomic, strong) UITextField *queryKey;
+@property (nonatomic, strong) UILabel *openTimes;
+@property (nonatomic, strong) UILabel *appVersion;
+@property (nonatomic, strong) UILabel *deviceType;
+@property (nonatomic, strong) UILabel *systemVersion;
+@property (nonatomic, strong) UILabel *channels;
+@property (nonatomic, strong) UILabel *created;
+@property (nonatomic, strong) UILabel *updated;
+@property (nonatomic, strong) UILabel *note;
+
+@property (nonatomic, strong) UWCellScrollView *scrollView;
 
 @end
