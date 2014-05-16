@@ -55,6 +55,7 @@
 #import "TTAppleMapsActivity.h"
 
 #import "NSString+Contain.h"
+#import "PullHeaderView.h"
 
 @interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate>
 
@@ -80,6 +81,9 @@
     NSNumber *latitude;
     NSNumber *longitude;
     NSString *building;
+    
+    PullHeaderPosition *nextPullView;
+    PullHeaderPosition *prevPullView;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -1652,6 +1656,8 @@
 //        }
 //        lastContentOffset = scrollView.contentOffset.y;
 //    }
+    
+    
 }
 
 #pragma mark - AlertViewController Delegate method
@@ -1726,6 +1732,40 @@
         controller.infoSessionModel = _infoSessionModel;
     }
 }
+
+- (void)goNext:(id)sender {
+    
+}
+
+- (void)goPrev:(id)sender {
+    
+}
+
+/**
+ *  Go to destionation View Controller
+ *
+ *  @param dest      the destionation View Controller
+ *  @param direction Transition direction
+ */
+- (void)preformTransitionToViewController:(UIViewController*)dest direction:(NSString*)direction {
+	//NSLog(@"segue identifier: %@, source: %@, destination: %@", self.identifier, sourceViewController, destinationController);
+    
+	CATransition* transition = [CATransition animation];
+	transition.duration = 0.5;
+	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+	transition.type = kCATransitionPush; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+	transition.subtype = direction; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+	
+    //	[self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+    [self.tableView.layer addAnimation:transition forKey:kCATransition];
+	
+	NSMutableArray *stack = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+	[stack removeLastObject];
+	[stack addObject:dest];
+	//	  [sourceViewController.navigationController pushViewController:destinationController animated:NO];
+	[self.navigationController setViewControllers:stack animated:NO];
+}
+
 
 #pragma mark - iAd delegate methods
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner {

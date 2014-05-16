@@ -350,7 +350,7 @@
     // Store the deviceToken in the current installation and save it to Parse.
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
     currentInstallation.badge = application.applicationIconBadgeNumber;
-    [currentInstallation addUniqueObject:@"Info_News" forKey:@"channels"];
+    //[currentInstallation addUniqueObject:@"Info_News" forKey:@"channels"];
     [currentInstallation setDeviceTokenFromData:newDeviceToken];
     currentInstallation[@"Device_Name"] = [[UIDevice currentDevice] name];
     [currentInstallation saveInBackground];

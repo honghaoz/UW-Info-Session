@@ -15,14 +15,37 @@
 //#import "UWGridTableView.h"
 #import "UWCellScrollView.h"
 #import "InfoSession.h"
+#import <objc/runtime.h>
 
-@interface UWManagerViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface UWManagerViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @end
 
 @implementation UWManagerViewController {
     CGPoint lastPosition;
     CGFloat widthOfTable;
+    BOOL deviceNameSortAscending;
+    BOOL queryKeySortAscending;
+    BOOL openTimesSortAscending;
+    BOOL appVersionSortAscending;
+    BOOL noteSortAscending;
+    BOOL deviceTypeSortAscending;
+    BOOL systemVersionSortAscending;
+    BOOL createTimeSortAscending;
+    BOOL updateTimeSortAscending;
+    BOOL channelsSortAscending;
+    
+    NSMutableArray *pfobjects;
+    UIButton *deviceButton;
+    UIButton *queryKeyButton;
+    UIButton *openTimesButton;
+    UIButton *appVersionButton;
+    UIButton *deviceTypeButton;
+    UIButton *systemVersionButton;
+    UIButton *channelsButton;
+    UIButton *createdButton;
+    UIButton *updatedButton;
+    UIButton *noteButton;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -48,6 +71,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
     
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(done)];
     [self.navigationItem setRightBarButtonItem:doneButton];
@@ -82,85 +106,97 @@
     
     CGFloat seperatorWidth = 10;
     CGFloat deviceNameWidth = 200;
-    UIButton *deviceButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    deviceButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [deviceButton setTitle:@"Device Name" forState:UIControlStateNormal];
     [deviceButton setTitleColor:UWBlack forState:UIControlStateNormal];
     deviceButton.frame = CGRectMake(seperatorWidth, 0, deviceNameWidth, heightOfTitleBar);
     deviceButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:deviceButton];
+    [deviceButton addTarget:self action:@selector(deviceNameSort) forControlEvents:UIControlEventTouchUpInside];
     
     CGFloat queryKeyWidth = 30;
-    UIButton *queryKeyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    queryKeyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [queryKeyButton setTitle:@"Key" forState:UIControlStateNormal];
     [queryKeyButton setTitleColor:UWBlack forState:UIControlStateNormal];
     queryKeyButton.frame = CGRectMake(deviceButton.frame.origin.x + deviceButton.frame.size.width + seperatorWidth, 0, queryKeyWidth, heightOfTitleBar);
     queryKeyButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:queryKeyButton];
+    [queryKeyButton addTarget:self action:@selector(queryKeySort) forControlEvents:UIControlEventTouchUpInside];
     
     CGFloat openTimesWidth = 40;
-    UIButton *openTimesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    openTimesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [openTimesButton setTitle:@"Open" forState:UIControlStateNormal];
     [openTimesButton setTitleColor:UWBlack forState:UIControlStateNormal];
     openTimesButton.frame = CGRectMake(queryKeyButton.frame.origin.x + queryKeyButton.frame.size.width + seperatorWidth, 0, openTimesWidth, heightOfTitleBar);
     openTimesButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:openTimesButton];
+    [openTimesButton addTarget:self action:@selector(openTimesSort) forControlEvents:UIControlEventTouchUpInside];
     
     CGFloat appVersionWidth = 70;
-    UIButton *appVersionButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    appVersionButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [appVersionButton setTitle:@"Version" forState:UIControlStateNormal];
     [appVersionButton setTitleColor:UWBlack forState:UIControlStateNormal];
     appVersionButton.frame = CGRectMake(openTimesButton.frame.origin.x + openTimesButton.frame.size.width + seperatorWidth, 0, appVersionWidth, heightOfTitleBar);
     appVersionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:appVersionButton];
+    [appVersionButton addTarget:self action:@selector(appVersionSort) forControlEvents:UIControlEventTouchUpInside];
     
     CGFloat deviceTypeWidth = 200;
-    UIButton *deviceTypeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    deviceTypeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [deviceTypeButton setTitle:@"Device Type" forState:UIControlStateNormal];
     [deviceTypeButton setTitleColor:UWBlack forState:UIControlStateNormal];
     deviceTypeButton.frame = CGRectMake(appVersionButton.frame.origin.x + appVersionButton.frame.size.width + seperatorWidth, 0, deviceTypeWidth, heightOfTitleBar);
     deviceTypeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:deviceTypeButton];
+    [deviceTypeButton addTarget:self action:@selector(deviceTypeSort) forControlEvents:UIControlEventTouchUpInside];
     
     CGFloat systemVersionWidth = 70;
-    UIButton *systemVersionButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    systemVersionButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [systemVersionButton setTitle:@"System" forState:UIControlStateNormal];
     [systemVersionButton setTitleColor:UWBlack forState:UIControlStateNormal];
     systemVersionButton.frame = CGRectMake(deviceTypeButton.frame.origin.x + deviceTypeButton.frame.size.width + seperatorWidth, 0, systemVersionWidth, heightOfTitleBar);
     systemVersionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:systemVersionButton];
+    [systemVersionButton addTarget:self action:@selector(systemVersionSort) forControlEvents:UIControlEventTouchUpInside];
     
     CGFloat channelsWidth = 120;
-    UIButton *channelsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    channelsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [channelsButton setTitle:@"Channels" forState:UIControlStateNormal];
     [channelsButton setTitleColor:UWBlack forState:UIControlStateNormal];
     channelsButton.frame = CGRectMake(systemVersionButton.frame.origin.x + systemVersionButton.frame.size.width + seperatorWidth, 0, channelsWidth, heightOfTitleBar);
     channelsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:channelsButton];
+    [channelsButton addTarget:self action:@selector(channelsSort) forControlEvents:UIControlEventTouchUpInside];
     
     CGFloat createdWidth = 130;
-    UIButton *createdButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    createdButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [createdButton setTitle:@"Created" forState:UIControlStateNormal];
     [createdButton setTitleColor:UWBlack forState:UIControlStateNormal];
+    //[createdButton setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.2]];
     createdButton.frame = CGRectMake(channelsButton.frame.origin.x + channelsButton.frame.size.width + seperatorWidth, 0, createdWidth, heightOfTitleBar);
     createdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:createdButton];
+    [createdButton addTarget:self action:@selector(createTimeSort) forControlEvents:UIControlEventTouchUpInside];
     
     CGFloat updatedWidth = 130;
-    UIButton *updatedButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    updatedButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [updatedButton setTitle:@"Updated" forState:UIControlStateNormal];
     [updatedButton setTitleColor:UWBlack forState:UIControlStateNormal];
     updatedButton.frame = CGRectMake(createdButton.frame.origin.x + createdButton.frame.size.width + seperatorWidth, 0, updatedWidth, heightOfTitleBar);
     updatedButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:updatedButton];
+    [updatedButton addTarget:self action:@selector(updateTimeSort) forControlEvents:UIControlEventTouchUpInside];
     
     CGFloat noteWidth = 100;
-    UIButton *noteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    noteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [noteButton setTitle:@"Notes" forState:UIControlStateNormal];
     [noteButton setTitleColor:UWBlack forState:UIControlStateNormal];
     noteButton.frame = CGRectMake(updatedButton.frame.origin.x + updatedButton.frame.size.width + seperatorWidth, 0, noteWidth, heightOfTitleBar);
     noteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:noteButton];
+    [noteButton addTarget:self action:@selector(noteSort) forControlEvents:UIControlEventTouchUpInside];
     
+    pfobjects = [[NSMutableArray alloc] init];
     
     __block NSInteger numberOfDevice = 0;
     PFQuery *query = [PFQuery queryWithClassName:@"Device"];
@@ -216,10 +252,15 @@
                 } else {
                     newDevice.note = Note;
                 }
-                
+                objc_setAssociatedObject(newDevice, @"PFObject", object, OBJC_ASSOCIATION_RETAIN);
                 // add this new device object to the array
                 [self.devices addObject:newDevice];
+                //[pfobjects addObject:object];
             }
+            NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createTime"
+                                                                           ascending:NO];
+            NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+            [_devices sortUsingDescriptors:sortDescriptors];
             NSLog(@"devices: %d", [self.devices count]);
             [_tableView reloadData];
         } else {
@@ -290,12 +331,32 @@
     }
     UWDevice *theDevice = [self.devices objectAtIndex:indexPath.row];
     cell.deviceName.text = theDevice.deviceName;
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+    [singleTap setNumberOfTapsRequired:1];
+    cell.deviceName.userInteractionEnabled = YES;
+    [cell.deviceName addGestureRecognizer:singleTap];
+    //[cell.scrollView addGestureRecognizer:singleTap];
+    
     cell.queryKey.text = theDevice.queryKey;
     if ([theDevice.queryKey isEqualToString:@"null"]) {
         cell.queryKey.textColor = [UIColor lightGrayColor];
     } else {
         cell.queryKey.textColor = [UIColor blackColor];
     }
+    //cell.queryKey.delegate = self;
+    [cell.queryKey setDelegate:self];
+    //[cell.queryKey setKeyboardType:UIKeyboardTypeDefault];
+    [cell.queryKey setReturnKeyType:UIReturnKeyDone];
+    [cell.queryKey addTarget:self action:@selector(queryKeyChangedDone:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ResignKeyboard" object:nil queue:nil usingBlock:^(NSNotification *note) {
+        //[cell.queryKey.delegate textFieldShouldReturn:cell.queryKey];
+        [cell.queryKey resignFirstResponder];
+    }];
+    //[[NSNotificationCenter defaultCenter] addObserver:cell.queryKey selector:@selector() name:@"ResignKeyboard" object:nil];
+    objc_setAssociatedObject(cell.queryKey, @"Device", theDevice, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(cell.queryKey, @"Key", @"QueryKey", OBJC_ASSOCIATION_RETAIN);
+    
     cell.openTimes.text = [NSString stringWithFormat:@"%d", [theDevice.openTimes integerValue]];
     cell.appVersion.text = theDevice.appVersion;
     if ([theDevice.appVersion isEqualToString:@"null"]) {
@@ -320,21 +381,39 @@
     cell.created.text = [dateFormatter stringFromDate:theDevice.createTime];
     cell.updated.text = [dateFormatter stringFromDate:theDevice.updateTime];
     cell.channels.text = [theDevice.channels componentsJoinedByString:@", "];
-//    if ([theDevice.channels isEqualToString:@"null"]) {
-//        cell.channels.textColor = [UIColor lightGrayColor];
-//    } else {
-//        cell.channels.textColor = [UIColor blackColor];
-//    }
+    [cell.channels setDelegate:self];
+    [cell.channels setReturnKeyType:UIReturnKeyDone];
+    [cell.channels addTarget:self action:@selector(channelsChangedDone:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ResignKeyboard" object:nil queue:nil usingBlock:^(NSNotification *note) {
+        //[cell.queryKey.delegate textFieldShouldReturn:cell.queryKey];
+        [cell.channels resignFirstResponder];
+    }];
+    objc_setAssociatedObject(cell.channels, @"Device", theDevice, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(cell.channels, @"Key", @"Channels", OBJC_ASSOCIATION_RETAIN);
+    
+    
     cell.note.text = theDevice.note;
     if ([theDevice.note isEqualToString:@"null"]) {
         cell.note.textColor = [UIColor lightGrayColor];
     } else {
         cell.note.textColor = [UIColor blackColor];
     }
-    
+    [cell.note setDelegate:self];
+    [cell.note setReturnKeyType:UIReturnKeyDone];
+    [cell.note addTarget:self action:@selector(noteChangedDone:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ResignKeyboard" object:nil queue:nil usingBlock:^(NSNotification *note) {
+        //[cell.queryKey.delegate textFieldShouldReturn:cell.queryKey];
+        [cell.note resignFirstResponder];
+    }];
+    objc_setAssociatedObject(cell.note, @"Device", theDevice, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(cell.note, @"Key", @"Note", OBJC_ASSOCIATION_RETAIN);
     
     [cell.scrollView setDelegate:self];
+    cell.scrollView.contentOffset = lastPosition;
     [[NSNotificationCenter defaultCenter] addObserver:cell.scrollView selector:@selector(updateContentOffset:) name:@"UpdateContentOffset" object:nil];
+//    [cell.contentView addSubview:cell.scrollView];
+    //NSLog(@"add observer: %d", indexPath.row);
+//    objc_setAssociatedObject(cell.scrollView, @"PFObject", [pfobjects objectAtIndex:indexPath.row], OBJC_ASSOCIATION_RETAIN);
     return cell;
 }
 
@@ -348,15 +427,341 @@
     return 30;
 }
 
-#pragma makr - scrollView delegate
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    UWDeviceCell *theCell = (UWDeviceCell *)cell;
+    [[NSNotificationCenter defaultCenter] removeObserver:theCell.scrollView];
+//    [theCell.scrollView removeFromSuperview];
+    //NSLog(@"remove observer: %d", indexPath.row);
+}
+
+#pragma mark - scrollView delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ResignKeyboard" object:nil];
     if ((lastPosition.y - scrollView.contentOffset.y) == 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateContentOffset" object:self userInfo:[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:scrollView.contentOffset] forKey:@"CurrentContentOffset"]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateContentOffset" object:nil userInfo:[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:scrollView.contentOffset] forKey:@"CurrentContentOffset"]];
+        lastPosition = scrollView.contentOffset;
     }
     //NSLog(@"scrollView offset: %@", NSStringFromCGPoint(scrollView.contentOffset));
     //NSLog(@"post notification");
-    lastPosition = scrollView.contentOffset;
+}
+
+#pragma mark - textField delegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    if ([textField.text isEqualToString:@"null"]) {
+        textField.text = @"";
+    }
+    textField.textColor = [UIColor blackColor];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    NSString *key = objc_getAssociatedObject(textField, @"Key");
+    if ([key isEqualToString:@"Note"]) {
+        UWDevice *theDevice = objc_getAssociatedObject(textField, @"Device");
+        textField.text = theDevice.note;
+    } else if ([key isEqualToString:@"QueryKey"]) {
+        UWDevice *theDevice = objc_getAssociatedObject(textField, @"Device");
+        textField.text = theDevice.queryKey;
+    }
+    if ([textField.text isEqualToString:@"null"]) {
+        textField.textColor = [UIColor lightGrayColor];
+    } else {
+        textField.textColor = [UIColor blackColor];
+    }
+}
+
+#pragma mark - others
+- (void)handleSingleTap:(UIGestureRecognizer *)gestureRecognizer {
+    //NSLog(@"single Tap on imageview");
+    UILabel *labelTapped = (UILabel *)gestureRecognizer.view;
+    //NSLog(@"%@", labelTapped.text);
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:[NSString stringWithFormat:@"%@", labelTapped.text] message:[NSString stringWithFormat:@"Send notification to %@", labelTapped.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alert addButtonWithTitle:@"Send"];
+    alert.tag = 0;
+    objc_setAssociatedObject(alert, @"DeviceName", labelTapped.text, OBJC_ASSOCIATION_RETAIN);
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 0) {
+        if (buttonIndex == 1) {  //Send
+            // Create our Installation query
+            PFQuery *pushQuery = [PFInstallation query];
+            [pushQuery whereKey:@"Device_Name" equalTo:objc_getAssociatedObject(alertView, @"DeviceName")];
+            // Send push notification to query
+            PFPush *push = [[PFPush alloc] init];
+            [push setQuery:pushQuery]; // Set our Installation query
+            UITextField *message = [alertView textFieldAtIndex:0];
+            [push setMessage:message.text];
+            [push sendPushInBackground];
+        }
+    }
+}
+
+- (void)deviceNameSort{
+    deviceNameSortAscending = !deviceNameSortAscending;
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"deviceName"
+                                                                   ascending:deviceNameSortAscending];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [_devices sortUsingDescriptors:sortDescriptors];
+    //    if (!deviceNameSortAscending) {
+    //        [deviceButton setTitle:@"Device Name ▾" forState:UIControlStateNormal];
+    //    } else {
+    //        [deviceButton setTitle:@"Device Name ▴" forState:UIControlStateNormal];
+    //    }
+    [_tableView reloadData];
+}
+
+- (void)queryKeySort{
+    queryKeySortAscending = !queryKeySortAscending;
+    //    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"queryKey"
+    //                                                                   ascending:queryKeySortAscending];
+    //    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    //    [_devices sortUsingDescriptors:sortDescriptors];
+    NSLog(@"queryKey sort");
+    _devices = [NSMutableArray arrayWithArray:[_devices sortedArrayUsingComparator:^NSComparisonResult(UWDevice *a, UWDevice *b){
+        NSNumber *aKey = [NSNumber numberWithInteger:[a.queryKey integerValue]];
+        NSNumber *bKey = [NSNumber numberWithInteger:[b.queryKey integerValue]];
+        if (queryKeySortAscending) {
+            return [aKey compare:bKey];
+        } else {
+            return [bKey compare:aKey];
+        }
+    }]];
+    [_tableView reloadData];
+}
+
+- (void)openTimesSort{
+    openTimesSortAscending = !openTimesSortAscending;
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"openTimes"
+                                                                   ascending:openTimesSortAscending];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [_devices sortUsingDescriptors:sortDescriptors];
+    [_tableView reloadData];
+}
+
+- (void)appVersionSort{
+    appVersionSortAscending = !appVersionSortAscending;
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"appVersion"
+                                                                   ascending:appVersionSortAscending];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [_devices sortUsingDescriptors:sortDescriptors];
+    //    if (!appVersionSortAscending) {
+    //        [appVersionButton setTitle:@"Version ▾" forState:UIControlStateNormal];
+    //    } else {
+    //        [appVersionButton setTitle:@"Version ▴" forState:UIControlStateNormal];
+    //    }
+    [_tableView reloadData];
+}
+
+- (void)noteSort{
+    noteSortAscending = !noteSortAscending;
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"note"
+                                                                   ascending:noteSortAscending];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [_devices sortUsingDescriptors:sortDescriptors];
+    [_tableView reloadData];
+}
+
+- (void)deviceTypeSort{
+    deviceTypeSortAscending = !deviceTypeSortAscending;
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"deviceType"
+                                                                   ascending:deviceTypeSortAscending];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [_devices sortUsingDescriptors:sortDescriptors];
+    [_devices sortUsingDescriptors:sortDescriptors];
+    //    if (!deviceTypeSortAscending) {
+    //        [deviceTypeButton setTitle:@"Device Type ▾" forState:UIControlStateNormal];
+    //    } else {
+    //        [deviceTypeButton setTitle:@"Device Type ▴" forState:UIControlStateNormal];
+    //    }
+    [_tableView reloadData];
+}
+
+- (void)systemVersionSort{
+    systemVersionSortAscending = !systemVersionSortAscending;
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"systemVersion"
+                                                                   ascending:systemVersionSortAscending];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [_devices sortUsingDescriptors:sortDescriptors];
+    //    if (!systemVersionSortAscending) {
+    //        [systemVersionButton setTitle:@"System ▾" forState:UIControlStateNormal];
+    //    } else {
+    //        [systemVersionButton setTitle:@"System ▴" forState:UIControlStateNormal];
+    //    }
+    [_tableView reloadData];
+}
+
+- (void)createTimeSort{
+    createTimeSortAscending = !createTimeSortAscending;
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createTime"
+                                                                   ascending:createTimeSortAscending];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [_devices sortUsingDescriptors:sortDescriptors];
+    [_devices sortUsingDescriptors:sortDescriptors];
+    //    if (!createTimeSortAscending) {
+    //        [createdButton setTitle:@"Created ▾" forState:UIControlStateNormal];
+    //    } else {
+    //        [createdButton setTitle:@"Created ▴" forState:UIControlStateNormal];
+    //    }
+    [_tableView reloadData];
+}
+
+- (void)updateTimeSort{
+    updateTimeSortAscending = !updateTimeSortAscending;
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"updateTime"
+                                                                   ascending:updateTimeSortAscending];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [_devices sortUsingDescriptors:sortDescriptors];
+    [_devices sortUsingDescriptors:sortDescriptors];
+    //    if (!updateTimeSortAscending) {
+    //        [updatedButton setTitle:@"Updated ▾" forState:UIControlStateNormal];
+    //    } else {
+    //        [updatedButton setTitle:@"Updated ▴" forState:UIControlStateNormal];
+    //    }
+    [_tableView reloadData];
+}
+
+- (void)channelsSort{
+    channelsSortAscending = !channelsSortAscending;
+    _devices = [NSMutableArray arrayWithArray:[_devices sortedArrayUsingComparator:^NSComparisonResult(UWDevice *a, UWDevice *b){
+        NSString *aa = [a.channels objectAtIndex:0];
+        NSString *bb = [b.channels objectAtIndex:0];
+        //NSNumber *aKey = [NSNumber numberWithInteger:[a.queryKey integerValue]];
+        //NSNumber *bKey = [NSNumber numberWithInteger:[b.queryKey integerValue]];
+        if (channelsSortAscending) {
+            return [aa compare:bb];
+        } else {
+            return [bb compare:aa];
+        }
+    }]];
+    [_tableView reloadData];
+
+    //    channelsSortAscending = !channelsSortAscending;
+    //    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"channels"
+    //                                                                   ascending:channelsSortAscending];
+    //    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    //    [_devices sortUsingDescriptors:sortDescriptors];
+    //    [_tableView reloadData];
+}
+
+- (void)queryKeyChangedDone:(id)sender {
+    UWDevice *theDevice = objc_getAssociatedObject(sender, @"Device");
+    //NSLog(@"%@", theDevice.deviceName);
+    PFObject *thePFObject = objc_getAssociatedObject(theDevice, @"PFObject");
+    thePFObject[@"Query_Key"] = [(UITextField *)sender text];
+    theDevice.queryKey = [(UITextField *)sender text];
+    [thePFObject saveInBackground];
+    //NSLog(@"%@", [(UITextField *)sender text]);
+}
+
+- (void)noteChangedDone:(id)sender {
+    UWDevice *theDevice = objc_getAssociatedObject(sender, @"Device");
+    //NSLog(@"%@", theDevice.deviceName);
+    PFObject *thePFObject = objc_getAssociatedObject(theDevice, @"PFObject");
+    if ([[(UITextField *)sender text] isEqualToString:@"null"] ||
+        [[(UITextField *)sender text] isEqualToString:@""]) {
+        //thePFObject[@"Note"] = nil;
+        [thePFObject removeObjectForKey:@"Note"];
+        theDevice.note = @"null";
+    } else {
+        thePFObject[@"Note"] = [(UITextField *)sender text];
+        theDevice.note = [(UITextField *)sender text];
+    }
+    [thePFObject saveInBackground];
+    //NSLog(@"%@", [(UITextField *)sender text]);
+}
+
+- (void)channelsChangedDone:(id)sender {
+    UWDevice *theDevice = objc_getAssociatedObject(sender, @"Device");
+    //NSLog(@"%@", theDevice.deviceName);
+    PFObject *thePFObject = objc_getAssociatedObject(theDevice, @"PFObject");
+    if ([[(UITextField *)sender text] isEqualToString:@""]) {
+        //thePFObject[@"Note"] = nil;
+        [thePFObject removeObjectForKey:@"Channels"];
+        theDevice.channels = nil;
+    } else {
+        thePFObject[@"Channels"] = [[(UITextField *)sender text] componentsSeparatedByString:@", "];
+        theDevice.channels = [[(UITextField *)sender text] componentsSeparatedByString:@", "];
+    }
+    [thePFObject saveInBackground];
+    //NSLog(@"%@", [(UITextField *)sender text]);
+}
+
+- (void)reload:(id)sender {
+    __block NSInteger numberOfDevice = 0;
+    PFQuery *query = [PFQuery queryWithClassName:@"Device"];
+    //[queryForId whereKey:@"Installation" notEqualTo:nil];
+    [query setLimit: 1000];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            numberOfDevice = [objects count];
+            NSLog(@"count %d", numberOfDevice);
+            [self setNumberOfDevices:numberOfDevice];
+            [self.devices removeAllObjects];
+            for (PFObject *object in objects) {
+                // create a new device object and initialize it
+                UWDevice *newDevice = [[UWDevice alloc] init];
+                newDevice.deviceName = object[@"Device_Name"];
+                NSString *Query_Key = object[@"Query_Key"];
+                if (Query_Key == nil) {
+                    newDevice.queryKey = @"null";
+                } else {
+                    newDevice.queryKey = Query_Key;
+                }
+                newDevice.openTimes = [NSNumber numberWithInteger:[object[@"Opens"] integerValue]];
+                
+                NSString *App_Version = object[@"App_Version"];
+                if (App_Version == nil) {
+                    newDevice.appVersion = @"null";
+                } else {
+                    newDevice.appVersion = App_Version;
+                }
+                
+                NSString *Device_Type = object[@"Device_Type"];
+                if (Device_Type == nil) {
+                    newDevice.deviceType = @"null";
+                } else {
+                    newDevice.deviceType = Device_Type;
+                }
+                
+                NSString *System_Version = object[@"System_Version"];
+                if (System_Version == nil) {
+                    newDevice.systemVersion = @"null";
+                } else {
+                    newDevice.systemVersion = System_Version;
+                }
+                
+                newDevice.createTime = object.createdAt;
+                newDevice.updateTime = object.updatedAt;
+                
+                newDevice.channels = object[@"Channels"];
+                
+                NSString *Note = object[@"Note"];
+                if (Note == nil) {
+                    newDevice.note = @"null";
+                } else {
+                    newDevice.note = Note;
+                }
+                objc_setAssociatedObject(newDevice, @"PFObject", object, OBJC_ASSOCIATION_RETAIN);
+                // add this new device object to the array
+                [self.devices addObject:newDevice];
+                //[pfobjects addObject:object];
+            }
+            NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createTime"
+                                                                           ascending:NO];
+            NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+            [_devices sortUsingDescriptors:sortDescriptors];
+            NSLog(@"devices: %d", [self.devices count]);
+            [_tableView reloadData];
+        } else {
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
 }
 
 @end

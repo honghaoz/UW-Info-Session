@@ -16,7 +16,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        _scrollView = [[UWCellScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+        _scrollView = [[UWCellScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 32)];
         
         _scrollView.backgroundColor = [UIColor clearColor];
         [_scrollView setShowsHorizontalScrollIndicator:NO];
@@ -60,7 +60,7 @@
         [_scrollView addSubview:_systemVersion];
         
         CGFloat channelsWidth = 120;
-        _channels = [[UILabel alloc] initWithFrame:CGRectMake(_systemVersion.frame.origin.x + _systemVersion.frame.size.width + seperatorWidth, 3, channelsWidth, 24)];
+        _channels = [[UITextField alloc] initWithFrame:CGRectMake(_systemVersion.frame.origin.x + _systemVersion.frame.size.width + seperatorWidth, 3, channelsWidth, 24)];
         [_channels setTextAlignment:NSTextAlignmentLeft];
         [_channels setFont:[UIFont systemFontOfSize:13]];
         [_scrollView addSubview:_channels];
@@ -78,7 +78,7 @@
         [_scrollView addSubview:_updated];
         
         CGFloat noteWidth = 100;
-        _note = [[UILabel alloc] initWithFrame:CGRectMake(_updated.frame.origin.x + _updated.frame.size.width + seperatorWidth, 3, noteWidth, 24)];
+        _note = [[UITextField alloc] initWithFrame:CGRectMake(_updated.frame.origin.x + _updated.frame.size.width + seperatorWidth, 3, noteWidth, 24)];
         [_note setTextAlignment:NSTextAlignmentLeft];
         [_note setFont:[UIFont systemFontOfSize:13]];
         [_scrollView addSubview:_note];

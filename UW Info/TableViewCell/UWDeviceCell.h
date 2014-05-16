@@ -17,10 +17,10 @@
 @property (nonatomic, strong) UILabel *appVersion;
 @property (nonatomic, strong) UILabel *deviceType;
 @property (nonatomic, strong) UILabel *systemVersion;
-@property (nonatomic, strong) UILabel *channels;
+@property (nonatomic, strong) UITextField *channels;
 @property (nonatomic, strong) UILabel *created;
 @property (nonatomic, strong) UILabel *updated;
-@property (nonatomic, strong) UILabel *note;
+@property (nonatomic, strong) UITextField *note;
 
 @property (nonatomic, strong) UWCellScrollView *scrollView;
 
