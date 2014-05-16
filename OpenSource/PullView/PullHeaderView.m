@@ -108,16 +108,17 @@ static int kObservingContentSizeChangesContext;
     }
 }
 
-- (CGRect)makeFrameForScrollView:(UIScrollView*)scollView position:(PullHeaderPosition)position {
+- (CGRect)makeFrameForScrollView:(UIScrollView*)scrollView position:(PullHeaderPosition)position {
 	float y;
 	if (position == PullHeaderTop) {
-		y = 0.0f - HEIGHT;
+//		y = 0.0f - HEIGHT;
+        y = scrollView.contentInset.top - HEIGHT;
 	} else {
-		y = scollView.contentSize.height;
+		y = scrollView.contentSize.height + scrollView.contentInset.bottom;
 	}
 	float h = HEIGHT;
 	
-	CGRect frame = CGRectMake(0.0f, y, scollView.contentSize.width, h);
+	CGRect frame = CGRectMake(0.0f, y, scrollView.contentSize.width, h);
 //	  CGRect frame = CGRectMake(0.0f, 0.0f - scrollView.frame.size.height, scrollView.frame.size.width, scrollView.frame.size.height);
 	return frame;
 }

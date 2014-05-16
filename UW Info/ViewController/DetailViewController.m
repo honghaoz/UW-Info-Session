@@ -57,7 +57,7 @@
 #import "NSString+Contain.h"
 #import "PullHeaderView.h"
 
-@interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate>
+@interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate, PullHeaderDelegate>
 
 @property (nonatomic, strong) DetailDescriptionCell *programCell;
 @property (nonatomic, strong) DetailDescriptionCell *descriptionCell;
@@ -82,8 +82,9 @@
     NSNumber *longitude;
     NSString *building;
     
-    PullHeaderPosition *nextPullView;
-    PullHeaderPosition *prevPullView;
+    PullHeaderView *nextPullView;
+    PullHeaderView *prevPullView;
+    BOOL isLoading;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -184,7 +185,41 @@
             }
         }
     }
+    
+    // add pull views
+    if (nextPullView == nil) {
+//        nextPullView = [[PullHeaderView alloc] initWithScrollView:self.tableView arrowImageName:@"blackArrow.png" textColor:[UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0] subText:@"next article" position:PullHeaderBottom];
+//        nextPullView.delegate = self;
+//        [self.tableView addSubview:nextPullView];
+        NSLog(@"table view: %@", NSStringFromCGRect(self.tableView.frame));
+        NSLog(@"table edge inset: %@", NSStringFromUIEdgeInsets(self.tableView.contentInset));
+        [self.tableView setContentInset:UIEdgeInsetsMake(100, 0, 0, 0)];
+        NSLog(@"table content size: %@", NSStringFromCGSize(self.tableView.contentSize));
+    }
+    if (prevPullView == nil) {
+//        prevPullView = [[PullHeaderView alloc] initWithScrollView:self.tableView arrowImageName:@"blackArrow.png" textColor:[UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0] subText:@"prev article" position:PullHeaderTop];
+//        prevPullView.delegate = self;
+//        [self.tableView addSubview:prevPullView];
+    }
+//    [nextPullView updateSubtext];
+//	[prevPullView updateSubtext];
 }
+
+- (void)reloadTableViewDataSource{
+	
+	//	should be calling your tableviews data source model to reload
+	//	put here just for demo
+	isLoading = YES;
+	
+}
+
+- (void)doneLoadingTableViewData{
+	//	model should call this when its done loading
+	isLoading = NO;
+	[nextPullView pullHeaderScrollViewDataSourceDidFinishedLoading:self.tableView];
+	[prevPullView pullHeaderScrollViewDataSourceDidFinishedLoading:self.tableView];
+}
+
 
 - (void)setBarIcon {
     // initiate the right buttons
@@ -1656,8 +1691,13 @@
 //        }
 //        lastContentOffset = scrollView.contentOffset.y;
 //    }
-    
-    
+    [nextPullView pullHeaderScrollViewDidScroll:scrollView];
+	[prevPullView pullHeaderScrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+	[nextPullView pullHeaderScrollViewDidEndDragging:scrollView];
+	[prevPullView pullHeaderScrollViewDidEndDragging:scrollView];
 }
 
 #pragma mark - AlertViewController Delegate method
@@ -1733,11 +1773,39 @@
     }
 }
 
+#pragma mark - pull to navigation methods
+
+- (void)pullHeaderDidTrigger:(PullHeaderView*)view {
+	if (view == prevPullView) {
+		NSLog(@"Go previous action");
+		[self goPrevious:nil];
+	} else {
+		NSLog(@"Go next action");
+		[self goNext:nil];
+	}
+	[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
+}
+
+- (BOOL)pullHeaderSourceIsLoading:(PullHeaderView*)view {
+	return isLoading; // should return if data source model is reloading
+}
+
+- (NSString*)pullHeaderSubtext:(PullHeaderView*)view {
+	NSString *subText;
+	if (view == prevPullView) {
+		subText = @"[Previous article title]";
+	} else {
+		subText = @"[Next article title]";
+	}
+    //	  NSLog(@"returns subText: %@", subText);
+	return subText;
+}
+
 - (void)goNext:(id)sender {
     
 }
 
-- (void)goPrev:(id)sender {
+- (void)goPrevious:(id)sender {
     
 }
 
@@ -1749,7 +1817,6 @@
  */
 - (void)preformTransitionToViewController:(UIViewController*)dest direction:(NSString*)direction {
 	//NSLog(@"segue identifier: %@, source: %@, destination: %@", self.identifier, sourceViewController, destinationController);
-    
 	CATransition* transition = [CATransition animation];
 	transition.duration = 0.5;
 	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -1801,6 +1868,8 @@
     [UIView setAnimationDuration:0.5];
     //[banner setAlpha:1];
     [self.tableView setContentInset:UIEdgeInsetsMake(banner.frame.size.height + 44, 0, self.tabBarController.tabBar.frame.size.height, 0)];
+    NSLog(@"table edge inset: %@", NSStringFromUIEdgeInsets(self.tableView.contentInset));
+    NSLog(@"table content size: %@", NSStringFromCGSize(self.tableView.contentSize));
     [UIView commitAnimations];
     
 }

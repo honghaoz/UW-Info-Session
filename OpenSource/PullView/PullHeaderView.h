@@ -33,7 +33,6 @@ typedef enum{
 	CALayer *_arrowImage;
 	UIActivityIndicatorView *_activityView;
 	
-	
 }
 
 @property(nonatomic,assign) NSObject <PullHeaderDelegate> *delegate;

@@ -23,6 +23,7 @@
 
 @implementation UWManagerViewController {
     CGPoint lastPosition;
+    CGPoint lastUpdatedPosition;
     CGFloat widthOfTable;
     BOOL deviceNameSortAscending;
     BOOL queryKeySortAscending;
@@ -46,6 +47,10 @@
     UIButton *createdButton;
     UIButton *updatedButton;
     UIButton *noteButton;
+    
+    NSMutableArray *displayedCells;
+    UWCellScrollView *titleBarScrollView;
+    BOOL shouldPostResignKeyboard;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -98,11 +103,11 @@
     
     CGFloat heightOfTitleBar = 25;
     widthOfTable = 640;
-    UWCellScrollView *titleBarScrollView = [[UWCellScrollView alloc] initWithFrame:CGRectMake(0, heightOfTop + heightOfCountView, widthOfTable, heightOfTitleBar)];
+    titleBarScrollView = [[UWCellScrollView alloc] initWithFrame:CGRectMake(0, heightOfTop + heightOfCountView, widthOfTable, heightOfTitleBar)];
     [titleBarScrollView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:titleBarScrollView];
     [titleBarScrollView setDelegate:self];
-    [[NSNotificationCenter defaultCenter] addObserver:titleBarScrollView selector:@selector(updateContentOffset:) name:@"UpdateContentOffset" object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:titleBarScrollView selector:@selector(updateContentOffset:) name:@"UpdateContentOffset" object:nil];
     
     CGFloat seperatorWidth = 10;
     CGFloat deviceNameWidth = 200;
@@ -296,6 +301,10 @@
 //    shapeLayer.fillColor = [[UIColor clearColor] CGColor];
 //    
 //    [self.view.layer addSublayer:shapeLayer];
+    if (displayedCells == nil) {
+        displayedCells = [[NSMutableArray alloc] init];
+    }
+    //[displayedCells addObject:titleBarScrollView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -353,6 +362,7 @@
         //[cell.queryKey.delegate textFieldShouldReturn:cell.queryKey];
         [cell.queryKey resignFirstResponder];
     }];
+    [cell.queryKey setAutocorrectionType:UITextAutocorrectionTypeNo];
     //[[NSNotificationCenter defaultCenter] addObserver:cell.queryKey selector:@selector() name:@"ResignKeyboard" object:nil];
     objc_setAssociatedObject(cell.queryKey, @"Device", theDevice, OBJC_ASSOCIATION_RETAIN);
     objc_setAssociatedObject(cell.queryKey, @"Key", @"QueryKey", OBJC_ASSOCIATION_RETAIN);
@@ -377,7 +387,7 @@
         cell.systemVersion.textColor = [UIColor blackColor];
     }
     NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
-    [dateFormatter setDateFormat:@"MMM d, y, H:m"];
+    [dateFormatter setDateFormat:@"MMM d, y, HH:mm"];
     cell.created.text = [dateFormatter stringFromDate:theDevice.createTime];
     cell.updated.text = [dateFormatter stringFromDate:theDevice.updateTime];
     cell.channels.text = [theDevice.channels componentsJoinedByString:@", "];
@@ -390,7 +400,7 @@
     }];
     objc_setAssociatedObject(cell.channels, @"Device", theDevice, OBJC_ASSOCIATION_RETAIN);
     objc_setAssociatedObject(cell.channels, @"Key", @"Channels", OBJC_ASSOCIATION_RETAIN);
-    
+    [cell.channels setAutocorrectionType:UITextAutocorrectionTypeNo];
     
     cell.note.text = theDevice.note;
     if ([theDevice.note isEqualToString:@"null"]) {
@@ -407,13 +417,15 @@
     }];
     objc_setAssociatedObject(cell.note, @"Device", theDevice, OBJC_ASSOCIATION_RETAIN);
     objc_setAssociatedObject(cell.note, @"Key", @"Note", OBJC_ASSOCIATION_RETAIN);
+    [cell.note setAutocorrectionType:UITextAutocorrectionTypeNo];
     
     [cell.scrollView setDelegate:self];
-    cell.scrollView.contentOffset = lastPosition;
-    [[NSNotificationCenter defaultCenter] addObserver:cell.scrollView selector:@selector(updateContentOffset:) name:@"UpdateContentOffset" object:nil];
+    cell.scrollView.contentOffset = lastUpdatedPosition;
+    //[[NSNotificationCenter defaultCenter] addObserver:cell.scrollView selector:@selector(updateContentOffset:) name:@"UpdateContentOffset" object:nil];
 //    [cell.contentView addSubview:cell.scrollView];
     //NSLog(@"add observer: %d", indexPath.row);
 //    objc_setAssociatedObject(cell.scrollView, @"PFObject", [pfobjects objectAtIndex:indexPath.row], OBJC_ASSOCIATION_RETAIN);
+    [displayedCells addObject:cell];
     return cell;
 }
 
@@ -429,7 +441,8 @@
 
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     UWDeviceCell *theCell = (UWDeviceCell *)cell;
-    [[NSNotificationCenter defaultCenter] removeObserver:theCell.scrollView];
+    [displayedCells removeObject:theCell];
+    //[[NSNotificationCenter defaultCenter] removeObserver:theCell.scrollView];
 //    [theCell.scrollView removeFromSuperview];
     //NSLog(@"remove observer: %d", indexPath.row);
 }
@@ -437,14 +450,38 @@
 #pragma mark - scrollView delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ResignKeyboard" object:nil];
-    if ((lastPosition.y - scrollView.contentOffset.y) == 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateContentOffset" object:nil userInfo:[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:scrollView.contentOffset] forKey:@"CurrentContentOffset"]];
-        lastPosition = scrollView.contentOffset;
+    //NSLog(@"last y: %0.2f", lastPosition.y);
+    //NSLog(@"scroll y: %0.2f", scrollView.contentOffset.y);
+    if ([scrollView isMemberOfClass:[UWCellScrollView class]]) {
+        lastUpdatedPosition = scrollView.contentOffset;
+        [self updateContentOffset];
     }
+//    if (lastUpdatedPosition.y == scrollView.contentOffset.y) {
+//        //[[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateContentOffset" object:nil userInfo:[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:scrollView.contentOffset] forKey:@"CurrentContentOffset"]];
+//        
+//    }
+    //lastPosition = scrollView.contentOffset;
     //NSLog(@"scrollView offset: %@", NSStringFromCGPoint(scrollView.contentOffset));
     //NSLog(@"post notification");
 }
+
+- (void)updateContentOffset {
+    //NSLog(@"update contentOffset");
+    titleBarScrollView.contentOffset = lastUpdatedPosition;
+    for (UWDeviceCell *eachCell in displayedCells) {
+        eachCell.scrollView.contentOffset = lastUpdatedPosition;
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (shouldPostResignKeyboard) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ResignKeyboard" object:nil];
+    }
+}
+//
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"ResignKeyboard" object:nil];
+//}
 
 #pragma mark - textField delegate
 
@@ -453,6 +490,7 @@
         textField.text = @"";
     }
     textField.textColor = [UIColor blackColor];
+    shouldPostResignKeyboard = YES;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -469,6 +507,7 @@
     } else {
         textField.textColor = [UIColor blackColor];
     }
+    shouldPostResignKeyboard = NO;
 }
 
 #pragma mark - others
@@ -559,10 +598,34 @@
 
 - (void)noteSort{
     noteSortAscending = !noteSortAscending;
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"note"
-                                                                   ascending:noteSortAscending];
-    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-    [_devices sortUsingDescriptors:sortDescriptors];
+//    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"note"
+//                                                                   ascending:noteSortAscending];
+//    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+//    [_devices sortUsingDescriptors:sortDescriptors];
+    _devices = [NSMutableArray arrayWithArray:[_devices sortedArrayUsingComparator:^NSComparisonResult(UWDevice *a, UWDevice *b){
+//        NSNumber *aKey = [NSNumber numberWithInteger:[a.queryKey integerValue]];
+//        NSNumber *bKey = [NSNumber numberWithInteger:[b.queryKey integerValue]];
+        if ([a.note isEqualToString:@"null"] && [b.note isEqualToString:@"null"]) {
+            return NSOrderedSame;
+        }
+        if (noteSortAscending) {
+            if ([a.note isEqualToString:@"null"]) {
+                return NSOrderedDescending;
+            } else if ([b.note isEqualToString:@"null"]) {
+                return NSOrderedAscending;
+            } else {
+                return [a.note compare:b.note];
+            }
+        } else {
+            if ([a.note isEqualToString:@"null"]) {
+                return NSOrderedAscending;
+            } else if ([b.note isEqualToString:@"null"]) {
+                return NSOrderedDescending;
+            } else {
+                return [b.note compare:a.note];
+            }
+        }
+    }]];
     [_tableView reloadData];
 }
 
