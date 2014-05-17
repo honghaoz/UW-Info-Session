@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "AlertViewController.h"
-#import "PullHeaderView.h"
+//#import "PullHeaderView.h"
 
 @class InfoSession;
 @class InfoSessionModel;

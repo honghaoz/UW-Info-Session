@@ -93,4 +93,7 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 
 - (void)setOfflineMode:(BOOL)isOff;
 
+- (InfoSession *)getPreviousInfoSessionAccordingInfoSession:(InfoSession *)info;
+- (InfoSession *)getNextInfoSessionAccordingInfoSession:(InfoSession *)info;
+
 @end

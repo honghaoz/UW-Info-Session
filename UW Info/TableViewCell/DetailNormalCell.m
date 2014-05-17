@@ -15,6 +15,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        NSLog(@"normal cell called");
+        //[self ]
     }
     return self;
 }

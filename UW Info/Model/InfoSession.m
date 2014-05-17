@@ -94,6 +94,7 @@ static EKEventStore *eventStore;
     self.sessionId = (NSUInteger)[[attributes valueForKeyPath:@"id"] integerValue];
     //NSLog(@"%i", self.SessionId);
     self.employer = [attributes valueForKeyPath:@"employer"];
+    self.employer = [self.employer stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     NSString *cancelledString = @"CANCELLED";
     // is employer's name contains @"CANCELLED", then this info session is cancelled.

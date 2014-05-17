@@ -55,9 +55,10 @@
 #import "TTAppleMapsActivity.h"
 
 #import "NSString+Contain.h"
-#import "PullHeaderView.h"
+//#import "PullHeaderView.h"
+#import "ZHHPullView.h"
 
-@interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate, PullHeaderDelegate>
+@interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate, ZHHPullViewDelegate>
 
 @property (nonatomic, strong) DetailDescriptionCell *programCell;
 @property (nonatomic, strong) DetailDescriptionCell *descriptionCell;
@@ -66,6 +67,8 @@
 - (IBAction)addToMyInfo:(id)sender;
 
 @end
+
+static int kObservingContentInsetChangesContext = 1;
 
 @implementation DetailViewController {
     NSInteger noteLines;
@@ -82,9 +85,11 @@
     NSNumber *longitude;
     NSString *building;
     
-    PullHeaderView *nextPullView;
-    PullHeaderView *prevPullView;
+    
+    ZHHPullView *nextPullView;
+    ZHHPullView *prevPullView;
     BOOL isLoading;
+    //UIViewController *destinationViewController;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -98,9 +103,9 @@
 
 - (void)viewDidLoad
 {
+    NSLog(@"detail view did load start");
     [super viewDidLoad];
     //self.title = @"Details";
-    
     // if caller is Info
     if ([_caller isEqualToString:@"InfoSessionsViewController"] || [_caller isEqualToString:@"SearchViewController"]) {
         _openedMyInfo = NO;
@@ -187,39 +192,25 @@
     }
     
     // add pull views
+    CGFloat topOffset = self.navigationController.navigationBar.frame.size.height + 20;
+    CGFloat bottomOffset = self.tabBarController.tabBar.frame.size.height;
     if (nextPullView == nil) {
-//        nextPullView = [[PullHeaderView alloc] initWithScrollView:self.tableView arrowImageName:@"blackArrow.png" textColor:[UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0] subText:@"next article" position:PullHeaderBottom];
-//        nextPullView.delegate = self;
-//        [self.tableView addSubview:nextPullView];
-        NSLog(@"table view: %@", NSStringFromCGRect(self.tableView.frame));
-        NSLog(@"table edge inset: %@", NSStringFromUIEdgeInsets(self.tableView.contentInset));
-        [self.tableView setContentInset:UIEdgeInsetsMake(100, 0, 0, 0)];
-        NSLog(@"table content size: %@", NSStringFromCGSize(self.tableView.contentSize));
+        nextPullView = [[ZHHPullView alloc] initWithScrollView:self.tableView arrowImageName:@"blueArrow.png" textColor:[UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0] subtext:@"next article" position:PullBottom withTopOffset:0 andBottomOffset:bottomOffset];
+        nextPullView.delegate = self;
+        [self.tableView addSubview:nextPullView];
     }
     if (prevPullView == nil) {
-//        prevPullView = [[PullHeaderView alloc] initWithScrollView:self.tableView arrowImageName:@"blackArrow.png" textColor:[UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0] subText:@"prev article" position:PullHeaderTop];
-//        prevPullView.delegate = self;
-//        [self.tableView addSubview:prevPullView];
+        prevPullView = [[ZHHPullView alloc] initWithScrollView:self.tableView arrowImageName:@"blueArrow.png" textColor:[UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0] subtext:@"prev article" position:PullTop withTopOffset:topOffset andBottomOffset:0];
+        prevPullView.delegate = self;
+        [self.tableView addSubview:prevPullView];
     }
-//    [nextPullView updateSubtext];
-//	[prevPullView updateSubtext];
+    [nextPullView updateSubtext];
+	[prevPullView updateSubtext];
+    
+//    [self.tableView addObserver:self forKeyPath:@"contentInset" options:NSKeyValueObservingOptionNew context:&kObservingContentInsetChangesContext];
+    
+    NSLog(@"detail view did load end");
 }
-
-- (void)reloadTableViewDataSource{
-	
-	//	should be calling your tableviews data source model to reload
-	//	put here just for demo
-	isLoading = YES;
-	
-}
-
-- (void)doneLoadingTableViewData{
-	//	model should call this when its done loading
-	isLoading = NO;
-	[nextPullView pullHeaderScrollViewDataSourceDidFinishedLoading:self.tableView];
-	[prevPullView pullHeaderScrollViewDataSourceDidFinishedLoading:self.tableView];
-}
-
 
 - (void)setBarIcon {
     // initiate the right buttons
@@ -247,7 +238,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    NSLog(@"detailView appear");
+    NSLog(@"detailView will appear start");
     _tabBarController.lastTapped = -1;
     [super viewWillAppear:animated];
     _performedNavigation = @"";
@@ -255,9 +246,11 @@
     [self updateBarIcon];
     ad = [UWAds singleton];
     [ad resetAdView:self OriginY:-30];
+    NSLog(@"detailView will appear end");
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    NSLog(@"detaiView did disappear start");
     [super viewWillDisappear:animated];
     //NSLog(@"preformedNavigation: %@", _performedNavigation);
     if ([_performedNavigation isEqualToString:@""]) {
@@ -265,6 +258,7 @@
             [self addToMyInfo:nil];
         }
     }
+    NSLog(@"detaiView did disappear end");
 }
 
 - (void)didReceiveMemoryWarning
@@ -561,14 +555,23 @@
 {
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            DetailNormalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
+            DetailNormalCell *cell = (DetailNormalCell *)[tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
+            //printNil(cell);
+            if (cell == nil) {
+                cell = [[DetailNormalCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailNormalCell"];
+            }
+            //printNil(cell);
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Employer";
             cell.contentLabel.text = _infoSession.employer;
+            NSLog(@"cell: %@", cell.contentLabel.text);
             return cell;
         }
         else if (indexPath.row == 1) {
             DetailNormalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
+            if (cell == nil) {
+                cell = [[DetailNormalCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailNormalCell"];
+            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Date";
 //            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -583,6 +586,9 @@
         }
         else if (indexPath.row == 2) {
             DetailNormalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
+            if (cell == nil) {
+                cell = [[DetailNormalCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailNormalCell"];
+            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Time";
 //            NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
@@ -597,6 +603,9 @@
         }
         else if (indexPath.row == 3) {
             DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
+            if (cell == nil) {
+                cell = [[DetailLinkCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailLinkCell"];
+            }
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             [cell.contentLabel setFont:[UIFont systemFontOfSize:16]];
             cell.titleLabel.text = @"Location";
@@ -612,6 +621,9 @@
         }
         else if (indexPath.row == 4) {
             DetailRSVPCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailRSVPCell"];
+            if (cell == nil) {
+                cell = [[DetailRSVPCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailRSVPCell"];
+            }
             if (_infoSession.sessionId > 10) {
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
                 [cell.contentLabel setTextColor: [UIColor darkGrayColor]];
@@ -631,6 +643,11 @@
             // the alert switch row
             if (indexPath.row == 0) {
                 DetailSwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailSwitchCell"];
+                printNil(cell);
+                if (cell == nil) {
+                    cell = [[DetailSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailSwitchCell"];
+                }
+                printNil(cell);
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
                 [cell.remindSwitch setOn:YES animated:YES];
@@ -652,6 +669,9 @@
             // the last row, add more alert
             else if (indexPath.row == [_infoSession.alerts count] + 1) {
                 LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddAlertCell"];
+                if (cell == nil) {
+                    cell = [[LoadingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"AddAlertCell"];
+                }
                 cell.loadingLabel.text = @"Add more alert";
                 [cell.loadingLabel setTextColor:[UIColor darkGrayColor]];
                 return cell;
@@ -659,6 +679,9 @@
             // alert item rows
             else {
                 DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
+                if (cell == nil) {
+                    cell = [[DetailLinkCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailLinkCell"];
+                }
                 [cell.contentLabel setFont:[UIFont systemFontOfSize:16]];
                 [cell.contentLabel setTextColor: [UIColor blackColor]];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -671,6 +694,9 @@
             }
         } else {
             DetailSwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailSwitchCell"];
+            if (cell == nil) {
+                cell = [[DetailSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailSwitchCell"];
+            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
             [cell.remindSwitch setOn:NO animated:YES];
@@ -687,6 +713,9 @@
     else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
             DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
+            if (cell == nil) {
+                cell = [[DetailLinkCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailLinkCell"];
+            }
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             cell.titleLabel.text = @"Website";
             if ([_infoSession.website length] <= 7) {
@@ -705,6 +734,9 @@
         }
         else if (indexPath.row == 1){
             DetailNormalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
+            if (cell == nil) {
+                cell = [[DetailNormalCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailNormalCell"];
+            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Students";
             cell.contentLabel.text = _infoSession.audience;
@@ -712,6 +744,9 @@
         }
         else if (indexPath.row == 2) {
             DetailDescriptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailDescriptionCell"];
+            if (cell == nil) {
+                cell = [[DetailDescriptionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailDescriptionCell"];
+            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.contentText setSelectable:YES];
             [cell.contentText setFont:[UIFont systemFontOfSize:15]];
@@ -747,6 +782,9 @@
         }
         else if (indexPath.row == 3) {
             DetailDescriptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailDescriptionCell"];
+            if (cell == nil) {
+                cell = [[DetailDescriptionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailDescriptionCell"];
+            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.contentText setSelectable:YES];
             [cell.contentText setFont:[UIFont systemFontOfSize:15]];
@@ -784,6 +822,9 @@
     else if (indexPath.section == 3) {
         if (indexPath.row == 0) {
             DetailDescriptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailDescriptionCell"];
+            if (cell == nil) {
+                cell = [[DetailDescriptionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailDescriptionCell"];
+            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Notes";
             [cell.contentText setSelectable:YES];
@@ -811,6 +852,9 @@
     else if (indexPath.section == 4){
         if (indexPath.row == 0) {
             LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddAlertCell"];
+            if (cell == nil) {
+                cell = [[LoadingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"AddAlertCell"];
+            }
             cell.loadingLabel.text = @"Delete From My Info Sessions";
             [cell.loadingLabel setTextColor:[UIColor redColor]];
             return cell;
@@ -1691,13 +1735,15 @@
 //        }
 //        lastContentOffset = scrollView.contentOffset.y;
 //    }
-    [nextPullView pullHeaderScrollViewDidScroll:scrollView];
-	[prevPullView pullHeaderScrollViewDidScroll:scrollView];
+//    NSLog(@"tableView did scroll :%f", scrollView.contentOffset.y);
+    [nextPullView pullViewScrollViewDidScroll:scrollView];
+	[prevPullView pullViewScrollViewDidScroll:scrollView];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-	[nextPullView pullHeaderScrollViewDidEndDragging:scrollView];
-	[prevPullView pullHeaderScrollViewDidEndDragging:scrollView];
+//    NSLog(@"tableView did end dragging :%f", scrollView.contentOffset.y);
+    [nextPullView pullViewScrollViewDidEndDragging:scrollView];
+	[prevPullView pullViewScrollViewDidEndDragging:scrollView];
 }
 
 #pragma mark - AlertViewController Delegate method
@@ -1758,7 +1804,6 @@
 {
     if ([segue.identifier isEqualToString:@"ShowAlert"]) {
         _performedNavigation = @"ShowAlert";
-        
         AlertViewController *controller = segue.destinationViewController;
         controller.infoSession = self.infoSession;
         controller.infoSessionModel = self.infoSessionModel;
@@ -1775,7 +1820,7 @@
 
 #pragma mark - pull to navigation methods
 
-- (void)pullHeaderDidTrigger:(PullHeaderView*)view {
+- (void)pullViewDidTrigger:(ZHHPullView*)view {
 	if (view == prevPullView) {
 		NSLog(@"Go previous action");
 		[self goPrevious:nil];
@@ -1783,14 +1828,14 @@
 		NSLog(@"Go next action");
 		[self goNext:nil];
 	}
-	[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
+	//[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
 }
 
-- (BOOL)pullHeaderSourceIsLoading:(PullHeaderView*)view {
+- (BOOL)pullViewSourceIsLoading:(ZHHPullView*)view {
 	return isLoading; // should return if data source model is reloading
 }
 
-- (NSString*)pullHeaderSubtext:(PullHeaderView*)view {
+- (NSString*)pullViewSubtext:(ZHHPullView*)view {
 	NSString *subText;
 	if (view == prevPullView) {
 		subText = @"[Previous article title]";
@@ -1802,11 +1847,51 @@
 }
 
 - (void)goNext:(id)sender {
-    
+    NSLog(@"goNext");
+    InfoSession *nextInfo = [_infoSessionModel getNextInfoSessionAccordingInfoSession:_infoSession];
+    NSLog(@"%@", nextInfo.employer);
+//    DetailViewController *nextDetailVC = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
+//    _tabBarController.detailViewControllerOfTabbar0 = nextDetailVC;
+//    nextDetailVC.caller = @"InfoSessionsViewController";
+//    nextDetailVC.infoSession = nextInfo;
+//    nextDetailVC.infoSessionModel = _infoSessionModel;
+//    nextDetailVC.tabBarController = _tabBarController;
+    self.infoSession = nextInfo;
+    [self preformTransitionToViewController:self direction:kCATransitionFromTop];
 }
 
 - (void)goPrevious:(id)sender {
+    NSLog(@"goPrevious");
+    InfoSession *preInfo = [_infoSessionModel getPreviousInfoSessionAccordingInfoSession:_infoSession];
+    NSLog(@"%@", preInfo.employer);
     
+//    DetailViewController *preDetailVC = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
+//    
+//    _tabBarController.detailViewControllerOfTabbar0 = preDetailVC;
+//    preDetailVC.caller = @"InfoSessionsViewController";
+//    preDetailVC.infoSession = preInfo;
+//    preDetailVC.infoSessionModel = _infoSessionModel;
+//    preDetailVC.tabBarController = _tabBarController;
+    
+    self.infoSession = preInfo;
+    [self preformTransitionToViewController:self direction:kCATransitionFromBottom];
+
+}
+
+- (void)reloadTableViewDataSource{
+	//	should be calling your tableviews data source model to reload
+	//	put here just for demo
+    NSLog(@"reload table view data source");
+	isLoading = YES;
+	
+}
+//
+- (void)doneLoadingTableViewData{
+	//	model should call this when its done loading
+    NSLog(@"done reloading table view data");
+	isLoading = NO;
+	[nextPullView pullViewScrollViewDataSourceDidFinishedLoading:self.tableView];
+	[prevPullView pullViewScrollViewDataSourceDidFinishedLoading:self.tableView];
 }
 
 /**
@@ -1823,15 +1908,68 @@
 	transition.type = kCATransitionPush; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
 	transition.subtype = direction; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
 	
-    //	[self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+    //[self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
     [self.tableView.layer addAnimation:transition forKey:kCATransition];
-	
+    DetailViewController *destinationVC = (DetailViewController *)dest;
+    [destinationVC.tableView.layer addAnimation:transition forKey:kCATransition];
+//    NSMutableArray *stack = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+//	[stack removeLastObject];
+//	[self.navigationController popViewControllerAnimated:NO];
+//    [self.navigationController pushViewController:dest animated:NO];
 	NSMutableArray *stack = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
 	[stack removeLastObject];
-	[stack addObject:dest];
-	//	  [sourceViewController.navigationController pushViewController:destinationController animated:NO];
+	[stack addObject:destinationVC];
+//	//	  [sourceViewController.navigationController pushViewController:destinationController animated:NO];
 	[self.navigationController setViewControllers:stack animated:NO];
+    if (self == dest) {
+        //[self.tableView reloadData];
+//        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+//        dispatch_group_t group = dispatch_group_create();
+//        dispatch_group_async(group, queue, ^{
+            [self viewWillDisappear:YES];
+            [self viewDidDisappear:YES];
+            [self viewDidLoad];
+            [self viewWillAppear:YES];
+//        });
+    }
+//    if (direction == kCATransitionFromTop) {
+//        [self.tableView ]
+//        [self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top)];
+//    }
+//    destinationViewController = dest;
+//    [self.view addSubview:dest.view];
+//    // match the new view size to the current view size
+//    dest.view.frame = self.view.bounds;
+//    // position it just below the bottom edge of the current view
+//    dest.view.transform =
+//    CGAffineTransformMakeTranslation(0,self.view.bounds.size.height);
+//    [UIView beginAnimations:nil context:(__bridge void *)(dest)];
+//    [UIView setAnimationDuration:0.4];
+//    [UIView setAnimationDelegate:self];
+//    [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+//    // slide it upwards until it eclipses the current view
+//    dest.view.transform = CGAffineTransformMakeTranslation(0,0);
+//    // here I would also slide up the post button to give it the attached appearance
+//    [UIView commitAnimations];
 }
+
+//- (void)animationDidStop:(NSString *)animationID
+//                finished:(NSNumber *)finished
+//                 context:(void *)context {
+//    // remove the new PostingVC from our own view (we passed it in as the
+//    // animation context)
+//    UIViewController *postingVC = (__bridge UIViewController*)context;
+//    [postingVC.view removeFromSuperview];
+//    // setup a crossfade which will apply mainly to the nav bar as we push
+//    // the new controller onto the UINavigationController stack
+//    CATransition* transition = [CATransition animation];
+//    transition.duration = 0.2; // fairly quick
+//    transition.type = kCATransitionFade;
+//    [self.navigationController.view.layer addAnimation:transition
+//                                                forKey:kCATransition];
+//    [self.navigationController pushViewController:postingVC animated:NO];
+//    //[postingVC release];
+//}
 
 
 #pragma mark - iAd delegate methods
@@ -1885,4 +2023,19 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
     [self.tableView setContentInset:UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height + 10, 0, self.tabBarController.tabBar.frame.size.height, 0)];
     [UIView commitAnimations];
 }
+
+//#pragma mark - KVO methods
+//
+//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+//    if (context == &kObservingContentInsetChangesContext) {
+//        //UIScrollView *scrollView = object;
+//        //NSLog(@"scrollView contentSize changed to %@", NSStringFromCGSize(scrollView.contentSize));
+//        //NSLog(@"scrollView contentInset changed to %@", NSStringFromUIEdgeInsets(scrollView.contentInset));
+//		//[self pullViewScrollViewDidChange:scrollView];
+//        [self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top)];
+//    } else {
+//        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+//    }
+//}
+
 @end

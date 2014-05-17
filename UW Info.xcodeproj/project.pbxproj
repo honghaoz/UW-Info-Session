@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B01C3091926831B0071AA73 /* ZHHPullView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B01C3081926831B0071AA73 /* ZHHPullView.m */; };
 		1B0A98821923BF61006AF24B /* UWCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B0A98811923BF61006AF24B /* UWCellScrollView.m */; };
 		1B19834918A618A60022A285 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19834818A618A60022A285 /* DetailViewController.m */; };
 		1B2040BF18B5DCB500C72D51 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2040BE18B5DCB500C72D51 /* CoreData.framework */; };
@@ -156,6 +157,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1B01C3071926831B0071AA73 /* ZHHPullView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZHHPullView.h; path = "UW Info/OtherViews/ZHHPullView.h"; sourceTree = SOURCE_ROOT; };
+		1B01C3081926831B0071AA73 /* ZHHPullView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZHHPullView.m; path = "UW Info/OtherViews/ZHHPullView.m"; sourceTree = SOURCE_ROOT; };
 		1B0A98801923BF61006AF24B /* UWCellScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWCellScrollView.h; path = OtherViews/UWCellScrollView.h; sourceTree = "<group>"; };
 		1B0A98811923BF61006AF24B /* UWCellScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWCellScrollView.m; path = OtherViews/UWCellScrollView.m; sourceTree = "<group>"; };
 		1B19834718A618A60022A285 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ViewController/DetailViewController.h; sourceTree = "<group>"; };
@@ -702,6 +705,8 @@
 		1B78A96E191E813C00A4A8AD /* PullView */ = {
 			isa = PBXGroup;
 			children = (
+				1B01C3071926831B0071AA73 /* ZHHPullView.h */,
+				1B01C3081926831B0071AA73 /* ZHHPullView.m */,
 				1B78A96F191E813C00A4A8AD /* PullHeaderView.h */,
 				1B78A970191E813C00A4A8AD /* PullHeaderView.m */,
 				1B78A972191E81C000A4A8AD /* Resources */,
@@ -1200,6 +1205,7 @@
 				1B3A33FF18D4D9B40046DC73 /* UWTermMenu.m in Sources */,
 				1BC7F36918F3981E00C21CFD /* JNJGoogleMapsActivity.m in Sources */,
 				1B3A340C18D4E2570046DC73 /* UIDevice-Hardware.m in Sources */,
+				1B01C3091926831B0071AA73 /* ZHHPullView.m in Sources */,
 				1B4DD55618AC90B4009B0214 /* MapViewController.m in Sources */,
 				1B3A33B618D4D7690046DC73 /* UIImageView+AFNetworking.m in Sources */,
 				1B8EE16118F23DDD00DE8BD8 /* UIImage+ImageEffects.m in Sources */,

@@ -283,6 +283,10 @@
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+//    [_tableView setContentInset:UIEdgeInsetsMake(30, 0, 0, 0)];
+//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, -10 - 30, 100, 10)];
+//    [view setBackgroundColor:[UIColor redColor]];
+//    [_tableView addSubview:view];
     
 //    CGRect gridTableFrame = CGRectMake(0, heightOfTop + heightOfCountView, screenSize.width, screenSize.height - heightOfTop - heightOfCountView);
 //    CGSize gridTableContentSize = CGSizeMake(2 * gridTableFrame.size.width, 2 * gridTableFrame.size.height);
@@ -456,6 +460,7 @@
         lastUpdatedPosition = scrollView.contentOffset;
         [self updateContentOffset];
     }
+    //NSLog(@"offset.y = %f", scrollView.contentOffset.y);
 //    if (lastUpdatedPosition.y == scrollView.contentOffset.y) {
 //        //[[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateContentOffset" object:nil userInfo:[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:scrollView.contentOffset] forKey:@"CurrentContentOffset"]];
 //        

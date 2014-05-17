@@ -783,4 +783,60 @@
     }
 }
 
+#pragma mark - other
+
+- (InfoSession *)getPreviousInfoSessionAccordingInfoSession:(InfoSession *)info {
+    NSLog(@"%@", info.employer);
+    for (NSString *key in _infoSessionsDictionary) {
+        NSMutableArray *infoSessionsOfThisWeek = _infoSessionsDictionary[key];
+        NSLog(@"count: %d", [infoSessionsOfThisWeek count]);
+        for (InfoSession *eachInfo in infoSessionsOfThisWeek) {
+            //NSLog(@"%@", eachInfo.employer);
+            if (info == eachInfo) {
+                if ([infoSessionsOfThisWeek firstObject] == info) {
+                    NSLog(@"first info of a week");
+                    NSString *preKey = NSIntegerToString([key integerValue] - 1);
+                    // if this week is the first week
+                    if (_infoSessionsDictionary[preKey] == nil) {
+                        return nil;
+                    } else {
+                        return (InfoSession *)[_infoSessionsDictionary[preKey] lastObject];
+                    }
+                }
+                else {
+                    NSInteger index = [infoSessionsOfThisWeek indexOfObject:info];
+                    return [infoSessionsOfThisWeek objectAtIndex:index - 1];
+                }
+            }
+        }
+    }
+    return nil;
+}
+- (InfoSession *)getNextInfoSessionAccordingInfoSession:(InfoSession *)info {
+    for (NSString *key in _infoSessionsDictionary) {
+        NSMutableArray *infoSessionsOfThisWeek = _infoSessionsDictionary[key];
+        NSLog(@"count: %d", [infoSessionsOfThisWeek count]);
+        for (InfoSession *eachInfo in infoSessionsOfThisWeek) {
+            //NSLog(@"%@", eachInfo.employer);
+            if (info == eachInfo) {
+                if ([infoSessionsOfThisWeek lastObject] == info) {
+                    NSLog(@"last info of a week");
+                    NSString *nextKey = NSIntegerToString([key integerValue] + 1);
+                    // if this week is the first week
+                    if (_infoSessionsDictionary[nextKey] == nil) {
+                        return nil;
+                    } else {
+                        return (InfoSession *)[_infoSessionsDictionary[nextKey] firstObject];
+                    }
+                }
+                else {
+                    NSInteger index = [infoSessionsOfThisWeek indexOfObject:info];
+                    return [infoSessionsOfThisWeek objectAtIndex:index + 1];
+                }
+            }
+        }
+    }
+    return nil;
+}
+
 @end
