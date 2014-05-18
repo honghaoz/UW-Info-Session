@@ -1108,7 +1108,6 @@
             } else {
                 [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
                 [SVProgressHUD showErrorWithStatus:@"Register not available!"];
-
             }
 //            NSURL *websiteUrl = [NSURL URLWithString:[NSString stringWithFormat:@"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=%@&mode=on", [NSString stringWithFormat:@"%lu", (unsigned long)_infoSession.sessionId]]];
 //            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:websiteUrl];
@@ -1123,7 +1122,6 @@
 //            
 //            NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 //            [connection start];
-            
         }
     }
     // select alert section
@@ -1219,32 +1217,42 @@
                                                 completionHandler:
                                       ^(NSData *data, NSURLResponse *response, NSError *error) {
                                           NSLog(@"%@", response);
-                                          
-                                          NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-                                          BOOL result = [self checkResponse:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
-                                          NSLog(@"%@", result? @"YES" : @"NO");
-                                          if (!result) {
-                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                  haveRegistered = YES;
-                                                  registerSucceed = NO;
-                                                  _infoSessionModel.uwValid = NO;
-                                                  rsvpCell.contentLabel.text = @"Register Failed!";
-                                                  [SVProgressHUD setAnimationDuration:3];
-                                                  [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
-                                                  [SVProgressHUD showErrorWithStatus:@"Register Failed!"];
-                                              });
+                                          NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+                                          NSInteger responseStatusCode = [httpResponse statusCode];
+                                          if (responseStatusCode == 200) {
+                                              //NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+                                              BOOL result = [self checkResponse:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+                                              NSLog(@"%@", result? @"YES" : @"NO");
+                                              if (!result) {
+                                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                                      haveRegistered = YES;
+                                                      registerSucceed = NO;
+                                                      _infoSessionModel.uwValid = NO;
+                                                      rsvpCell.contentLabel.text = @"Register Failed!";
+                                                      [SVProgressHUD setAnimationDuration:3];
+                                                      [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
+                                                      [SVProgressHUD showErrorWithStatus:@"Register Failed!"];
+                                                  });
+                                              } else {
+                                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                                      haveRegistered = YES;
+                                                      registerSucceed = YES;
+                                                      _infoSessionModel.uwValid = YES;
+                                                      rsvpCell.contentLabel.text = @"Register Succeed!";
+                                                      [SVProgressHUD setAnimationDuration:3];
+                                                      [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
+                                                      [SVProgressHUD showSuccessWithStatus:@"Register Succeed!"];
+                                                  });
+                                              }
+
                                           } else {
                                               dispatch_async(dispatch_get_main_queue(), ^{
-                                                  haveRegistered = YES;
-                                                  registerSucceed = YES;
-                                                  _infoSessionModel.uwValid = YES;
-                                                  rsvpCell.contentLabel.text = @"Register Succeed!";
                                                   [SVProgressHUD setAnimationDuration:3];
                                                   [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
-                                                  [SVProgressHUD showSuccessWithStatus:@"Register Succeed!"];
+                                                  [SVProgressHUD showErrorWithStatus:@"Network Error"];
                                               });
-
-                                          }}];
+                                          }
+                                      }];
         [task resume];
     }
 }
@@ -1705,7 +1713,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
         // if opend saved one, then detect whether some changes made.
         if ([_infoSessionBackup isChangedCompareTo:_infoSession]) {
             [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
-            [SVProgressHUD showSuccessWithStatus:@"Modified successfully!"];
+            [SVProgressHUD showSuccessWithStatus:@"Modified Successfully!"];
 //            [ProgressHUD showSuccess:@"Modified successfully!" Interacton:YES];
             [_infoSession scheduleNotifications];
             [self backupInfoSession];

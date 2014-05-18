@@ -10,7 +10,6 @@
 		1B01C3091926831B0071AA73 /* ZHHPullView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B01C3081926831B0071AA73 /* ZHHPullView.m */; };
 		1B0A98821923BF61006AF24B /* UWCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B0A98811923BF61006AF24B /* UWCellScrollView.m */; };
 		1B19834918A618A60022A285 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19834818A618A60022A285 /* DetailViewController.m */; };
-		1B19FE481928638900E0CA2D /* UWRSVPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19FE471928638900E0CA2D /* UWRSVPHelper.m */; };
 		1B19FE4B1928673500E0CA2D /* UWDetailRSVPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19FE4A1928673500E0CA2D /* UWDetailRSVPCell.m */; };
 		1B2040BF18B5DCB500C72D51 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2040BE18B5DCB500C72D51 /* CoreData.framework */; };
 		1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */; };
@@ -165,8 +164,6 @@
 		1B0A98811923BF61006AF24B /* UWCellScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWCellScrollView.m; path = OtherViews/UWCellScrollView.m; sourceTree = "<group>"; };
 		1B19834718A618A60022A285 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ViewController/DetailViewController.h; sourceTree = "<group>"; };
 		1B19834818A618A60022A285 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController.m; path = ViewController/DetailViewController.m; sourceTree = "<group>"; };
-		1B19FE461928638900E0CA2D /* UWRSVPHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWRSVPHelper.h; sourceTree = "<group>"; };
-		1B19FE471928638900E0CA2D /* UWRSVPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWRSVPHelper.m; sourceTree = "<group>"; };
 		1B19FE491928673500E0CA2D /* UWDetailRSVPCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWDetailRSVPCell.h; path = TableViewCell/UWDetailRSVPCell.h; sourceTree = "<group>"; };
 		1B19FE4A1928673500E0CA2D /* UWDetailRSVPCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWDetailRSVPCell.m; path = TableViewCell/UWDetailRSVPCell.m; sourceTree = "<group>"; };
 		1B2040BE18B5DCB500C72D51 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -701,8 +698,6 @@
 			children = (
 				1B19834718A618A60022A285 /* DetailViewController.h */,
 				1B19834818A618A60022A285 /* DetailViewController.m */,
-				1B19FE461928638900E0CA2D /* UWRSVPHelper.h */,
-				1B19FE471928638900E0CA2D /* UWRSVPHelper.m */,
 				1B8EE15C18F238DC00DE8BD8 /* UWShareView.h */,
 				1B8EE15D18F238DC00DE8BD8 /* UWShareView.m */,
 				1B4DD55718AC90B8009B0214 /* MapViewController */,
@@ -1151,7 +1146,6 @@
 				1B527C4218D0241D00A91339 /* MoreViewController.m in Sources */,
 				1BC7F37E18F3A62000C21CFD /* NSString+Contain.m in Sources */,
 				1B3A33F418D4D8B30046DC73 /* REMenuItemView.m in Sources */,
-				1B19FE481928638900E0CA2D /* UWRSVPHelper.m in Sources */,
 				1B3A33F018D4D8B30046DC73 /* RECommonFunctions.m in Sources */,
 				1BD12BAF18F484B3003BAA8C /* SVProgressHUD.m in Sources */,
 				1BA43E1D18FCDFCF008299EB /* UWErrorReport.m in Sources */,

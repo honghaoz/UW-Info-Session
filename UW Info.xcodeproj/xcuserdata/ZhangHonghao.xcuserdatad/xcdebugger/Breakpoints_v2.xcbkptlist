@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/ViewController/InfoSessionsViewController.m"
-            timestampString = "421726566.686846"
+            timestampString = "422143598.225999"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "168"
-            endingLineNumber = "168"
+            startingLineNumber = "187"
+            endingLineNumber = "187"
             landmarkName = "@implementation InfoSessionsViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/ViewController/InfoSessionsViewController.m"
-            timestampString = "421726566.686846"
+            timestampString = "422143598.225999"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "746"
-            endingLineNumber = "746"
+            startingLineNumber = "765"
+            endingLineNumber = "765"
             landmarkName = "@implementation InfoSessionsViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -218,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/ViewController/InfoSessionsViewController.m"
-            timestampString = "421726566.686846"
+            timestampString = "422143598.225999"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "190"
-            endingLineNumber = "190"
+            startingLineNumber = "209"
+            endingLineNumber = "209"
             landmarkName = "-reload:"
             landmarkType = "5">
          </BreakpointContent>
@@ -250,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/ViewController/DetailViewController.m"
-            timestampString = "422138351.049321"
+            timestampString = "422139494.303026"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1506"
-            endingLineNumber = "1506"
+            startingLineNumber = "1515"
+            endingLineNumber = "1515"
             landmarkName = "@implementation DetailViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -282,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/ViewController/InfoSessionsViewController.m"
-            timestampString = "421726566.686846"
+            timestampString = "422143598.225999"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "269"
-            endingLineNumber = "269"
+            startingLineNumber = "288"
+            endingLineNumber = "288"
             landmarkName = "-infoSessionModeldidUpdateInfoSessions:"
             landmarkType = "5">
          </BreakpointContent>
