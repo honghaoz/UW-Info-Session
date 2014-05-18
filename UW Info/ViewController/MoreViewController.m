@@ -279,7 +279,13 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-//            [self preformTransitionToViewController:self direction:kCATransitionFromBottom];
+//            NSURLSession *session = [NSURLSession sharedSession];
+//            NSURLSessionDataTask *dataTask = [session dataTaskWithURL:[NSURL URLWithString:@"https://h344zhan:Zhh358279765099@info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=2447&mode=on"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+//                NSLog(@"%@", response);
+//                NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+//            }];
+//            [dataTask resume];
+            
             toManager_tappedTimes++;
             NSLog(@"%d", toManager_tappedTimes);
             if (toManager_tappedTimes % 12 == 0) {

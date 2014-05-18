@@ -398,6 +398,9 @@
     [archiver encodeObject:_term forKey:@"term"];
     [archiver encodeObject:_termInfoDic forKey:@"termInfoDic"];
     [archiver encodeObject:_apiKey forKey:@"apiKey"];
+    [archiver encodeObject:_uwUsername forKey:@"uwUsername"];
+    [archiver encodeObject:_uwPassword forKey:@"uwPassword"];
+    [archiver encodeBool:_uwValid forKey:@"uwValid"];
     [archiver finishEncoding];
     [data writeToFile:[InfoSessionModel dataFilePath:@"InfoSession.plist"] atomically:YES];
 }
@@ -423,6 +426,10 @@
         _term = [unarchiver decodeObjectForKey:@"term"];
         _termInfoDic = [unarchiver decodeObjectForKey:@"termInfoDic"];
         _apiKey = [unarchiver decodeObjectForKey:@"apiKey"];
+        _uwUsername = [unarchiver decodeObjectForKey:@"uwUsername"];
+        _uwPassword = [unarchiver decodeObjectForKey:@"uwPassword"];
+        _uwValid = [unarchiver decodeBoolForKey:@"uwValid"];
+    
         [unarchiver finishDecoding];
     }else{
         //self.lists = [[NSMutableArray alloc]initWithCapacity:20];
@@ -471,7 +478,9 @@
         self.term = [aDecoder decodeObjectForKey:@"term"];
         self.termInfoDic = [aDecoder decodeObjectForKey:@"termInfoDic"];
         self.apiKey = [aDecoder decodeObjectForKey:@"apiKey"];
-        
+        self.uwValid = [aDecoder decodeBoolForKey:@"uwValid"];
+        self.uwUsername = [aDecoder decodeObjectForKey:@"uwUsername"];
+        self.uwPassword = [aDecoder decodeObjectForKey:@"uwPassword"];
     }
     return self;
 }
@@ -485,6 +494,9 @@
     [aCoder encodeObject:self.term forKey:@"term"];
     [aCoder encodeObject:self.termInfoDic forKey:@"termInfoDic"];
     [aCoder encodeObject:self.apiKey forKey:@"apiKey"];
+    [aCoder encodeBool:self.uwValid forKey:@"uwValid"];
+    [aCoder encodeObject:self.uwUsername forKey:@"uwUsername"];
+    [aCoder encodeObject:self.uwPassword forKey:@"uwPassword"];
 }
 
 /**

@@ -12,6 +12,7 @@
 #import "DetailRSVPCell.h"
 #import "DetailDescriptionCell.h"
 #import "DetailSwitchCell.h"
+#import "UWDetailRSVPCell.h"
 
 #import "InfoSession.h"
 #import "InfoSessionModel.h"
@@ -57,8 +58,9 @@
 #import "NSString+Contain.h"
 //#import "PullHeaderView.h"
 #import "ZHHPullView.h"
+#import "NSString+Contain.h"
 
-@interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate/*, ZHHPullViewDelegate*/>
+@interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate/*, ZHHPullViewDelegate*/, NSURLSessionTaskDelegate>
 
 @property (nonatomic, strong) DetailDescriptionCell *programCell;
 @property (nonatomic, strong) DetailDescriptionCell *descriptionCell;
@@ -85,11 +87,14 @@
     NSNumber *longitude;
     NSString *building;
     
-    
 //    ZHHPullView *nextPullView;
 //    ZHHPullView *prevPullView;
 //    BOOL isLoading;
     //UIViewController *destinationViewController;
+//    UISwitch *registerUISwitch;
+    DetailRSVPCell *rsvpCell;
+    BOOL haveRegistered;
+    BOOL registerSucceed;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -556,11 +561,6 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             DetailNormalCell *cell = (DetailNormalCell *)[tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
-            //printNil(cell);
-            if (cell == nil) {
-                cell = [[DetailNormalCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailNormalCell"];
-            }
-            //printNil(cell);
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Employer";
             cell.contentLabel.text = _infoSession.employer;
@@ -586,9 +586,6 @@
         }
         else if (indexPath.row == 2) {
             DetailNormalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
-            if (cell == nil) {
-                cell = [[DetailNormalCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailNormalCell"];
-            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Time";
 //            NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
@@ -603,9 +600,6 @@
         }
         else if (indexPath.row == 3) {
             DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
-            if (cell == nil) {
-                cell = [[DetailLinkCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailLinkCell"];
-            }
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             [cell.contentLabel setFont:[UIFont systemFontOfSize:16]];
             cell.titleLabel.text = @"Location";
@@ -621,20 +615,34 @@
         }
         else if (indexPath.row == 4) {
             DetailRSVPCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailRSVPCell"];
-            if (cell == nil) {
-                cell = [[DetailRSVPCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailRSVPCell"];
-            }
-            if (_infoSession.sessionId > 10) {
+//            UWDetailRSVPCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UWDetailRSVPCell"];
+//            if (cell == nil) {
+//                cell = [[UWDetailRSVPCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UWDetailRSVPCell"];
+//            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            if (_infoSession.sessionId > 10 && [_infoSession.startTime compare:[NSDate date]] == NSOrderedDescending) {
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
                 [cell.contentLabel setTextColor: [UIColor darkGrayColor]];
-                cell.contentLabel.text = @"Tap here to RSVP.";
+//                cell.statusSiwtch.enabled = YES;
+                if (!haveRegistered) {
+                    cell.contentLabel.text = @"Tap here to Register";
+                } else {
+                    if (registerSucceed) {
+                        cell.contentLabel.text = @"Register Succeed!";
+                    } else {
+                        cell.contentLabel.text = @"Register Failed!";
+                    }
+                }
             }
             else {
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 [cell.contentLabel setTextColor: [UIColor lightGrayColor]];
-                cell.contentLabel.text = @"Not Available to RSVP.";
+                cell.contentLabel.text = @"Not Available to Register";
+//                cell.statusSiwtch.enabled = NO;
             }
-            
+//            [cell.statusSiwtch addTarget:self action:@selector(registerInfoSwitch:) forControlEvents:UIControlEventTouchUpInside];
+//            registerUISwitch = cell.statusSiwtch;
+            rsvpCell = cell;
             return cell;
         }
     }
@@ -643,11 +651,9 @@
             // the alert switch row
             if (indexPath.row == 0) {
                 DetailSwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailSwitchCell"];
-                printNil(cell);
-                if (cell == nil) {
-                    cell = [[DetailSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailSwitchCell"];
-                }
-                printNil(cell);
+                cell.remindSwitch.tintColor = [UIColor lightGrayColor];
+                cell.remindSwitch.onTintColor = UWGold;
+                //cell.remindSwitch.thumbTintColor = [UIColor redColor];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
                 [cell.remindSwitch setOn:YES animated:YES];
@@ -663,15 +669,11 @@
                 if (_infoSession.isCancelled) {
                     [cell.remindSwitch setEnabled:NO];
                 }
-                
                 return cell;
             }
             // the last row, add more alert
             else if (indexPath.row == [_infoSession.alerts count] + 1) {
                 LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddAlertCell"];
-                if (cell == nil) {
-                    cell = [[LoadingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"AddAlertCell"];
-                }
                 cell.loadingLabel.text = @"Add more alert";
                 [cell.loadingLabel setTextColor:[UIColor darkGrayColor]];
                 return cell;
@@ -679,9 +681,6 @@
             // alert item rows
             else {
                 DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
-                if (cell == nil) {
-                    cell = [[DetailLinkCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailLinkCell"];
-                }
                 [cell.contentLabel setFont:[UIFont systemFontOfSize:16]];
                 [cell.contentLabel setTextColor: [UIColor blackColor]];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -694,9 +693,7 @@
             }
         } else {
             DetailSwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailSwitchCell"];
-            if (cell == nil) {
-                cell = [[DetailSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailSwitchCell"];
-            }
+            cell.remindSwitch.onTintColor = UWGold;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
             [cell.remindSwitch setOn:NO animated:YES];
@@ -713,9 +710,6 @@
     else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
             DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
-            if (cell == nil) {
-                cell = [[DetailLinkCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailLinkCell"];
-            }
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             cell.titleLabel.text = @"Website";
             if ([_infoSession.website length] <= 7) {
@@ -729,14 +723,21 @@
                 [cell.contentLabel setFont:[UIFont systemFontOfSize:15]];
                 [cell.contentLabel setTextColor: [UIColor blackColor]];
                 cell.contentLabel.text = [_infoSession.website substringFromIndex:7];
+//                CGFloat calculatedHeight = [self getHeightForString:_infoSession.website fontSize:15 width:240];
+                // text line = 1
+//                if (calculatedHeight < 37.0f) {
+//                    //height = 42.0f;
+//                    cell.titleLabel.frame = CGRectMake(cell.titleLabel.frame.origin.x, (42 - 21), cell.titleLabel.frame.size.width, cell.titleLabel.frame.size.height);
+//                } else if (calculatedHeight < 56.0f) {
+//                    // text line = 2
+//                    //height = 58.0f;
+//                    cell.titleLabel.frame = CGRectMake(cell.titleLabel.frame.origin.x, (58 - 21), cell.titleLabel.frame.size.width, cell.titleLabel.frame.size.height);
+//                }
                 return cell;
             }
         }
         else if (indexPath.row == 1){
             DetailNormalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
-            if (cell == nil) {
-                cell = [[DetailNormalCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailNormalCell"];
-            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Students";
             cell.contentLabel.text = _infoSession.audience;
@@ -744,9 +745,6 @@
         }
         else if (indexPath.row == 2) {
             DetailDescriptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailDescriptionCell"];
-            if (cell == nil) {
-                cell = [[DetailDescriptionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailDescriptionCell"];
-            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.contentText setSelectable:YES];
             [cell.contentText setFont:[UIFont systemFontOfSize:15]];
@@ -782,9 +780,6 @@
         }
         else if (indexPath.row == 3) {
             DetailDescriptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailDescriptionCell"];
-            if (cell == nil) {
-                cell = [[DetailDescriptionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailDescriptionCell"];
-            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.contentText setSelectable:YES];
             [cell.contentText setFont:[UIFont systemFontOfSize:15]];
@@ -822,9 +817,6 @@
     else if (indexPath.section == 3) {
         if (indexPath.row == 0) {
             DetailDescriptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailDescriptionCell"];
-            if (cell == nil) {
-                cell = [[DetailDescriptionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailDescriptionCell"];
-            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = @"Notes";
             [cell.contentText setSelectable:YES];
@@ -852,9 +844,6 @@
     else if (indexPath.section == 4){
         if (indexPath.row == 0) {
             LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddAlertCell"];
-            if (cell == nil) {
-                cell = [[LoadingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"AddAlertCell"];
-            }
             cell.loadingLabel.text = @"Delete From My Info Sessions";
             [cell.loadingLabel setTextColor:[UIColor redColor]];
             return cell;
@@ -924,7 +913,32 @@
         case 1: height = 42.0f; break;
         case 2:
             switch (indexPath.row) {
-                case 0: height = 42.0f; break;
+                case 0: {
+                    CGFloat calculatedHeight;
+                    if ([_infoSession.website length] <= 7) {
+                         calculatedHeight = [self getHeightForString:@"No Website Provided" fontSize:16 width:230];
+                    } else {
+                        calculatedHeight = [self getHeightForString:_infoSession.website fontSize:15 width:240];
+                    }
+                    // text line = 1
+                    if (calculatedHeight < 37.0f) {
+                        height = 42.0f;
+                    } else if (calculatedHeight < 56.0f) {
+                        // text line = 2
+                        height = 58.0f;
+                    } else if (calculatedHeight < 75.0f) {
+                        // text line = 3
+                        height = 74.0f;
+                        // text line = 4
+                    } else if (calculatedHeight < 94.0f) {
+                        height = 90.0f;
+                        // text line = 5
+                    } else {
+                        height = 106.0f;
+                    }
+                    NSLog(@"height: %f", height);
+                    break;
+                }
                 case 1: {
                     // use UITextView to calculate height of this label
                     CGFloat calculatedHeight = [self getHeightForString:_infoSession.audience fontSize:16 width:200];
@@ -1089,14 +1103,27 @@
         if (indexPath.row == 3) {
             [self performSegueWithIdentifier:@"ShowMap" sender:nil];
         } else if (indexPath.row == 4 && _infoSession.sessionId > 10) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Open RSVP. link in Safari?"
-                                                            message:nil
-                                                           delegate:self
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:@"OK", @"Cancel", nil];
-            [alert setCancelButtonIndex:1];
-            [alert setTag:0];
-            [alert show];
+            if (_infoSession.sessionId > 10 && [_infoSession.startTime compare:[NSDate date]] == NSOrderedDescending) {
+                [self registerInfoSession];
+            } else {
+                [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
+                [SVProgressHUD showErrorWithStatus:@"Register not available!"];
+
+            }
+//            NSURL *websiteUrl = [NSURL URLWithString:[NSString stringWithFormat:@"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=%@&mode=on", [NSString stringWithFormat:@"%lu", (unsigned long)_infoSession.sessionId]]];
+//            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:websiteUrl];
+//            UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 300, 300, 300)];
+//            [webView loadRequest:urlRequest];
+//            [self.tableView addSubview:webView];
+            
+            //NSURL *URL = [NSURL URLWithString:websiteUrl];
+//            NSURLRequest *request = [NSURLRequest requestWithURL:websiteUrl
+//                                                     cachePolicy:NSURLRequestUseProtocolCachePolicy
+//                                                 timeoutInterval:30.0];
+//            
+//            NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+//            [connection start];
+            
         }
     }
     // select alert section
@@ -1151,6 +1178,116 @@
     }
 }
 
+#pragma makr - NSURLSession delegate methods
+
+- (void)setUsernameAndPassword {
+    NSLog(@"set username");
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"WatIAM Authentication" message:@"Enter Username & Password" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
+    alert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    [alert addButtonWithTitle:@"Login"];
+    alert.tag = 2;
+    [alert show];
+}
+
+- (BOOL)checkUsernameAndPassword {
+    if (_infoSessionModel.uwValid) {
+        NSLog(@"valid");
+        return YES;
+    } else {
+        NSLog(@"not valid");
+        return NO;
+    }
+}
+
+- (void)registerInfoSession {
+    BOOL usernamePasswordState = [self checkUsernameAndPassword];
+    if (!usernamePasswordState) {
+        [self setUsernameAndPassword];
+    } else {
+        NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=%@&mode=on", [NSString stringWithFormat:@"%lu", (unsigned long)_infoSession.sessionId]]];
+        NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+        NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+        sessionConfig.allowsCellularAccess = YES;
+        sessionConfig.timeoutIntervalForRequest = 10;
+        sessionConfig.timeoutIntervalForResource = 10;
+        sessionConfig.HTTPMaximumConnectionsPerHost = 1;
+        sessionConfig.HTTPCookieAcceptPolicy = NSHTTPCookieAcceptPolicyAlways;//NSHTTPCookieAcceptPolicyAlways;
+        //NSURLSession *session = [NSURLSession sharedSession];
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfig delegate:self delegateQueue:nil];
+        //NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+        NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                                completionHandler:
+                                      ^(NSData *data, NSURLResponse *response, NSError *error) {
+                                          NSLog(@"%@", response);
+                                          
+                                          NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+                                          BOOL result = [self checkResponse:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+                                          NSLog(@"%@", result? @"YES" : @"NO");
+                                          if (!result) {
+                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                  haveRegistered = YES;
+                                                  registerSucceed = NO;
+                                                  _infoSessionModel.uwValid = NO;
+                                                  rsvpCell.contentLabel.text = @"Register Failed!";
+                                                  [SVProgressHUD setAnimationDuration:3];
+                                                  [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
+                                                  [SVProgressHUD showErrorWithStatus:@"Register Failed!"];
+                                              });
+                                          } else {
+                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                  haveRegistered = YES;
+                                                  registerSucceed = YES;
+                                                  _infoSessionModel.uwValid = YES;
+                                                  rsvpCell.contentLabel.text = @"Register Succeed!";
+                                                  [SVProgressHUD setAnimationDuration:3];
+                                                  [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
+                                                  [SVProgressHUD showSuccessWithStatus:@"Register Succeed!"];
+                                              });
+
+                                          }}];
+        [task resume];
+    }
+}
+
+//- (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
+//{
+//    if (challenge.previousFailureCount == 0)
+//    {
+//        NSLog(@"received authentication challenge");
+//        NSURLCredentialPersistence persistence = NSURLCredentialPersistenceForSession;
+//        NSURLCredential *credential = [NSURLCredential credentialWithUser:_infoSessionModel.uwUsername password:_infoSessionModel.uwPassword persistence:persistence];
+//        completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+//    }
+//    else
+//    {
+//        // handle the fact that the previous attempt failed
+//        NSLog(@"%s: challenge.error = %@", __FUNCTION__, challenge.error);
+//        completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
+//    }
+//}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
+didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
+{
+    {
+        if (challenge.previousFailureCount == 0)
+        {
+            NSLog(@"received authentication challenge task");
+            NSURLCredential *credential = [NSURLCredential  credentialWithUser:_infoSessionModel.uwUsername password:_infoSessionModel.uwPassword persistence:NSURLCredentialPersistenceForSession];
+            completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+        }
+        else
+        {
+            // user name error
+            NSLog(@"%s; challenge.error = %@", __FUNCTION__, challenge.error);
+            //[self setUsernameAndPassword];
+            completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
+        }
+        
+    }
+}
+
 #pragma mark - UIAlertViewDelegate methods
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -1161,6 +1298,22 @@
     else if (alertView.tag == 1 && buttonIndex == 0) {
         _performedNavigation = @"OpenWebsiteLink";
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_infoSession.website]];
+    }
+    else if (alertView.tag == 2 && buttonIndex == 1) {
+        UITextField *usernameTextField = [alertView textFieldAtIndex:0];
+        UITextField *passwordTextField = [alertView textFieldAtIndex:1];
+        NSString *username = usernameTextField.text;
+        NSString *password = passwordTextField.text;
+        NSLog(@"%@ %@", username, password);
+        _infoSessionModel.uwUsername = username;
+        _infoSessionModel.uwPassword = password;
+        _infoSessionModel.uwValid = YES;
+        [_infoSessionModel saveInfoSessions];
+//        [self registerInfo:YES];
+        [self registerInfoSession];
+    } if (alertView.tag == 2 && buttonIndex == 0) {
+        //[registerUISwitch setOn:NO animated:YES];
+        //[self registerInfoSession];
     }
 }
 
@@ -1693,6 +1846,65 @@
     
     [self presentViewController:activityController
                        animated:YES completion:nil];
+}
+
+//- (void)registerInfoSwitch:(id)sender {
+//    BOOL state = [sender isOn];
+//    // if current is off, means to turn on
+//    if (state) {
+//        NSLog(@"off -> on");
+//        [self registerInfo:YES];
+//    } else {
+//        NSLog(@"on -> off");
+//        [self registerInfo:NO];
+//    }
+////    if (state) {
+////
+////    }
+////    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+//}
+
+//- (void)registerInfo:(BOOL)on {
+//    BOOL usernamePasswordState = [self checkUsernameAndPassword];
+//    if (!usernamePasswordState) {
+//        [self setUsernameAndPassword];
+//    } else {
+//        NSLog(@"connect");
+//        NSURLSession *session = [NSURLSession sharedSession];
+//        NSString *baseURL = @"info.uwaterloo.ca/infocecs/students/rsvp/index.php";
+//        NSString *onOff;
+//        if (on) {
+//            onOff = @"on";
+//        } else {
+//            onOff = @"off";
+//        }
+//        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@:%@@%@?id=%d&mode=%@", _infoSessionModel.uwUsername, _infoSessionModel.uwPassword, baseURL, _infoSession.sessionId, onOff]];
+//        NSLog(@"url: %@", [url absoluteString]);
+//        NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+//            NSLog(@"wtf");
+//            NSLog(@"%@", response);
+//            NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+//            //[self checkResponse:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+//            
+//        }];
+//        [dataTask resume];
+//    }
+//}
+
+- (BOOL)checkResponse:(NSString *)responseData {
+//    NSString *responseData1 = @"asdasdasdYou have been registered for the above information session.asdadasasd";
+    NSString *notRegisterString = @"RSVP (students)";
+    NSString *registerString = @"You have been registered for the above information session.";
+    if ([responseData containsString:registerString]) {
+        NSLog(@"register!");
+        //[registerUISwitch setOn:YES animated:YES];
+        return YES;
+    } else if ([responseData containsString:notRegisterString]) {
+        NSLog(@"not register!");
+        //[registerUISwitch setOn:NO animated:YES];
+        return NO;
+    }
+    return NO;
 }
 
 #pragma mark - UIScrollView Delegate method

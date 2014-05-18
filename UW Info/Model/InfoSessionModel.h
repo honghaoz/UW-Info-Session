@@ -58,6 +58,10 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 //@property (nonatomic, strong) EKEventStore *eventStore;
 @property (nonatomic, strong) EKCalendar *defaultCalendar;
 
+@property (nonatomic, assign) BOOL uwValid;
+@property (nonatomic, copy) NSString *uwUsername;
+@property (nonatomic, copy) NSString *uwPassword;
+
 - (void)clearInfoSessions;
 
 - (void)processInfoSessionsDictionary:(NSDictionary *)dictionary withInfoSessions:(NSArray *)array;
