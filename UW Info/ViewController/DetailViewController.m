@@ -58,7 +58,7 @@
 //#import "PullHeaderView.h"
 #import "ZHHPullView.h"
 
-@interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate, ZHHPullViewDelegate>
+@interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate/*, ZHHPullViewDelegate*/>
 
 @property (nonatomic, strong) DetailDescriptionCell *programCell;
 @property (nonatomic, strong) DetailDescriptionCell *descriptionCell;
@@ -68,7 +68,7 @@
 
 @end
 
-static int kObservingContentInsetChangesContext = 1;
+//static int kObservingContentInsetChangesContext = 1;
 
 @implementation DetailViewController {
     NSInteger noteLines;
@@ -86,9 +86,9 @@ static int kObservingContentInsetChangesContext = 1;
     NSString *building;
     
     
-    ZHHPullView *nextPullView;
-    ZHHPullView *prevPullView;
-    BOOL isLoading;
+//    ZHHPullView *nextPullView;
+//    ZHHPullView *prevPullView;
+//    BOOL isLoading;
     //UIViewController *destinationViewController;
 }
 
@@ -191,21 +191,21 @@ static int kObservingContentInsetChangesContext = 1;
         }
     }
     
-    // add pull views
-    CGFloat topOffset = self.navigationController.navigationBar.frame.size.height + 20;
-    CGFloat bottomOffset = self.tabBarController.tabBar.frame.size.height;
-    if (nextPullView == nil) {
-        nextPullView = [[ZHHPullView alloc] initWithScrollView:self.tableView arrowImageName:@"blueArrow.png" textColor:[UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0] subtext:@"next article" position:PullBottom withTopOffset:0 andBottomOffset:bottomOffset];
-        nextPullView.delegate = self;
-        [self.tableView addSubview:nextPullView];
-    }
-    if (prevPullView == nil) {
-        prevPullView = [[ZHHPullView alloc] initWithScrollView:self.tableView arrowImageName:@"blueArrow.png" textColor:[UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0] subtext:@"prev article" position:PullTop withTopOffset:topOffset andBottomOffset:0];
-        prevPullView.delegate = self;
-        [self.tableView addSubview:prevPullView];
-    }
-    [nextPullView updateSubtext];
-	[prevPullView updateSubtext];
+//    // add pull views
+//    CGFloat topOffset = self.navigationController.navigationBar.frame.size.height + 20;
+//    CGFloat bottomOffset = self.tabBarController.tabBar.frame.size.height;
+//    if (nextPullView == nil) {
+//        nextPullView = [[ZHHPullView alloc] initWithScrollView:self.tableView arrowImageName:@"blueArrow.png" textColor:[UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0] subtext:@"next article" position:PullBottom withTopOffset:0 andBottomOffset:bottomOffset];
+//        nextPullView.delegate = self;
+//        [self.tableView addSubview:nextPullView];
+//    }
+//    if (prevPullView == nil) {
+//        prevPullView = [[ZHHPullView alloc] initWithScrollView:self.tableView arrowImageName:@"blueArrow.png" textColor:[UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0] subtext:@"prev article" position:PullTop withTopOffset:topOffset andBottomOffset:0];
+//        prevPullView.delegate = self;
+//        [self.tableView addSubview:prevPullView];
+//    }
+//    [nextPullView updateSubtext];
+//	[prevPullView updateSubtext];
     
 //    [self.tableView addObserver:self forKeyPath:@"contentInset" options:NSKeyValueObservingOptionNew context:&kObservingContentInsetChangesContext];
     
@@ -1717,34 +1717,34 @@ static int kObservingContentInsetChangesContext = 1;
 //    [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationFade];
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    if (scrollView == self.tableView) {
-//        CGFloat currentOffset = scrollView.contentOffset.y;
-//        CGFloat differenceFromStart = startContentOffset - currentOffset;
-//        CGFloat differenceFromLast = lastContentOffset - currentOffset;
-//        NSLog(@"start: %0.0f, current: %0.0f, last: %0.0f", startContentOffset, currentOffset, lastContentOffset);
-//        //    lastContentOffset = currentOffset;
-//        //
-//        // start < current, scroll down
-//        NSLog(@"diff_start: %0.0f, diff_last: %0.0f", differenceFromStart, differenceFromLast);
-//        if(differenceFromStart > 0)
-//        {
-//            // scroll up
-//            if(!scrollView.isTracking && (abs(differenceFromLast)>3))
-//                [self.noteCell.contentText resignFirstResponder];
-//        }
-//        lastContentOffset = scrollView.contentOffset.y;
-//    }
-//    NSLog(@"tableView did scroll :%f", scrollView.contentOffset.y);
-    [nextPullView pullViewScrollViewDidScroll:scrollView];
-	[prevPullView pullViewScrollViewDidScroll:scrollView];
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+////    if (scrollView == self.tableView) {
+////        CGFloat currentOffset = scrollView.contentOffset.y;
+////        CGFloat differenceFromStart = startContentOffset - currentOffset;
+////        CGFloat differenceFromLast = lastContentOffset - currentOffset;
+////        NSLog(@"start: %0.0f, current: %0.0f, last: %0.0f", startContentOffset, currentOffset, lastContentOffset);
+////        //    lastContentOffset = currentOffset;
+////        //
+////        // start < current, scroll down
+////        NSLog(@"diff_start: %0.0f, diff_last: %0.0f", differenceFromStart, differenceFromLast);
+////        if(differenceFromStart > 0)
+////        {
+////            // scroll up
+////            if(!scrollView.isTracking && (abs(differenceFromLast)>3))
+////                [self.noteCell.contentText resignFirstResponder];
+////        }
+////        lastContentOffset = scrollView.contentOffset.y;
+////    }
+////    NSLog(@"tableView did scroll :%f", scrollView.contentOffset.y);
+////    [nextPullView pullViewScrollViewDidScroll:scrollView];
+////	[prevPullView pullViewScrollViewDidScroll:scrollView];
+//}
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-//    NSLog(@"tableView did end dragging :%f", scrollView.contentOffset.y);
-    [nextPullView pullViewScrollViewDidEndDragging:scrollView];
-	[prevPullView pullViewScrollViewDidEndDragging:scrollView];
-}
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+////    NSLog(@"tableView did end dragging :%f", scrollView.contentOffset.y);
+////    [nextPullView pullViewScrollViewDidEndDragging:scrollView];
+////	[prevPullView pullViewScrollViewDidEndDragging:scrollView];
+//}
 
 #pragma mark - AlertViewController Delegate method
 /**
@@ -1818,140 +1818,140 @@ static int kObservingContentInsetChangesContext = 1;
     }
 }
 
-#pragma mark - pull to navigation methods
-
-- (void)pullViewDidTrigger:(ZHHPullView*)view {
-	if (view == prevPullView) {
-		NSLog(@"Go previous action");
-		[self goPrevious:nil];
-	} else {
-		NSLog(@"Go next action");
-		[self goNext:nil];
-	}
-	//[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
-}
-
-- (BOOL)pullViewSourceIsLoading:(ZHHPullView*)view {
-	return isLoading; // should return if data source model is reloading
-}
-
-- (NSString*)pullViewSubtext:(ZHHPullView*)view {
-	NSString *subText;
-	if (view == prevPullView) {
-		subText = @"[Previous article title]";
-	} else {
-		subText = @"[Next article title]";
-	}
-    //	  NSLog(@"returns subText: %@", subText);
-	return subText;
-}
-
-- (void)goNext:(id)sender {
-    NSLog(@"goNext");
-    InfoSession *nextInfo = [_infoSessionModel getNextInfoSessionAccordingInfoSession:_infoSession];
-    NSLog(@"%@", nextInfo.employer);
-//    DetailViewController *nextDetailVC = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
-//    _tabBarController.detailViewControllerOfTabbar0 = nextDetailVC;
-//    nextDetailVC.caller = @"InfoSessionsViewController";
-//    nextDetailVC.infoSession = nextInfo;
-//    nextDetailVC.infoSessionModel = _infoSessionModel;
-//    nextDetailVC.tabBarController = _tabBarController;
-    self.infoSession = nextInfo;
-    [self preformTransitionToViewController:self direction:kCATransitionFromTop];
-}
-
-- (void)goPrevious:(id)sender {
-    NSLog(@"goPrevious");
-    InfoSession *preInfo = [_infoSessionModel getPreviousInfoSessionAccordingInfoSession:_infoSession];
-    NSLog(@"%@", preInfo.employer);
-    
-//    DetailViewController *preDetailVC = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
-//    
-//    _tabBarController.detailViewControllerOfTabbar0 = preDetailVC;
-//    preDetailVC.caller = @"InfoSessionsViewController";
-//    preDetailVC.infoSession = preInfo;
-//    preDetailVC.infoSessionModel = _infoSessionModel;
-//    preDetailVC.tabBarController = _tabBarController;
-    
-    self.infoSession = preInfo;
-    [self preformTransitionToViewController:self direction:kCATransitionFromBottom];
-
-}
-
-- (void)reloadTableViewDataSource{
-	//	should be calling your tableviews data source model to reload
-	//	put here just for demo
-    NSLog(@"reload table view data source");
-	isLoading = YES;
-	
-}
+//#pragma mark - pull to navigation methods
 //
-- (void)doneLoadingTableViewData{
-	//	model should call this when its done loading
-    NSLog(@"done reloading table view data");
-	isLoading = NO;
-	[nextPullView pullViewScrollViewDataSourceDidFinishedLoading:self.tableView];
-	[prevPullView pullViewScrollViewDataSourceDidFinishedLoading:self.tableView];
-}
+//- (void)pullViewDidTrigger:(ZHHPullView*)view {
+//	if (view == prevPullView) {
+//		NSLog(@"Go previous action");
+//		[self goPrevious:nil];
+//	} else {
+//		NSLog(@"Go next action");
+//		[self goNext:nil];
+//	}
+//	//[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
+//}
+//
+//- (BOOL)pullViewSourceIsLoading:(ZHHPullView*)view {
+//	return isLoading; // should return if data source model is reloading
+//}
+//
+//- (NSString*)pullViewSubtext:(ZHHPullView*)view {
+//	NSString *subText;
+//	if (view == prevPullView) {
+//		subText = @"[Previous article title]";
+//	} else {
+//		subText = @"[Next article title]";
+//	}
+//    //	  NSLog(@"returns subText: %@", subText);
+//	return subText;
+//}
+//
+//- (void)goNext:(id)sender {
+//    NSLog(@"goNext");
+//    InfoSession *nextInfo = [_infoSessionModel getNextInfoSessionAccordingInfoSession:_infoSession];
+//    NSLog(@"%@", nextInfo.employer);
+////    DetailViewController *nextDetailVC = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
+////    _tabBarController.detailViewControllerOfTabbar0 = nextDetailVC;
+////    nextDetailVC.caller = @"InfoSessionsViewController";
+////    nextDetailVC.infoSession = nextInfo;
+////    nextDetailVC.infoSessionModel = _infoSessionModel;
+////    nextDetailVC.tabBarController = _tabBarController;
+//    self.infoSession = nextInfo;
+//    [self preformTransitionToViewController:self direction:kCATransitionFromTop];
+//}
+//
+//- (void)goPrevious:(id)sender {
+//    NSLog(@"goPrevious");
+//    InfoSession *preInfo = [_infoSessionModel getPreviousInfoSessionAccordingInfoSession:_infoSession];
+//    NSLog(@"%@", preInfo.employer);
+//    
+////    DetailViewController *preDetailVC = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
+////    
+////    _tabBarController.detailViewControllerOfTabbar0 = preDetailVC;
+////    preDetailVC.caller = @"InfoSessionsViewController";
+////    preDetailVC.infoSession = preInfo;
+////    preDetailVC.infoSessionModel = _infoSessionModel;
+////    preDetailVC.tabBarController = _tabBarController;
+//    
+//    self.infoSession = preInfo;
+//    [self preformTransitionToViewController:self direction:kCATransitionFromBottom];
+//
+//}
+//
+//- (void)reloadTableViewDataSource{
+//	//	should be calling your tableviews data source model to reload
+//	//	put here just for demo
+//    NSLog(@"reload table view data source");
+//	isLoading = YES;
+//	
+//}
+////
+//- (void)doneLoadingTableViewData{
+//	//	model should call this when its done loading
+//    NSLog(@"done reloading table view data");
+//	isLoading = NO;
+//	[nextPullView pullViewScrollViewDataSourceDidFinishedLoading:self.tableView];
+//	[prevPullView pullViewScrollViewDataSourceDidFinishedLoading:self.tableView];
+//}
 
-/**
- *  Go to destionation View Controller
- *
- *  @param dest      the destionation View Controller
- *  @param direction Transition direction
- */
-- (void)preformTransitionToViewController:(UIViewController*)dest direction:(NSString*)direction {
-	//NSLog(@"segue identifier: %@, source: %@, destination: %@", self.identifier, sourceViewController, destinationController);
-	CATransition* transition = [CATransition animation];
-	transition.duration = 0.5;
-	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-	transition.type = kCATransitionPush; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
-	transition.subtype = direction; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
-	
-    //[self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
-    [self.tableView.layer addAnimation:transition forKey:kCATransition];
-    DetailViewController *destinationVC = (DetailViewController *)dest;
-    [destinationVC.tableView.layer addAnimation:transition forKey:kCATransition];
-//    NSMutableArray *stack = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+///**
+// *  Go to destionation View Controller
+// *
+// *  @param dest      the destionation View Controller
+// *  @param direction Transition direction
+// */
+//- (void)preformTransitionToViewController:(UIViewController*)dest direction:(NSString*)direction {
+//	//NSLog(@"segue identifier: %@, source: %@, destination: %@", self.identifier, sourceViewController, destinationController);
+//	CATransition* transition = [CATransition animation];
+//	transition.duration = 0.5;
+//	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+//	transition.type = kCATransitionPush; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+//	transition.subtype = direction; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+//	
+//    //[self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+//    [self.tableView.layer addAnimation:transition forKey:kCATransition];
+//    DetailViewController *destinationVC = (DetailViewController *)dest;
+//    [destinationVC.tableView.layer addAnimation:transition forKey:kCATransition];
+////    NSMutableArray *stack = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+////	[stack removeLastObject];
+////	[self.navigationController popViewControllerAnimated:NO];
+////    [self.navigationController pushViewController:dest animated:NO];
+//	NSMutableArray *stack = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
 //	[stack removeLastObject];
-//	[self.navigationController popViewControllerAnimated:NO];
-//    [self.navigationController pushViewController:dest animated:NO];
-	NSMutableArray *stack = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-	[stack removeLastObject];
-	[stack addObject:destinationVC];
-//	//	  [sourceViewController.navigationController pushViewController:destinationController animated:NO];
-	[self.navigationController setViewControllers:stack animated:NO];
-    if (self == dest) {
-        //[self.tableView reloadData];
-//        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-//        dispatch_group_t group = dispatch_group_create();
-//        dispatch_group_async(group, queue, ^{
-            [self viewWillDisappear:YES];
-            [self viewDidDisappear:YES];
-            [self viewDidLoad];
-            [self viewWillAppear:YES];
-//        });
-    }
-//    if (direction == kCATransitionFromTop) {
-//        [self.tableView ]
-//        [self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top)];
+//	[stack addObject:destinationVC];
+////	//	  [sourceViewController.navigationController pushViewController:destinationController animated:NO];
+//	[self.navigationController setViewControllers:stack animated:NO];
+//    if (self == dest) {
+//        //[self.tableView reloadData];
+////        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+////        dispatch_group_t group = dispatch_group_create();
+////        dispatch_group_async(group, queue, ^{
+//            [self viewWillDisappear:YES];
+//            [self viewDidDisappear:YES];
+//            [self viewDidLoad];
+//            [self viewWillAppear:YES];
+////        });
 //    }
-//    destinationViewController = dest;
-//    [self.view addSubview:dest.view];
-//    // match the new view size to the current view size
-//    dest.view.frame = self.view.bounds;
-//    // position it just below the bottom edge of the current view
-//    dest.view.transform =
-//    CGAffineTransformMakeTranslation(0,self.view.bounds.size.height);
-//    [UIView beginAnimations:nil context:(__bridge void *)(dest)];
-//    [UIView setAnimationDuration:0.4];
-//    [UIView setAnimationDelegate:self];
-//    [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
-//    // slide it upwards until it eclipses the current view
-//    dest.view.transform = CGAffineTransformMakeTranslation(0,0);
-//    // here I would also slide up the post button to give it the attached appearance
-//    [UIView commitAnimations];
-}
+////    if (direction == kCATransitionFromTop) {
+////        [self.tableView ]
+////        [self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top)];
+////    }
+////    destinationViewController = dest;
+////    [self.view addSubview:dest.view];
+////    // match the new view size to the current view size
+////    dest.view.frame = self.view.bounds;
+////    // position it just below the bottom edge of the current view
+////    dest.view.transform =
+////    CGAffineTransformMakeTranslation(0,self.view.bounds.size.height);
+////    [UIView beginAnimations:nil context:(__bridge void *)(dest)];
+////    [UIView setAnimationDuration:0.4];
+////    [UIView setAnimationDelegate:self];
+////    [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+////    // slide it upwards until it eclipses the current view
+////    dest.view.transform = CGAffineTransformMakeTranslation(0,0);
+////    // here I would also slide up the post button to give it the attached appearance
+////    [UIView commitAnimations];
+//}
 
 //- (void)animationDidStop:(NSString *)animationID
 //                finished:(NSNumber *)finished
