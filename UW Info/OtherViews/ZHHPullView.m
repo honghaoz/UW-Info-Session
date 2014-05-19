@@ -291,7 +291,7 @@ static int kObservingContentInsetChangesContext = 1;
 - (void)pullViewScrollViewDidScroll:(UIScrollView *)scrollView {
 	if (scrollView.isDragging) {
         // get whether soure is loading
-		BOOL _loading;
+		BOOL _loading = NO;
 		if ([_delegate respondsToSelector:@selector(pullViewSourceIsLoading:)]) {
 			_loading = [_delegate pullViewSourceIsLoading:self];
 		}
@@ -325,7 +325,7 @@ static int kObservingContentInsetChangesContext = 1;
 
 - (void)pullViewScrollViewDidEndDragging:(UIScrollView *)scrollView {
     // get whether data source is loading
-	BOOL _loading;
+	BOOL _loading = NO;
 	if ([_delegate respondsToSelector:@selector(pullViewSourceIsLoading:)]) {
 		_loading = [_delegate pullViewSourceIsLoading:self];
 	}

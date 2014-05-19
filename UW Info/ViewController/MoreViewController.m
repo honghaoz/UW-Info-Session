@@ -29,10 +29,10 @@
 #import "LINEActivity.h"
 #import "UWErrorReport.h"
 #import "UWManagerViewController.h"
-#import "MYBlurIntroductionView.h"
-#import "MYIntroductionPanel.h"
+//#import "MYBlurIntroductionView.h"
+//#import "MYIntroductionPanel.h"
 
-@interface MoreViewController () <UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate, UIAlertViewDelegate, MYIntroductionDelegate>
+@interface MoreViewController () <UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate, UIAlertViewDelegate/*, MYIntroductionDelegate*/>
 
 @end
 
@@ -745,24 +745,24 @@
 //    [UIView commitAnimations];
 //}
 
-#pragma mark - MYIntroduction Delegate
-
--(void)introduction:(MYBlurIntroductionView *)introductionView didChangeToPanel:(MYIntroductionPanel *)panel withIndex:(NSInteger)panelIndex{
-    NSLog(@"Introduction did change to panel %d", panelIndex);
-    
-    //You can edit introduction view properties right from the delegate method!
-    //If it is the first panel, change the color to green!
-    if (panelIndex == 0) {
-        [introductionView setBackgroundColor:[UIColor colorWithRed:90.0f/255.0f green:175.0f/255.0f blue:113.0f/255.0f alpha:0.65]];
-    }
-    //If it is the second panel, change the color to blue!
-    else if (panelIndex == 1){
-        [introductionView setBackgroundColor:[UIColor colorWithRed:50.0f/255.0f green:79.0f/255.0f blue:133.0f/255.0f alpha:0.65]];
-    }
-}
-
--(void)introduction:(MYBlurIntroductionView *)introductionView didFinishWithType:(MYFinishType)finishType {
-    NSLog(@"Introduction did finish");
-}
+//#pragma mark - MYIntroduction Delegate
+//
+//-(void)introduction:(MYBlurIntroductionView *)introductionView didChangeToPanel:(MYIntroductionPanel *)panel withIndex:(NSInteger)panelIndex{
+//    NSLog(@"Introduction did change to panel %d", panelIndex);
+//    
+//    //You can edit introduction view properties right from the delegate method!
+//    //If it is the first panel, change the color to green!
+//    if (panelIndex == 0) {
+//        [introductionView setBackgroundColor:[UIColor colorWithRed:90.0f/255.0f green:175.0f/255.0f blue:113.0f/255.0f alpha:0.65]];
+//    }
+//    //If it is the second panel, change the color to blue!
+//    else if (panelIndex == 1){
+//        [introductionView setBackgroundColor:[UIColor colorWithRed:50.0f/255.0f green:79.0f/255.0f blue:133.0f/255.0f alpha:0.65]];
+//    }
+//}
+//
+//-(void)introduction:(MYBlurIntroductionView *)introductionView didFinishWithType:(MYFinishType)finishType {
+//    NSLog(@"Introduction did finish");
+//}
 
 @end

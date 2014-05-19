@@ -972,8 +972,8 @@
 		1BD967C818C8D7770097FCD6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				1B3A33BA18D4D7A10046DC73 /* AppIcon-Rounded.png */,
 				1BD967C918C8D7850097FCD6 /* map_colour300.png */,
+				1B3A33BA18D4D7A10046DC73 /* AppIcon-Rounded.png */,
 				1BB1A11F18C9040C00823A0D /* alarm.caf */,
 			);
 			name = Resources;

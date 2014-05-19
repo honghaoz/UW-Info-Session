@@ -34,11 +34,11 @@
 
 #import "UWAds.h"
 #import "SVProgressHUD.h"
-#import "MYBlurIntroductionView.h"
-#import "MYIntroductionPanel.h"
+//#import "MYBlurIntroductionView.h"
+//#import "MYIntroductionPanel.h"
 
 
-@interface InfoSessionsViewController () <GADBannerViewDelegate, MYIntroductionDelegate>
+@interface InfoSessionsViewController () <GADBannerViewDelegate/*, MYIntroductionDelegate*/>
 
 @property (nonatomic, strong) UWTermMenu *termMenu;
 @property (nonatomic, assign) NSInteger shownYear;
@@ -899,40 +899,40 @@
 ////    [UIView commitAnimations];
 //}
 
-#pragma mark - Build MYBlurIntroductionView
-
--(void)buildIntro{
-    NSLog(@"bulid intro");
-    //Create Stock Panel with header
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];//[[NSBundle mainBundle] loadNibNamed:@"TestHeader" owner:nil options:nil][0];
-    MYIntroductionPanel *panel1 = [[MYIntroductionPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) title:@"Welcome to MYBlurIntroductionView" description:@"MYBlurIntroductionView is a powerful platform for building app introductions and tutorials. Built on the MYIntroductionView core, this revamped version has been reengineered for beauty and greater developer control." image:[UIImage imageNamed:@"HeaderImage.png"] header:headerView];
-    
-    //Create Stock Panel With Image
-    MYIntroductionPanel *panel2 = [[MYIntroductionPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) title:@"Automated Stock Panels" description:@"Need a quick-and-dirty solution for your app introduction? MYBlurIntroductionView comes with customizable stock panels that make writing an introduction a walk in the park. Stock panels come with optional blurring (iOS 7) and background image. A full panel is just one method away!" image:[UIImage imageNamed:@"ForkImage.png"]];
-    
-    //Create Panel From Nib
-    //MYIntroductionPanel *panel3 = [[MYIntroductionPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) nibNamed:@"TestPanel3"];
-    
-//    //Create custom panel with events
-//    MYCustomPanel *panel4 = [[MYCustomPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) nibNamed:@"MYCustomPanel"];
+//#pragma mark - Build MYBlurIntroductionView
+//
+//-(void)buildIntro{
+//    NSLog(@"bulid intro");
+//    //Create Stock Panel with header
+//    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];//[[NSBundle mainBundle] loadNibNamed:@"TestHeader" owner:nil options:nil][0];
+//    MYIntroductionPanel *panel1 = [[MYIntroductionPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) title:@"Welcome to MYBlurIntroductionView" description:@"MYBlurIntroductionView is a powerful platform for building app introductions and tutorials. Built on the MYIntroductionView core, this revamped version has been reengineered for beauty and greater developer control." image:[UIImage imageNamed:@"HeaderImage.png"] header:headerView];
 //    
-//    //Add panels to an array
-    NSArray *panels = @[panel1, panel2/*, panel3, panel4*/];
-    
-    //Create the introduction view and set its delegate
-    MYBlurIntroductionView *introductionView = [[MYBlurIntroductionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    introductionView.delegate = self;
-    //introductionView.BackgroundImageView.image = [UIImage imageNamed:@"Toronto, ON.jpg"];
-    [introductionView setBackgroundColor:[UIColor colorWithRed:90.0f/255.0f green:175.0f/255.0f blue:113.0f/255.0f alpha:0.9]];
-    //[introductionView setEnabled:YES];
-    //introductionView.LanguageDirection = MYLanguageDirectionRightToLeft;
-    
-    //Build the introduction with desired panels
-    [introductionView buildIntroductionWithPanels:panels];
-    
-    //Add the introduction to your view
-    [self.tabBarController.view addSubview:introductionView];
-}
+//    //Create Stock Panel With Image
+//    MYIntroductionPanel *panel2 = [[MYIntroductionPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) title:@"Automated Stock Panels" description:@"Need a quick-and-dirty solution for your app introduction? MYBlurIntroductionView comes with customizable stock panels that make writing an introduction a walk in the park. Stock panels come with optional blurring (iOS 7) and background image. A full panel is just one method away!" image:[UIImage imageNamed:@"ForkImage.png"]];
+//    
+//    //Create Panel From Nib
+//    //MYIntroductionPanel *panel3 = [[MYIntroductionPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) nibNamed:@"TestPanel3"];
+//    
+////    //Create custom panel with events
+////    MYCustomPanel *panel4 = [[MYCustomPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) nibNamed:@"MYCustomPanel"];
+////    
+////    //Add panels to an array
+//    NSArray *panels = @[panel1, panel2/*, panel3, panel4*/];
+//    
+//    //Create the introduction view and set its delegate
+//    MYBlurIntroductionView *introductionView = [[MYBlurIntroductionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+//    introductionView.delegate = self;
+//    //introductionView.BackgroundImageView.image = [UIImage imageNamed:@"Toronto, ON.jpg"];
+//    [introductionView setBackgroundColor:[UIColor colorWithRed:90.0f/255.0f green:175.0f/255.0f blue:113.0f/255.0f alpha:0.9]];
+//    //[introductionView setEnabled:YES];
+//    //introductionView.LanguageDirection = MYLanguageDirectionRightToLeft;
+//    
+//    //Build the introduction with desired panels
+//    [introductionView buildIntroductionWithPanels:panels];
+//    
+//    //Add the introduction to your view
+//    [self.tabBarController.view addSubview:introductionView];
+//}
 
 //#pragma mark - MYIntroduction Delegate
 //
