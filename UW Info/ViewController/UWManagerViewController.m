@@ -76,7 +76,10 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
+    [self.navigationItem setLeftBarButtonItems:[NSArray arrayWithObjects:
+                                                [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)],
+                                                [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(pushToChannels:)],
+                                                nil] animated:YES];
     
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(done)];
     [self.navigationItem setRightBarButtonItem:doneButton];
@@ -527,6 +530,8 @@
     [alert show];
 }
 
+#pragma mark - UIAlertView delegate
+
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == 0) {
@@ -535,14 +540,61 @@
             PFQuery *pushQuery = [PFInstallation query];
             [pushQuery whereKey:@"Device_Name" equalTo:objc_getAssociatedObject(alertView, @"DeviceName")];
             // Send push notification to query
+            UITextField *message = [alertView textFieldAtIndex:0];
+            NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  @"YES", @"ShouldReply",
+                                  [[UIDevice currentDevice] name], @"Sender",
+                                  message.text, @"Message",
+                                  message.text, @"alert",
+                                  @"Increment", @"badge",
+                                  @"alarm.caf", @"sound",
+                                  nil];
+            NSLog(@"sender: %@", [[UIDevice currentDevice] name]);
+            NSLog(@"receiver: %@", objc_getAssociatedObject(alertView, @"DeviceName"));
+            NSLog(@"message: %@", message.text);
             PFPush *push = [[PFPush alloc] init];
             [push setQuery:pushQuery]; // Set our Installation query
+            
+            [push setData:data];
+            [push sendPushInBackground];
+        }
+    } else if (alertView.tag == 1) {
+        if (buttonIndex == 1) {
             UITextField *message = [alertView textFieldAtIndex:0];
-            [push setMessage:message.text];
+            NSString *channelsString = message.text;
+            
+            UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Send to Channels" message:channelsString delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
+            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+            [alert addButtonWithTitle:@"Send"];
+            alert.tag = 2;
+            [alert show];
+        }
+    } else if (alertView.tag == 2) {
+        if (buttonIndex == 1) {
+            NSArray *channels = [alertView.message componentsSeparatedByString:@", "];
+//            for (NSString *eachChannel in channels) {
+//                NSLog(@"%@", eachChannel);
+//            }
+            UITextField *message = [alertView textFieldAtIndex:0];
+            NSLog(@"send: %@", message);
+            NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  @"NO", @"ShouldReply",
+                                  [[UIDevice currentDevice] name], @"Sender",
+                                  message.text, @"Message",
+                                  message.text, @"alert",
+                                  @"Increment", @"badge",
+                                  @"alarm.caf", @"sound",
+                                  nil];
+            PFPush *push = [[PFPush alloc] init];
+            [push setChannels:channels];
+            //[push setMessage:message.text];
+            [push setData:data];
             [push sendPushInBackground];
         }
     }
 }
+
+#pragma mark -
 
 - (void)deviceNameSort{
     deviceNameSortAscending = !deviceNameSortAscending;
@@ -829,6 +881,14 @@
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
+}
+
+- (void)pushToChannels:(id)sender {
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Send to Channels" message:@"Set channels..." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alert addButtonWithTitle:@"Set"];
+    alert.tag = 1;
+    [alert show];
 }
 
 @end

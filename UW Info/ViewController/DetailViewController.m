@@ -1217,9 +1217,9 @@
                                                 completionHandler:
                                       ^(NSData *data, NSURLResponse *response, NSError *error) {
                                           NSLog(@"%@", response);
-                                          NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-                                          NSInteger responseStatusCode = [httpResponse statusCode];
-                                          if (responseStatusCode == 200) {
+//                                          NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+//                                          NSInteger responseStatusCode = [httpResponse statusCode];
+//                                          if (responseStatusCode == 200) {
                                               //NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
                                               BOOL result = [self checkResponse:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
                                               NSLog(@"%@", result? @"YES" : @"NO");
@@ -1232,6 +1232,13 @@
                                                       [SVProgressHUD setAnimationDuration:3];
                                                       [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
                                                       [SVProgressHUD showErrorWithStatus:@"Register Failed!"];
+                                                      double delayInSeconds = 1.5;
+                                                      dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                                                      dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                                          //code to be executed on the main queue after delay
+                                                          [self setUsernameAndPassword];
+                                                      });
+                                                      
                                                   });
                                               } else {
                                                   dispatch_async(dispatch_get_main_queue(), ^{
@@ -1244,14 +1251,13 @@
                                                       [SVProgressHUD showSuccessWithStatus:@"Register Succeed!"];
                                                   });
                                               }
-
-                                          } else {
-                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                  [SVProgressHUD setAnimationDuration:3];
-                                                  [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
-                                                  [SVProgressHUD showErrorWithStatus:@"Network Error"];
-                                              });
-                                          }
+//                                          } else {
+//                                              dispatch_async(dispatch_get_main_queue(), ^{
+//                                                  [SVProgressHUD setAnimationDuration:3];
+//                                                  [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
+//                                                  [SVProgressHUD showErrorWithStatus:@"Network Error"];
+//                                              });
+//                                          }
                                       }];
         [task resume];
     }
@@ -1289,6 +1295,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
         {
             // user name error
             NSLog(@"%s; challenge.error = %@", __FUNCTION__, challenge.error);
+            _infoSessionModel.uwValid = NO;
             //[self setUsernameAndPassword];
             completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
         }

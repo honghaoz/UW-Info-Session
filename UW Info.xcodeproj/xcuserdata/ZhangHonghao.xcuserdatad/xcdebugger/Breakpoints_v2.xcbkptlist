@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/UWAppDelegate.m"
-            timestampString = "421726265.550312"
+            timestampString = "422203073.235095"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "325"
-            endingLineNumber = "325"
+            startingLineNumber = "356"
+            endingLineNumber = "356"
             landmarkName = "-setNotified:"
             landmarkType = "5">
          </BreakpointContent>
@@ -250,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/ViewController/DetailViewController.m"
-            timestampString = "422139494.303026"
+            timestampString = "422198981.221245"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1515"
-            endingLineNumber = "1515"
+            startingLineNumber = "1522"
+            endingLineNumber = "1522"
             landmarkName = "@implementation DetailViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -266,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/UWAppDelegate.m"
-            timestampString = "421726265.550312"
+            timestampString = "422202984.202119"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
             landmarkName = "-application:didFinishLaunchingWithOptions:"
             landmarkType = "5">
          </BreakpointContent>

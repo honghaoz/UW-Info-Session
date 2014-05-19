@@ -53,6 +53,21 @@
         tabController.targetIndexTobeSelectedInMyInfoVC = -1;
     }
     
+    // Extract the notification data
+    NSDictionary *notificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+    
+    // Create a pointer to the Photo object
+    NSString *shouldReply = [notificationPayload objectForKey:@"ShouldReply"];
+    NSString *sender = [notificationPayload objectForKey:@"Sender"];
+    NSString *receivedMessage = [notificationPayload objectForKey:@"Message"];
+    if ([shouldReply isEqualToString:@"YES"]) {
+        UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:[NSString stringWithFormat:@"Reply to %@", sender] message:receivedMessage delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
+        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+        [alert addButtonWithTitle:@"Send"];
+        alert.tag = 0;
+        [alert show];
+    }
+    
     // Set timer to refresh cell
     // get time interval of seconds in minute
     NSTimeInterval roundedInterval = round([[NSDate date] timeIntervalSinceReferenceDate] / 60.0) * 60.0;
@@ -314,6 +329,22 @@
     application.applicationIconBadgeNumber = 0;
 }
 
+- (void)application:(UIApplication *)application
+didReceiveRemoteNotification:(NSDictionary *)userInfo
+fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {
+    NSString *shouldReply = [userInfo objectForKey:@"ShouldReply"];
+    NSString *sender = [userInfo objectForKey:@"Sender"];
+    NSString *receivedMessage = [userInfo objectForKey:@"Message"];
+    NSLog(@"%@", receivedMessage);
+    if ([shouldReply isEqualToString:@"YES"]) {
+        UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:[NSString stringWithFormat:@"Reply to %@", sender] message:receivedMessage delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
+        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+        [alert addButtonWithTitle:@"Send"];
+        alert.tag = 0;
+        [alert show];
+    }
+}
+
 /**
  *  Use notification to set the related alert to isNotified
  *
@@ -363,6 +394,36 @@
     currentInstallation[@"Device_Name"] = [[UIDevice currentDevice] name];
     [currentInstallation saveInBackground];
     [PFPush handlePush:userInfo];
+}
+
+#pragma mark - UIAlertView delegate
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 0) {
+        if (buttonIndex == 1) {  //Send
+            // Create our Installation query
+            NSString *senderName = [alertView.title substringFromIndex:9];
+            PFQuery *pushQuery = [PFInstallation query];
+            [pushQuery whereKey:@"Device_Name" equalTo:senderName];
+            // Send push notification to query
+            UITextField *message = [alertView textFieldAtIndex:0];
+            NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  @"YES", @"ShouldReply",
+                                  [[UIDevice currentDevice] name], @"Sender",
+                                  message.text, @"Message",
+                                  message.text, @"alert",
+                                  @"Increment", @"badge",
+                                  @"alarm.caf", @"sound",
+                                  nil];
+            NSLog(@"sender: %@", [[UIDevice currentDevice] name]);
+            NSLog(@"receiver: %@", senderName);
+            NSLog(@"message: %@", message.text);
+            PFPush *push = [[PFPush alloc] init];
+            [push setQuery:pushQuery]; // Set our Installation query
+            [push setData:data];
+            [push sendPushInBackground];
+        }
+    }
 }
 
 @end
