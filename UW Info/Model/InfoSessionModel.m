@@ -444,6 +444,7 @@
     for (InfoSession *eachInfoSession in _myInfoSessions) {
         NSInteger existIndex = [InfoSessionModel findInfoSession:eachInfoSession in:(NSMutableArray *)_infoSessions];
         if (existIndex != -1) {
+            NSLog(@"updating...");
             InfoSession *theCorrespondingInfoSession = _infoSessions[existIndex];
             eachInfoSession.employer = [theCorrespondingInfoSession.employer copy];
             eachInfoSession.date = [theCorrespondingInfoSession.date copy];
@@ -688,14 +689,15 @@
     // process infoSessionsDictionary, used for dividing infoSessions into different weeks
     [self.infoSessionsDictionary removeAllObjects];
     [self processInfoSessionsDictionary:self.infoSessionsDictionary withInfoSessions:self.infoSessions];
-    // update my infoSessions, if same info sessions have been saved before, update to newest information
-    [self updateMyInfoSessions];
     
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        // update my infoSessions, if same info sessions have been saved before, update to newest information
+        [self updateMyInfoSessions];
+    });
     // save to TermDic.
     [self saveToTermInfoDic];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"infoSessionsChanged" object:self];
     [self.delegate infoSessionModeldidUpdateInfoSessions:self];
-
 }
 
 // only called when 503 is return

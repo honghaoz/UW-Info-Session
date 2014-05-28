@@ -1944,7 +1944,13 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 //    [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationFade];
 }
 
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView == self.descriptionCell.contentText && (scrollView.contentOffset.y < 0 || scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.frame.size.height)) {
+        CGPoint newOffset = self.tableView.contentOffset;
+        newOffset.y += scrollView.contentOffset.y;
+        [self.tableView setContentOffset:newOffset animated:YES];
+    }
+}
 ////    if (scrollView == self.tableView) {
 ////        CGFloat currentOffset = scrollView.contentOffset.y;
 ////        CGFloat differenceFromStart = startContentOffset - currentOffset;
@@ -1971,6 +1977,28 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 ////    NSLog(@"tableView did end dragging :%f", scrollView.contentOffset.y);
 ////    [nextPullView pullViewScrollViewDidEndDragging:scrollView];
 ////	[prevPullView pullViewScrollViewDidEndDragging:scrollView];
+//}
+
+//#pragma mark - touch event handling
+//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//    NSLog(@"%@", NSStringFromSelector(_cmd));
+//}
+//
+//- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+//    NSLog(@"%@", NSStringFromSelector(_cmd));
+//}
+//
+//- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+//    NSLog(@"%@", NSStringFromSelector(_cmd));
+//}
+//
+//- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+//    NSLog(@"%@", NSStringFromSelector(_cmd));
+//}
+
+//- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+//    NSLog(@"%@", NSStringFromSelector(_cmd));
+//    return YES;
 //}
 
 #pragma mark - AlertViewController Delegate method

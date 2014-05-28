@@ -165,4 +165,23 @@
     return [delegate respondsToSelector:s] ? delegate : [super forwardingTargetForSelector:s];
 }
 
+//#pragma mark - touch event handling
+//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//    NSLog(@"%@", NSStringFromSelector(_cmd));
+//    NSLog(@"%f", self.contentOffset.y);
+//}
+//
+//- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+//    NSLog(@"%@", NSStringFromSelector(_cmd));
+//}
+//
+//- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+//    NSLog(@"%@", NSStringFromSelector(_cmd));
+//}
+//
+//- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+//    NSLog(@"%@", NSStringFromSelector(_cmd));
+//}
+
+
 @end
