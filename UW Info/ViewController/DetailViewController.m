@@ -59,12 +59,14 @@
 //#import "PullHeaderView.h"
 #import "ZHHPullView.h"
 #import "NSString+Contain.h"
+#import "UWWebViewController.h"
 
-@interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate/*, ZHHPullViewDelegate*/, NSURLSessionTaskDelegate>
+@interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate/*, ZHHPullViewDelegate*/, NSURLSessionTaskDelegate, UIWebViewDelegate>
 
 @property (nonatomic, strong) DetailDescriptionCell *programCell;
 @property (nonatomic, strong) DetailDescriptionCell *descriptionCell;
 @property (nonatomic, strong) DetailDescriptionCell *noteCell;
+@property (nonatomic, strong) UWWebViewController *webViewVC;
 
 - (IBAction)addToMyInfo:(id)sender;
 
@@ -1155,14 +1157,14 @@
     }
     else if (indexPath.section == 2) {
         if (indexPath.row == 0 && [_infoSession.website length] > 7) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Open\n%@\nin Safari?", _infoSession.website]
-                                                            message:nil
-                                                           delegate:self
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:@"OK", @"Cancel", nil];
-            [alert setCancelButtonIndex:1];
-            [alert setTag:1];
-            [alert show];
+
+            _webViewVC = [[UWWebViewController alloc] init];
+            NSString *webURL = [@"http://" stringByAppendingString:[[_infoSession.website substringFromIndex:7] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+            //NSLog(@"%@", webURL);
+            _webViewVC.URL = [NSURL URLWithString:webURL];
+            //NSLog(@"%@", _webViewVC.URL);
+            _webViewVC.webView.delegate = self;
+            [self.navigationController pushViewController:_webViewVC animated:YES];
         }
     }
     // select note section
@@ -1302,19 +1304,68 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
         
     }
 }
+#pragma mark - UIWebViewDelegate methods
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    logSelector;
+    [_webViewVC.navigationItem setTitle:_infoSession.employer];
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityView.frame = CGRectMake(9, 0, 20, 20);
+    UIView *refreshView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 29, 20)];
+    [refreshView addSubview:activityView];
+    //NSLog(@"%@", NSStringFromCGRect(activityView.frame));
+    
+    //[activityView sizeToFit];
+    [activityView startAnimating];
+    UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:refreshView];
+    [_webViewVC.navigationItem setRightBarButtonItem:loadingView animated:YES];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    logSelector;
+    NSString *theTitle=[webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    [_webViewVC.navigationItem setTitle:theTitle];
+    
+    UIBarButtonItem *goBack = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Previous"] style:UIBarButtonItemStylePlain target:self action:@selector(goBack:)];
+    UIBarButtonItem *goForward = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Next"] style:UIBarButtonItemStylePlain target:self action:@selector(goForward:)];
+    UIBarButtonItem *refresh = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(webViewReload:)];
+    [_webViewVC.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:refresh, goForward, goBack , nil] animated:YES];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+}
+
+- (void)goBack:(id)sender {
+    logSelector;
+    [_webViewVC.webView goBack];
+}
+
+- (void)goForward:(id)sender {
+    logSelector;
+    [_webViewVC.webView goForward];
+}
+
+- (void)webViewReload:(id)sender {
+    logSelector;
+    [_webViewVC.webView reload];
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    logSelector;
+}
 
 #pragma mark - UIAlertViewDelegate methods
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (alertView.tag == 0 && buttonIndex == 0) {
-        _performedNavigation = @"OpenRSVPLink";
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=%@&mode=on", [NSString stringWithFormat:@"%lu", (unsigned long)_infoSession.sessionId]]]];
-    }
-    else if (alertView.tag == 1 && buttonIndex == 0) {
-        _performedNavigation = @"OpenWebsiteLink";
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_infoSession.website]];
-    }
-    else if (alertView.tag == 2 && buttonIndex == 1) {
+//    if (alertView.tag == 0 && buttonIndex == 0) {
+//        _performedNavigation = @"OpenRSVPLink";
+//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=%@&mode=on", [NSString stringWithFormat:@"%lu", (unsigned long)_infoSession.sessionId]]]];
+//    }
+//    else if (alertView.tag == 1 && buttonIndex == 0) {
+//        _performedNavigation = @"OpenWebsiteLink";
+//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_infoSession.website]];
+//    }
+//    else
+    if (alertView.tag == 2 && buttonIndex == 1) {
         UITextField *usernameTextField = [alertView textFieldAtIndex:0];
         UITextField *passwordTextField = [alertView textFieldAtIndex:1];
         NSString *username = usernameTextField.text;
@@ -1326,7 +1377,8 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
         [_infoSessionModel saveInfoSessions];
 //        [self registerInfo:YES];
         [self registerInfoSession];
-    } if (alertView.tag == 2 && buttonIndex == 0) {
+    }
+    else if (alertView.tag == 2 && buttonIndex == 0) {
         //[registerUISwitch setOn:NO animated:YES];
         //[self registerInfoSession];
     }

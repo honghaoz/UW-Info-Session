@@ -19,6 +19,7 @@
     #define UWGold [UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]
 
     #define printNil(object) NSLog(@"%@ is %@", [object class], object == nil? @"nil" : @"not nil")
+    #define logSelector NSLog(@"%@", NSStringFromSelector(_cmd))
 
     #ifdef DEBUG
     #   define NSLog(...) NSLog(__VA_ARGS__)

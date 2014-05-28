@@ -96,6 +96,7 @@
 		1BAD97E918A9CAE2006F4546 /* UWTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */; };
 		1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */; };
 		1BB1A12018C908BB00823A0D /* alarm.caf in Resources */ = {isa = PBXBuildFile; fileRef = 1BB1A11F18C9040C00823A0D /* alarm.caf */; };
+		1BBB19071935786C00E74EBD /* UWWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB19061935786C00E74EBD /* UWWebViewController.m */; };
 		1BC7F35518F38F6900C21CFD /* LINEActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F34018F38F6900C21CFD /* LINEActivity.m */; };
 		1BC7F35618F38F6900C21CFD /* LINEActivityIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34118F38F6900C21CFD /* LINEActivityIcon.png */; };
 		1BC7F35718F38F6900C21CFD /* LINEActivityIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34218F38F6900C21CFD /* LINEActivityIcon@2x.png */; };
@@ -324,6 +325,8 @@
 		1BAD97ED18A9DEF6006F4546 /* MyInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyInfoViewController.h; path = ViewController/MyInfoViewController.h; sourceTree = "<group>"; };
 		1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyInfoViewController.m; path = ViewController/MyInfoViewController.m; sourceTree = "<group>"; };
 		1BB1A11F18C9040C00823A0D /* alarm.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = alarm.caf; path = Resources/alarm.caf; sourceTree = "<group>"; };
+		1BBB19051935786C00E74EBD /* UWWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWWebViewController.h; path = ViewController/UWWebViewController.h; sourceTree = "<group>"; };
+		1BBB19061935786C00E74EBD /* UWWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWWebViewController.m; path = ViewController/UWWebViewController.m; sourceTree = "<group>"; };
 		1BC7F33F18F38F6900C21CFD /* LINEActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LINEActivity.h; sourceTree = "<group>"; };
 		1BC7F34018F38F6900C21CFD /* LINEActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LINEActivity.m; sourceTree = "<group>"; };
 		1BC7F34118F38F6900C21CFD /* LINEActivityIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LINEActivityIcon.png; sourceTree = "<group>"; };
@@ -698,6 +701,8 @@
 			children = (
 				1B19834718A618A60022A285 /* DetailViewController.h */,
 				1B19834818A618A60022A285 /* DetailViewController.m */,
+				1BBB19051935786C00E74EBD /* UWWebViewController.h */,
+				1BBB19061935786C00E74EBD /* UWWebViewController.m */,
 				1B8EE15C18F238DC00DE8BD8 /* UWShareView.h */,
 				1B8EE15D18F238DC00DE8BD8 /* UWShareView.m */,
 				1B4DD55718AC90B8009B0214 /* MapViewController */,
@@ -1167,6 +1172,7 @@
 				1BF0542318A93ECC005C04B2 /* DetailSwitchCell.m in Sources */,
 				1B37453718A5BA28007CF08C /* InfoSession.m in Sources */,
 				1BAD97E918A9CAE2006F4546 /* UWTabBarController.m in Sources */,
+				1BBB19071935786C00E74EBD /* UWWebViewController.m in Sources */,
 				1B717E7618A8294600E20A29 /* DetailNormalCell.m in Sources */,
 				1B3A33FA18D4D99F0046DC73 /* InfoDetailedTitleButton.m in Sources */,
 				1BE858A318CE4323009A9E57 /* UWInfoSessionClient.m in Sources */,
