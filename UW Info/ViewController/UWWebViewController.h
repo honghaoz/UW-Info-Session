@@ -13,4 +13,8 @@
 @property (nonatomic) NSURL *URL;
 @property (nonatomic, strong) UIWebView *webView;
 
+@property (nonatomic, strong) UIProgressView *webProgress;
+
+- (void)setProgressBar:(float)progress;
+
 @end

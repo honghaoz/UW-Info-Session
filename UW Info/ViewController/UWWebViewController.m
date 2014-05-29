@@ -8,6 +8,10 @@
 
 #import "UWWebViewController.h"
 
+@interface UWWebViewController ()
+
+@end
+
 @implementation UWWebViewController
 
 - (instancetype)init {
@@ -16,15 +20,41 @@
         _webView = [[UIWebView alloc] init];
         _webView.scalesPageToFit = YES;
         self.view = _webView;
+        _webProgress = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+        _webProgress.progressTintColor = UWBlack;
+        _webProgress.trackTintColor = [UIColor clearColor];
     }
     return self;
 }
 
-//- (void)loadView {
-//    UIWebView *webView = [[UIWebView alloc] init];
-//    webView.scalesPageToFit = YES;
-//    self.view = webView;
+//- (void)viewDidLoad {
+//    logSelector;
 //}
+
+- (void)viewWillAppear:(BOOL)animated {
+    logSelector;
+    CGFloat height = self.navigationController.navigationBar.frame.size.height;
+    CGRect newFrame = _webProgress.frame;
+    newFrame.origin.y = height;
+    newFrame.size.width = [UIScreen mainScreen].bounds.size.width;
+    _webProgress.frame = newFrame;
+
+}
+
+- (void)setProgressBar:(float)progress {
+    if (self.navigationController) {
+        if ([self.navigationController.navigationBar.subviews containsObject:_webProgress]) {
+            [_webProgress setProgress:progress animated:YES];
+        } else {
+            [self.navigationController.navigationBar addSubview:_webProgress];
+            [_webProgress setProgress:progress animated:YES];
+        }
+    }
+}
+
+- (void)loadView {
+    logSelector;
+}
 
 - (void)setURL:(NSURL *)URL {
     _URL = URL;

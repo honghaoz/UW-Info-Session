@@ -254,6 +254,7 @@
     ad = [UWAds singleton];
     [ad resetAdView:self OriginY:-30];
     NSLog(@"detailView will appear end");
+    _webViewVC.webProgress.hidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -1307,6 +1308,16 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 #pragma mark - UIWebViewDelegate methods
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     logSelector;
+    _webViewVC.webProgress.hidden = NO;
+    [_webViewVC setProgressBar:0.75];
+    // Delay execution of my block for 10 seconds.
+    
+//    for (int i = 3; i < 10; i++) {
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, i * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//            [_webViewVC setProgressBar:0.1 * i - 0.2];
+//        });
+//    }
+    
     [_webViewVC.navigationItem setTitle:_infoSession.employer];
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     activityView.frame = CGRectMake(9, 0, 20, 20);
@@ -1324,6 +1335,12 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     logSelector;
+    [_webViewVC setProgressBar:1];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.7 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        _webViewVC.webProgress.hidden = YES;
+        [_webViewVC.webProgress setProgress:0];
+    });
+    
     NSString *theTitle=[webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     [_webViewVC.navigationItem setTitle:theTitle];
     
