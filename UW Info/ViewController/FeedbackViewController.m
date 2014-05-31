@@ -87,6 +87,15 @@
     [SVProgressHUD showSuccessWithStatus:@"Thanks for your precious feedback!"];
     [self dismissViewControllerAnimated:YES completion:^(){}];
 }
+//
+//- (void)testCompletion:(void (^)(void))block {
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
+//        [SVProgressHUD showSuccessWithStatus:@"Thanks for your precious feedback!"];
+//        dispatch_queue_t aQueue = dispatch_queue_create("com.example.MyCustomQueue", NULL);
+//        dispatch_async(aQueue, block);
+//    });
+//}
 
 - (void)sendFeedback {
     PFObject *feedback = [PFObject objectWithClassName:@"Feedback"];

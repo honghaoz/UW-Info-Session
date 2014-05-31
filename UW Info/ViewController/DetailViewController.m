@@ -1309,14 +1309,15 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     logSelector;
     _webViewVC.webProgress.hidden = NO;
-    [_webViewVC setProgressBar:0.75];
+    [_webViewVC setProgressBar:0.35];
     // Delay execution of my block for 10 seconds.
     
-//    for (int i = 3; i < 10; i++) {
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, i * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-//            [_webViewVC setProgressBar:0.1 * i - 0.2];
-//        });
-//    }
+    for (int i = 5; i < 50; i++) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, i * 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            
+            [_webViewVC setProgressBar:_webViewVC.webProgress.progress + 0.0001 * (51 - i)];
+        });
+    }
     
     [_webViewVC.navigationItem setTitle:_infoSession.employer];
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -2013,13 +2014,13 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 //    [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationFade];
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView == self.descriptionCell.contentText && (scrollView.contentOffset.y < 0 || scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.frame.size.height)) {
-        CGPoint newOffset = self.tableView.contentOffset;
-        newOffset.y += scrollView.contentOffset.y;
-        [self.tableView setContentOffset:newOffset animated:YES];
-    }
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    if (scrollView == self.descriptionCell.contentText && (scrollView.contentOffset.y < 0 || scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.frame.size.height)) {
+//        CGPoint newOffset = self.tableView.contentOffset;
+//        newOffset.y += scrollView.contentOffset.y;
+//        [self.tableView setContentOffset:newOffset animated:YES];
+//    }
+//}
 ////    if (scrollView == self.tableView) {
 ////        CGFloat currentOffset = scrollView.contentOffset.y;
 ////        CGFloat differenceFromStart = startContentOffset - currentOffset;
