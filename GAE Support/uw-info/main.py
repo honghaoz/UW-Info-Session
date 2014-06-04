@@ -267,7 +267,7 @@ class SumUpUsage(BasicHandler):
                         else:
                             eachAKey.uses = uses
                             eachAKey.put()
-                            logging.info("update usage: key: %s uses: %s", eachid, uses)
+                            #logging.info("update usage: key: %s uses: %s", eachid, uses)
                     alreadyExistedKeys = Keys.get_by_id(1000)
                     if not alreadyExistedKeys == None:
                         alreadyExistedKeys.totoal_uses = totoal_uses
