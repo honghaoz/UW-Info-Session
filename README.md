@@ -2,10 +2,10 @@
 
 UWaterloo Info Session is an unofficial iOS app used by students at University of Waterloo to look up updated employer information sessions.
 
-##App Store:
+###App Store:
 https://itunes.apple.com/app/uw-info-session/id837207884?ls=1&mt=8
 
-##Support features:
+###Support features:
 - Query info sessions of different terms
 - Check all informations, include date, time, location, programs, descriptions ...
 - Save favorite info sessions, taking note for this info session
@@ -15,7 +15,7 @@ https://itunes.apple.com/app/uw-info-session/id837207884?ls=1&mt=8
 - Check locations using UWaterloo map or open in map apps
 - Register an info session just in app
 
-##iPhone Screenshots
+###iPhone Screenshots
 ![](http://a2.mzstatic.com/us/r30/Purple/v4/d5/bd/e2/d5bde2e6-d86d-ce1b-25df-7f43590a8545/screen568x568.jpeg)
 
 ![](http://a4.mzstatic.com/us/r30/Purple2/v4/a4/84/70/a48470df-8278-c7ba-e750-bd90419ab547/screen568x568.jpeg)
