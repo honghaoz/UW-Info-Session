@@ -78,7 +78,6 @@ static EKEventStore *eventStore;
 
 #pragma make - Initiate a new InfoSession instance
 
-
 /**
  *  Initiate an InfoSession instance
  *
@@ -134,10 +133,6 @@ static EKEventStore *eventStore;
     return self;
     
 }
-
-//- (NSURL *)logoImageURL {
-//    return [NSURL URLWithString:[NSString stringWithFormat:@"http://g.etfv.co/%@", self.website]];
-//}
 
 #pragma mark - Alerts related methods
 
@@ -308,9 +303,6 @@ static EKEventStore *eventStore;
                 
                 localNotification.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"EST"];
                 //localNotification.timeZone = [NSTimeZone timeZoneWithName:@"EST"];
-//                NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
-//                [dateFormatter setDateFormat:@"HH:mm"];
-//                NSLog(@"%@ -- %@", [dateFormatter stringFromDate:localNotification.fireDate], [dateFormatter stringFromDate:[self.startTime dateByAddingTimeInterval:[eachAlert[@"alertInterval"] doubleValue]]]);
                 
                 // prepare for alertBody
                 NSString *timeString = [InfoSession getAlertDescriptionForNitification:eachAlert[@"alertChoice"]];
@@ -322,9 +314,6 @@ static EKEventStore *eventStore;
                 localNotification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
                 localNotification.userInfo = [NSMutableDictionary dictionaryWithObjects:@[[self getIdentifier], self.employer, [NSNumber numberWithInteger:i]] forKeys:@[@"InfoId", @"Employer", @"AlertIndex"]];
                 [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-                //                localNotification.fireDate = [[NSDate date] dateByAddingTimeInterval:4];
-                //                [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-                
             }
         }
     }
@@ -474,6 +463,7 @@ static EKEventStore *eventStore;
     NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     [dateFormatter setLocale:enUSPOSIXLocale];
     // set timezone to EST
+    // Note: timeZoneWithAbbreviation is different with timeZoneWithName
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"EST"]];
     //[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
 

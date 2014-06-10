@@ -300,6 +300,7 @@
     }
 }
 
+
 - (UW)deleteInfoSessionInMyInfo:(InfoSession *)infoSession{
     NSInteger existIndex = [InfoSessionModel findInfoSession:infoSession in:self.myInfoSessions];
     if (existIndex != -1) {
@@ -826,6 +827,7 @@
     }
     return nil;
 }
+
 - (InfoSession *)getNextInfoSessionAccordingInfoSession:(InfoSession *)info {
     for (NSString *key in _infoSessionsDictionary) {
         NSMutableArray *infoSessionsOfThisWeek = _infoSessionsDictionary[key];

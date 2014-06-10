@@ -10,6 +10,7 @@
 
 @interface NSString (Contain)
 
+
 - (BOOL)containsString:(NSString *)string;
 - (BOOL)containsString:(NSString *)string
                options:(NSStringCompareOptions)options;

@@ -316,6 +316,7 @@
     
 }
 
+
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:notification.userInfo[@"Employer"]
                                                     message:notification.alertBody
@@ -329,9 +330,7 @@
     application.applicationIconBadgeNumber = 0;
 }
 
-- (void)application:(UIApplication *)application
-didReceiveRemoteNotification:(NSDictionary *)userInfo
-fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {
     NSString *shouldReply = [userInfo objectForKey:@"ShouldReply"];
     NSString *sender = [userInfo objectForKey:@"Sender"];
     NSString *receivedMessage = [userInfo objectForKey:@"Message"];
@@ -362,7 +361,11 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {
     [_infoSessionModel saveMyInfoSessions];
 }
 
-
+/**
+ *  Post "OneMinute" notification, used for update ongoing info sessions' color
+ *
+ *  @param timer
+ */
 - (void)handleEveryMinutes:(NSTimer *)timer {
     // post notification every minute
     [[NSNotificationCenter defaultCenter] postNotificationName:@"OneMinute" object:self];
@@ -397,6 +400,12 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {
 }
 
 #pragma mark - UIAlertView delegate
+/**
+ *  Used for show reply alert view
+ *
+ *  @param alertView   alertView description
+ *  @param buttonIndex buttonIndex description
+ */
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == 0) {

@@ -10,6 +10,11 @@
 
 @interface UWErrorReport : NSObject
 
+/**
+ *  Report Error message
+ *
+ *  @param description error description
+ */
 + (void)reportErrorWithDescription:(NSString *)description;
 
 @end

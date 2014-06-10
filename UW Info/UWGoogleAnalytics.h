@@ -10,6 +10,11 @@
 
 @interface UWGoogleAnalytics : NSObject
 
+/**
+ *  Track Screen with Name
+ *
+ *  @param screenName Screen name
+ */
 + (void)analyticScreen:(NSString *)screenName;
 
 @end
