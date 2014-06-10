@@ -343,11 +343,15 @@
     if (_shownYear == [_termMenu getCurrentYear:[NSDate date]] && [_shownTerm isEqualToString:[_termMenu getCurrentTermFromDate:[NSDate date]]]) {
         // scroll TableView to current date
         InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
-        NSUInteger currentWeekNum = [self getWeekNumber:[NSDate date]];
-        NSUInteger sectionNumToScroll = currentWeekNum - [firstInfoSession weekNum];
+        //InfoSession *lastInfoSession = [_infoSessionModel.infoSessions lastObject];
+        NSInteger currentWeekNum = [self getWeekNumber:[NSDate date]];
+        NSLog(@"current: %d, first: %d", currentWeekNum, [firstInfoSession weekNum]);
+        NSInteger sectionNumToScroll = (NSInteger)currentWeekNum - (NSInteger)[firstInfoSession weekNum];
+        NSLog(@"section to scroll: %d", sectionNumToScroll);
         NSInteger rowNumToScroll = -1;
         
-        if (sectionNumToScroll < [self numberOfSectionsInTableView:self.tableView]) {
+        if (0 <= sectionNumToScroll && sectionNumToScroll < [self numberOfSectionsInTableView:self.tableView]) {
+            NSLog(@"normal");
             NSArray *infoSessionsOfCurrentWeek = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(currentWeekNum)];
             rowNumToScroll = -1;
             for (InfoSession *eachCell in infoSessionsOfCurrentWeek) {
@@ -367,6 +371,10 @@
             //        sectionNumToScroll += 1;
             //    }
             // scroll!
+        } else if (sectionNumToScroll == -1) {
+            NSLog(@"too early");
+            sectionNumToScroll = 0;
+            rowNumToScroll = 0;
         } else {
             NSLog(@"too late");
             sectionNumToScroll = [self numberOfSectionsInTableView:self.tableView] - 1;

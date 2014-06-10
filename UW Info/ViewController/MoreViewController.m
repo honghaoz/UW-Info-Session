@@ -196,7 +196,7 @@
             
             cell.textLabel.text = @"Developed by";
             [cell.textLabel setFont:[UIFont systemFontOfSize:18]];
-            cell.detailTextLabel.text = @"@zhh358";
+            cell.detailTextLabel.text = @"Honghao";
             [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
             return cell;
         }
@@ -299,7 +299,7 @@
             }
             
         } else if (indexPath.row == 1){
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://twitter.com/zhh358"]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ca.linkedin.com/in/honghaozhang"]];
         }
     } else if (indexPath.section == 1) {
         if (indexPath.row == 0) {

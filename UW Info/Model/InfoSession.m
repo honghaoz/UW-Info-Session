@@ -93,7 +93,6 @@ static EKEventStore *eventStore;
     self.sessionId = (NSUInteger)[[attributes valueForKeyPath:@"id"] integerValue];
     //NSLog(@"%i", self.SessionId);
     self.employer = [attributes valueForKeyPath:@"employer"];
-    self.employer = [self.employer stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     NSString *cancelledString = @"CANCELLED";
     // is employer's name contains @"CANCELLED", then this info session is cancelled.
@@ -102,6 +101,24 @@ static EKEventStore *eventStore;
     } else {
         self.isCancelled = YES;
     }
+    NSString *timeChangeString = @"**TIME CHANGE**";
+    // is employer's name contains @"**TIME CHANGE**", then reange this employer name.
+    NSRange findTimeChangeRange = [self.employer rangeOfString:timeChangeString];
+    if (findTimeChangeRange.location != NSNotFound) {
+        NSLog(@"%@", self.employer);
+        NSLog(@"%@", NSStringFromRange(findTimeChangeRange));
+        if (findTimeChangeRange.location + findTimeChangeRange.length == self.employer.length) {
+            self.employer = [self.employer substringWithRange:NSMakeRange(0, self.employer.length - findTimeChangeRange.length)];
+            self.employer = [self.employer stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        } else {
+            self.employer = [self.employer substringFromIndex:findTimeChangeRange.location + findTimeChangeRange.length + 1];
+            self.employer = [self.employer stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        }
+        self.employer = [self.employer stringByAppendingString:@" (**TIME CHANGE**)"];
+        NSLog(@"%@", self.employer);
+        
+    }
+    self.employer = [self.employer stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
     
