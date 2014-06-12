@@ -250,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UW Info/ViewController/DetailViewController.m"
-            timestampString = "423241583.960882"
+            timestampString = "424140344.735119"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1609"
-            endingLineNumber = "1609"
+            startingLineNumber = "1608"
+            endingLineNumber = "1608"
             landmarkName = "@implementation DetailViewController"
             landmarkType = "3">
          </BreakpointContent>

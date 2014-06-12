@@ -32,7 +32,7 @@
 //}
 
 - (void)viewWillAppear:(BOOL)animated {
-    logSelector;
+    LogMethod;
     CGFloat height = self.navigationController.navigationBar.frame.size.height;
     CGRect newFrame = _webProgress.frame;
     newFrame.origin.y = height;
@@ -53,7 +53,7 @@
 }
 
 - (void)loadView {
-    logSelector;
+    LogMethod;
 }
 
 - (void)setURL:(NSURL *)URL {

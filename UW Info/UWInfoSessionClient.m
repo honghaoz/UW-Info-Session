@@ -125,11 +125,11 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
         
     } failure:^(NSURLSessionDataTask *__unused task, NSError *error) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
-        if (httpResponse.statusCode == 503) {
+        if (httpResponse.statusCode == 503 || httpResponse.statusCode == 500) {
             //NSLog(@"503");
             [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat: @"Query error: 503, Error: %@", error.description]];
             if ([self.delegate respondsToSelector:@selector(infoSessionClient:didFailWithCode:)]) {
-                [self.delegate infoSessionClient:self didFailWithCode:503];
+                [self.delegate infoSessionClient:self didFailWithCode:httpResponse.statusCode];
             }
         }
         else {

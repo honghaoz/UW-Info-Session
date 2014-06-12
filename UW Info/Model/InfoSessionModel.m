@@ -708,7 +708,7 @@
 //                                                       delegate:nil
 //                                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
 //    [alertView show];
-    if (code == 503) {
+    if (code == 503 || code == 500) {
         [self switchInfoSessionBaseURLString];
     } else if (code == -1) {
         isOffLineMode = YES;

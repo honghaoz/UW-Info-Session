@@ -1307,7 +1307,6 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 }
 #pragma mark - UIWebViewDelegate methods
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    logSelector;
     _webViewVC.webProgress.hidden = NO;
     [_webViewVC setProgressBar:0.35];
     // Delay execution of my block for 10 seconds.
@@ -1335,7 +1334,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    logSelector;
+    LogMethod;
     [_webViewVC setProgressBar:1];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.7 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         _webViewVC.webProgress.hidden = YES;
@@ -1353,22 +1352,22 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 }
 
 - (void)goBack:(id)sender {
-    logSelector;
+    LogMethod;
     [_webViewVC.webView goBack];
 }
 
 - (void)goForward:(id)sender {
-    logSelector;
+    LogMethod;
     [_webViewVC.webView goForward];
 }
 
 - (void)webViewReload:(id)sender {
-    logSelector;
+    LogMethod;
     [_webViewVC.webView reload];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    logSelector;
+    LogMethod;
 }
 
 #pragma mark - UIAlertViewDelegate methods

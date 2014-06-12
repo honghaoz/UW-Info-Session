@@ -13,18 +13,19 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
-    #define NSIntegerToString(i) [NSString stringWithFormat:@"%lu", (unsigned long)i]
+//    #define NSIntegerToString(i) [NSString stringWithFormat:@"%lu", (unsigned long)i]
     #define GetBoolFromDic(dic, key) [dic[key] boolValue]
     #define UWBlack [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1]
     #define UWGold [UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]
 
-    #define printNil(object) NSLog(@"%@ is %@", [object class], object == nil? @"nil" : @"not nil")
-    #define logSelector NSLog(@"%@", NSStringFromSelector(_cmd))
-
-    #ifdef DEBUG
-    #   define NSLog(...) NSLog(__VA_ARGS__)
-    #else
-    #   define NSLog(...)
-    #endif
+//    #define printNil(object) NSLog(@"%@ is %@", [object class], object == nil? @"nil" : @"not nil")
+//    #define logSelector NSLog(@"%@", NSStringFromSelector(_cmd))
+//
+//    #ifdef DEBUG
+//    #   define NSLog(...) NSLog(__VA_ARGS__)
+//    #else
+//    #   define NSLog(...)
+//    #endif
+    #import "ZHHHandyFunctions.h"
 
 #endif
