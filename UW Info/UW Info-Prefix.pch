@@ -26,6 +26,6 @@
 //    #else
 //    #   define NSLog(...)
 //    #endif
-    #import "ZHHHandyFunctions.h"
+    #import "ZHHHandyMacros.h"
 
 #endif

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1B01C3091926831B0071AA73 /* ZHHPullView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B01C3081926831B0071AA73 /* ZHHPullView.m */; };
+		1B058350194E28E7000D43C2 /* ZHHHandyMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B05834F194E28E7000D43C2 /* ZHHHandyMacros.m */; };
 		1B0A98821923BF61006AF24B /* UWCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B0A98811923BF61006AF24B /* UWCellScrollView.m */; };
 		1B19834918A618A60022A285 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19834818A618A60022A285 /* DetailViewController.m */; };
 		1B19FE4B1928673500E0CA2D /* UWDetailRSVPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19FE4A1928673500E0CA2D /* UWDetailRSVPCell.m */; };
@@ -97,7 +98,6 @@
 		1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */; };
 		1BB1A12018C908BB00823A0D /* alarm.caf in Resources */ = {isa = PBXBuildFile; fileRef = 1BB1A11F18C9040C00823A0D /* alarm.caf */; };
 		1BBB19071935786C00E74EBD /* UWWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB19061935786C00E74EBD /* UWWebViewController.m */; };
-		1BC0025B1947DDDD0040E828 /* ZHHHandyFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC0025A1947DDDD0040E828 /* ZHHHandyFunctions.m */; };
 		1BC7F35518F38F6900C21CFD /* LINEActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F34018F38F6900C21CFD /* LINEActivity.m */; };
 		1BC7F35618F38F6900C21CFD /* LINEActivityIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34118F38F6900C21CFD /* LINEActivityIcon.png */; };
 		1BC7F35718F38F6900C21CFD /* LINEActivityIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34218F38F6900C21CFD /* LINEActivityIcon@2x.png */; };
@@ -162,6 +162,8 @@
 /* Begin PBXFileReference section */
 		1B01C3071926831B0071AA73 /* ZHHPullView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZHHPullView.h; path = "UW Info/OtherViews/ZHHPullView.h"; sourceTree = SOURCE_ROOT; };
 		1B01C3081926831B0071AA73 /* ZHHPullView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZHHPullView.m; path = "UW Info/OtherViews/ZHHPullView.m"; sourceTree = SOURCE_ROOT; };
+		1B05834E194E28E7000D43C2 /* ZHHHandyMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZHHHandyMacros.h; sourceTree = "<group>"; };
+		1B05834F194E28E7000D43C2 /* ZHHHandyMacros.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZHHHandyMacros.m; sourceTree = "<group>"; };
 		1B0A98801923BF61006AF24B /* UWCellScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWCellScrollView.h; path = OtherViews/UWCellScrollView.h; sourceTree = "<group>"; };
 		1B0A98811923BF61006AF24B /* UWCellScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWCellScrollView.m; path = OtherViews/UWCellScrollView.m; sourceTree = "<group>"; };
 		1B19834718A618A60022A285 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ViewController/DetailViewController.h; sourceTree = "<group>"; };
@@ -328,8 +330,6 @@
 		1BB1A11F18C9040C00823A0D /* alarm.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = alarm.caf; path = Resources/alarm.caf; sourceTree = "<group>"; };
 		1BBB19051935786C00E74EBD /* UWWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWWebViewController.h; path = ViewController/UWWebViewController.h; sourceTree = "<group>"; };
 		1BBB19061935786C00E74EBD /* UWWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWWebViewController.m; path = ViewController/UWWebViewController.m; sourceTree = "<group>"; };
-		1BC002591947DDDD0040E828 /* ZHHHandyFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZHHHandyFunctions.h; sourceTree = "<group>"; };
-		1BC0025A1947DDDD0040E828 /* ZHHHandyFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZHHHandyFunctions.m; sourceTree = "<group>"; };
 		1BC7F33F18F38F6900C21CFD /* LINEActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LINEActivity.h; sourceTree = "<group>"; };
 		1BC7F34018F38F6900C21CFD /* LINEActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LINEActivity.m; sourceTree = "<group>"; };
 		1BC7F34118F38F6900C21CFD /* LINEActivityIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LINEActivityIcon.png; sourceTree = "<group>"; };
@@ -500,6 +500,16 @@
 			path = "UW Info";
 			sourceTree = "<group>";
 		};
+		1B05834D194E28E7000D43C2 /* ZHHHandyMacros */ = {
+			isa = PBXGroup;
+			children = (
+				1B05834E194E28E7000D43C2 /* ZHHHandyMacros.h */,
+				1B05834F194E28E7000D43C2 /* ZHHHandyMacros.m */,
+			);
+			name = ZHHHandyMacros;
+			path = OpenSource/ZHHHandyMacros;
+			sourceTree = "<group>";
+		};
 		1B2076E718AAA56E00FE7088 /* MyInfoViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -639,7 +649,7 @@
 		1B3A338418D4D6A50046DC73 /* OpenSource */ = {
 			isa = PBXGroup;
 			children = (
-				1BC002581947DDDD0040E828 /* ZHHHandyFunctions */,
+				1B05834D194E28E7000D43C2 /* ZHHHandyMacros */,
 				1B78A96E191E813C00A4A8AD /* PullView */,
 				1BC7F33D18F38EFB00C21CFD /* UIActivity */,
 				1BA1795918F1AE5400FA5D05 /* HSLUpdateChecker */,
@@ -780,16 +790,6 @@
 			);
 			name = HSLUpdateChecker;
 			path = OpenSource/HSLUpdateChecker;
-			sourceTree = "<group>";
-		};
-		1BC002581947DDDD0040E828 /* ZHHHandyFunctions */ = {
-			isa = PBXGroup;
-			children = (
-				1BC002591947DDDD0040E828 /* ZHHHandyFunctions.h */,
-				1BC0025A1947DDDD0040E828 /* ZHHHandyFunctions.m */,
-			);
-			name = ZHHHandyFunctions;
-			path = OpenSource/ZHHHandyFunctions;
 			sourceTree = "<group>";
 		};
 		1BC7F33D18F38EFB00C21CFD /* UIActivity */ = {
@@ -1201,6 +1201,7 @@
 				1B3A339C18D4D7600046DC73 /* AFSecurityPolicy.m in Sources */,
 				1B3A33A018D4D7600046DC73 /* AFURLSessionManager.m in Sources */,
 				1B505EC718D0C63F00F168F8 /* CenterTextCell.m in Sources */,
+				1B058350194E28E7000D43C2 /* ZHHHandyMacros.m in Sources */,
 				1B3A339D18D4D7600046DC73 /* AFURLConnectionOperation.m in Sources */,
 				1B3A339B18D4D7600046DC73 /* AFNetworkReachabilityManager.m in Sources */,
 				1B527C4518D026D100A91339 /* MoreNavigationViewController.m in Sources */,
@@ -1230,7 +1231,6 @@
 				1B3A33FF18D4D9B40046DC73 /* UWTermMenu.m in Sources */,
 				1BC7F36918F3981E00C21CFD /* JNJGoogleMapsActivity.m in Sources */,
 				1B3A340C18D4E2570046DC73 /* UIDevice-Hardware.m in Sources */,
-				1BC0025B1947DDDD0040E828 /* ZHHHandyFunctions.m in Sources */,
 				1B01C3091926831B0071AA73 /* ZHHPullView.m in Sources */,
 				1B4DD55618AC90B4009B0214 /* MapViewController.m in Sources */,
 				1B3A33B618D4D7690046DC73 /* UIImageView+AFNetworking.m in Sources */,
