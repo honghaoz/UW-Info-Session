@@ -575,7 +575,7 @@
             if (cell == nil) {
                 cell = [[DetailNormalCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailNormalCell"];
             }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             cell.titleLabel.text = @"Date";
 //            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 //            NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
@@ -589,7 +589,7 @@
         }
         else if (indexPath.row == 2) {
             DetailNormalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailNormalCell"];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             cell.titleLabel.text = @"Time";
 //            NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
 //            NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
@@ -1103,7 +1103,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
-        if (indexPath.row == 3) {
+        if (indexPath.row == 1 || indexPath.row == 2) {
+            [self addToCalendar:nil];
+        } else if (indexPath.row == 3) {
             [self performSegueWithIdentifier:@"ShowMap" sender:nil];
         } else if (indexPath.row == 4 && _infoSession.sessionId > 10) {
             if (_infoSession.sessionId > 10 && [_infoSession.startTime compare:[NSDate date]] == NSOrderedDescending) {

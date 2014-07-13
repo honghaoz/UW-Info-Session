@@ -19,61 +19,60 @@ Parse.Cloud.define("count", function(request, response) {
 });
 
 Parse.Cloud.define("PushNotification", function(request, response) {
-	var pushType = request.params.type;
-	if (pushType === 'NewDevice') {
-		var newDeviceCount = request.params.newDeviceCount;
-		var addedNumber = request.params.addedNumber;
-		var alertMessage = addedNumber + " ";
-		if (addedNumber == 1) {
-			alertMessage += "device "
-		} else {
-			alertMessage += "devices "
+	var type = request.params.type;
+	var newCount = request.params.newCount;
+	var addedNumber = request.params.addedNumber;
+	var alertMessage = addedNumber + " " + type + " added!";
+	
+	var query = new Parse.Query(Parse.Installation);
+	query.equalTo('channels', 'admin');
+	Parse.Push.send({
+		where : query,
+		data : {
+			alert: alertMessage,
+			badge: 'Increment',
+			sound: 'alarm.caf'
 		}
-		alertMessage += "added!";
-		var query = new Parse.Query(Parse.Installation);
-		query.equalTo('channels', 'admin');
-		Parse.Push.send({
-			where : query,
-			data : {
-				alert: alertMessage,
-				badge: 'Increment',
-				sound: 'alarm.caf'
-			}
-		}, {
-			success: function() {
-				console.log("Push succeed!");
-				var query = new Parse.Query("Count");
-				query.find({
-					success : function(results) {
-						var theCount = results[0];
-						theCount.set('DeviceCount', newDeviceCount);
-						console.log('Set device count: ' + newDeviceCount);
-						theCount.save(null, {
-							success: function() {
+	}, {
+		success: function() {
+			console.log("Push succeed!");
+			var query = new Parse.Query("Count");
+			query.find({
+				success : function(results) {
+					var theCount = results[0];
+					theCount.set(type + 'Count', newCount);
+					// console.log('Set device count: ' + newDeviceCount);
+					theCount.save(null, {
+						success: function() {
 
-							},
-							error: function() {
+						},
+						error: function() {
 
-							}
-						});
-						response.success("success");
-					},
-					error : function() {
-						response.error('failed');
-					}
-				});
-			},
-			error: function() {
-				console.log("Push failed!");
-				response.error('failed');
-			}
-		});
-	};
+						}
+					});
+					response.success("success");
+				},
+				error : function() {
+					response.error('failed');
+				}
+			});
+		},
+		error: function() {
+			console.log("Push failed!");
+			response.error('failed');
+		}
+	});
 });
 
 function Count(className, callback) {
 	console.log("Function: Count called");
-	var query = new Parse.Query(className);
+	var promise = new Parse.Promise();
+	var query;
+	if (className === "Installation") {
+		query = new Parse.Query(Parse.Installation);
+	} else {
+		query = new Parse.Query(className);
+	};
 	var result = 0;
 	query.count({
 		success: function(count) {
@@ -89,36 +88,75 @@ function Count(className, callback) {
 	});
 }
 
-function CheckDevice(request, response) {
+function executePush(type, added, newCount, callback) {
+	if (added > 0) {
+		Parse.Cloud.run('PushNotification', 
+			{
+				type: type, 
+				addedNumber: added, 
+				newCount: newCount
+			}, {
+			success: function(pushResult) {
+				// response.success(type + ": " + added + " objects are added" + " Push succeed");
+				callback(true, true, 1);
+			},
+			error: function(error) {
+				// response.error(type + ": " + added + " objects are added" + " Push failed");
+				callback(true, false, 0);
+			}
+		});
+	} else if (added === 0) {
+		// response.success(type + ": " + added + " objects are added, no push");
+		callback(true, true, 0);
+	} else {
+		// response.error(type + ": " + "Wrong added number (<0)");
+		callback(false, false, 0);
+	}
+}
+
+function Check(type, request, response) {
 	console.log("Function: CheckDevice called");
 	var query = new Parse.Query("Count");
     query.find({
     	success : function(results) {
     		var theCount = results[0];
-    		var oldDeviceCount = theCount.get("DeviceCount");
-    		console.log("Old: " + oldDeviceCount);
-    		
-    		var newDeviceCount = 0;
-    		Count("Device", function(countResult) {
-    			console.log("Callback function called");
-    			newDeviceCount = countResult;
-    			console.log("New: " + newDeviceCount);
-    			var addedDevices = newDeviceCount - oldDeviceCount;
-    			if (addedDevices > 0) {
-    				Parse.Cloud.run('PushNotification', {type: 'NewDevice', addedNumber: addedDevices, newDeviceCount: newDeviceCount}, {
-    					success: function(pushResult) {
-    						response.success(addedDevices + " devices are added" + " Push succeed");
-    					},
-    					error: function(error) {
-    						response.error(addedDevices + " devices are added" + " Push failed");
-    					}
-    				});
-    			} else if (addedDevices === 0) {
-    				response.success(addedDevices + " devices are added, no push");
-    			} else {
-    				response.error("Wrong addedDevices number (<0)");
-    			}
-    		});
+    		// var oldCountDic = {};
+    		// var oldDeviceCount = theCount.get("DeviceCount");
+    		// console.log("oldDeviceCount: " + oldDeviceCount);
+    		// oldCountDic["Device"] = oldDeviceCount;
+    		// var oldInstallationCount = theCount.get("InstallationCount");
+    		// console.log("oldInstallationCount: " + oldInstallationCount);
+    		// oldCountDic["Installation"] = oldInstallationCount;
+    		// var oldErrorCount = theCount.get("ErrorCount");
+    		// console.log("oldErrorCount: " + oldErrorCount);
+    		// oldCountDic["Error"] = oldErrorCount;
+    		// var oldFeedbackCount = theCount.get("FeedbackCount");
+    		// console.log("oldFeedbackCount: " + oldFeedbackCount);
+    		// oldCountDic["Feedback"] = oldFeedbackCount;
+
+    		// var newCount = 0;
+    		// var types = ["Device", "Feedback", "Error"];
+    		var oldCount = theCount.get(type + "Count");
+    		var newCount = 0;
+			Count(type, function(countResult) {
+				newCount = countResult;
+				console.log("new" + type + "Count: " + newCount);
+				var added = newCount - oldCount;
+				executePush(type, added, newCount, function(addResult, pushResult, pushCount) {
+					if (addResult === true) {
+						if (pushResult === true) {
+							response.success(type + ": " + added + " objects are added" + " Push succeed");
+							// responseSuccessMessage += type + ": " + added + " objects are added" + " Push succeed\n";
+						} else {
+							response.error(type + ": " + added + " objects are added" + " Push failed");
+							// responseSuccessMessage += type + ": " + added + " objects are added" + " Push faile\n";
+						};
+					} else {
+						response.error(type + ": " + "Wrong added number (<0)");
+						// responseSuccessMessage += type + ": " + "Wrong added number (<0)\n";
+					};
+				});
+			});
     	},
     	error : function() {
     		response.error("Check devices failed");
@@ -128,13 +166,29 @@ function CheckDevice(request, response) {
 
 // Bacground jobs
 Parse.Cloud.job("CheckDevices", function (request, status) {
-    CheckDevice(request, status);
+    Check("Device", request, status);
 });
  
-Parse.Cloud.define("CheckDevices", function (request, response) {
-    CheckDevice(request, response);
+// Parse.Cloud.define("CheckDevices", function (request, response) {
+//     Check("Device", request, response);
+// });
+
+Parse.Cloud.job("CheckErrors", function (request, status) {
+    Check("Error", request, status);
 });
 
-Parse.Cloud.job("TestBackground", function (request, status) {
-    status.success("Test succeed");
+Parse.Cloud.job("CheckFeedbacks", function (request, status) {
+    Check("Feedback", request, status);
 });
+ 
+// Parse.Cloud.define("CheckDevices", function (request, response) {
+//     Check("Device", request, response);
+// });
+
+// Parse.Cloud.job("CheckDevices", function (request, status) {
+//     Check("Device", request, status);
+// });
+ 
+// Parse.Cloud.define("CheckDevices", function (request, response) {
+//     Check("Device", request, response);
+// });
