@@ -16,13 +16,12 @@
 #import "UIDevice-Hardware.h"
 
 #import "GAI.h"
-//#import "iRate.h"
+#import "iRate.h"
 #import "HSLUpdateChecker.h"
 #import "UIApplication+AppVersion.h"
 
 #import "UWErrorReport.h"
 #import "Appirater.h"
-#import "UWAppiRaterDelegate.h"
 
 @implementation UWAppDelegate {
     InfoSessionModel *_infoSessionModel;
@@ -252,35 +251,35 @@
     
     application.applicationIconBadgeNumber = 0;
     
-    //app irater
-    [Appirater setAppId:@"837207884"];
-    [Appirater setDaysUntilPrompt:1];
-    [Appirater setUsesUntilPrompt:10];
-    [Appirater setSignificantEventsUntilPrompt:4];
-    [Appirater setTimeBeforeReminding:1];
-    [Appirater setDebug:NO];
-    [Appirater appLaunched:YES];
-    
-    [Appirater setCustomAlertMessage:@"If you find UW Info is helpful, would you mind taking a moment to rate it? You can rate it in-app.\n Thanks for your support!"];
-    [Appirater setUsesAnimation:YES];
-    [Appirater setAlwaysUseMainBundle:NO];
-    [Appirater setOpenInAppStore:NO];
-    [Appirater setDelegate:[UWAppiRaterDelegate sharediRateDelegate]];
-//    [[UWAppiRaterDelegate sharediRateDelegate] appiraterDidDisplayAlert:nil];
+//    //app irater
+//    [Appirater setAppId:@"837207884"];
+//    [Appirater setDaysUntilPrompt:1];
+//    [Appirater setUsesUntilPrompt:10];
+//    [Appirater setSignificantEventsUntilPrompt:4];
+//    [Appirater setTimeBeforeReminding:1];
+//    [Appirater setDebug:NO];
+//    [Appirater appLaunched:YES];
+//    
+//    [Appirater setCustomAlertMessage:@"If you find UW Info is helpful, would you mind taking a moment to rate it? Thanks for your support!"];
+//    [Appirater setUsesAnimation:YES];
+//    [Appirater setAlwaysUseMainBundle:NO];
+//    [Appirater setOpenInAppStore:YES];
+//    [Appirater setDelegate:[UWAppiRaterDelegate sharediRateDelegate]];
+////    [[UWAppiRaterDelegate sharediRateDelegate] appiraterDidDisplayAlert:nil];
     return YES;
 }
 
-//+ (void)initialize {
-//    //configure iRate
-//    [iRate sharedInstance].daysUntilPrompt = 4;
-//    [iRate sharedInstance].usesUntilPrompt = 15;
-//    [iRate sharedInstance].eventsUntilPrompt = 5;
-//    [iRate sharedInstance].remindPeriod = 1;
-//    [iRate sharedInstance].message = @"If you find UW Info is helpful, would you mind taking a moment to rate it? It's your support makes me do better! Thanks!";
-//    [iRate sharedInstance].promptForNewVersionIfUserRated = YES;
-//    [iRate sharedInstance].onlyPromptIfLatestVersion = NO;
-//    //[iRate sharedInstance].previewMode = YES;
-//}
++ (void)initialize {
+    //configure iRate
+    [iRate sharedInstance].daysUntilPrompt = 2;
+    [iRate sharedInstance].usesUntilPrompt = 10;
+    [iRate sharedInstance].eventsUntilPrompt = 5;
+    [iRate sharedInstance].remindPeriod = 1;
+    [iRate sharedInstance].message = @"If you find UW Info is helpful, would you mind taking a moment to rate it? It's your support makes me do better! Thanks!";
+    [iRate sharedInstance].promptForNewVersionIfUserRated = YES;
+    [iRate sharedInstance].onlyPromptIfLatestVersion = NO;
+    //[iRate sharedInstance].previewMode = YES;
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -309,7 +308,7 @@
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     // clear badge number
     application.applicationIconBadgeNumber = 0;
-    [Appirater appEnteredForeground:YES];
+//    [Appirater appEnteredForeground:YES];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

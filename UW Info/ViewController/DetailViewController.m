@@ -42,7 +42,7 @@
 #import "GADAdMobExtras.h"
 
 #import "UWAds.h"
-//#import "iRate.h"
+#import "iRate.h"
 
 #import <FacebookSDK/FacebookSDK.h>
 #import <Social/Social.h>
@@ -1712,7 +1712,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
  */
 - (IBAction)addToMyInfo:(id)sender {
     // log event
-//    [[iRate sharedInstance] logEvent:NO];
+    [[iRate sharedInstance] logEvent:NO];
     UW addResult = UWNonthing;
     // if note cell is editing, resign keyboard
     [self.noteCell.contentText resignFirstResponder];

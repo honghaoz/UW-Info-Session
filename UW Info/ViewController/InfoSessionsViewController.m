@@ -494,6 +494,7 @@
         cell.loadingLabel.text = @"No Info Sessions";
         [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
         [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
+//        [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
         return cell;
     }
     else if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions == nil) {
@@ -503,6 +504,7 @@
         cell.loadingLabel.text = @"      Refreshing...";
         [cell.loadingLabel setTextAlignment:NSTextAlignmentLeft];
         [cell.loadingLabel setTextColor:[UIColor darkGrayColor]];
+//        [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
         return cell;
     }
     else if (indexPath.section == [self numberOfSectionsInTableView:tableView] - 1) {
@@ -511,6 +513,7 @@
         cell.loadingLabel.text = [NSString stringWithFormat:@"%lu Info Sessions", (unsigned long)[_infoSessionModel.infoSessions count]];
         [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
         [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
+//        [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
         return cell;
     }
     else {
@@ -520,9 +523,11 @@
             cell.loadingLabel.text = @"No Info Sessions";
             [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
             [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
+//            [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
             return cell;
         } else {
             InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InfoSessionCell"];
+//            [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
             [self configureCell:cell withIndexPath:indexPath];
             return cell;
         }

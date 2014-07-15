@@ -38,20 +38,21 @@
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
     _feedbackTextView = [[PSPDFTextView alloc] initWithFrame:CGRectMake(10, 10, screenSize.width - 20, screenSize.height - 262)];
     [_feedbackTextView setFont:[UIFont boldSystemFontOfSize:[UIFont systemFontSize] + 2]];
+//    [_feedbackTextView setBackgroundColor:[UIColor blueColor]];
     [self.view addSubview:_feedbackTextView];
     [_feedbackTextView becomeFirstResponder];
     
     NSLog(@"feed text view init");
     
     // observe keyboard
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardWillShow:)
-//                                                 name:UIKeyboardWillShowNotification
-//                                               object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardWillChange:)
-//                                                 name:UIKeyboardWillChangeFrameNotification
-//                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillChange:)
+                                                 name:UIKeyboardWillChangeFrameNotification
+                                               object:nil];
 
 }
 
@@ -61,23 +62,31 @@
     // Dispose of any resources that can be recreated.
 }
 
-//- (void)keyboardWillShow:(NSNotification *)notification {
-//    NSLog(@"keyboard will show");
-//    CGSize keyboardSize;
-//    keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-//    NSLog(@"%@", NSStringFromCGSize(keyboardSize));
-//}
+- (void)keyboardWillShow:(NSNotification *)notification {
+    LogMethod;
+    CGSize keyboardSize;
+    keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    NSLog(@"%@", NSStringFromCGSize(keyboardSize));
+}
 
-//- (void)keyboardWillChange:(NSNotification *)notification {
-//    NSLog(@"keyboard will change");
-//    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-//     NSLog(@"keyboard:  %@", NSStringFromCGSize(keyboardSize));
-//    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-//     NSLog(@"screen: %@", NSStringFromCGSize(screenSize));
-//    [_feedbackTextView setFrame:CGRectMake(0, 0, screenSize.width, screenSize.height - keyboardSize.height)];
-//    //NSLog(@"%@", NSStringFromCGSize(keyboardSize));
-//    NSLog(@"textview: %@", NSStringFromCGRect(_feedbackTextView.frame));
-//}
+- (void)keyboardWillChange:(NSNotification *)notification {
+    LogMethod;
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+     NSLog(@"keyboard:  %@", NSStringFromCGSize(keyboardSize));
+    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+     NSLog(@"screen: %@", NSStringFromCGSize(screenSize));
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         [_feedbackTextView setFrame:CGRectMake(10, 10, screenSize.width - 20, screenSize.height - keyboardSize.height - 20)];
+                     }
+                     completion:nil];
+}
+
+- (void)keyboardDidChange:(NSNotification *)notification {
+    LogMethod;
+}
 
 - (void)done {
     [self sendFeedback];

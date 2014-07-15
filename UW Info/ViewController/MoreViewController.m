@@ -335,8 +335,8 @@
 //                }
 //                
 //            }];
-            [Appirater rateApp];
-//            [[iRate sharedInstance] openRatingsPageInAppStore];
+//            [Appirater rateApp];
+            [[iRate sharedInstance] openRatingsPageInAppStore];
         }
     }
 }

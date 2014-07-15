@@ -99,7 +99,6 @@
 		1BB1A12018C908BB00823A0D /* alarm.caf in Resources */ = {isa = PBXBuildFile; fileRef = 1BB1A11F18C9040C00823A0D /* alarm.caf */; };
 		1BBB19071935786C00E74EBD /* UWWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB19061935786C00E74EBD /* UWWebViewController.m */; };
 		1BBD1BD41974E7EE0040081A /* Appirater.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD1BD21974E7EE0040081A /* Appirater.m */; };
-		1BBD1BD71974ED430040081A /* UWAppiRaterDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD1BD61974ED430040081A /* UWAppiRaterDelegate.m */; };
 		1BC7F35518F38F6900C21CFD /* LINEActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F34018F38F6900C21CFD /* LINEActivity.m */; };
 		1BC7F35618F38F6900C21CFD /* LINEActivityIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34118F38F6900C21CFD /* LINEActivityIcon.png */; };
 		1BC7F35718F38F6900C21CFD /* LINEActivityIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34218F38F6900C21CFD /* LINEActivityIcon@2x.png */; };
@@ -335,8 +334,6 @@
 		1BBD1BD11974E7EE0040081A /* Appirater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Appirater.h; sourceTree = "<group>"; };
 		1BBD1BD21974E7EE0040081A /* Appirater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Appirater.m; sourceTree = "<group>"; };
 		1BBD1BD31974E7EE0040081A /* AppiraterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppiraterDelegate.h; sourceTree = "<group>"; };
-		1BBD1BD51974ED430040081A /* UWAppiRaterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWAppiRaterDelegate.h; sourceTree = "<group>"; };
-		1BBD1BD61974ED430040081A /* UWAppiRaterDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWAppiRaterDelegate.m; sourceTree = "<group>"; };
 		1BC7F33F18F38F6900C21CFD /* LINEActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LINEActivity.h; sourceTree = "<group>"; };
 		1BC7F34018F38F6900C21CFD /* LINEActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LINEActivity.m; sourceTree = "<group>"; };
 		1BC7F34118F38F6900C21CFD /* LINEActivityIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LINEActivityIcon.png; sourceTree = "<group>"; };
@@ -966,8 +963,6 @@
 				1B58C36018F0634E003D9F9F /* UWAds.m */,
 				1BA43E1B18FCDFCF008299EB /* UWErrorReport.h */,
 				1BA43E1C18FCDFCF008299EB /* UWErrorReport.m */,
-				1BBD1BD51974ED430040081A /* UWAppiRaterDelegate.h */,
-				1BBD1BD61974ED430040081A /* UWAppiRaterDelegate.m */,
 				1B8C557918B72B490070CD82 /* Categories */,
 				1B37453818A5BA2C007CF08C /* Models */,
 				1B37453918A5BA3D007CF08C /* Controllers */,
@@ -1244,7 +1239,6 @@
 				1B717E6518A809F900E20A29 /* DetailRSVPCell.m in Sources */,
 				1B58C36118F0634E003D9F9F /* UWAds.m in Sources */,
 				1B78A996191F1E7100A4A8AD /* UWDevice.m in Sources */,
-				1BBD1BD71974ED430040081A /* UWAppiRaterDelegate.m in Sources */,
 				1B717E6D18A80A7A00E20A29 /* InfoSessionCell.m in Sources */,
 				1BA1795C18F1AE5400FA5D05 /* HSLUpdateChecker.m in Sources */,
 				1B78A993191F0D8700A4A8AD /* UWManagerViewController.m in Sources */,
