@@ -29,7 +29,8 @@
     bool isOffLineMode;
 }
 
--(id)init {
+- (id)init
+{
     if ((self = [super init])) {
         //NSLog(@"InfoSessionModel Initiated!");
         isOffLineMode = NO;
@@ -44,7 +45,8 @@
  *
  *  @return return the array of user saved info sessions
  */
--(NSMutableArray *)myInfoSessions {
+- (NSMutableArray*)myInfoSessions
+{
     if (_myInfoSessions == nil) {
         //NSLog(@"myInfoSessions initiated!");
         _myInfoSessions = [[NSMutableArray alloc] init];
@@ -54,7 +56,8 @@
     }
 }
 
--(NSMutableDictionary *)infoSessionsDictionary {
+- (NSMutableDictionary*)infoSessionsDictionary
+{
     if (_infoSessionsDictionary == nil) {
         _infoSessionsDictionary = [[NSMutableDictionary alloc] init];
         return _infoSessionsDictionary;
@@ -63,7 +66,8 @@
     }
 }
 
--(NSMutableDictionary *)termInfoDic {
+- (NSMutableDictionary*)termInfoDic
+{
     if (_termInfoDic == nil) {
         _termInfoDic = [[NSMutableDictionary alloc] init];
         return _termInfoDic;
@@ -72,7 +76,8 @@
     }
 }
 
--(NSMutableDictionary *)infoSessionsIndexDic {
+- (NSMutableDictionary*)infoSessionsIndexDic
+{
     if (_infoSessionsIndexDic == nil) {
         _infoSessionsIndexDic = [[NSMutableDictionary alloc] init];
         return _infoSessionsIndexDic;
@@ -81,7 +86,8 @@
     }
 }
 
-- (void)clearInfoSessions {
+- (void)clearInfoSessions
+{
     _infoSessions = @[];
     _infoSessionsDictionary = nil;
     _currentTerm = nil;
@@ -89,21 +95,24 @@
     [self.delegate infoSessionModeldidUpdateFailed:self];
 }
 
-- (NSString *)apiKey {
+- (NSString*)apiKey
+{
     if (_apiKey == nil) {
         _apiKey = @"0";
     }
     return _apiKey;
 }
 
-- (NSString *)infoSessionBaseURLString {
+- (NSString*)infoSessionBaseURLString
+{
     if (_infoSessionBaseURLString == nil) {
         _infoSessionBaseURLString = @"http://uw-info1.appspot.com/";
     }
     return _infoSessionBaseURLString;
 }
 
-- (void)switchInfoSessionBaseURLString {
+- (void)switchInfoSessionBaseURLString
+{
     NSLog(@"switch!");
     if ([self.infoSessionBaseURLString isEqual:@"http://uw-info1.appspot.com/"]) {
         self.infoSessionBaseURLString = @"http://uw-info2.appspot.com/";
@@ -164,10 +173,11 @@
 
 /**
  *  To be called after self.infoSessions is initiated.
- *  initiated self.infoSessionsDictionary with key: weekNum, value: corronsponding infoSession
+ *  Initiated self.infoSessionsDictionary with key: weekNum, value: corronsponding infoSession
  */
-- (void)processInfoSessionsDictionary:(NSMutableDictionary *)dictionary withInfoSessions:(NSArray *)array {
-    for (InfoSession *eachSession in array) {
+- (void)processInfoSessionsDictionary:(NSMutableDictionary*)dictionary withInfoSessions:(NSArray*)array
+{
+    for (InfoSession* eachSession in array) {
         // if key not exist
         if (dictionary[NSIntegerToString(eachSession.weekNum)] == nil) {
             [dictionary setValue:[[NSMutableArray alloc] initWithObjects:eachSession, nil] forKey:NSIntegerToString(eachSession.weekNum)];
@@ -179,13 +189,14 @@
 }
 
 /**
- *  process the index dictionary, key is "A" ,"B", "C"
- *  process the index array
+ *  Process the index dictionary, key is "A" ,"B", "C"
+ *  Process the index array
  */
-- (void)processInfoSessionsIndexDic {
+- (void)processInfoSessionsIndexDic
+{
     [_infoSessionsIndexDic removeAllObjects];
-    for (InfoSession *eachSession in _infoSessions) {
-        NSString *key = [[eachSession.employer substringToIndex:1] capitalizedString];
+    for (InfoSession* eachSession in _infoSessions) {
+        NSString* key = [[eachSession.employer substringToIndex:1] capitalizedString];
         char keyChar = [key characterAtIndex:0];
         if (!(keyChar >= 'A' && keyChar <= 'Z')) {
             key = @"#";
@@ -195,24 +206,24 @@
             [self.infoSessionsIndexDic setValue:[[NSMutableArray alloc] initWithObjects:eachSession, nil] forKey:key];
         } else {
             // key exists
-            NSComparator comparator = ^(InfoSession *info1, InfoSession *info2) {
+            NSComparator comparator = ^(InfoSession* info1, InfoSession* info2) {
                 NSComparisonResult compareResult = [[info1.employer capitalizedString] compare:[info2.employer capitalizedString]];
                 if (compareResult == NSOrderedSame) {
                     compareResult = [info1.startTime compare:info2.startTime];
                 }
                 return compareResult;
             };
-            
+
             NSUInteger newIndex = [self.infoSessionsIndexDic[key] indexOfObject:eachSession
-                                                                  inSortedRange:(NSRange){0, [self.infoSessionsIndexDic[key] count]}
+                                                                  inSortedRange:(NSRange) {0, [self.infoSessionsIndexDic[key] count] }
                                                                         options:NSBinarySearchingInsertionIndex
                                                                 usingComparator:comparator];
-            
+
             [self.infoSessionsIndexDic[key] insertObject:eachSession atIndex:newIndex];
         }
     }
-    
-    _infoSessionsIndexed = [_infoSessions sortedArrayUsingComparator:^(InfoSession *info1, InfoSession *info2) {
+
+    _infoSessionsIndexed = [_infoSessions sortedArrayUsingComparator:^(InfoSession* info1, InfoSession* info2) {
         NSComparisonResult compareResult = [[info1.employer capitalizedString] compare:[info2.employer capitalizedString]];
         if (compareResult == NSOrderedSame) {
             compareResult = [info1.startTime compare:info2.startTime];
@@ -229,11 +240,12 @@
  *
  *  @return -1, if not found, else, return index
  */
-+ (NSInteger)findInfoSession:(InfoSession *)infoSession in:(NSArray *)array {
++ (NSInteger)findInfoSession:(InfoSession*)infoSession in:(NSArray*)array
+{
     NSInteger existIndex = -1;
     NSInteger count = [array count];
     for (int i = 0; i < count; i++) {
-        InfoSession *eachInfoSession = [array objectAtIndex:i];
+        InfoSession* eachInfoSession = [array objectAtIndex:i];
         if ([infoSession isEqual:eachInfoSession]) {
             existIndex = i;
         }
@@ -249,10 +261,11 @@
  *
  *  @return -1, if not found, else, return index
  */
-+ (NSInteger)findInfoSessionIdentifier:(NSString *)infoSessionId in:(NSMutableArray *)array {
++ (NSInteger)findInfoSessionIdentifier:(NSString*)infoSessionId in:(NSMutableArray*)array
+{
     NSInteger existIndex = -1;
     for (int i = 0; i < [array count]; i++) {
-        InfoSession *eachInfoSession = [array objectAtIndex:i];
+        InfoSession* eachInfoSession = [array objectAtIndex:i];
         if ([[eachInfoSession getIdentifier] isEqual:infoSessionId]) {
             existIndex = i;
         }
@@ -266,19 +279,20 @@
  *  @param infoSession the InfoSession to be added
  *  @param array       the Array add to.
  */
-+ (UW)addInfoSessionInOrder:(InfoSession *)infoSession to:(NSMutableArray *)array {
++ (UW)addInfoSessionInOrder:(InfoSession*)infoSession to:(NSMutableArray*)array
+{
     NSInteger existIndex = [InfoSessionModel findInfoSession:infoSession in:array];
     // if doesn't exist
     if (existIndex == -1) {
-        NSComparator comparator = ^(InfoSession *info1, InfoSession *info2) {
+        NSComparator comparator = ^(InfoSession* info1, InfoSession* info2) {
             return [info1.startTime compare:info2.startTime];
         };
-        
+
         NSUInteger newIndex = [array indexOfObject:infoSession
-                                     inSortedRange:(NSRange){0, [array count]}
+                                     inSortedRange:(NSRange) {0, [array count] }
                                            options:NSBinarySearchingInsertionIndex
                                    usingComparator:comparator];
-        
+
         [array insertObject:infoSession atIndex:newIndex];
         [infoSession scheduleNotifications];
         return UWAdded;
@@ -301,14 +315,15 @@
 }
 
 
-- (UW)deleteInfoSessionInMyInfo:(InfoSession *)infoSession{
+- (UW)deleteInfoSessionInMyInfo:(InfoSession*)infoSession
+{
     NSInteger existIndex = [InfoSessionModel findInfoSession:infoSession in:self.myInfoSessions];
     if (existIndex != -1) {
         [infoSession cancelNotifications];
         // if infoSessions in tab1 contains infoSession to be delete, clear the user defined information
         NSInteger existIndexInInfoSessions = [InfoSessionModel findInfoSession:infoSession in:self.infoSessions];
         if (existIndexInInfoSessions != -1) {
-            InfoSession *theInfo = self.infoSessions[existIndexInInfoSessions];
+            InfoSession* theInfo = self.infoSessions[existIndexInInfoSessions];
             theInfo.alertIsOn = NO;
             theInfo.note = nil;
         }
@@ -325,9 +340,10 @@
  *
  *  @return NSInteger
  */
-- (NSInteger)countFutureInfoSessions:(NSArray *)infosessions {
+- (NSInteger)countFutureInfoSessions:(NSArray*)infosessions
+{
     NSInteger count = 0;
-    for (InfoSession *eachSession in infosessions) {
+    for (InfoSession* eachSession in infosessions) {
         if ([eachSession.startTime compare:[NSDate date]] == NSOrderedDescending) {
             count++;
         }
@@ -338,7 +354,8 @@
 /**
  *  Handle for the first time, used for save map.
  */
-- (void)handleFirstTime {
+- (void)handleFirstTime
+{
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasRun"]) {
         // for the first time, save map to local documents directory
         [InfoSessionModel saveMap];
@@ -353,44 +370,51 @@
 
 #pragma mark - documents operations
 
-+ (NSString *)documentsDirectory{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
++ (NSString*)documentsDirectory
+{
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString* documentsDirectory = [paths firstObject];
     return documentsDirectory;
 }
 
-+ (NSString *)cachesDirectory{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *cachesDirectory = [paths firstObject];
++ (NSString*)cachesDirectory
+{
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString* cachesDirectory = [paths firstObject];
     return cachesDirectory;
 }
 
-+ (NSString*)dataFilePath:(NSString *)fileName{
++ (NSString*)dataFilePath:(NSString*)fileName
+{
     return [[self documentsDirectory] stringByAppendingPathComponent:fileName];
 }
 
-+ (void)saveMap {
-    NSData *pngData = UIImagePNGRepresentation([UIImage imageNamed:@"map_colour300.png"]);
-//    [pngData writeToFile:[self dataFilePath:@"uw_map.png"] atomically:YES];
++ (void)saveMap
+{
+    NSData* pngData = UIImagePNGRepresentation([UIImage imageNamed:@"map_colour300.png"]);
+    //    [pngData writeToFile:[self dataFilePath:@"uw_map.png"] atomically:YES];
     [pngData writeToFile:[[self cachesDirectory] stringByAppendingPathComponent:@"uw_map.png"] atomically:YES];
 }
 
-+ (UIImage *)loadMap {
-    
-//    NSData *pngData = [NSData dataWithContentsOfFile:[self dataFilePath:@"uw_map.png"]];
-    NSData *pngData = [NSData dataWithContentsOfFile:[[self cachesDirectory] stringByAppendingPathComponent:@"uw_map.png"]];
++ (UIImage*)loadMap
+{
+
+    //    NSData *pngData = [NSData dataWithContentsOfFile:[self dataFilePath:@"uw_map.png"]];
+    NSData* pngData = [NSData dataWithContentsOfFile:[[self cachesDirectory] stringByAppendingPathComponent:@"uw_map.png"]];
     return [UIImage imageWithData:pngData];
 }
 
-+ (BOOL)checkMap {
-//    NSString *path = [InfoSessionModel dataFilePath:@"uw_map.png"];
-    NSString *path = [[self cachesDirectory] stringByAppendingPathComponent:@"uw_map.png"];
-    return [[NSFileManager defaultManager]fileExistsAtPath:path];
++ (BOOL)checkMap
+{
+    //    NSString *path = [InfoSessionModel dataFilePath:@"uw_map.png"];
+    NSString* path = [[self cachesDirectory] stringByAppendingPathComponent:@"uw_map.png"];
+    return [[NSFileManager defaultManager] fileExistsAtPath:path];
 }
 
-- (void)saveInfoSessions {
-    NSMutableData *data = [[NSMutableData alloc]init];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+- (void)saveInfoSessions
+{
+    NSMutableData* data = [[NSMutableData alloc] init];
+    NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
     [archiver encodeObject:_infoSessions forKey:@"infoSessions"];
     [archiver encodeObject:_infoSessionsDictionary forKey:@"infoSessionsDictionary"];
     [archiver encodeObject:_myInfoSessions forKey:@"myInfoSessions"];
@@ -406,57 +430,59 @@
     [data writeToFile:[InfoSessionModel dataFilePath:@"InfoSession.plist"] atomically:YES];
 }
 
-- (void)saveMyInfoSessions {
-    NSMutableData *data = [[NSMutableData alloc]init];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+- (void)saveMyInfoSessions
+{
+    NSMutableData* data = [[NSMutableData alloc] init];
+    NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
     [archiver encodeObject:_myInfoSessions forKey:@"myInfoSessions"];
     [archiver finishEncoding];
     [data writeToFile:[InfoSessionModel dataFilePath:@"InfoSession.plist"] atomically:YES];
 }
 
-- (void)loadInfoSessions {
-    NSString *path = [InfoSessionModel dataFilePath:@"InfoSession.plist"];
-    if([[NSFileManager defaultManager]fileExistsAtPath:path]){
-        NSData *data =[[NSData alloc]initWithContentsOfFile:path];
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
+- (void)loadInfoSessions
+{
+    NSString* path = [InfoSessionModel dataFilePath:@"InfoSession.plist"];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        NSData* data = [[NSData alloc] initWithContentsOfFile:path];
+        NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
         //_infoSessions = [unarchiver decodeObjectForKey:@"infoSessions"];
         //_infoSessionsDictionary = [unarchiver decodeObjectForKey:@"infoSessionsDictionary"];
         _myInfoSessions = [unarchiver decodeObjectForKey:@"myInfoSessions"];
-        _currentTerm = [unarchiver decodeObjectForKey:@"currentTerm"];
-        _year = [unarchiver decodeIntegerForKey:@"year"];
-        _term = [unarchiver decodeObjectForKey:@"term"];
-        _termInfoDic = [unarchiver decodeObjectForKey:@"termInfoDic"];
-        _apiKey = [unarchiver decodeObjectForKey:@"apiKey"];
-        _uwUsername = [unarchiver decodeObjectForKey:@"uwUsername"];
-        _uwPassword = [unarchiver decodeObjectForKey:@"uwPassword"];
-        _uwValid = [unarchiver decodeBoolForKey:@"uwValid"];
-    
+        _currentTerm    = [unarchiver decodeObjectForKey:@"currentTerm"];
+        _year           = [unarchiver decodeIntegerForKey:@"year"];
+        _term           = [unarchiver decodeObjectForKey:@"term"];
+        _termInfoDic    = [unarchiver decodeObjectForKey:@"termInfoDic"];
+        _apiKey         = [unarchiver decodeObjectForKey:@"apiKey"];
+        _uwUsername     = [unarchiver decodeObjectForKey:@"uwUsername"];
+        _uwPassword     = [unarchiver decodeObjectForKey:@"uwPassword"];
+        _uwValid        = [unarchiver decodeBoolForKey:@"uwValid"];
+
         [unarchiver finishDecoding];
-    }else{
+    } else {
         //self.lists = [[NSMutableArray alloc]initWithCapacity:20];
     }
-
 }
 
 /**
  *  Update my info sessions' information if saved info sessions's information is obselted.
  */
-- (void)updateMyInfoSessions {
-    for (InfoSession *eachInfoSession in _myInfoSessions) {
-        NSInteger existIndex = [InfoSessionModel findInfoSession:eachInfoSession in:(NSMutableArray *)_infoSessions];
+- (void)updateMyInfoSessions
+{
+    for (InfoSession* eachInfoSession in _myInfoSessions) {
+        NSInteger existIndex = [InfoSessionModel findInfoSession:eachInfoSession in:(NSMutableArray*)_infoSessions];
         if (existIndex != -1) {
             NSLog(@"updating...");
-            InfoSession *theCorrespondingInfoSession = _infoSessions[existIndex];
-            eachInfoSession.employer = [theCorrespondingInfoSession.employer copy];
-            eachInfoSession.date = [theCorrespondingInfoSession.date copy];
-            eachInfoSession.startTime = [theCorrespondingInfoSession.startTime copy];
-            eachInfoSession.endTime = [theCorrespondingInfoSession.endTime copy];
-            eachInfoSession.location = [theCorrespondingInfoSession.location copy];
-            eachInfoSession.website = [theCorrespondingInfoSession.website copy];
-            eachInfoSession.audience = [theCorrespondingInfoSession.audience copy];
-            eachInfoSession.programs = [theCorrespondingInfoSession.programs copy];
+            InfoSession* theCorrespondingInfoSession = _infoSessions[existIndex];
+            eachInfoSession.employer    = [theCorrespondingInfoSession.employer copy];
+            eachInfoSession.date        = [theCorrespondingInfoSession.date copy];
+            eachInfoSession.startTime   = [theCorrespondingInfoSession.startTime copy];
+            eachInfoSession.endTime     = [theCorrespondingInfoSession.endTime copy];
+            eachInfoSession.location    = [theCorrespondingInfoSession.location copy];
+            eachInfoSession.website     = [theCorrespondingInfoSession.website copy];
+            eachInfoSession.audience    = [theCorrespondingInfoSession.audience copy];
+            eachInfoSession.programs    = [theCorrespondingInfoSession.programs copy];
             eachInfoSession.description = [theCorrespondingInfoSession.description copy];
-            eachInfoSession.weekNum = theCorrespondingInfoSession.weekNum;
+            eachInfoSession.weekNum     = theCorrespondingInfoSession.weekNum;
             eachInfoSession.isCancelled = theCorrespondingInfoSession.isCancelled;
             if (theCorrespondingInfoSession.isCancelled) {
                 [eachInfoSession cancelNotifications];
@@ -470,24 +496,26 @@
 
 #pragma mark - NSCoding protocol methods
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (id)initWithCoder:(NSCoder*)aDecoder
+{
     if ((self = [super init])) {
-        self.infoSessions = [aDecoder decodeObjectForKey:@"infoSessions"];
+        self.infoSessions           = [aDecoder decodeObjectForKey:@"infoSessions"];
         self.infoSessionsDictionary = [aDecoder decodeObjectForKey:@"infoSessionsDictionary"];
-        self.myInfoSessions = [aDecoder decodeObjectForKey:@"myInfoSessions"];
-        self.currentTerm = [aDecoder decodeObjectForKey:@"currentTerm"];
-        self.year = [aDecoder decodeIntegerForKey:@"year"];
-        self.term = [aDecoder decodeObjectForKey:@"term"];
-        self.termInfoDic = [aDecoder decodeObjectForKey:@"termInfoDic"];
-        self.apiKey = [aDecoder decodeObjectForKey:@"apiKey"];
-        self.uwValid = [aDecoder decodeBoolForKey:@"uwValid"];
-        self.uwUsername = [aDecoder decodeObjectForKey:@"uwUsername"];
-        self.uwPassword = [aDecoder decodeObjectForKey:@"uwPassword"];
+        self.myInfoSessions         = [aDecoder decodeObjectForKey:@"myInfoSessions"];
+        self.currentTerm            = [aDecoder decodeObjectForKey:@"currentTerm"];
+        self.year                   = [aDecoder decodeIntegerForKey:@"year"];
+        self.term                   = [aDecoder decodeObjectForKey:@"term"];
+        self.termInfoDic            = [aDecoder decodeObjectForKey:@"termInfoDic"];
+        self.apiKey                 = [aDecoder decodeObjectForKey:@"apiKey"];
+        self.uwValid                = [aDecoder decodeBoolForKey:@"uwValid"];
+        self.uwUsername             = [aDecoder decodeObjectForKey:@"uwUsername"];
+        self.uwPassword             = [aDecoder decodeObjectForKey:@"uwPassword"];
     }
     return self;
 }
 
-- (void)encodeWithCoder:(NSCoder *)aCoder {
+- (void)encodeWithCoder:(NSCoder*)aCoder
+{
     [aCoder encodeObject:self.infoSessions forKey:@"infoSessions"];
     [aCoder encodeObject:self.infoSessionsDictionary forKey:@"infoSessionsDictionary"];
     [aCoder encodeObject:self.myInfoSessions forKey:@"myInfoSessions"];
@@ -504,7 +532,8 @@
 /**
  *  set year and term using currentTerm
  */
-- (void)setYearAndTerm {
+- (void)setYearAndTerm
+{
     if (_currentTerm == nil) {
         _year = 0;
         _term = nil;
@@ -521,7 +550,8 @@
 /**
  *  save new term's info sessions to dictionary
  */
-- (void)saveToTermInfoDic {
+- (void)saveToTermInfoDic
+{
     [self.termInfoDic setValue:[_infoSessions copy] forKey:[_currentTerm copy]];
     [self.termInfoDic setValue:[NSDate date] forKey:[NSString stringWithFormat:@"%@ - QueriedTime", _currentTerm]];
     [self saveInfoSessions];
@@ -534,11 +564,12 @@
  *
  *  @return YES if info session is set successfully, NO otherwise
  */
-- (BOOL)readInfoSessionsWithTerm:(NSString *)term{
+- (BOOL)readInfoSessionsWithTerm:(NSString*)term
+{
     //NSLog(@"readInfoSessionsWithTerm: %@", term);
     NSInteger existIndex = -1;
     NSInteger index = 0;
-    for (NSString *key in self.termInfoDic) {
+    for (NSString* key in self.termInfoDic) {
         if ([key isEqualToString:term]) {
             existIndex = index;
             break;
@@ -551,7 +582,7 @@
     } else {
         // if last queried time is 20m ago, then need connect to network to refresh
         NSInteger intervalForRefresh = 60 * 20;
-        NSDate *lastQueriedTime = [self.termInfoDic objectForKey:[NSString stringWithFormat:@"%@ - QueriedTime", term]];
+        NSDate* lastQueriedTime = [self.termInfoDic objectForKey:[NSString stringWithFormat:@"%@ - QueriedTime", term]];
         ;
         if (isOffLineMode == NO && [[NSDate date] timeIntervalSinceDate:lastQueriedTime] > intervalForRefresh) {
             //NSLog(@"data is too old");
@@ -573,13 +604,16 @@
 
 #pragma mark - UWInfoSessionClient connection
 
-- (void)setApiKey {
-    UWInfoSessionClient *apiClient = [UWInfoSessionClient sharedApiKeyClient];
+- (void)setApiKey
+{
+    UWInfoSessionClient* apiClient = [UWInfoSessionClient sharedApiKeyClient];
     apiClient.delegate = self;
     [apiClient getApiKey];
 }
 
-- (void)updateInfoSessionsWithYear:(NSInteger)year andTerm:(NSString *)term {
+// Magic...
+- (void)updateInfoSessionsWithYear:(NSInteger)year andTerm:(NSString*)term
+{
     if (isOffLineMode == NO) {
         //    NSLog(@"start to update");
         _year = year;
@@ -587,9 +621,9 @@
         if ([self.apiKey isEqualToString:@"0"]) {
             // if key is not vaild
             // first to look up parse keys
-            PFQuery *queryForId = [PFQuery queryWithClassName:@"Device"];
+            PFQuery* queryForId = [PFQuery queryWithClassName:@"Device"];
             [queryForId whereKey:@"Identifier" equalTo:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
-            [queryForId findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            [queryForId findObjectsInBackgroundWithBlock:^(NSArray* objects, NSError* error) {
                 if (!error) {
                     if (objects.count == 0) {
                         NSLog(@"Queried with identifier, but no match found");
@@ -645,52 +679,50 @@
                 }
             }];
             //  NSLog(@"key is 0");
-            
-        }
-        else {
+
+        } else {
             //        NSLog(@"key is %@", self.apiKey);
-            
-            UWInfoSessionClient *client = [UWInfoSessionClient infoSessionClientWithBaseURL:[NSURL URLWithString:self.infoSessionBaseURLString]];
+
+            UWInfoSessionClient* client = [UWInfoSessionClient infoSessionClientWithBaseURL:[NSURL URLWithString:self.infoSessionBaseURLString]];
             client.delegate = self;
             [client updateInfoSessionsForYear:year andTerm:term andApiKey:self.apiKey];
         }
     } else {
         [self updateUnderOfflineMode:year andTerm:term];
     }
-
 }
 
--(void)infoSessionClient:(UWInfoSessionClient *)client didUpdateWithData:(id)data {
-    NSArray *infoSessionsFromResponse = [data valueForKeyPath:@"data"];
-    NSString *currentTerm = [data valueForKeyPath:@"meta.term"];
-    
+- (void)infoSessionClient:(UWInfoSessionClient*)client didUpdateWithData:(id)data
+{
+    NSArray* infoSessionsFromResponse = [data valueForKeyPath:@"data"];
+    NSString* currentTerm = [data valueForKeyPath:@"meta.term"];
+
     // new empty array to store infoSessions
-    NSMutableArray *mutableInfoSessions = [NSMutableArray arrayWithCapacity:[infoSessionsFromResponse count]];
-    
-    for (NSDictionary *attributes in infoSessionsFromResponse) {
-        InfoSession *infoSession = [[InfoSession alloc] initWithAttributes:attributes];
+    NSMutableArray* mutableInfoSessions = [NSMutableArray arrayWithCapacity:[infoSessionsFromResponse count]];
+
+    for (NSDictionary* attributes in infoSessionsFromResponse) {
+        InfoSession* infoSession = [[InfoSession alloc] initWithAttributes:attributes];
         // if start time < end time or date is nil, do not add
-        if (!([infoSession.startTime compare:infoSession.endTime] != NSOrderedAscending ||
-              infoSession.date == nil ||
+        if (!([infoSession.startTime compare:infoSession.endTime] != NSOrderedAscending || infoSession.date == nil ||
               [infoSession.employer length] == 0 ||
               [infoSession.employer isEqualToString:@"First day of lectures"] || [infoSession.employer isEqualToString:@"Last day of lectures"])) {
             [mutableInfoSessions addObject:infoSession];
         }
     }
-    
+
     // sorted info sessions in ascending order with start time
-    [mutableInfoSessions sortUsingComparator:^(InfoSession *info1, InfoSession *info2){
+    [mutableInfoSessions sortUsingComparator:^(InfoSession* info1, InfoSession* info2) {
         return [info1 compareTo:info2];
     }];
-    
+
     self.infoSessions = mutableInfoSessions;
     self.currentTerm = currentTerm;
     [self setYearAndTerm];
-    
+
     // process infoSessionsDictionary, used for dividing infoSessions into different weeks
     [self.infoSessionsDictionary removeAllObjects];
     [self processInfoSessionsDictionary:self.infoSessionsDictionary withInfoSessions:self.infoSessions];
-    
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         // update my infoSessions, if same info sessions have been saved before, update to newest information
         [self updateMyInfoSessions];
@@ -701,13 +733,15 @@
     [self.delegate infoSessionModeldidUpdateInfoSessions:self];
 }
 
-// only called when 503 is return
--(void)infoSessionClient:(UWInfoSessionClient *)client didFailWithCode:(NSInteger)code {
-//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Info Sessions"
-//                                                        message:[NSString stringWithFormat:@"%@",error]
-//                                                       delegate:nil
-//                                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//    [alertView show];
+// Only called when 503 is return
+// 503 mean services of server is stopped
+- (void)infoSessionClient:(UWInfoSessionClient*)client didFailWithCode:(NSInteger)code
+{
+    //    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Info Sessions"
+    //                                                        message:[NSString stringWithFormat:@"%@",error]
+    //                                                       delegate:nil
+    //                                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    //    [alertView show];
     if (code == 503 || code == 500) {
         [self switchInfoSessionBaseURLString];
     } else if (code == -1) {
@@ -716,17 +750,17 @@
         //retry
     }
     [self updateInfoSessionsWithYear:_year andTerm:_term];
-    
 }
 
--(void)apiClient:(UWInfoSessionClient *)client didUpdateWithApiKey:(NSString *)apiKey {
-//    NSLog(@"set key %@", apiKey);
-    self.apiKey = (NSString *)[apiKey copy];
-//    NSLog(@"update again");
+- (void)apiClient:(UWInfoSessionClient*)client didUpdateWithApiKey:(NSString*)apiKey
+{
+    //    NSLog(@"set key %@", apiKey);
+    self.apiKey = (NSString*)[apiKey copy];
+    //    NSLog(@"update again");
     // add key to parseObject
-    PFQuery *queryForId = [PFQuery queryWithClassName:@"Device"];
+    PFQuery* queryForId = [PFQuery queryWithClassName:@"Device"];
     [queryForId whereKey:@"Identifier" equalTo:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
-    [queryForId findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+    [queryForId findObjectsInBackgroundWithBlock:^(NSArray* objects, NSError* error) {
         if (!error) {
             if (objects.count == 0) {
                 NSLog(@"never reach");
@@ -763,27 +797,32 @@
     [self updateInfoSessionsWithYear:_year andTerm:_term];
 }
 
--(void)apiClient:(UWInfoSessionClient *)client didFailWithError:(NSError *)error {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Internet connection error"
+- (void)apiClient:(UWInfoSessionClient*)client didFailWithError:(NSError*)error
+{
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Internet connection error"
                                                         message:@"Please check your Internet connection and try again"
                                                        delegate:self
-                                              cancelButtonTitle:@"Try again" otherButtonTitles:nil];
+                                              cancelButtonTitle:@"Try again"
+                                              otherButtonTitles:nil];
     alertView.tag = 1;
     [alertView show];
 }
 
-- (void)setOfflineMode:(BOOL)isOff {
+- (void)setOfflineMode:(BOOL)isOff
+{
     isOffLineMode = isOff;
 }
 
-- (void)updateUnderOfflineMode:(NSInteger)year andTerm:(NSString *)term {
+- (void)updateUnderOfflineMode:(NSInteger)year andTerm:(NSString*)term
+{
     if ([self readInfoSessionsWithTerm:[NSString stringWithFormat:@"%ld %@", (long)year, term]] == YES) {
         //NSLog(@"offline Mode updated successfully");
     } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No offline data available"
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"No offline data available"
                                                             message:@""
                                                            delegate:nil
-                                                  cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
         [alertView show];
         [self clearInfoSessions];
     }
@@ -791,7 +830,8 @@
 
 #pragma mark - UIAlertViewDelegate methods
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     // api key retrive failed, try again
     if (alertView.tag == 1 && buttonIndex == 0) {
         [self updateInfoSessionsWithYear:_year andTerm:_term];
@@ -800,25 +840,32 @@
 
 #pragma mark - other
 
-- (InfoSession *)getPreviousInfoSessionAccordingInfoSession:(InfoSession *)info {
+/**
+ *  Get the previous info session object according info
+ *
+ *  @param info Current info session object
+ *
+ *  @return The previous info session object
+ */
+- (InfoSession*)getPreviousInfoSessionAccordingInfoSession:(InfoSession*)info
+{
     NSLog(@"%@", info.employer);
-    for (NSString *key in _infoSessionsDictionary) {
-        NSMutableArray *infoSessionsOfThisWeek = _infoSessionsDictionary[key];
+    for (NSString* key in _infoSessionsDictionary) {
+        NSMutableArray* infoSessionsOfThisWeek = _infoSessionsDictionary[key];
         NSLog(@"count: %d", [infoSessionsOfThisWeek count]);
-        for (InfoSession *eachInfo in infoSessionsOfThisWeek) {
+        for (InfoSession* eachInfo in infoSessionsOfThisWeek) {
             //NSLog(@"%@", eachInfo.employer);
             if (info == eachInfo) {
                 if ([infoSessionsOfThisWeek firstObject] == info) {
                     NSLog(@"first info of a week");
-                    NSString *preKey = NSIntegerToString([key integerValue] - 1);
+                    NSString* preKey = NSIntegerToString([key integerValue] - 1);
                     // if this week is the first week
                     if (_infoSessionsDictionary[preKey] == nil) {
                         return nil;
                     } else {
-                        return (InfoSession *)[_infoSessionsDictionary[preKey] lastObject];
+                        return (InfoSession*)[_infoSessionsDictionary[preKey] lastObject];
                     }
-                }
-                else {
+                } else {
                     NSInteger index = [infoSessionsOfThisWeek indexOfObject:info];
                     return [infoSessionsOfThisWeek objectAtIndex:index - 1];
                 }
@@ -828,24 +875,31 @@
     return nil;
 }
 
-- (InfoSession *)getNextInfoSessionAccordingInfoSession:(InfoSession *)info {
-    for (NSString *key in _infoSessionsDictionary) {
-        NSMutableArray *infoSessionsOfThisWeek = _infoSessionsDictionary[key];
+/**
+ *  Get the next info session object according info
+ *
+ *  @param info Current info session object
+ *
+ *  @return The next info session object
+ */
+- (InfoSession*)getNextInfoSessionAccordingInfoSession:(InfoSession*)info
+{
+    for (NSString* key in _infoSessionsDictionary) {
+        NSMutableArray* infoSessionsOfThisWeek = _infoSessionsDictionary[key];
         NSLog(@"count: %d", [infoSessionsOfThisWeek count]);
-        for (InfoSession *eachInfo in infoSessionsOfThisWeek) {
+        for (InfoSession* eachInfo in infoSessionsOfThisWeek) {
             //NSLog(@"%@", eachInfo.employer);
             if (info == eachInfo) {
                 if ([infoSessionsOfThisWeek lastObject] == info) {
                     NSLog(@"last info of a week");
-                    NSString *nextKey = NSIntegerToString([key integerValue] + 1);
+                    NSString* nextKey = NSIntegerToString([key integerValue] + 1);
                     // if this week is the first week
                     if (_infoSessionsDictionary[nextKey] == nil) {
                         return nil;
                     } else {
-                        return (InfoSession *)[_infoSessionsDictionary[nextKey] firstObject];
+                        return (InfoSession*)[_infoSessionsDictionary[nextKey] firstObject];
                     }
-                }
-                else {
+                } else {
                     NSInteger index = [infoSessionsOfThisWeek indexOfObject:info];
                     return [infoSessionsOfThisWeek objectAtIndex:index + 1];
                 }

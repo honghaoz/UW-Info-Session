@@ -35,11 +35,11 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 @property (nonatomic, weak) id <InfoSessionModelDelegate> delegate;
 @property (nonatomic, copy) NSString *apiKey;
 
-// info sessions data retrived from api
+// Info sessions data retrived from api
 @property (nonatomic, strong) NSArray *infoSessions;
 @property (nonatomic, strong) NSMutableDictionary *infoSessionsDictionary;
 
-// user saved info sessions
+// User saved info sessions
 @property (nonatomic, strong) NSMutableArray *myInfoSessions;
 //@property (nonatomic, strong) NSMutableDictionary *myInfoSessionsDictionary;
 
@@ -47,10 +47,10 @@ typedef NS_ENUM(NSUInteger, UWTerm) {
 @property (nonatomic, assign) NSInteger year;
 @property (nonatomic, copy) NSString *term;
 
-// store different terms' info sessions
+// Store different terms' info sessions
 @property (nonatomic, strong) NSMutableDictionary *termInfoDic;
 
-// processed dictionary, seperated in alphabet sequence.
+// Processed dictionary, seperated in alphabet sequence.
 @property (nonatomic, strong) NSMutableDictionary *infoSessionsIndexDic;
 @property (nonatomic, strong) NSArray *infoSessionsIndexed;
 
