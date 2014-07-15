@@ -20,5 +20,6 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 
+- (void)setRedDotToSettingButton:(BOOL)isSet;
 
 @end

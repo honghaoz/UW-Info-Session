@@ -17,6 +17,7 @@
 #import "MoreViewController.h"
 #import "MoreNavigationViewController.h"
 #import "UWGoogleAnalytics.h"
+#import "UIImage+ApplyAlpha.h"
 
 //#import "GADBannerView.h"
 #import "GADBannerViewDelegate.h"
@@ -58,9 +59,20 @@
     [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
     self.navigationController.navigationBar.tintColor = UWBlack;
     
-    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings"] style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreViewController)];
+    UIImage *settingImage = [UIImage imageNamed:@"settings"];
+    UIImageView *buttonImageView = [[UIImageView alloc] initWithImage:settingImage];
+    UIButton *settingButton = [[UIButton alloc] initWithFrame:buttonImageView.frame];
+    [settingButton setImage:settingImage forState:UIControlStateNormal];
+    [settingButton setImage:[settingImage imageByApplyingAlpha:0.4] forState:UIControlStateHighlighted];
+    
+//    [settingButton addSubview:imageView];
+    [settingButton addTarget:self action:@selector(showMoreViewController) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithCustomView:settingButton];
+    
+//    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings"] style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreViewController)];
     
     [self.navigationItem setRightBarButtonItem:moreButton];
+    [self setRedDotToSettingButton:NO];
     
 //    UIBarButtonItem *configButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStyleBordered target:self action:@selector(configuration)];
 //    UIFont *smallerFont = [UIFont systemFontOfSize:[UIFont systemFontSize] - 6.0];
@@ -124,6 +136,19 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - 
+
+- (void)setRedDotToSettingButton:(BOOL)isSet {
+    [self.navigationItem.rightBarButtonItem.customView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    if (isSet) {
+        NSLog(@"isSet");
+        UIView *redDot = [[UIView alloc] initWithFrame:CGRectMake(17, -3, 12, 12)];
+        [redDot setBackgroundColor:[UIColor colorWithRed:1 green:0.23 blue:0.19 alpha:1]];
+        redDot.layer.cornerRadius = redDot.frame.size.width / 2;
+        [self.navigationItem.rightBarButtonItem.customView addSubview:redDot];
+    }
 }
 
 - (void)reloadTable {

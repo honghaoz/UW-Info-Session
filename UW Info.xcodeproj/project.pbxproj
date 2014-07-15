@@ -11,6 +11,7 @@
 		1B058350194E28E7000D43C2 /* ZHHHandyMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B05834F194E28E7000D43C2 /* ZHHHandyMacros.m */; };
 		1B0A98821923BF61006AF24B /* UWCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B0A98811923BF61006AF24B /* UWCellScrollView.m */; };
 		1B19834918A618A60022A285 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19834818A618A60022A285 /* DetailViewController.m */; };
+		1B19E78719758B940002D1E1 /* UIImage+ApplyAlpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19E78619758B940002D1E1 /* UIImage+ApplyAlpha.m */; };
 		1B19FE4B1928673500E0CA2D /* UWDetailRSVPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19FE4A1928673500E0CA2D /* UWDetailRSVPCell.m */; };
 		1B2040BF18B5DCB500C72D51 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2040BE18B5DCB500C72D51 /* CoreData.framework */; };
 		1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */; };
@@ -169,6 +170,8 @@
 		1B0A98811923BF61006AF24B /* UWCellScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWCellScrollView.m; path = OtherViews/UWCellScrollView.m; sourceTree = "<group>"; };
 		1B19834718A618A60022A285 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ViewController/DetailViewController.h; sourceTree = "<group>"; };
 		1B19834818A618A60022A285 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController.m; path = ViewController/DetailViewController.m; sourceTree = "<group>"; };
+		1B19E78519758B940002D1E1 /* UIImage+ApplyAlpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+ApplyAlpha.h"; path = "Category/UIImage+ApplyAlpha.h"; sourceTree = "<group>"; };
+		1B19E78619758B940002D1E1 /* UIImage+ApplyAlpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ApplyAlpha.m"; path = "Category/UIImage+ApplyAlpha.m"; sourceTree = "<group>"; };
 		1B19FE491928673500E0CA2D /* UWDetailRSVPCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWDetailRSVPCell.h; path = TableViewCell/UWDetailRSVPCell.h; sourceTree = "<group>"; };
 		1B19FE4A1928673500E0CA2D /* UWDetailRSVPCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWDetailRSVPCell.m; path = TableViewCell/UWDetailRSVPCell.m; sourceTree = "<group>"; };
 		1B2040BE18B5DCB500C72D51 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -772,6 +775,8 @@
 				1B3A340418D4E2570046DC73 /* UIDevice-Hardware.m */,
 				1B8EE15F18F23DDD00DE8BD8 /* UIImage+ImageEffects.h */,
 				1B8EE16018F23DDD00DE8BD8 /* UIImage+ImageEffects.m */,
+				1B19E78519758B940002D1E1 /* UIImage+ApplyAlpha.h */,
+				1B19E78619758B940002D1E1 /* UIImage+ApplyAlpha.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1183,6 +1188,7 @@
 				1B3A33F018D4D8B30046DC73 /* RECommonFunctions.m in Sources */,
 				1BBD1BD41974E7EE0040081A /* Appirater.m in Sources */,
 				1BD12BAF18F484B3003BAA8C /* SVProgressHUD.m in Sources */,
+				1B19E78719758B940002D1E1 /* UIImage+ApplyAlpha.m in Sources */,
 				1BA43E1D18FCDFCF008299EB /* UWErrorReport.m in Sources */,
 				1BAD97E618A98F65006F4546 /* InfoSessionModel.m in Sources */,
 				1B3A339E18D4D7600046DC73 /* AFURLRequestSerialization.m in Sources */,

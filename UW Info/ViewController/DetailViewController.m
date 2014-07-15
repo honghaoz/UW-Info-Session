@@ -384,8 +384,8 @@
     EKEventEditViewController *addController = [[EKEventEditViewController alloc] init];
     
     // changed UI to meet this app's style
-    [addController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
-    addController.navigationBar.tintColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
+    [addController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
+    addController.navigationBar.tintColor = UWBlack;
     
     // Set addController's event store to the current event store
     addController.eventStore = [InfoSession eventStore];

@@ -110,7 +110,27 @@ function executePush(type, added, newCount, callback) {
 		callback(true, true, 0);
 	} else {
 		// response.error(type + ": " + "Wrong added number (<0)");
-		callback(false, false, 0);
+		// Update count class
+		var query = new Parse.Query("Count");
+			query.find({
+				success : function(results) {
+					var theCount = results[0];
+					theCount.set(type + 'Count', newCount);
+					// console.log('Set device count: ' + newDeviceCount);
+					theCount.save(null, {
+						success: function() {
+							callback(false, false, 0);
+						},
+						error: function() {
+							// callback(false, false, 0);
+						}
+					});
+					// response.success("success");
+				},
+				error : function() {
+					// response.error('failed');
+				}
+			});
 	}
 }
 
