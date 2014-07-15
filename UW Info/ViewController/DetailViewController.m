@@ -80,9 +80,6 @@
     CGFloat startContentOffset;
     CGFloat lastContentOffset;
     
-//    ADBannerView *_adBannerView;
-//    GADBannerView *_googleBannerView;
-//    BOOL googleAdRequested;
     UWAds *ad;
     // stores latitude and longitude for building
     NSNumber *latitude;
@@ -126,37 +123,36 @@
     } else {
         _openedMyInfo = YES;
     }
-    
+
     [self backupInfoSession];
     [self setBarIcon];
-    
+
     // set tap gesture to resgin first responser
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
+    UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
     tapGestureRecognizer.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:tapGestureRecognizer];
-    
-//    
-//    UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
-//    [swipeGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionDown];
-//    [self.tableView addGestureRecognizer:swipeGestureRecognizer];
-    
-    
-    // set notification for entering background
+
+    //
+    //    UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
+    //    [swipeGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionDown];
+    //    [self.tableView addGestureRecognizer:swipeGestureRecognizer];
+
+    // Set notification for entering background
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
-    
+
     [self.tabBarController showTabBar];
-    
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     noteLines = [self getHeightForString:_infoSession.note fontSize:15 width:280];
-    
+
     // Google Analytics
     [UWGoogleAnalytics analyticScreen:@"Detail Screen"];
-    
-    // because ads exist, need set insets
+
+    // Because ads exist, need set insets
     [self.tableView setContentInset:UIEdgeInsetsMake(30, 0, 0, 0)];
-    
-    // set gps info
+
+    // Set gps info
     latitude = nil;
     longitude = nil;
     if ([_infoSession.location length] > 1) {
@@ -166,7 +162,7 @@
         } else {
             building = [_infoSession.location substringToIndex:range.location];
         }
-        
+
         if ([building isEqualToString:@"TC"]) {
             latitude = @(43.469);
             longitude = @(-80.541324);
@@ -185,59 +181,73 @@
             longitude = @(-80.544476);
         } else {
             NSLog(@"building: %@!!!!", building);
-            NSMutableArray *buildings = [[NSMutableArray alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"uw_building" ofType:@"plist"]];
+            NSMutableArray* buildings = [[NSMutableArray alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"uw_building" ofType:@"plist"]];
             NSLog(@"buildings: %d", [buildings count]);
-            for (NSDictionary *eachBuilding in buildings) {
-                if ([((NSString *)eachBuilding[@"building_code"]) containsString:building] || [((NSString *)eachBuilding[@"alternate_building_names"]) containsString:building]) {
+            for (NSDictionary* eachBuilding in buildings) {
+                if ([((NSString*)eachBuilding[@"building_code"])containsString:building] || [((NSString*)eachBuilding[@"alternate_building_names"])containsString:building]) {
                     NSLog(@"found %@", building);
-                    latitude = [(NSNumber *)eachBuilding[@"latitude"] copy];
-                    longitude = [(NSNumber *)eachBuilding[@"longitude"] copy];
+                    latitude = [(NSNumber*)eachBuilding[@"latitude"] copy];
+                    longitude = [(NSNumber*)eachBuilding[@"longitude"] copy];
                     break;
                 }
             }
         }
     }
-    
-//    // add pull views
-//    CGFloat topOffset = self.navigationController.navigationBar.frame.size.height + 20;
-//    CGFloat bottomOffset = self.tabBarController.tabBar.frame.size.height;
-//    if (nextPullView == nil) {
-//        nextPullView = [[ZHHPullView alloc] initWithScrollView:self.tableView arrowImageName:@"blueArrow.png" textColor:[UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0] subtext:@"next article" position:PullBottom withTopOffset:0 andBottomOffset:bottomOffset];
-//        nextPullView.delegate = self;
-//        [self.tableView addSubview:nextPullView];
-//    }
-//    if (prevPullView == nil) {
-//        prevPullView = [[ZHHPullView alloc] initWithScrollView:self.tableView arrowImageName:@"blueArrow.png" textColor:[UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0] subtext:@"prev article" position:PullTop withTopOffset:topOffset andBottomOffset:0];
-//        prevPullView.delegate = self;
-//        [self.tableView addSubview:prevPullView];
-//    }
-//    [nextPullView updateSubtext];
-//	[prevPullView updateSubtext];
-    
-//    [self.tableView addObserver:self forKeyPath:@"contentInset" options:NSKeyValueObservingOptionNew context:&kObservingContentInsetChangesContext];
-    
-    NSLog(@"detail view did load end");
+
+    //    // add pull views
+    //    CGFloat topOffset = self.navigationController.navigationBar.frame.size.height + 20;
+    //    CGFloat bottomOffset = self.tabBarController.tabBar.frame.size.height;
+    //    if (nextPullView == nil) {
+    //        nextPullView = [[ZHHPullView alloc] initWithScrollView:self.tableView arrowImageName:@"blueArrow.png" textColor:[UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0] subtext:@"next article" position:PullBottom withTopOffset:0 andBottomOffset:bottomOffset];
+    //        nextPullView.delegate = self;
+    //        [self.tableView addSubview:nextPullView];
+    //    }
+    //    if (prevPullView == nil) {
+    //        prevPullView = [[ZHHPullView alloc] initWithScrollView:self.tableView arrowImageName:@"blueArrow.png" textColor:[UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0] subtext:@"prev article" position:PullTop withTopOffset:topOffset andBottomOffset:0];
+    //        prevPullView.delegate = self;
+    //        [self.tableView addSubview:prevPullView];
+    //    }
+    //    [nextPullView updateSubtext];
+    //	[prevPullView updateSubtext];
+
+    //    [self.tableView addObserver:self forKeyPath:@"contentInset" options:NSKeyValueObservingOptionNew context:&kObservingContentInsetChangesContext];
+
+//    NSLog(@"detail view did load end");
 }
 
-- (void)setBarIcon {
+- (void)setBarIcon
+{
     // initiate the right buttons
-    UIBarButtonItem *favButton;
+    UIBarButtonItem* favButton;
     if (_openedMyInfo == NO) {
-        favButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star"] style:UIBarButtonItemStyleBordered target:self action:@selector(favoritesButton:)];
+        favButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star"]
+                                                     style:UIBarButtonItemStyleBordered
+                                                    target:self
+                                                    action:@selector(favoritesButton:)];
     } else {
-        favButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star-selected"] style:UIBarButtonItemStyleBordered target:self action:@selector(favoritesButton:)];
+        favButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star-selected"]
+                                                     style:UIBarButtonItemStyleBordered
+                                                    target:self
+                                                    action:@selector(favoritesButton:)];
     }
-    UIBarButtonItem *calButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButton:)];
-    
-    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Calendar"] style:UIBarButtonItemStylePlain target:self action:@selector(addToCalendar:)];
+    UIBarButtonItem* calButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Share"]
+                                                                  style:UIBarButtonItemStylePlain
+                                                                 target:self
+                                                                 action:@selector(shareButton:)];
+
+    UIBarButtonItem* shareButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Calendar"]
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:self
+                                                                   action:@selector(addToCalendar:)];
     [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:favButton, shareButton, calButton, nil]];
     //[self.navigationItem.rightBarButtonItems]
 }
 
-- (void)updateBarIcon {
+- (void)updateBarIcon
+{
     if (_openedMyInfo == NO) {
-//        UIBarButtonItem *favButton = self.navigationItem.rightBarButtonItems[0];
-//        favButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star"] style:UIBarButtonItemStyleBordered target:self action:@selector(favoritesButton:)];
+        //        UIBarButtonItem *favButton = self.navigationItem.rightBarButtonItems[0];
+        //        favButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star"] style:UIBarButtonItemStyleBordered target:self action:@selector(favoritesButton:)];
         [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star"] style:UIBarButtonItemStyleBordered target:self action:@selector(favoritesButton:)], self.navigationItem.rightBarButtonItems[1], self.navigationItem.rightBarButtonItems[2], nil]];
     } else {
         [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star-selected"] style:UIBarButtonItemStyleBordered target:self action:@selector(favoritesButton:)], self.navigationItem.rightBarButtonItems[1], self.navigationItem.rightBarButtonItems[2], nil]];
@@ -245,7 +255,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    NSLog(@"detailView will appear start");
+//    NSLog(@"detailView will appear start");
     _tabBarController.lastTapped = -1;
     [super viewWillAppear:animated];
     _performedNavigation = @"";
@@ -253,12 +263,12 @@
     [self updateBarIcon];
     ad = [UWAds singleton];
     [ad resetAdView:self OriginY:-30];
-    NSLog(@"detailView will appear end");
+//    NSLog(@"detailView will appear end");
     _webViewVC.webProgress.hidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    NSLog(@"detaiView did disappear start");
+//    NSLog(@"detaiView did disappear start");
     [super viewWillDisappear:animated];
     //NSLog(@"preformedNavigation: %@", _performedNavigation);
     if ([_performedNavigation isEqualToString:@""]) {
@@ -266,7 +276,7 @@
             [self addToMyInfo:nil];
         }
     }
-    NSLog(@"detaiView did disappear end");
+//    NSLog(@"detaiView did disappear end");
 }
 
 - (void)didReceiveMemoryWarning
@@ -275,7 +285,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) applicationDidEnterBackground {
+- (void)applicationDidEnterBackground
+{
     [self.noteCell.contentText resignFirstResponder];
     if ([self.infoSessionBackup isChangedCompareTo:self.infoSession]) {
         [self addToMyInfo:nil];
@@ -289,15 +300,15 @@
  *
  *  @param sender calendar button
  */
-- (void)addToCalendar:(id)sender {
-//    if (_infoSessionModel.eventStore == nil) {
-//        NSLog(@"new eventStore is created");
-//        _infoSessionModel.eventStore = [[EKEventStore alloc] init];
-//    }
+- (void)addToCalendar:(id)sender
+{
+    //    if (_infoSessionModel.eventStore == nil) {
+    //        NSLog(@"new eventStore is created");
+    //        _infoSessionModel.eventStore = [[EKEventStore alloc] init];
+    //    }
     [InfoSession eventStore];
     // Check whether we are authorized to access Calendar
     [self checkEventStoreAccessForCalendar];
-    
 }
 
 /**
@@ -336,10 +347,9 @@
 /**
  *  Prompt the user for access to their Calendar
  */
--(void)requestCalendarAccess
+- (void)requestCalendarAccess
 {
-    [[InfoSession eventStore] requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error)
-     {
+    [[InfoSession eventStore] requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError* error) {
          if (granted)
          {
              DetailViewController * __weak weakSelf = self;
@@ -356,13 +366,13 @@
              alert.tag = -2;
              [alert show];
          }
-     }];
+    }];
 }
 
 /**
  *  This method is called when the user has granted permission to Calendar
  */
--(void)accessGrantedForCalendar
+- (void)accessGrantedForCalendar
 {
     // if this infoSession's calendarId is not nil, use this calendarId to initiate default calendar
     if (_infoSession.calendarId != nil) {
@@ -379,20 +389,21 @@
 /**
  *  Called after accessGrantedForCalendar
  */
-- (void)showEventEditViewController {
+- (void)showEventEditViewController
+{
     // Create an instance of EKEventEditViewController
-    EKEventEditViewController *addController = [[EKEventEditViewController alloc] init];
-    
+    EKEventEditViewController* addController = [[EKEventEditViewController alloc] init];
+
     // changed UI to meet this app's style
     [addController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
     addController.navigationBar.tintColor = UWBlack;
-    
+
     // Set addController's event store to the current event store
     addController.eventStore = [InfoSession eventStore];
-    
+
     // creat a new event
-    EKEvent *event = [EKEvent eventWithEventStore:[InfoSession eventStore]];
-    
+    EKEvent* event = [EKEvent eventWithEventStore:[InfoSession eventStore]];
+
     // if ekEvent and eventId all are nil, then this event is not saved,
     // try to fetch the event according the startDate and endDate and title ...
     if (_infoSession.ekEvent == nil && _infoSession.eventId == nil) {
@@ -403,17 +414,15 @@
     else if (_infoSession.ekEvent == nil && _infoSession.eventId != nil) {
         // fetch the event according the infosession's eventId
         _infoSession.ekEvent = [self fetchEventWithId:_infoSession.eventId];
-    }
-    else if (_infoSession.ekEvent != nil && _infoSession.eventId != nil) {
-        
+    } else if (_infoSession.ekEvent != nil && _infoSession.eventId != nil) {
+
     } else {
     }
-    
+
     // if infosession's event is nil or refresh failed (means this event is deleted)
     if (_infoSession.ekEvent == nil || ![_infoSession.ekEvent refresh]) {
         if (_infoSession.ekEvent == nil) {
         } else if (![_infoSession.ekEvent refresh]) {
-            
         }
         [event setTitle:_infoSession.employer];
         [event setLocation:_infoSession.location];
@@ -422,14 +431,14 @@
         [event setAlarms:[_infoSession getEKAlarms]];
         [event setURL:[NSURL URLWithString:_infoSession.website]];
         [event setNotes:_infoSession.note];
-        
+
         [event setCalendar:_infoSessionModel.defaultCalendar];
     }
     // infosession's event already exists
     else {
         event = _infoSession.ekEvent;
     }
-    
+
     addController.event = event;
     addController.editViewDelegate = self;
     self.performedNavigation = @"addCalendarEvent";
@@ -476,20 +485,20 @@
  *  @param controller EKEventEditViewController
  *  @param action     this
  */
-- (void)eventEditViewController:(EKEventEditViewController *)controller
-          didCompleteWithAction:(EKEventEditViewAction)action {
+- (void)eventEditViewController:(EKEventEditViewController*)controller
+          didCompleteWithAction:(EKEventEditViewAction)action
+{
     if (action == EKEventEditViewActionCanceled) {
-    }
-    else if (action == EKEventEditViewActionSaved) {
+    } else if (action == EKEventEditViewActionSaved) {
         _infoSession.ekEvent = controller.event;
         _infoSession.calendarId = [controller.event.calendar calendarIdentifier];
         _infoSession.eventId = [controller.event eventIdentifier];
-        
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeChanged:) name:EKEventStoreChangedNotification object:_eventStore];
+
+        //        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeChanged:) name:EKEventStoreChangedNotification object:_eventStore];
     } else if (action == EKEventEditViewActionDeleted) {
-        _infoSession.ekEvent = nil;
+        _infoSession.ekEvent    = nil;
         _infoSession.calendarId = nil;
-        _infoSession.eventId = nil;
+        _infoSession.eventId    = nil;
         //NSLog(@"Deleted edited");
     }
     [self backupInfoSession];
@@ -507,13 +516,13 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
     // if showing infoSession is deleted, then pop up
-//    if (_infoSessionBackup == nil) {
-//        NSLog(@"pop up");
-//        [self.navigationController popViewControllerAnimated:YES];
-//    }
+    //    if (_infoSessionBackup == nil) {
+    //        NSLog(@"pop up");
+    //        [self.navigationController popViewControllerAnimated:YES];
+    //    }
     if (_openedMyInfo == YES) {
         return 5;
     } else {
@@ -618,10 +627,6 @@
         }
         else if (indexPath.row == 4) {
             DetailRSVPCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailRSVPCell"];
-//            UWDetailRSVPCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UWDetailRSVPCell"];
-//            if (cell == nil) {
-//                cell = [[UWDetailRSVPCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UWDetailRSVPCell"];
-//            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             if (_infoSession.sessionId > 10 && [_infoSession.startTime compare:[NSDate date]] == NSOrderedDescending) {
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -643,8 +648,6 @@
                 cell.contentLabel.text = @"Not Available to Register";
 //                cell.statusSiwtch.enabled = NO;
             }
-//            [cell.statusSiwtch addTarget:self action:@selector(registerInfoSwitch:) forControlEvents:UIControlEventTouchUpInside];
-//            registerUISwitch = cell.statusSiwtch;
             rsvpCell = cell;
             return cell;
         }
@@ -1114,19 +1117,6 @@
                 [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
                 [SVProgressHUD showErrorWithStatus:@"Register not available!"];
             }
-//            NSURL *websiteUrl = [NSURL URLWithString:[NSString stringWithFormat:@"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=%@&mode=on", [NSString stringWithFormat:@"%lu", (unsigned long)_infoSession.sessionId]]];
-//            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:websiteUrl];
-//            UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 300, 300, 300)];
-//            [webView loadRequest:urlRequest];
-//            [self.tableView addSubview:webView];
-            
-            //NSURL *URL = [NSURL URLWithString:websiteUrl];
-//            NSURLRequest *request = [NSURLRequest requestWithURL:websiteUrl
-//                                                     cachePolicy:NSURLRequestUseProtocolCachePolicy
-//                                                 timeoutInterval:30.0];
-//            
-//            NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-//            [connection start];
         }
     }
     // select alert section
