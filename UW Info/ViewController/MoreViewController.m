@@ -31,8 +31,11 @@
 #import "UWManagerViewController.h"
 //#import "MYBlurIntroductionView.h"
 //#import "MYIntroductionPanel.h"
+#import "Appirater.h"
 
-@interface MoreViewController () <UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate, UIAlertViewDelegate/*, MYIntroductionDelegate*/>
+#import <StoreKit/StoreKit.h>
+
+@interface MoreViewController () <UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate, UIAlertViewDelegate/*, MYIntroductionDelegate*/, SKStoreProductViewControllerDelegate>
 
 @end
 
@@ -310,7 +313,30 @@
             [self presentViewController:newMoreNaviVC animated:YES completion:^(){}];
         } else if (indexPath.row == 2) {
 //            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:itunesRateURLString]];
-            [[iRate sharedInstance] openRatingsPageInAppStore];
+//            SKStoreProductViewController *productVC = [[SKStoreProductViewController alloc] init];
+//            productVC.delegate = self;
+//            NSDictionary *productParameters = @{ SKStoreProductParameterITunesItemIdentifier : @"837207884"};
+//            [productVC loadProductWithParameters:productParameters completionBlock:^(BOOL result, NSError *error) {
+//                if(error)
+//                {
+//                    NSLog(@"error");
+//                }
+//                if (result )
+//                {
+//                    // changed UI to meet this app's style
+////                    [productVC.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
+////                    productVC.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
+////                    MoreNavigationViewController *newMoreNaviVC = [[MoreNavigationViewController alloc] initWithRootViewController:productVC];
+////                    
+////                    [newMoreNaviVC.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(productViewControllerDidFinish:)]];
+////                    [newMoreNaviVC.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
+////                    newMoreNaviVC.navigationBar.tintColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
+////                    [self presentViewController:productVC animated:YES completion:nil];
+//                }
+//                
+//            }];
+            [Appirater rateApp];
+//            [[iRate sharedInstance] openRatingsPageInAppStore];
         }
     }
 }
@@ -663,6 +689,12 @@
                                   otherButtonTitles:nil];
         [alertView show];
     }
+}
+
+#pragma mark - SK view controller delegate
+- (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
+    LogMethod;
+    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Navigation

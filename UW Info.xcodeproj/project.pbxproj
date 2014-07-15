@@ -98,6 +98,8 @@
 		1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */; };
 		1BB1A12018C908BB00823A0D /* alarm.caf in Resources */ = {isa = PBXBuildFile; fileRef = 1BB1A11F18C9040C00823A0D /* alarm.caf */; };
 		1BBB19071935786C00E74EBD /* UWWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB19061935786C00E74EBD /* UWWebViewController.m */; };
+		1BBD1BD41974E7EE0040081A /* Appirater.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD1BD21974E7EE0040081A /* Appirater.m */; };
+		1BBD1BD71974ED430040081A /* UWAppiRaterDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD1BD61974ED430040081A /* UWAppiRaterDelegate.m */; };
 		1BC7F35518F38F6900C21CFD /* LINEActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F34018F38F6900C21CFD /* LINEActivity.m */; };
 		1BC7F35618F38F6900C21CFD /* LINEActivityIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34118F38F6900C21CFD /* LINEActivityIcon.png */; };
 		1BC7F35718F38F6900C21CFD /* LINEActivityIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34218F38F6900C21CFD /* LINEActivityIcon@2x.png */; };
@@ -330,6 +332,11 @@
 		1BB1A11F18C9040C00823A0D /* alarm.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = alarm.caf; path = Resources/alarm.caf; sourceTree = "<group>"; };
 		1BBB19051935786C00E74EBD /* UWWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWWebViewController.h; path = ViewController/UWWebViewController.h; sourceTree = "<group>"; };
 		1BBB19061935786C00E74EBD /* UWWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWWebViewController.m; path = ViewController/UWWebViewController.m; sourceTree = "<group>"; };
+		1BBD1BD11974E7EE0040081A /* Appirater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Appirater.h; sourceTree = "<group>"; };
+		1BBD1BD21974E7EE0040081A /* Appirater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Appirater.m; sourceTree = "<group>"; };
+		1BBD1BD31974E7EE0040081A /* AppiraterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppiraterDelegate.h; sourceTree = "<group>"; };
+		1BBD1BD51974ED430040081A /* UWAppiRaterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWAppiRaterDelegate.h; sourceTree = "<group>"; };
+		1BBD1BD61974ED430040081A /* UWAppiRaterDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWAppiRaterDelegate.m; sourceTree = "<group>"; };
 		1BC7F33F18F38F6900C21CFD /* LINEActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LINEActivity.h; sourceTree = "<group>"; };
 		1BC7F34018F38F6900C21CFD /* LINEActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LINEActivity.m; sourceTree = "<group>"; };
 		1BC7F34118F38F6900C21CFD /* LINEActivityIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LINEActivityIcon.png; sourceTree = "<group>"; };
@@ -410,6 +417,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B505ECD18D0E37700F168F8 /* CFNetwork.framework in Frameworks */,
 				1B505ED118D0E38C00F168F8 /* libz.dylib in Frameworks */,
 				1B505EDB18D0E3AB00F168F8 /* SystemConfiguration.framework in Frameworks */,
 				1B2040BF18B5DCB500C72D51 /* CoreData.framework in Frameworks */,
@@ -429,7 +437,6 @@
 				1B505ED518D0E39900F168F8 /* QuartzCore.framework in Frameworks */,
 				1B505ED318D0E39300F168F8 /* MobileCoreServices.framework in Frameworks */,
 				1B505ECF18D0E38400F168F8 /* CoreLocation.framework in Frameworks */,
-				1B505ECD18D0E37700F168F8 /* CFNetwork.framework in Frameworks */,
 				1B3A338218D4D66C0046DC73 /* libWeChatSDK.a in Frameworks */,
 				1B3A33C418D4D7E40046DC73 /* Parse.framework in Frameworks */,
 				1B6F54C818AC219000D3DD47 /* EventKitUI.framework in Frameworks */,
@@ -649,6 +656,7 @@
 		1B3A338418D4D6A50046DC73 /* OpenSource */ = {
 			isa = PBXGroup;
 			children = (
+				1BBD1BD01974E7D80040081A /* appirater */,
 				1B05834D194E28E7000D43C2 /* ZHHHandyMacros */,
 				1B78A96E191E813C00A4A8AD /* PullView */,
 				1BC7F33D18F38EFB00C21CFD /* UIActivity */,
@@ -790,6 +798,16 @@
 			);
 			name = HSLUpdateChecker;
 			path = OpenSource/HSLUpdateChecker;
+			sourceTree = "<group>";
+		};
+		1BBD1BD01974E7D80040081A /* appirater */ = {
+			isa = PBXGroup;
+			children = (
+				1BBD1BD11974E7EE0040081A /* Appirater.h */,
+				1BBD1BD21974E7EE0040081A /* Appirater.m */,
+				1BBD1BD31974E7EE0040081A /* AppiraterDelegate.h */,
+			);
+			name = appirater;
 			sourceTree = "<group>";
 		};
 		1BC7F33D18F38EFB00C21CFD /* UIActivity */ = {
@@ -948,6 +966,8 @@
 				1B58C36018F0634E003D9F9F /* UWAds.m */,
 				1BA43E1B18FCDFCF008299EB /* UWErrorReport.h */,
 				1BA43E1C18FCDFCF008299EB /* UWErrorReport.m */,
+				1BBD1BD51974ED430040081A /* UWAppiRaterDelegate.h */,
+				1BBD1BD61974ED430040081A /* UWAppiRaterDelegate.m */,
 				1B8C557918B72B490070CD82 /* Categories */,
 				1B37453818A5BA2C007CF08C /* Models */,
 				1B37453918A5BA3D007CF08C /* Controllers */,
@@ -1166,6 +1186,7 @@
 				1BC7F37E18F3A62000C21CFD /* NSString+Contain.m in Sources */,
 				1B3A33F418D4D8B30046DC73 /* REMenuItemView.m in Sources */,
 				1B3A33F018D4D8B30046DC73 /* RECommonFunctions.m in Sources */,
+				1BBD1BD41974E7EE0040081A /* Appirater.m in Sources */,
 				1BD12BAF18F484B3003BAA8C /* SVProgressHUD.m in Sources */,
 				1BA43E1D18FCDFCF008299EB /* UWErrorReport.m in Sources */,
 				1BAD97E618A98F65006F4546 /* InfoSessionModel.m in Sources */,
@@ -1223,6 +1244,7 @@
 				1B717E6518A809F900E20A29 /* DetailRSVPCell.m in Sources */,
 				1B58C36118F0634E003D9F9F /* UWAds.m in Sources */,
 				1B78A996191F1E7100A4A8AD /* UWDevice.m in Sources */,
+				1BBD1BD71974ED430040081A /* UWAppiRaterDelegate.m in Sources */,
 				1B717E6D18A80A7A00E20A29 /* InfoSessionCell.m in Sources */,
 				1BA1795C18F1AE5400FA5D05 /* HSLUpdateChecker.m in Sources */,
 				1B78A993191F0D8700A4A8AD /* UWManagerViewController.m in Sources */,
