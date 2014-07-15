@@ -9,12 +9,11 @@
 #import "AFHTTPSessionManager.h"
 #import "UWInfoSessionClient.h"
 #import "UIAlertView+AFNetworking.h"
-//#import "UIAlertView+Blocks.h"
 #import "UWErrorReport.h"
 
 ////static NSString * const AFUwaterlooApiBaseURLString = @"https://api.uwaterloo.ca/v2/";
 ////static NSString * const getFaviconBaseURLString = @"http://g.etfv.co/";
-static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
+static NSString* const keyBaseURLString = @"http://uw-info.appspot.com/";
 
 //static NSString * const infoSessionBaseURLString = @"http://uw-app.appspot.com/";
 //static NSString * const baseURLString = @"http://localhost:13080/";
@@ -25,22 +24,36 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
 
 @implementation UWInfoSessionClient {
     NSInteger yearToQuery;
-    NSString *termToQuery;
-    NSString *apiKeyToUse;
+    NSString* termToQuery;
+    NSString* apiKeyToUse;
 }
 
-+ (instancetype)sharedApiKeyClient {
-    static UWInfoSessionClient *_sharedClient = nil;
+/**
+ *  Return shared API key client
+ *
+ *  @return shared API key client
+ */
++ (instancetype)sharedApiKeyClient
+{
+    static UWInfoSessionClient* _sharedClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedClient = [[UWInfoSessionClient alloc] initWithBaseURL:[NSURL URLWithString:keyBaseURLString]];
     });
-    
+
     return _sharedClient;
 }
 
-+ (instancetype)infoSessionClientWithBaseURL:(NSURL *)url {
-    UWInfoSessionClient *_sharedClient = nil;
+/**
+ *  Return API key client with base URL
+ *
+ *  @param url base url for API
+ *
+ *  @return client with URL
+ */
++ (instancetype)infoSessionClientWithBaseURL:(NSURL*)url
+{
+    UWInfoSessionClient* _sharedClient = nil;
     //static dispatch_once_t onceToken;
     //dispatch_once(&onceToken, ^{
     _sharedClient = [[UWInfoSessionClient alloc] initWithBaseURL:url];
@@ -48,22 +61,34 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
     return _sharedClient;
 }
 
-- (instancetype)initWithBaseURL:(NSURL *)url
+/**
+ *  Init with base API url
+ *
+ *  @param url base url for API
+ *
+ *  @return UWInfoSessionClient
+ */
+- (instancetype)initWithBaseURL:(NSURL*)url
 {
     self = [super initWithBaseURL:url];
-    
+
     if (self) {
         self.responseSerializer = [AFJSONResponseSerializer serializer];
         self.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", nil];
         self.requestSerializer = [AFJSONRequestSerializer serializer];
     }
-    
+
     return self;
 }
 
-- (void)getApiKey {
+/**
+ *  Get API key from key center
+ *  If failed, delegate's [apiClient:self didFailWithError:error] will be called
+ */
+- (void)getApiKey
+{
     NSLog(@"get api key...");
-    [self GET:@"getkey" parameters:@{@"key" : @"77881122"} success:^(NSURLSessionDataTask * __unused task, id responseObject) {
+    [self GET:@"getkey" parameters:@{ @"key" : @"77881122" } success:^(NSURLSessionDataTask* __unused task, id responseObject) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
         if (httpResponse.statusCode == 200) {
             NSString *isValid = [responseObject valueForKeyPath:@"status"];
@@ -75,7 +100,7 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
                 }
             }
         }
-    } failure:^(NSURLSessionDataTask *__unused task, NSError *error) {
+    } failure:^(NSURLSessionDataTask* __unused task, NSError* error) {
 //        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
 //        if (httpResponse.statusCode == 503) {
 //            //NSLog(@"key failed: 503");
@@ -90,18 +115,27 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
     }];
 }
 
-- (void)updateInfoSessionsForYear:(NSInteger)year andTerm:(NSString *)term andApiKey:(NSString *)apiKey{
+/**
+ *  Update data for year and term with key
+ *  Delegate's methods will be called
+ *
+ *  @param year   NSInteger, year
+ *  @param term   NSString, term, like "Winter", "Spring", "Fall"
+ *  @param apiKey NSString, apiKey
+ */
+- (void)updateInfoSessionsForYear:(NSInteger)year andTerm:(NSString*)term andApiKey:(NSString*)apiKey
+{
     NSLog(@"base url: %@", self.baseURL);
     yearToQuery = year;
     termToQuery = term;
-    NSString *getTarget;
+    NSString* getTarget;
     if (year == 0 || term == nil) {
         getTarget = @"infosessions.json";
     } else {
         getTarget = [NSString stringWithFormat:@"infosessions/%ld%@.json", (long)year, term];
     }
     NSLog(@"%@", getTarget);
-    [self GET:getTarget parameters:@{@"key" : apiKey} success:^(NSURLSessionDataTask * __unused task, id responseObject) {
+    [self GET:getTarget parameters:@{ @"key" : apiKey } success:^(NSURLSessionDataTask* __unused task, id responseObject) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
         //NSLog(@"%@" ,[httpResponse allHeaderFields]);
         NSLog(@"success");
@@ -119,11 +153,7 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
             //NSLog(@"Received: %@", responseObject);
             //NSLog(@"Received HTTP %d", httpResponse.statusCode);
         }
-        //            dispatch_async(dispatch_get_main_queue(), ^{
-        //                completion(nil, nil);
-        //            });
-        
-    } failure:^(NSURLSessionDataTask *__unused task, NSError *error) {
+    } failure:^(NSURLSessionDataTask* __unused task, NSError* error) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
         if (httpResponse.statusCode == 503 || httpResponse.statusCode == 500) {
             //NSLog(@"503");
@@ -141,8 +171,9 @@ static NSString * const keyBaseURLString = @"http://uw-info.appspot.com/";
 
 #pragma mark - UIAlertViewDelegate methods
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSLog(@"buttonIndex: %d", buttonIndex);
+- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    //    NSLog(@"buttonIndex: %d", buttonIndex);
     if (buttonIndex == 1) {
         //[self updateInfoSessionsForYear:yearToQuery andTerm:termToQuery andApiKey:apiKeyToUse];
         if ([self.delegate respondsToSelector:@selector(infoSessionClient:didFailWithCode:)]) {

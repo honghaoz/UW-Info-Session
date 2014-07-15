@@ -186,10 +186,10 @@
         } else {
             NSLog(@"building: %@!!!!", building);
             NSMutableArray *buildings = [[NSMutableArray alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"uw_building" ofType:@"plist"]];
-            //NSLog(@"buildings: %d", [buildings count]);
+            NSLog(@"buildings: %d", [buildings count]);
             for (NSDictionary *eachBuilding in buildings) {
                 if ([((NSString *)eachBuilding[@"building_code"]) containsString:building] || [((NSString *)eachBuilding[@"alternate_building_names"]) containsString:building]) {
-                    //NSLog(@"found %@", building);
+                    NSLog(@"found %@", building);
                     latitude = [(NSNumber *)eachBuilding[@"latitude"] copy];
                     longitude = [(NSNumber *)eachBuilding[@"longitude"] copy];
                     break;
