@@ -53,8 +53,6 @@
 //    CGFloat previousScrollViewYOffset;
     BOOL isReloading;
     NSString *classOfRefreshSender;
-    
-//    GADBannerView *_googleBannerView;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -67,111 +65,62 @@
 }
 
 /**
- *  initiate left & right bar buttons, reload data for the first time.
+ *  Initiate left & right bar buttons, reload data for the first time.
  */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     _infoSessionModel.delegate = self;
     _tabBarController.lastTapped = -1;
-    
+
     [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
     //[self.navigationController.navigationBar setTranslucent:YES];
     //self.navigationController.navigationBar.barTintColor = [UIColor clearColor];
     //self.navigationController.navigationBar.backgroundColor = UWGold;
     self.navigationController.navigationBar.tintColor = UWBlack;
-    
-    // show refresh button
+
+    // Show refresh button
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
-    
-    
+
     self.navigationItem.leftBarButtonItem = [self getTodayButtonItem];
     self.navigationItem.leftBarButtonItem.enabled = NO;
-    
-    // init menu button (term selection)
+
+    // Init menu button (term selection)
     _termMenu = [[UWTermMenu alloc] initWithNavigationController:self.navigationController];
     _termMenu.infoSessionModel = _infoSessionModel;
     _termMenu.infoSessionViewController = self;
-    
-    NSLog(@"%@", [NSDate date]);
+
+    //    NSLog(@"%@", [NSDate date]);
     _shownYear = [_termMenu getCurrentYear:[NSDate date]];
     _shownTerm = [_termMenu getCurrentTermFromDate:[NSDate date]];
     NSLog(@"shown year: %d, shown term: %@", _shownYear, _shownTerm);
-    
-    self.navigationItem.titleView = (UIView *)[_termMenu getMenuButton];
-    
-    //reload data
+
+    self.navigationItem.titleView = (UIView*)[_termMenu getMenuButton];
+
+    // Reload data
     isReloading = NO;
     [self reload:nil];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(reload:) forControlEvents:UIControlEventValueChanged];
-//    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull down to reload data"];
-    
-    // receive every minute from notification center
+    //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull down to reload data"];
+
+    // Receive every minute from notification center
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshEveryMinute) name:@"OneMinute" object:nil];
-    
+
     // Google Analytics
     [UWGoogleAnalytics analyticScreen:@"UW Info Session Screen"];
-    
-//    
-//    // Google Ad
-//    _googleBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
-//    _googleBannerView.adUnitID = @"ca-app-pub-5080537428726834/3638663901";
-//    _googleBannerView.rootViewController = self;
-//    _googleBannerView.alpha = 0;
-//    
-//    CGRect contentFrame = self.view.bounds;
-//    CGRect bannerFrame = _googleBannerView.frame;
-//    bannerFrame.origin.y = contentFrame.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height;
-//    
-//    [_googleBannerView setFrame:bannerFrame];
-//    
-//    //[self.view addSubview:_googleBannerView];
-//    [_googleBannerView setDelegate:self];
-//    
-//    GADRequest *request = [GADRequest request];
-//    [request setLocationWithDescription:@"N2L3G1 CA"];
-////    GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
-////    extras.additionalParameters =
-////    [NSMutableDictionary dictionaryWithObjectsAndKeys:
-////     @"DDDDDD", @"color_bg",
-////     @"999999", @"color_bg_top",
-////     @"BBBBBB", @"color_border",
-////     @"FF9735", @"color_link",
-////     @"999999", @"color_text",
-////     @"FF9735", @"color_url",
-////     nil];
-//    
-////    [request registerAdNetworkExtras:extras];
-//    [_googleBannerView loadRequest:request];
-    // fast the ad load
+
+    // Fasten the ad loading
     [[UWAds singleton] resetAdView:nil OriginY:0];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
-    NSLog(@"More View will appear");
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    NSLog(@"More View did appear");
-    //[self buildIntro];
-//    int radius = 100;
-//    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, 200, 200) cornerRadius:0];
-//    UIBezierPath *circlePath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, 2.0*radius, 2.0*radius) cornerRadius:radius];
-//    [path appendPath:circlePath];
-//    [path setUsesEvenOddFillRule:YES];
-//    
-//    CAShapeLayer *fillLayer = [CAShapeLayer layer];
-//    fillLayer.path = path.CGPath;
-//    fillLayer.fillRule = kCAFillRuleEvenOdd;
-//    fillLayer.fillColor = [UIColor grayColor].CGColor;
-//    fillLayer.opacity = 0.5;
-//    //[view.layer addSublayer:fillLayer];
-//    [self.tabBarController.view.layer addSublayer:fillLayer];
-    
 }
 
 - (void)didReceiveMemoryWarning
@@ -181,25 +130,27 @@
 }
 
 /**
- *  initiate Today barButtonItem
+ *  Initiate Today barButtonItem
  *
  *  @return UIBarButtonItem
  */
-- (UIBarButtonItem *)getTodayButtonItem {
-    UWTodayButton *todayButton = [[UWTodayButton alloc] initWithTitle:@"Today:" date:[NSDate date]];
-    
+- (UIBarButtonItem*)getTodayButtonItem
+{
+    UWTodayButton* todayButton = [[UWTodayButton alloc] initWithTitle:@"Today:" date:[NSDate date]];
+
     [todayButton addTarget:self action:@selector(scrollToToday) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *todayButtonItem = [[UIBarButtonItem alloc] initWithCustomView:todayButton];
-    
+    UIBarButtonItem* todayButtonItem = [[UIBarButtonItem alloc] initWithCustomView:todayButton];
+
     return todayButtonItem;
 }
 
 /**
- *  update data. send request to network and instance variables.
+ *  Update data. send request to network and instance variables.
  *
  *  @param sender
  */
-- (void)reload:(__unused id)sender {
+- (void)reload:(__unused id)sender
+{
     classOfRefreshSender = NSStringFromClass([sender class]);
     //NSLog(@"sender: %@", classOfRefreshSender);
     if ([classOfRefreshSender isEqualToString:@"UIBarButtonItem"] ||
@@ -224,51 +175,50 @@
         }
         // reset titile's detail label
         [_termMenu setDetailLabel];
-        
+
         // if sender is from choosed term, set show year and term
-        if ([classOfRefreshSender isEqualToString:@"__NSDictionaryI"]){
+        if ([classOfRefreshSender isEqualToString:@"__NSDictionaryI"]) {
             _shownYear = [sender[@"Year"] integerValue];
             _shownTerm = sender[@"Term"];
         }
-        
+
         // if shown year and term is not current term, hide todayButton
         if (_shownYear != [_termMenu getCurrentYear:[NSDate date]] || ![_shownTerm isEqualToString:[_termMenu getCurrentTermFromDate:[NSDate date]]]) {
             self.navigationItem.leftBarButtonItem = nil;
         } else {
             self.navigationItem.leftBarButtonItem = [self getTodayButtonItem];
         }
-        
+
         // when reload is in processing, disable left and right button
         self.navigationItem.rightBarButtonItem.enabled = NO;
         self.navigationItem.leftBarButtonItem.enabled = NO;
-        
+
         // if the target term is already saved in _infoSessionModel.termInfoDic, then read it directly.
-        if (![classOfRefreshSender isEqualToString:@"UIBarButtonItem"] &&
-            ![classOfRefreshSender isEqualToString:@"UIRefreshControl"] && [_infoSessionModel readInfoSessionsWithTerm:[NSString stringWithFormat:@"%li %@", (long)_shownYear, _shownTerm]]) {
-        
-//            // set termMenu
-//            _termMenu.infoSessionModel = _infoSessionModel;
-//            [_termMenu setDetailLabel];
-            
-//            // reload ended, end refreshing
-//            [self.refreshControl endRefreshing];
-//            // reload TableView data
-//            [self.tableView reloadData];
-//            // is sender is not UIRefreshControl, scroll TableView to current date
-//            if (![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"]) {
-//                [self scrollToToday];
-//            }
-            
-//            // reload sections animations
-//            [self reloadSection:-1 WithAnimation:UITableViewRowAnimationAutomatic];
-//            
-//            // restore left and right buttons
-//            self.navigationItem.rightBarButtonItem.enabled = YES;
-//            self.navigationItem.leftBarButtonItem.enabled = YES;
-//            isReloading = NO;
-//            //self.refreshControl.enabled = YES;
-//            self.refreshControl = [[UIRefreshControl alloc] init];
-//            [self.refreshControl addTarget:self action:@selector(reload:) forControlEvents:UIControlEventValueChanged];
+        if (![classOfRefreshSender isEqualToString:@"UIBarButtonItem"] && ![classOfRefreshSender isEqualToString:@"UIRefreshControl"] && [_infoSessionModel readInfoSessionsWithTerm:[NSString stringWithFormat:@"%li %@", (long)_shownYear, _shownTerm]]) {
+
+            //            // set termMenu
+            //            _termMenu.infoSessionModel = _infoSessionModel;
+            //            [_termMenu setDetailLabel];
+
+            //            // reload ended, end refreshing
+            //            [self.refreshControl endRefreshing];
+            //            // reload TableView data
+            //            [self.tableView reloadData];
+            //            // is sender is not UIRefreshControl, scroll TableView to current date
+            //            if (![NSStringFromClass([sender class]) isEqualToString:@"UIRefreshControl"]) {
+            //                [self scrollToToday];
+            //            }
+
+            //            // reload sections animations
+            //            [self reloadSection:-1 WithAnimation:UITableViewRowAnimationAutomatic];
+            //
+            //            // restore left and right buttons
+            //            self.navigationItem.rightBarButtonItem.enabled = YES;
+            //            self.navigationItem.leftBarButtonItem.enabled = YES;
+            //            isReloading = NO;
+            //            //self.refreshControl.enabled = YES;
+            //            self.refreshControl = [[UIRefreshControl alloc] init];
+            //            [self.refreshControl addTarget:self action:@selector(reload:) forControlEvents:UIControlEventValueChanged];
         }
         // else, no infoSession saved for this target term, need update
         else {
@@ -283,11 +233,12 @@
  *
  *  @param model InfoSessionModel
  */
-- (void)infoSessionModeldidUpdateInfoSessions:(InfoSessionModel *)model{
+- (void)infoSessionModeldidUpdateInfoSessions:(InfoSessionModel*)model
+{
     // set termMenu
     _termMenu.infoSessionModel = _infoSessionModel;
     [_termMenu setDetailLabel];
-    
+
     // reload TableView data
     [self.tableView reloadData];
     // scroll TableView to current date
@@ -298,7 +249,7 @@
     [self reloadSection:-1 WithAnimation:UITableViewRowAnimationAutomatic];
     // end refreshControl
     [self.refreshControl endRefreshing];
-    
+
     self.navigationItem.rightBarButtonItem.enabled = YES;
     self.navigationItem.leftBarButtonItem.enabled = YES;
     isReloading = NO;
@@ -307,7 +258,8 @@
     [self.refreshControl addTarget:self action:@selector(reload:) forControlEvents:UIControlEventValueChanged];
 }
 
-- (void)infoSessionModeldidUpdateFailed:(InfoSessionModel *)model {
+- (void)infoSessionModeldidUpdateFailed:(InfoSessionModel*)model
+{
     //NSLog(@"infoSessionModel did Update Failed");
     // reload TableView data
     [self.tableView reloadData];
@@ -329,9 +281,10 @@
  *
  *  @return NSUInteger, week number of the date
  */
-- (NSUInteger)getWeekNumber:(NSDate *)date {
+- (NSUInteger)getWeekNumber:(NSDate*)date
+{
     //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
+    NSDateFormatter* dateFormatter = [InfoSession estDateFormatter];
     [dateFormatter setDateFormat:@"w"];
     return [[dateFormatter stringFromDate:date] intValue];
 }
@@ -339,24 +292,25 @@
 /**
  *  scroll to the row of today
  */
-- (void)scrollToToday {
+- (void)scrollToToday
+{
     if (_shownYear == [_termMenu getCurrentYear:[NSDate date]] && [_shownTerm isEqualToString:[_termMenu getCurrentTermFromDate:[NSDate date]]]) {
         // scroll TableView to current date
-        InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
+        InfoSession* firstInfoSession = [_infoSessionModel.infoSessions firstObject];
         //InfoSession *lastInfoSession = [_infoSessionModel.infoSessions lastObject];
         NSInteger currentWeekNum = [self getWeekNumber:[NSDate date]];
         NSLog(@"current: %d, first: %d", currentWeekNum, [firstInfoSession weekNum]);
         NSInteger sectionNumToScroll = (NSInteger)currentWeekNum - (NSInteger)[firstInfoSession weekNum];
         NSLog(@"section to scroll: %d", sectionNumToScroll);
         NSInteger rowNumToScroll = -1;
-        
+
         if (0 <= sectionNumToScroll && sectionNumToScroll < [self numberOfSectionsInTableView:self.tableView]) {
             NSLog(@"normal");
-            NSArray *infoSessionsOfCurrentWeek = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(currentWeekNum)];
+            NSArray* infoSessionsOfCurrentWeek = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(currentWeekNum)];
             rowNumToScroll = -1;
-            for (InfoSession *eachCell in infoSessionsOfCurrentWeek) {
+            for (InfoSession* eachCell in infoSessionsOfCurrentWeek) {
                 // current date is later than startTime
-                if ([[NSDate date] compare:eachCell.endTime] == NSOrderedDescending ) {
+                if ([[NSDate date] compare:eachCell.endTime] == NSOrderedDescending) {
                     rowNumToScroll++;
                 }
             }
@@ -397,21 +351,22 @@
 /**
  *  Return the number of sections. the number of sessions in this week
  */
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
     if ([_infoSessionModel.infoSessionsDictionary count] == 0) {
         return 1;
     } else {
         NSInteger firstWeekNumber = [[_infoSessionModel.infoSessions firstObject] weekNum];
         NSInteger lastWeekNumber = [[_infoSessionModel.infoSessions lastObject] weekNum];
-        return  lastWeekNumber - firstWeekNumber + 2;// add one "No more info sessions"
+        return lastWeekNumber - firstWeekNumber + 2; // add one "No more info sessions"
     }
 }
 
 /**
  *  @Return the title of sections. show week start date to end date
  */
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
+{
     // if no any one infoSession in this term, show "No info sessions"
     if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions != nil) {
         return @"No Info Sessions";
@@ -423,42 +378,41 @@
     // show last one
     else if (section == [self numberOfSectionsInTableView:tableView] - 1) {
         return @"No more info sessions";
-    }
-    else {
-        InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
+    } else {
+        InfoSession* firstInfoSession = [_infoSessionModel.infoSessions firstObject];
         NSUInteger weekNum = section + [firstInfoSession weekNum];
-        
-        NSArray *infoSessionsOfThisWeek = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(weekNum)];
-        NSDate *dateOfFirstObjectOfThisWeek;
+
+        NSArray* infoSessionsOfThisWeek = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(weekNum)];
+        NSDate* dateOfFirstObjectOfThisWeek;
         if (infoSessionsOfThisWeek == nil) {
             dateOfFirstObjectOfThisWeek = [NSDate date];
         } else {
-            InfoSession *firstSessionOfThisWeek = [infoSessionsOfThisWeek firstObject];
+            InfoSession* firstSessionOfThisWeek = [infoSessionsOfThisWeek firstObject];
             dateOfFirstObjectOfThisWeek = firstSessionOfThisWeek.date;
         }
         // set components necessary
-        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSCalendar* gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         [gregorian setLocale:[NSLocale currentLocale]];
-        NSDateComponents *component = [gregorian components:NSYearCalendarUnit | NSWeekCalendarUnit fromDate:dateOfFirstObjectOfThisWeek];
-        
+        NSDateComponents* component = [gregorian components:NSYearCalendarUnit | NSWeekCalendarUnit fromDate:dateOfFirstObjectOfThisWeek];
+
         // set component to monday of that week
-        [component setWeek: weekNum]; //Week of the section
+        [component setWeek:weekNum]; //Week of the section
         [component setWeekday:2]; //Monday
-        
+
         // initialize begin monday string
         //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
+        NSDateFormatter* dateFormatter = [InfoSession estDateFormatter];
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        
-        NSDate *beginningOfWeek = [gregorian dateFromComponents:component];
-        NSString *beginDate = [dateFormatter stringFromDate: beginningOfWeek];
-        
+
+        NSDate* beginningOfWeek = [gregorian dateFromComponents:component];
+        NSString* beginDate = [dateFormatter stringFromDate:beginningOfWeek];
+
         // set to next monday and initialize next sunday string
-        [component setWeek: weekNum + 1]; //Week of the section
+        [component setWeek:weekNum + 1]; //Week of the section
         [component setWeekday:1]; // Sunday
-        NSDate *beginningOfNextWeek = [gregorian dateFromComponents:component];
-        NSString *endDate = [dateFormatter stringFromDate: beginningOfNextWeek];
-        
+        NSDate* beginningOfNextWeek = [gregorian dateFromComponents:component];
+        NSString* endDate = [dateFormatter stringFromDate:beginningOfNextWeek];
+
         return [NSString stringWithFormat:@"%@ - %@ (Week: %ld)", beginDate, endDate, (long int)section + 1];
     }
 }
@@ -468,79 +422,75 @@
  *  if infosessionDictionary is nil, return 1 to show refreshing cell
  *  if sessions in this week is 0, return 1 to show empty cell
  */
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
     // refreshing cell
-    if (([_infoSessionModel.infoSessionsDictionary count] == 0) ||
-        (section == [self numberOfSectionsInTableView:tableView] - 1) ||
-        ([[self getInfoSessionsAccordingSection:section] count] == 0)) {
+    if (([_infoSessionModel.infoSessionsDictionary count] == 0) || (section == [self numberOfSectionsInTableView:tableView] - 1) || ([[self getInfoSessionsAccordingSection:section] count] == 0)) {
         return 1;
-    }
-    else {
+    } else {
         // info session cell
         return [[self getInfoSessionsAccordingSection:section] count];
     }
 }
 
 /**
- *  configure different cell
+ *  Configure different cell
  */
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     // if no any one infoSession in this term, show "No info sessions"
     if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions != nil) {
-        LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
+        LoadingCell* cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
         cell.loadingIndicator.hidden = YES;
         cell.loadingLabel.text = @"No Info Sessions";
         [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
         [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
-//        [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        //        [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
         return cell;
-    }
-    else if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions == nil) {
-        LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
+    } else if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions == nil) {
+        LoadingCell* cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
         cell.loadingIndicator.hidden = NO;
         [cell.loadingIndicator startAnimating];
         cell.loadingLabel.text = @"      Refreshing...";
         [cell.loadingLabel setTextAlignment:NSTextAlignmentLeft];
         [cell.loadingLabel setTextColor:[UIColor darkGrayColor]];
-//        [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+        //        [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
         return cell;
-    }
-    else if (indexPath.section == [self numberOfSectionsInTableView:tableView] - 1) {
-        LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
+    } else if (indexPath.section == [self numberOfSectionsInTableView:tableView] - 1) {
+        LoadingCell* cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
         cell.loadingIndicator.hidden = YES;
         cell.loadingLabel.text = [NSString stringWithFormat:@"%lu Info Sessions", (unsigned long)[_infoSessionModel.infoSessions count]];
         [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
         [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
-//        [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        //        [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
         return cell;
-    }
-    else {
+    } else {
         if ([[self getInfoSessionsAccordingSection:indexPath.section] count] == 0) {
-            LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
+            LoadingCell* cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
             cell.loadingIndicator.hidden = YES;
             cell.loadingLabel.text = @"No Info Sessions";
             [cell.loadingLabel setTextAlignment:NSTextAlignmentCenter];
             [cell.loadingLabel setTextColor:[UIColor lightGrayColor]];
-//            [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+            //            [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
             return cell;
         } else {
-            InfoSessionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InfoSessionCell"];
-//            [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+            InfoSessionCell* cell = [tableView dequeueReusableCellWithIdentifier:@"InfoSessionCell"];
+            //            [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
             [self configureCell:cell withIndexPath:indexPath];
             return cell;
         }
     }
 }
+
 /**
  *  Configure InfoSessionCell
  *
  *  @param cell      InfoSessionCell
  *  @param indexPath IndexPath for the cell
  */
-- (void)configureCell:(InfoSessionCell *)cell withIndexPath:(NSIndexPath *)indexPath {
-    InfoSession *infoSession = [self getInfoSessionAccordingIndexPath:indexPath];
+- (void)configureCell:(InfoSessionCell*)cell withIndexPath:(NSIndexPath*)indexPath
+{
+    InfoSession* infoSession = [self getInfoSessionAccordingIndexPath:indexPath];
     // if current time is befor start time, set dark (future sessions)
     if ([[NSDate date] compare:infoSession.startTime] == NSOrderedAscending) {
         [cell.employer setTextColor:[UIColor blackColor]];
@@ -550,12 +500,12 @@
         [cell.date setTextColor:[UIColor darkGrayColor]];
     }
     // if current time is between start time and end time, set blue (ongoing sessions)
-    else if ( ([infoSession.startTime compare:[NSDate date]] == NSOrderedAscending) && ([[NSDate date] compare:infoSession.endTime] == NSOrderedAscending) ){
-        UIColor *fontColor = UWGold;
+    else if (([infoSession.startTime compare:[NSDate date]] == NSOrderedAscending) && ([[NSDate date] compare:infoSession.endTime] == NSOrderedAscending)) {
+        UIColor* fontColor = UWGold;
         //[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]
         [cell.employer setTextColor:fontColor];
-        cell.employer.shadowColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0];
-        cell.employer.shadowOffset  = CGSizeMake(0.0, 1.0);
+        cell.employer.shadowColor = [UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1.0];
+        cell.employer.shadowOffset = CGSizeMake(0.0, 1.0);
         [cell.locationLabel setTextColor:fontColor];
         [cell.location setTextColor:fontColor];
         [cell.dateLabel setTextColor:fontColor];
@@ -563,64 +513,54 @@
     }
     // set light grey (past sessions)
     else {
-        [cell.employer setTextColor: [UIColor lightGrayColor]];
+        [cell.employer setTextColor:[UIColor lightGrayColor]];
         [cell.locationLabel setTextColor:[UIColor lightGrayColor]];
         [cell.location setTextColor:[UIColor lightGrayColor]];
         [cell.dateLabel setTextColor:[UIColor lightGrayColor]];
         [cell.date setTextColor:[UIColor lightGrayColor]];
-
     }
-    NSMutableAttributedString *employerString = [[NSMutableAttributedString alloc] initWithString:infoSession.employer];
-    NSMutableAttributedString *locationString = [[NSMutableAttributedString alloc] initWithString:[infoSession.location length] < 2 ? @"No Location Provided" : infoSession.location];
-    //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-    NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
-    NSDateFormatter *timeFormatter = [InfoSession estDateFormatter];
-    // set the locale to fix the formate to read and write;
-    //NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    //[dateFormatter setLocale:enUSPOSIXLocale];
-    //[timeFormatter setLocale:enUSPOSIXLocale];
+    NSMutableAttributedString* employerString = [[NSMutableAttributedString alloc] initWithString:infoSession.employer];
+    NSMutableAttributedString* locationString = [[NSMutableAttributedString alloc] initWithString:[infoSession.location length] < 2 ? @"No Location Provided" : infoSession.location];
+
+    NSDateFormatter* dateFormatter = [InfoSession estDateFormatter];
+    NSDateFormatter* timeFormatter = [InfoSession estDateFormatter];
     [dateFormatter setDateFormat:@"MMM d, ccc"];
     [timeFormatter setDateFormat:@"h:mm a"];
-    // set timezone to EST
-    //[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
-    // set timezone to EST
-    //[timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
-    
-    NSString *dateNSString = [NSString stringWithFormat:@"%@, %@ - %@",[dateFormatter stringFromDate:infoSession.date], [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime]];
-    NSMutableAttributedString *dateString = [[NSMutableAttributedString alloc] initWithString:dateNSString];
+
+    NSString* dateNSString = [NSString stringWithFormat:@"%@, %@ - %@", [dateFormatter stringFromDate:infoSession.date], [timeFormatter stringFromDate:infoSession.startTime], [timeFormatter stringFromDate:infoSession.endTime]];
+    NSMutableAttributedString* dateString = [[NSMutableAttributedString alloc] initWithString:dateNSString];
     if (infoSession.isCancelled) {
         [employerString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [employerString length])];
         [locationString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [locationString length])];
         [dateString addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [dateString length])];
     }
-    
+
     [cell.employer setAttributedText:employerString];
     [cell.location setAttributedText:locationString];
     [cell.date setAttributedText:dateString];
 }
 
 /**
- *  set different cell height for different cell
+ *  Set different cell height for different cell
  *
  *  @param tableView tableView
  *  @param indexPath indexPath
  *
  *  @return for LoadingCell, return 44.0f, for InfoSessionCell, return 72.0f
  */
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
+{
     // refreshing cell // no more info sessions // no info session cell
-    if (([_infoSessionModel.infoSessionsDictionary count] == 0) ||
-        (indexPath.section == [self numberOfSectionsInTableView:tableView] - 1) ||
-        ([[self getInfoSessionsAccordingSection:indexPath.section] count] == 0)) {
+    if (([_infoSessionModel.infoSessionsDictionary count] == 0) || (indexPath.section == [self numberOfSectionsInTableView:tableView] - 1) || ([[self getInfoSessionsAccordingSection:indexPath.section] count] == 0)) {
         return 44.0f;
-    }else {
+    } else {
         // info session cell
         return 72.0f;
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section
+{
     // refreshing cell
     if ([_infoSessionModel.infoSessionsDictionary count] == 0 || section == [self numberOfSectionsInTableView:tableView] - 1) {
         return 0.0f;
@@ -636,20 +576,21 @@
  *
  *  @return ui view for header
  */
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *background = [[UIView alloc] init];
+- (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView* background = [[UIView alloc] init];
     background.frame = CGRectMake(0, 0, 320, 23);
     background.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1];
-    
-    UILabel *myLabel = [[UILabel alloc] init];
+
+    UILabel* myLabel = [[UILabel alloc] init];
     myLabel.frame = CGRectMake(15, 0, 320, 23);
     myLabel.font = [UIFont boldSystemFontOfSize:14];
     myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
-    
-    UIView *headerView = [[UIView alloc] init];
+
+    UIView* headerView = [[UIView alloc] init];
     [headerView addSubview:background];
     [background addSubview:myLabel];
-    
+
     return headerView;
 }
 
@@ -659,27 +600,25 @@
  *  @param sectionToScroll section number that want to reload, if -1, then calculate in this method
  *  @param animation       UITableViewRowAnimation
  */
-- (void)reloadSection:(NSUInteger)sectionToScroll WithAnimation:(UITableViewRowAnimation)animation {
+- (void)reloadSection:(NSUInteger)sectionToScroll WithAnimation:(UITableViewRowAnimation)animation
+{
     if (sectionToScroll == -1) {
         if (_shownYear == [_termMenu getCurrentYear:[NSDate date]] && [_shownTerm isEqualToString:[_termMenu getCurrentTermFromDate:[NSDate date]]]) {
             NSUInteger sectionNumToScroll = sectionToScroll;
-            InfoSession *firstInfoSession = [_infoSessionModel.infoSessions firstObject];
+            InfoSession* firstInfoSession = [_infoSessionModel.infoSessions firstObject];
             sectionNumToScroll = [self getWeekNumber:[NSDate date]] - [firstInfoSession weekNum];
             if (sectionNumToScroll >= [self numberOfSectionsInTableView:self.tableView]) {
                 sectionNumToScroll = [self numberOfSectionsInTableView:self.tableView] - 1;
             }
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionNumToScroll] withRowAnimation:animation];
             return;
-        }
-        else if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions != nil){
+        } else if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions != nil) {
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
             return;
-        }
-        else if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions == nil){
+        } else if ([_infoSessionModel.infoSessionsDictionary count] == 0 && _infoSessionModel.infoSessions == nil) {
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
             return;
-        }
-        else {
+        } else {
             //sectionNumToScroll = 0;
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationBottom];
             return;
@@ -687,6 +626,8 @@
     }
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionToScroll] withRowAnimation:animation];
 }
+
+
 /**
  *  get the array of infoSession according give section
  *
@@ -694,9 +635,10 @@
  *
  *  @return the corresponding array of infoSession
  */
-- (NSArray *)getInfoSessionsAccordingSection:(NSUInteger)section {
+- (NSArray*)getInfoSessionsAccordingSection:(NSUInteger)section
+{
     NSInteger firstWeekNumber = [[_infoSessionModel.infoSessions firstObject] weekNum];
-    NSArray *infoSessions = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(section + firstWeekNumber)];
+    NSArray* infoSessions = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(section + firstWeekNumber)];
     return infoSessions;
 }
 
@@ -707,9 +649,10 @@
  *
  *  @return the corresponding InfoSession
  */
-- (InfoSession *)getInfoSessionAccordingIndexPath:(NSIndexPath *)indexPath {
+- (InfoSession*)getInfoSessionAccordingIndexPath:(NSIndexPath*)indexPath
+{
     NSInteger firstWeekNumber = [[_infoSessionModel.infoSessions firstObject] weekNum];
-    InfoSession *infoSession = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(indexPath.section + firstWeekNumber)][indexPath.row];
+    InfoSession* infoSession = _infoSessionModel.infoSessionsDictionary[NSIntegerToString(indexPath.section + firstWeekNumber)][indexPath.row];
     return infoSession;
 }
 
@@ -720,7 +663,8 @@
  *  @param tableView tableView
  *  @param indexPath indexPath
  */
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     // Refreshing cell
     if ([_infoSessionModel.infoSessionsDictionary count] == 0) {
@@ -733,7 +677,6 @@
         // info session cells
         [self performSegueWithIdentifier:@"ShowDetailFromInfoSessions" sender:[[NSArray alloc] initWithObjects:@"InfoSessionsViewController", [self getInfoSessionAccordingIndexPath:indexPath], _infoSessionModel, nil]];
     }
-    
 }
 
 #pragma mark - Set Hide When Scroll
@@ -878,93 +821,16 @@
 #pragma mark - Navigation
 
 // In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    DetailViewController *controller = segue.destinationViewController;
+    DetailViewController* controller = segue.destinationViewController;
     _tabBarController.detailViewControllerOfTabbar0 = controller;
     controller.caller = sender[0];
     controller.infoSession = sender[1];
     controller.infoSessionModel = sender[2];
     controller.tabBarController = _tabBarController;
 }
-
-//#pragma mark - Google Ad delegate methods
-//
-//- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
-//    NSLog(@"google banner show");
-////    [UIView beginAnimations:nil context:nil];
-////    [UIView setAnimationDuration:1];
-////    
-////    [_googleBannerView setAlpha:1];
-////    [UIView commitAnimations];
-//    
-//}
-//
-//- (void)adView:(GADBannerView *)bannerView
-//didFailToReceiveAdWithError:(GADRequestError *)error {
-//    NSLog(@"google banner show error");
-////    [UIView beginAnimations:nil context:nil];
-////    [UIView setAnimationDuration:1];
-////    [bannerView setAlpha:0];
-////    
-////    [UIView commitAnimations];
-//}
-
-//#pragma mark - Build MYBlurIntroductionView
-//
-//-(void)buildIntro{
-//    NSLog(@"bulid intro");
-//    //Create Stock Panel with header
-//    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];//[[NSBundle mainBundle] loadNibNamed:@"TestHeader" owner:nil options:nil][0];
-//    MYIntroductionPanel *panel1 = [[MYIntroductionPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) title:@"Welcome to MYBlurIntroductionView" description:@"MYBlurIntroductionView is a powerful platform for building app introductions and tutorials. Built on the MYIntroductionView core, this revamped version has been reengineered for beauty and greater developer control." image:[UIImage imageNamed:@"HeaderImage.png"] header:headerView];
-//    
-//    //Create Stock Panel With Image
-//    MYIntroductionPanel *panel2 = [[MYIntroductionPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) title:@"Automated Stock Panels" description:@"Need a quick-and-dirty solution for your app introduction? MYBlurIntroductionView comes with customizable stock panels that make writing an introduction a walk in the park. Stock panels come with optional blurring (iOS 7) and background image. A full panel is just one method away!" image:[UIImage imageNamed:@"ForkImage.png"]];
-//    
-//    //Create Panel From Nib
-//    //MYIntroductionPanel *panel3 = [[MYIntroductionPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) nibNamed:@"TestPanel3"];
-//    
-////    //Create custom panel with events
-////    MYCustomPanel *panel4 = [[MYCustomPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) nibNamed:@"MYCustomPanel"];
-////    
-////    //Add panels to an array
-//    NSArray *panels = @[panel1, panel2/*, panel3, panel4*/];
-//    
-//    //Create the introduction view and set its delegate
-//    MYBlurIntroductionView *introductionView = [[MYBlurIntroductionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-//    introductionView.delegate = self;
-//    //introductionView.BackgroundImageView.image = [UIImage imageNamed:@"Toronto, ON.jpg"];
-//    [introductionView setBackgroundColor:[UIColor colorWithRed:90.0f/255.0f green:175.0f/255.0f blue:113.0f/255.0f alpha:0.9]];
-//    //[introductionView setEnabled:YES];
-//    //introductionView.LanguageDirection = MYLanguageDirectionRightToLeft;
-//    
-//    //Build the introduction with desired panels
-//    [introductionView buildIntroductionWithPanels:panels];
-//    
-//    //Add the introduction to your view
-//    [self.tabBarController.view addSubview:introductionView];
-//}
-
-//#pragma mark - MYIntroduction Delegate
-//
-//-(void)introduction:(MYBlurIntroductionView *)introductionView didChangeToPanel:(MYIntroductionPanel *)panel withIndex:(NSInteger)panelIndex{
-//    NSLog(@"Introduction did change to panel %d", panelIndex);
-//    
-//    //You can edit introduction view properties right from the delegate method!
-//    //If it is the first panel, change the color to green!
-//    if (panelIndex == 0) {
-//        [introductionView setBackgroundColor:[UIColor colorWithRed:90.0f/255.0f green:175.0f/255.0f blue:113.0f/255.0f alpha:0.65]];
-//    }
-//    //If it is the second panel, change the color to blue!
-//    else if (panelIndex == 1){
-//        [introductionView setBackgroundColor:[UIColor colorWithRed:50.0f/255.0f green:79.0f/255.0f blue:133.0f/255.0f alpha:0.65]];
-//    }
-//}
-//
-//-(void)introduction:(MYBlurIntroductionView *)introductionView didFinishWithType:(MYFinishType)finishType {
-//    NSLog(@"Introduction did finish");
-//}
 
 @end

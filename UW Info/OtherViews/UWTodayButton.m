@@ -9,10 +9,10 @@
 #import "UWTodayButton.h"
 #import "InfoSession.h"
 
-@interface UWTodayButton()
+@interface UWTodayButton ()
 
-@property (nonatomic, strong) UILabel *todayLabel;
-@property (nonatomic, strong) UILabel *dateLabel;
+@property (nonatomic, strong) UILabel* todayLabel;
+@property (nonatomic, strong) UILabel* dateLabel;
 
 @end
 
@@ -36,7 +36,8 @@
 }
 */
 
-- (UWTodayButton *)initWithTitle:(NSString *)title date:(NSDate *)date {
+- (UWTodayButton*)initWithTitle:(NSString*)title date:(NSDate*)date
+{
     CGFloat buttonWidth = 40;
     self = [self initWithFrame:CGRectMake(0, 0, buttonWidth, 30)];
     if (self) {
@@ -48,41 +49,44 @@
         _todayLabel.text = title;
         _todayLabel.textColor = UWBlack;
         _todayLabel.highlightedTextColor = [UIColor colorWithWhite:0.0 alpha:0.3];
-        
+
         _dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 16, buttonWidth, 14)];
         _dateLabel.textAlignment = NSTextAlignmentCenter;
         _dateLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
         _dateLabel.font = [UIFont boldSystemFontOfSize:11];
         _dateLabel.textColor = UWBlack;
         _dateLabel.highlightedTextColor = [UIColor colorWithWhite:0.0 alpha:0.3];
-        
+
         //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
+        NSDateFormatter* dateFormatter = [InfoSession estDateFormatter];
         //NSLocale *enUSPOSIXLocale= [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
         //[dateFormatter setLocale:enUSPOSIXLocale];
         [dateFormatter setDateFormat:@"MMM d"];
         //[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
-        
+
         _dateLabel.text = [NSString stringWithFormat:@"%@", [dateFormatter stringFromDate:date]];
-        
+
         [self addSubview:_todayLabel];
         [self addSubview:_dateLabel];
     }
     return self;
 }
 
-- (void)setSelected:(BOOL)selected {
+- (void)setSelected:(BOOL)selected
+{
     super.selected = selected;
     _todayLabel.highlighted = selected;
 }
 
-- (void)setHighlighted:(BOOL)highlighted {
+- (void)setHighlighted:(BOOL)highlighted
+{
     super.highlighted = highlighted;
     _todayLabel.highlighted = highlighted;
     _dateLabel.highlighted = highlighted;
 }
 
-- (void)setEnabled:(BOOL)enabled {
+- (void)setEnabled:(BOOL)enabled
+{
     super.enabled = enabled;
     if (enabled) {
         _todayLabel.textColor = UWBlack;

@@ -14,7 +14,8 @@
 
 @implementation UWTermMenu
 
-- (UWTermMenu *)initWithNavigationController:(UINavigationController *)navigationController {
+- (UWTermMenu*)initWithNavigationController:(UINavigationController*)navigationController
+{
     if (navigationController == nil) {
         return nil;
     }
@@ -25,12 +26,13 @@
     return self;
 }
 
-- (InfoDetailedTitleButton *)getMenuButton {
+- (InfoDetailedTitleButton*)getMenuButton
+{
     _titleButton = [[InfoDetailedTitleButton alloc] initWithText:@"Info Sessions" detailText:@"• • • ▾"];
     [_titleButton addTarget:self action:@selector(toggleMenu:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     [self setTermMenu];
-    
+
     return _titleButton;
 }
 
@@ -41,9 +43,10 @@
  *
  *  @return NSUInteger for year of NSDate
  */
-- (NSUInteger)getCurrentYear:(NSDate *)date {
+- (NSUInteger)getCurrentYear:(NSDate*)date
+{
     //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
+    NSDateFormatter* dateFormatter = [InfoSession estDateFormatter];
     [dateFormatter setDateFormat:@"y"];
     return [[dateFormatter stringFromDate:date] intValue];
 }
@@ -55,9 +58,10 @@
  *
  *  @return NSString term string
  */
-- (NSString *)getCurrentTermFromDate:(NSDate *)date {
+- (NSString*)getCurrentTermFromDate:(NSDate*)date
+{
     //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    NSDateFormatter *dateFormatter = [InfoSession estDateFormatter];
+    NSDateFormatter* dateFormatter = [InfoSession estDateFormatter];
     [dateFormatter setDateFormat:@"M"];
     NSUInteger month = [[dateFormatter stringFromDate:date] intValue];
     //NSLog(@"month: %d", month);
@@ -77,7 +81,8 @@
  *
  *  @return　NSString like ＠"Spring"
  */
-- (NSString *)convertUWTermToTermString:(UWTerm)term {
+- (NSString*)convertUWTermToTermString:(UWTerm)term
+{
     if (term == UWWinter) {
         return @"Winter";
     } else if (term == UWSpring) {
@@ -94,7 +99,8 @@
  *
  *  @return UWTerm like UWSpring
  */
-- (UWTerm)convertTermStringToUWTerm:(NSString *)term {
+- (UWTerm)convertTermStringToUWTerm:(NSString*)term
+{
     if ([term isEqualToString:@"Winter"]) {
         return UWWinter;
     } else if ([term isEqualToString:@"Spring"]) {
@@ -111,11 +117,12 @@
  *
  *  @return UWTerm, like UWSpring
  */
-- (UWTerm)getTermFromString:(NSString *)termString {
+- (UWTerm)getTermFromString:(NSString*)termString
+{
     NSLog(@"%@ %d", termString, [termString length]);
     NSRange range = [termString rangeOfString:@" "];
     NSLog(@"%@", NSStringFromRange(range));
-    NSString *term = [termString substringFromIndex:range.location + 1];
+    NSString* term = [termString substringFromIndex:range.location + 1];
     NSLog(@"%@ %d", term, [term length]);
     return [self convertTermStringToUWTerm:term];
 }
@@ -127,7 +134,8 @@
  *
  *  @return NSString like "Spring"
  */
-- (NSString *)getNextTermFromString:(NSString *)term {
+- (NSString*)getNextTermFromString:(NSString*)term
+{
     if ([term isEqualToString:@"Winter"]) {
         return @"Spring";
     } else if ([term isEqualToString:@"Spring"]) {
@@ -144,7 +152,8 @@
  *
  *  @return UWTerm, like UWSpring
  */
-- (NSString *)getNextTermFromUWTerm:(UWTerm)term {
+- (NSString*)getNextTermFromUWTerm:(UWTerm)term
+{
     if (term == UWWinter) {
         return @"Spring";
     } else if (term == UWSpring) {
@@ -154,50 +163,51 @@
     }
 }
 
-- (void)setTermMenu {
+- (void)setTermMenu
+{
     NSInteger year = [self getCurrentYear:[NSDate date]];
-    NSString *currentTerm = [self getCurrentTermFromDate:[NSDate date]];
-    NSMutableArray *menuItems = [[NSMutableArray alloc] init];
-    
+    NSString* currentTerm = [self getCurrentTermFromDate:[NSDate date]];
+    NSMutableArray* menuItems = [[NSMutableArray alloc] init];
+
     NSInteger theNumberOfYearsBefore = 2;
-    
+
     for (int i = (int)theNumberOfYearsBefore; i > 0; i--) {
-        REMenuItem *yearItem = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%i  ▾", year - i]
-                                                       image:nil
-                                            highlightedImage:nil
-                                                      action:^(REMenuItem *item) {
+        REMenuItem* yearItem = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%i  ▾", year - i]
+                                                           image:nil
+                                                highlightedImage:nil
+                                                          action:^(REMenuItem* item) {
                                                           [self.menu setCloseCompletionHandler:^{
                                                           }];
                                                           [self tapYearAction:year - i];
-                                                      }];
+                                                          }];
         yearItem.textColor = [UIColor lightGrayColor];
         yearItem.highlightedTextColor = [UIColor blackColor];
         [menuItems addObject:yearItem];
     }
     for (int i = UWWinter; i <= UWFall; i++) {
-        REMenuItem *termIterm = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%li %@", (long)year, [self convertUWTermToTermString:i]]
-                                                           image:nil
-                                                highlightedImage:nil
-                                                          action:^(REMenuItem *item) {
+        REMenuItem* termIterm = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%li %@", (long)year, [self convertUWTermToTermString:i]]
+                                                            image:nil
+                                                 highlightedImage:nil
+                                                           action:^(REMenuItem* item) {
                                                               [self tapTermAction:year term:[self convertUWTermToTermString:i]];
-                                                          }];
+                                                           }];
         if ([currentTerm isEqualToString:[self convertUWTermToTermString:i]]) {
             termIterm.font = [UIFont boldSystemFontOfSize:20];
             termIterm.textColor = [UIColor blackColor];
             termIterm.highlightedTextColor = [UIColor blackColor];
         }
-        if (i < [self convertTermStringToUWTerm:currentTerm] ) {
+        if (i < [self convertTermStringToUWTerm:currentTerm]) {
             termIterm.textColor = [UIColor lightGrayColor];
         } else {
             termIterm.textColor = [UIColor blackColor];
         }
         [menuItems addObject:termIterm];
     }
-    
-    REMenuItem *yearItem = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%i  ▾", year + 1]
+
+    REMenuItem* yearItem = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%i  ▾", year + 1]
                                                        image:nil
                                             highlightedImage:nil
-                                                      action:^(REMenuItem *item) {
+                                                      action:^(REMenuItem* item) {
                                                           [self.menu setCloseCompletionHandler:^{
                                                           }];
                                                           [self tapYearAction:year + 1];
@@ -205,13 +215,13 @@
     yearItem.textColor = [UIColor blackColor];
     yearItem.highlightedTextColor = [UIColor blackColor];
     [menuItems addObject:yearItem];
-    
+
     [self setMenuWithItems:menuItems];
-    
-//    [self.menu setClosePreparationBlock:^{
-//        NSLog(@"Menu will close");
-//    }];
-    
+
+    //    [self.menu setClosePreparationBlock:^{
+    //        NSLog(@"Menu will close");
+    //    }];
+
     __weak typeof(self) weakSelf = self;
     __weak typeof(_infoSessionViewController) weakInfoSessionVC = _infoSessionViewController;
     [self.menu setCloseCompletionHandler:^{
@@ -221,22 +231,23 @@
     }];
 }
 
-- (void)setTermMenuForYear:(NSInteger)year {
-    NSMutableArray *menuItems = [[NSMutableArray alloc] init];
-    
+- (void)setTermMenuForYear:(NSInteger)year
+{
+    NSMutableArray* menuItems = [[NSMutableArray alloc] init];
+
     for (int i = UWWinter; i <= UWFall; i++) {
-        REMenuItem *termIterm = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%li %@", (long)year, [self convertUWTermToTermString:i]]
+        REMenuItem* termIterm = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%li %@", (long)year, [self convertUWTermToTermString:i]]
                                                             image:nil
                                                  highlightedImage:nil
-                                                           action:^(REMenuItem *item) {
+                                                           action:^(REMenuItem* item) {
                                                                [self tapTermAction:year term:[self convertUWTermToTermString:i]];
                                                            }];
         termIterm.textColor = [UIColor blackColor];
         [menuItems addObject:termIterm];
     }
-    
+
     [self setMenuWithItems:menuItems];
-    
+
     __weak typeof(self) weakSelf = self;
     __weak typeof(_infoSessionViewController) weakInfoSessionVC = _infoSessionViewController;
     [self.menu setCloseCompletionHandler:^{
@@ -247,28 +258,30 @@
     }];
 }
 
-- (void)setDetailLabel{
+- (void)setDetailLabel
+{
     [_titleButton setText:@"Info Sessions" andDetailText:@""];
-    
+
     // create font
-    UIFont *smallerFont = [UIFont systemFontOfSize:[UIFont systemFontSize] - 6.0];
-    UIFont *regularFont = [UIFont systemFontOfSize:[UIFont systemFontSize] - 2.0];
+    UIFont* smallerFont = [UIFont systemFontOfSize:[UIFont systemFontSize] - 6.0];
+    UIFont* regularFont = [UIFont systemFontOfSize:[UIFont systemFontSize] - 2.0];
     // create the attributes
-    NSDictionary *attrsForSmaller = [NSDictionary dictionaryWithObjectsAndKeys:smallerFont, NSFontAttributeName, nil];
-    NSDictionary *attrsForRegular = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, nil];
-    
-    NSString *detailStr = _infoSessionModel.currentTerm == nil ? @"• • •" : _infoSessionModel.currentTerm;
-    
-    NSMutableAttributedString *detailString = [[NSMutableAttributedString alloc] initWithString:detailStr attributes:attrsForRegular];
-    NSMutableAttributedString *sign = [[NSMutableAttributedString alloc] initWithString:@"  ▼" attributes:attrsForSmaller];
+    NSDictionary* attrsForSmaller = [NSDictionary dictionaryWithObjectsAndKeys:smallerFont, NSFontAttributeName, nil];
+    NSDictionary* attrsForRegular = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, nil];
+
+    NSString* detailStr = _infoSessionModel.currentTerm == nil ? @"• • •" : _infoSessionModel.currentTerm;
+
+    NSMutableAttributedString* detailString = [[NSMutableAttributedString alloc] initWithString:detailStr attributes:attrsForRegular];
+    NSMutableAttributedString* sign = [[NSMutableAttributedString alloc] initWithString:@"  ▼" attributes:attrsForSmaller];
     [detailString appendAttributedString:sign];
-    
+
     [_titleButton setDetailTextWithAttributedString:detailString];
 }
 
-- (void)setDetailLabelWithYear:(NSInteger)year andTerm:(NSString *)term to:(NSString *)sign {
-    NSMutableAttributedString *newText = [[NSMutableAttributedString alloc] initWithAttributedString:_titleButton.detailTextLabel.attributedText];
-    
+- (void)setDetailLabelWithYear:(NSInteger)year andTerm:(NSString*)term to:(NSString*)sign
+{
+    NSMutableAttributedString* newText = [[NSMutableAttributedString alloc] initWithAttributedString:_titleButton.detailTextLabel.attributedText];
+
     NSRange yearTermRange;
     if ([newText length] > 8) {
         yearTermRange = NSMakeRange(0, 11);
@@ -277,66 +290,67 @@
     }
     [newText replaceCharactersInRange:yearTermRange withString:[NSString stringWithFormat:@"%li %@", (long)year, term]];
     NSRange signRange = NSMakeRange([newText length] - 1, 1);
-    
+
     if ([sign isEqualToString:@"up"]) {
         [newText replaceCharactersInRange:signRange withString:@"▲"];
         [_titleButton setDetailTextWithAttributedString:newText];
-    } else if ([sign isEqualToString:@"down"]){
+    } else if ([sign isEqualToString:@"down"]) {
         [newText replaceCharactersInRange:signRange withString:@"▼"];
         [_titleButton setDetailTextWithAttributedString:newText];
     }
 }
 
-- (void)setSignOfDetailLabelTo:(NSString *)sign {
-    NSMutableAttributedString *newText = [[NSMutableAttributedString alloc] initWithAttributedString:_titleButton.detailTextLabel.attributedText];
+- (void)setSignOfDetailLabelTo:(NSString*)sign
+{
+    NSMutableAttributedString* newText = [[NSMutableAttributedString alloc] initWithAttributedString:_titleButton.detailTextLabel.attributedText];
 
     NSRange range = NSMakeRange([newText length] - 1, 1);
-    
+
     if ([sign isEqualToString:@"up"]) {
         [newText replaceCharactersInRange:range withString:@"▲"];
         [_titleButton setDetailTextWithAttributedString:newText];
-    } else if ([sign isEqualToString:@"down"]){
+    } else if ([sign isEqualToString:@"down"]) {
         [newText replaceCharactersInRange:range withString:@"▼"];
         [_titleButton setDetailTextWithAttributedString:newText];
     }
 }
 
-- (void)setMenuWithItems:(NSArray *)items {
+- (void)setMenuWithItems:(NSArray*)items
+{
     _menu = [[REMenu alloc] initWithItems:items];
-    
+
     _menu.backgroundColor = [UIColor colorWithWhite:0.92 alpha:0.97];
     _menu.font = [UIFont systemFontOfSize:20];
     _menu.textColor = [UIColor darkGrayColor];
     _menu.textShadowColor = [UIColor blackColor];
-//    _menu.textShadowOffset = CGSizeMake(0.0, 1.0);
+    //    _menu.textShadowOffset = CGSizeMake(0.0, 1.0);
     _menu.separatorColor = [UIColor lightGrayColor];
     _menu.borderColor = [UIColor lightGrayColor];
-//
+    //
     _menu.highlightedBackgroundColor = [UIColor lightGrayColor];
     _menu.highlightedTextColor = [UIColor blackColor];
     _menu.highlightedTextShadowColor = [UIColor lightGrayColor];
     _menu.highlightedSeparatorColor = [UIColor lightGrayColor];
-    
-//    _menu.cornerRadius = 2.0;
-//    _menu.shadowColor = [UIColor blackColor];
-    
+
+    //    _menu.cornerRadius = 2.0;
+    //    _menu.shadowColor = [UIColor blackColor];
+
     _menu.borderWidth = 0.5;
     _menu.separatorHeight = 0.5;
     _menu.itemHeight = 38.0;
     _menu.bounce = NO;
     _menu.animationDuration = 0.4;
     _menu.liveBlur = YES;
-    _menu.liveBlurTintColor = [UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0];
-    
-    _menu.backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-	_menu.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	_menu.backgroundView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.5];
+    _menu.liveBlurTintColor = [UIColor colorWithRed:230 / 255.0 green:230 / 255.0 blue:230 / 255.0 alpha:1.0];
 
+    _menu.backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    _menu.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _menu.backgroundView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.5];
 }
 
 - (void)toggleMenu:(id)sender
 {
-    if (self.menu.isOpen){
+    if (self.menu.isOpen) {
         [self.menu close];
         _infoSessionViewController.navigationItem.rightBarButtonItem.enabled = NO;
         _infoSessionViewController.navigationItem.leftBarButtonItem.enabled = NO;
@@ -349,8 +363,9 @@
     }
 }
 
-- (void)tapYearAction:(NSInteger)year {
-    [self.menu closeWithCompletion:^(){
+- (void)tapYearAction:(NSInteger)year
+{
+    [self.menu closeWithCompletion:^() {
         [self setTermMenuForYear:year];
         [self.menu showFromNavigationController:_navigationController];
         _infoSessionViewController.navigationItem.rightBarButtonItem.enabled = NO;
@@ -359,8 +374,9 @@
     }];
 }
 
-- (void)tapTermAction:(NSInteger)year term:(NSString *)term {
-    [self.menu closeWithCompletion:^(){
+- (void)tapTermAction:(NSInteger)year term:(NSString*)term
+{
+    [self.menu closeWithCompletion:^() {
         _infoSessionViewController.navigationItem.rightBarButtonItem.enabled = YES;
         _infoSessionViewController.navigationItem.leftBarButtonItem.enabled = YES;
         NSDictionary *yearAndTermDic = [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:year], term] forKeys:@[@"Year", @"Term"]];

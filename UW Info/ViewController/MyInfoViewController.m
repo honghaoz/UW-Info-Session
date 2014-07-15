@@ -63,7 +63,7 @@
     UIImageView *buttonImageView = [[UIImageView alloc] initWithImage:settingImage];
     UIButton *settingButton = [[UIButton alloc] initWithFrame:buttonImageView.frame];
     [settingButton setImage:settingImage forState:UIControlStateNormal];
-    [settingButton setImage:[settingImage imageByApplyingAlpha:0.4] forState:UIControlStateHighlighted];
+    [settingButton setImage:[settingImage imageByApplyingAlpha:0.3] forState:UIControlStateHighlighted];
     
 //    [settingButton addSubview:imageView];
     [settingButton addTarget:self action:@selector(showMoreViewController) forControlEvents:UIControlEventTouchUpInside];

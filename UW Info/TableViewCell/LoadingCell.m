@@ -10,7 +10,7 @@
 
 @implementation LoadingCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString*)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -20,7 +20,7 @@
         _loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 11, 181, 21)];
         [_loadingLabel setFont:[UIFont systemFontOfSize:17.0]];
         [_loadingLabel setTextColor:[UIColor darkGrayColor]];
-        
+
         [self.contentView addSubview:_loadingLabel];
         [self.contentView addSubview:_loadingIndicator];
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];

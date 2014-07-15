@@ -19,7 +19,7 @@
 
 @implementation UWTabBarController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithNibName:(NSString*)nibNameOrNil bundle:(NSBundle*)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -32,41 +32,40 @@
 {
     [super viewDidLoad];
     _lastTapped = -1;
-    
-    UITabBar *tabBar = self.tabBar;
+
+    UITabBar* tabBar = self.tabBar;
     //[tabBar setBarStyle:UIBarStyleBlackOpaque];
     tabBar.tintColor = UWGold;
     //[tabBar setTintColor:UWBlack];
-    tabBar.barTintColor = [UIColor blackColor];//[UIColor colorWithRed:0.07 green:0.08 blue:0.11 alpha:1];
+    tabBar.barTintColor = [UIColor blackColor]; //[UIColor colorWithRed:0.07 green:0.08 blue:0.11 alpha:1];
     [tabBar setBackgroundColor:UWBlack];
     //[UIColor colorWithRed:0.26 green:0.28 blue:0.33 alpha:1]
-    UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
-    UITabBarItem *item1 = [tabBar.items objectAtIndex:1];
-    UITabBarItem *item2 = [tabBar.items objectAtIndex:2];
+    UITabBarItem* item0 = [tabBar.items objectAtIndex:0];
+    UITabBarItem* item1 = [tabBar.items objectAtIndex:1];
+    UITabBarItem* item2 = [tabBar.items objectAtIndex:2];
     [item0 setSelectedImage:[UIImage imageNamed:@"List-selected"]];
     [item1 setSelectedImage:[UIImage imageNamed:@"star-tab-selected"]];
     [item2 setSelectedImage:[UIImage imageNamed:@"Search-selected"]];
-    
-    
-	// Do any additional setup after loading the view.
+
+    // Do any additional setup after loading the view.
     self.isHidden = NO;
-    
-    // initiate three VC in tabbarController
-    UINavigationController *navigationController = [self.viewControllers objectAtIndex:0];
-    _infoSessionsViewController = (InfoSessionsViewController *)navigationController.viewControllers[0];
+
+    // Initiate three VC in tabbarController
+    UINavigationController* navigationController = [self.viewControllers objectAtIndex:0];
+    _infoSessionsViewController = (InfoSessionsViewController*)navigationController.viewControllers[0];
     _infoSessionsViewController.tabBarController = self;
     _infoSessionsViewController.infoSessionModel = self.infoSessionModel;
-    
+
     navigationController = [self.viewControllers objectAtIndex:1];
-    _myInfoViewController = (MyInfoViewController *)navigationController.viewControllers[0];
+    _myInfoViewController = (MyInfoViewController*)navigationController.viewControllers[0];
     _myInfoViewController.tabBarController = self;
     _myInfoViewController.infoSessionModel = self.infoSessionModel;
-    
+
     navigationController = [self.viewControllers objectAtIndex:2];
-    _searchViewController = (SearchViewController *)navigationController.viewControllers[0];
+    _searchViewController = (SearchViewController*)navigationController.viewControllers[0];
     _searchViewController.tabBarController = self;
     _searchViewController.infoSessionModel = self.infoSessionModel;
-    
+
     [self setBadge];
 }
 

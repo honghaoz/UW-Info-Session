@@ -714,13 +714,8 @@
 			children = (
 				1B3744F818A5A842007CF08C /* InfoSessionsViewController.h */,
 				1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */,
-				1B3A33F818D4D99F0046DC73 /* InfoDetailedTitleButton.h */,
-				1B3A33F918D4D99F0046DC73 /* InfoDetailedTitleButton.m */,
-				1B3A33FB18D4D9B40046DC73 /* UWTermMenu.h */,
-				1B3A33FC18D4D9B40046DC73 /* UWTermMenu.m */,
-				1B3A33FD18D4D9B40046DC73 /* UWTodayButton.h */,
-				1B3A33FE18D4D9B40046DC73 /* UWTodayButton.m */,
 				1B050C7A18BFB4DB00DCC342 /* Cells */,
+				1B97F3F41975D0180087B15F /* Views */,
 			);
 			name = InfoSessionsViewController;
 			sourceTree = "<group>";
@@ -797,6 +792,19 @@
 			);
 			name = PSPDFTextView;
 			path = OpenSource/PSPDFTextView;
+			sourceTree = "<group>";
+		};
+		1B97F3F41975D0180087B15F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1B3A33F818D4D99F0046DC73 /* InfoDetailedTitleButton.h */,
+				1B3A33F918D4D99F0046DC73 /* InfoDetailedTitleButton.m */,
+				1B3A33FB18D4D9B40046DC73 /* UWTermMenu.h */,
+				1B3A33FC18D4D9B40046DC73 /* UWTermMenu.m */,
+				1B3A33FD18D4D9B40046DC73 /* UWTodayButton.h */,
+				1B3A33FE18D4D9B40046DC73 /* UWTodayButton.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		1BA1795318F1A4BD00FA5D05 /* iRate */ = {
