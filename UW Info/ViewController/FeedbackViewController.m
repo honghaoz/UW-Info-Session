@@ -67,21 +67,33 @@
     CGSize keyboardSize;
     keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     NSLog(@"%@", NSStringFromCGSize(keyboardSize));
-}
-
-- (void)keyboardWillChange:(NSNotification *)notification {
-    LogMethod;
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-     NSLog(@"keyboard:  %@", NSStringFromCGSize(keyboardSize));
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-     NSLog(@"screen: %@", NSStringFromCGSize(screenSize));
+    NSLog(@"screen: %@", NSStringFromCGSize(screenSize));
     [UIView animateWithDuration:0.5
                           delay:0.0
                         options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
+                         // Change text view frame and scroll to bottom
                          [_feedbackTextView setFrame:CGRectMake(10, 10, screenSize.width - 20, screenSize.height - keyboardSize.height - 20)];
+                         [_feedbackTextView scrollRangeToVisible:NSMakeRange(_feedbackTextView.  text.length - 1, 0)];
                      }
                      completion:nil];
+    
+}
+
+- (void)keyboardWillChange:(NSNotification *)notification {
+    LogMethod;
+//    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+//     NSLog(@"keyboard:  %@", NSStringFromCGSize(keyboardSize));
+//    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+//     NSLog(@"screen: %@", NSStringFromCGSize(screenSize));
+//    [UIView animateWithDuration:0.5
+//                          delay:0.0
+//                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+//                     animations:^{
+//                         [_feedbackTextView setFrame:CGRectMake(10, 10, screenSize.width - 20, screenSize.height - keyboardSize.height - 20)];
+//                     }
+//                     completion:nil];
 }
 
 - (void)keyboardDidChange:(NSNotification *)notification {
