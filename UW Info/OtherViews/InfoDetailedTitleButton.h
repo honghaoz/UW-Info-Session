@@ -16,4 +16,6 @@
 - (void)setText:(NSMutableAttributedString *)attributedString;
 - (void)setDetailTextWithAttributedString:(NSMutableAttributedString *)detailAttributedString;
 
+- (void)setTitleColor:(UIColor *)titleColor detailTextColor:(UIColor *)detailColor;
+
 @end

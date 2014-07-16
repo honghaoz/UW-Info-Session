@@ -37,9 +37,11 @@
 //#import "MYBlurIntroductionView.h"
 //#import "MYIntroductionPanel.h"
 
+#import "UWColorSchemeCenter.h"
 
 @interface InfoSessionsViewController () <GADBannerViewDelegate/*, MYIntroductionDelegate*/>
 
+@property (nonatomic, strong) UWTodayButton *todayButton;
 @property (nonatomic, strong) UWTermMenu *termMenu;
 @property (nonatomic, assign) NSInteger shownYear;
 @property (nonatomic, copy) NSString *shownTerm;
@@ -64,6 +66,11 @@
     return self;
 }
 
+//- (UIStatusBarStyle)preferredStatusBarStyle
+//{
+//    return UIStatusBarStyleLightContent;
+//}
+
 /**
  *  Initiate left & right bar buttons, reload data for the first time.
  */
@@ -73,12 +80,8 @@
     _infoSessionModel.delegate = self;
     _tabBarController.lastTapped = -1;
 
-    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
-    //[self.navigationController.navigationBar setTranslucent:YES];
-    //self.navigationController.navigationBar.barTintColor = [UIColor clearColor];
-    //self.navigationController.navigationBar.backgroundColor = UWGold;
-    self.navigationController.navigationBar.tintColor = UWBlack;
-
+//    [self setNeedsStatusBarAppearanceUpdate];
+    
     // Show refresh button
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];
 
@@ -97,6 +100,12 @@
 
     self.navigationItem.titleView = (UIView*)[_termMenu getMenuButton];
 
+    
+    // Register Color Scheme Update Function
+    [self updateColorScheme];
+    [UWColorSchemeCenter registerColorSchemeNotificationForObserver:self selector:@selector(updateColorScheme)];
+    
+    
     // Reload data
     isReloading = NO;
     [self reload:nil];
@@ -112,6 +121,20 @@
 
     // Fasten the ad loading
     [[UWAds singleton] resetAdView:nil OriginY:0];
+}
+
+- (void)updateColorScheme {
+    [self.navigationController.navigationBar setBarTintColor:[UWColorSchemeCenter uwGold]];
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         self.navigationController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
+                         [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack]}];
+                         [_termMenu setMenuButtonColor:[UWColorSchemeCenter uwBlack]];
+                         [_todayButton setColor:[UWColorSchemeCenter uwBlack]];
+                     }
+                     completion:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -136,10 +159,12 @@
  */
 - (UIBarButtonItem*)getTodayButtonItem
 {
-    UWTodayButton* todayButton = [[UWTodayButton alloc] initWithTitle:@"Today:" date:[NSDate date]];
-
-    [todayButton addTarget:self action:@selector(scrollToToday) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem* todayButtonItem = [[UIBarButtonItem alloc] initWithCustomView:todayButton];
+    if (_todayButton == nil) {
+        _todayButton = [[UWTodayButton alloc] initWithTitle:@"Today:" date:[NSDate date]];
+    }
+    
+    [_todayButton addTarget:self action:@selector(scrollToToday) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem* todayButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_todayButton];
 
     return todayButtonItem;
 }
@@ -501,7 +526,7 @@
     }
     // if current time is between start time and end time, set blue (ongoing sessions)
     else if (([infoSession.startTime compare:[NSDate date]] == NSOrderedAscending) && ([[NSDate date] compare:infoSession.endTime] == NSOrderedAscending)) {
-        UIColor* fontColor = UWGold;
+        UIColor* fontColor = [UWColorSchemeCenter uwGold];
         //[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]
         [cell.employer setTextColor:fontColor];
         cell.employer.shadowColor = [UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1.0];

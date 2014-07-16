@@ -12,4 +12,6 @@
 
 - (UWTodayButton *)initWithTitle:(NSString *)title date:(NSDate *)date;
 
+- (void)setColor:(UIColor *)color;
+
 @end

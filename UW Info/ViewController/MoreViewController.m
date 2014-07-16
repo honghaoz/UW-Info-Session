@@ -32,6 +32,7 @@
 //#import "MYBlurIntroductionView.h"
 //#import "MYIntroductionPanel.h"
 #import "Appirater.h"
+#import "UWColorSchemeCenter.h"
 
 #import <StoreKit/StoreKit.h>
 
@@ -71,8 +72,10 @@
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(done)];
     [self.navigationItem setRightBarButtonItem:doneButton];
     self.title = @"More";
-    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
-    self.navigationController.navigationBar.tintColor = UWBlack;
+    
+    // Register Color Scheme Update Function
+    [self updateColorScheme];
+    [UWColorSchemeCenter registerColorSchemeNotificationForObserver:self selector:@selector(updateColorScheme)];
     
     //[self.tableView registerClass:[CenterTextCell class] forCellReuseIdentifier:@"CenterCell"];
     
@@ -82,54 +85,21 @@
     appURLString = @"itms://itunes.apple.com/app/uw-info-session/id837207884?mt=8";
     sharPostString = @"UW Info is a great app to search and manage info sessions #UWaterloo, check it out!";
     
-    //self.canDisplayBannerAds = YES;
-    
-    // On iOS 6 ADBannerView introduces a new initializer, use it when available.
-//    if ([ADBannerView instancesRespondToSelector:@selector(initWithAdType:)]) {
-//        _adBannerView = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
-//    } else {
-//        _adBannerView = [[ADBannerView alloc] init];
-//    }
-//    CGRect contentFrame = self.view.bounds;
-//    
-//    NSLog(@"%@", NSStringFromCGRect(contentFrame));
-//    
-//    //CGSize sizeForBanner = [_adBannerView sizeThatFits:contentFrame.size];
-//    CGRect bannerFrame = _adBannerView.frame;
-//    //NSLog(@"%@", NSStringFromCGRect(bannerFrame));
-//    bannerFrame.origin.y = contentFrame.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height;
-//    NSLog(@"%@", NSStringFromCGRect(bannerFrame));
-//    //bannerFrame.size.height = sizeForBanner.height;
-//    //bannerFrame.size.width = sizeForBanner.width;
-//    
-//    [_adBannerView setFrame:bannerFrame];
-//    
-//    _adBannerView.delegate = self;
-//    [self.view addSubview:_adBannerView];
-//    
-//    // Google Ad
-//    // Create a view of the standard size at the top of the screen.
-//    // Available AdSize constants are explained in GADAdSize.h.
-//    _googleBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
-//    
-//    // Specify the ad unit ID.
-//    _googleBannerView.adUnitID = @"ca-app-pub-5080537428726834/3638663901";
-//    _googleBannerView.rootViewController = self;
-//    _googleBannerView.alpha = 0;
-//    googleAdRequested = NO;
-//
-//    bannerFrame = _googleBannerView.frame;
-//    bannerFrame.origin.y = contentFrame.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height;
-//    
-//    [_googleBannerView setFrame:bannerFrame];
-//    
-////    [self.view addSubview:_googleBannerView];
-//    [_googleBannerView setDelegate:self];
-//    //[self showGoogleAd];
-    
     // Google Analytics
     [UWGoogleAnalytics analyticScreen:@"More Screen"];
     toManager_tappedTimes = 0;
+}
+
+- (void)updateColorScheme {
+    [self.navigationController.navigationBar setBarTintColor:[UWColorSchemeCenter uwGold]];
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         self.navigationController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
+                         [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack]}];
+                     }
+                     completion:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

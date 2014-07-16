@@ -60,6 +60,7 @@
 #import "ZHHPullView.h"
 #import "NSString+Contain.h"
 #import "UWWebViewController.h"
+#import "UWColorSchemeCenter.h"
 
 @interface DetailViewController () <EKEventEditViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate/*, ZHHPullViewDelegate*/, NSURLSessionTaskDelegate, UIWebViewDelegate>
 
@@ -395,11 +396,14 @@
     EKEventEditViewController* addController = [[EKEventEditViewController alloc] init];
 
     // changed UI to meet this app's style
-    [addController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
-    addController.navigationBar.tintColor = UWBlack;
-
+    [addController.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UWColorSchemeCenter uwGold]];
+    addController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
+    addController.navigationItem.titleView.tintColor = [UWColorSchemeCenter uwBlack];
+    [addController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack]}];
+    
     // Set addController's event store to the current event store
     addController.eventStore = [InfoSession eventStore];
+    
 
     // creat a new event
     EKEvent* event = [EKEvent eventWithEventStore:[InfoSession eventStore]];
@@ -658,7 +662,7 @@
             if (indexPath.row == 0) {
                 DetailSwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailSwitchCell"];
                 cell.remindSwitch.tintColor = [UIColor lightGrayColor];
-                cell.remindSwitch.onTintColor = UWGold;
+                cell.remindSwitch.onTintColor = [UWColorSchemeCenter uwGold];
                 //cell.remindSwitch.thumbTintColor = [UIColor redColor];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
@@ -699,7 +703,7 @@
             }
         } else {
             DetailSwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailSwitchCell"];
-            cell.remindSwitch.onTintColor = UWGold;
+            cell.remindSwitch.onTintColor = [UWColorSchemeCenter uwGold];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.remindSwitch addTarget:self action:@selector(didSwitchChange:) forControlEvents:UIControlEventValueChanged];
             [cell.remindSwitch setOn:NO animated:YES];

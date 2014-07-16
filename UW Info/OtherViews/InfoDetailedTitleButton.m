@@ -58,4 +58,9 @@
     [self.detailTextLabel setAttributedText:detailAttributedString];
 }
 
+- (void)setTitleColor:(UIColor *)titleColor detailTextColor:(UIColor *)detailColor {
+    [self.textLabel setTextColor:titleColor];
+    [self.detailTextLabel setTextColor:detailColor];
+}
+
 @end

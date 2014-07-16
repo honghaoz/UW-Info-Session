@@ -18,10 +18,12 @@
 #import "MoreNavigationViewController.h"
 #import "UWGoogleAnalytics.h"
 #import "UIImage+ApplyAlpha.h"
+#import "UIImage+ChangeColor.h"
 
 //#import "GADBannerView.h"
 #import "GADBannerViewDelegate.h"
 //#import "GADAdMobExtras.h"
+#import "UWColorSchemeCenter.h"
 
 @interface MyInfoViewController () <GADBannerViewDelegate>
 
@@ -32,6 +34,7 @@
     UIBarButtonItem *editButton;
     
     GADBannerView *_googleBannerView;
+    UIButton *_settingButton;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -56,18 +59,9 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
-    self.navigationController.navigationBar.tintColor = UWBlack;
     
-    UIImage *settingImage = [UIImage imageNamed:@"settings"];
-    UIImageView *buttonImageView = [[UIImageView alloc] initWithImage:settingImage];
-    UIButton *settingButton = [[UIButton alloc] initWithFrame:buttonImageView.frame];
-    [settingButton setImage:settingImage forState:UIControlStateNormal];
-    [settingButton setImage:[settingImage imageByApplyingAlpha:0.3] forState:UIControlStateHighlighted];
-    
-//    [settingButton addSubview:imageView];
-    [settingButton addTarget:self action:@selector(showMoreViewController) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithCustomView:settingButton];
+    [self initSettingButton];
+    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithCustomView:_settingButton];
     
 //    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings"] style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreViewController)];
     
@@ -94,42 +88,47 @@
     [self.refreshControl addTarget:self action:@selector(reloadTable) forControlEvents:UIControlEventValueChanged];
     [self reloadTable];
     
+    // Register Color Scheme Update Function
+    [self updateColorScheme];
+    [UWColorSchemeCenter registerColorSchemeNotificationForObserver:self selector:@selector(updateColorScheme)];
+    
     // receive every minute from notification center
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshEveryMinute) name:@"OneMinute" object:nil];
     
     // Google Analytics
     [UWGoogleAnalytics analyticScreen:@"My Info Session Screen"];
-//    
-//    // Google Ad
-//    _googleBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
-//    _googleBannerView.adUnitID = @"ca-app-pub-5080537428726834/3638663901";
-//    _googleBannerView.rootViewController = self;
-//    _googleBannerView.alpha = 0;
-//    
-//    CGRect contentFrame = self.view.bounds;
-//    CGRect bannerFrame = _googleBannerView.frame;
-//    bannerFrame.origin.y = contentFrame.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height;
-//    
-//    [_googleBannerView setFrame:bannerFrame];
-//    
-//    //[self.view addSubview:_googleBannerView];
-//    [_googleBannerView setDelegate:self];
-//    
-//    GADRequest *request = [GADRequest request];
-//    [request setLocationWithDescription:@"N2L3G1 CA"];
-//    //    GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
-//    //    extras.additionalParameters =
-//    //    [NSMutableDictionary dictionaryWithObjectsAndKeys:
-//    //     @"DDDDDD", @"color_bg",
-//    //     @"999999", @"color_bg_top",
-//    //     @"BBBBBB", @"color_border",
-//    //     @"FF9735", @"color_link",
-//    //     @"999999", @"color_text",
-//    //     @"FF9735", @"color_url",
-//    //     nil];
-//    
-//    //    [request registerAdNetworkExtras:extras];
-//    [_googleBannerView loadRequest:request];
+}
+
+- (void)initSettingButton {
+    UIImage *settingImage = [[UIImage imageNamed:@"settings"] changeToColor:[UWColorSchemeCenter uwBlack]];
+    UIImageView *buttonImageView = [[UIImageView alloc] initWithImage:settingImage];
+    _settingButton = [[UIButton alloc] initWithFrame:buttonImageView.frame];
+    [_settingButton setImage:settingImage forState:UIControlStateNormal];
+    [_settingButton setImage:[settingImage imageByApplyingAlpha:0.3] forState:UIControlStateHighlighted];
+    
+    //    [settingButton addSubview:imageView];
+    [_settingButton addTarget:self action:@selector(showMoreViewController) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)changeSettingButtonColor:(UIColor *)color {
+    UIImage *settingImage = [[UIImage imageNamed:@"settings"] changeToColor:color];
+    [_settingButton setImage:settingImage forState:UIControlStateNormal];
+    [_settingButton setImage:[settingImage imageByApplyingAlpha:0.3] forState:UIControlStateHighlighted];
+}
+
+- (void)updateColorScheme {
+//    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
+//    self.navigationController.navigationBar.tintColor = UWBlack;
+    [self.navigationController.navigationBar setBarTintColor:[UWColorSchemeCenter uwGold]];
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         self.navigationController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
+                         [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack]}];
+                         [self changeSettingButtonColor:[UWColorSchemeCenter uwBlack]];
+                     }
+                     completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -230,7 +229,7 @@
     }
     // if current time is between start time and end time, set blue (ongoing sessions)
     else if ( ([infoSession.startTime compare:[NSDate date]] == NSOrderedAscending) && ([[NSDate date] compare:infoSession.endTime] == NSOrderedAscending) ){
-        UIColor *fontColor = UWGold;
+        UIColor *fontColor = [UWColorSchemeCenter uwGold];
         //[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]
         [cell.employer setTextColor:fontColor];
         cell.employer.shadowColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0];

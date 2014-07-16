@@ -28,4 +28,5 @@
 - (NSUInteger)getCurrentYear:(NSDate *)date;
 - (NSString *)getCurrentTermFromDate:(NSDate *)date;
 
+- (void)setMenuButtonColor:(UIColor *)color;
 @end

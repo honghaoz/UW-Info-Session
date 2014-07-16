@@ -24,7 +24,7 @@
 #import "UIDevice-Hardware.h"
 
 #import "UWErrorReport.h"
-
+#import "UWColorSchemeCenter.h"
 
 @implementation UWAppDelegate {
     UWTabBarController *_tabController;
@@ -36,8 +36,8 @@
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
     self.window.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1];
-    [[UIApplication sharedApplication] keyWindow].tintColor = UWBlack;
-
+    [[UIApplication sharedApplication] keyWindow].tintColor = [UWColorSchemeCenter uwBlack];
+    
     // Show indicators when there's network connections
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 
@@ -460,6 +460,12 @@
 
     // Initialize tracker. Replace with your tracking ID.
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-45146473-2"];
+}
+
+- (void)updateColorScheme {
+//    NSDictionary *textTitleOptions = [NSDictionary dictionaryWithObjectsAndKeys:[UWColorSchemeCenter uwGold], UITextAttributeTextColor, [UWColorSchemeCenter uwBlack], UITextAttributeTextShadowColor, nil];
+//    [[UINavigationBar appearance] setTitleTextAttributes:textTitleOptions];
+    
 }
 
 #pragma mark - Other methods

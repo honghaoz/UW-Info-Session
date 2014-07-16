@@ -12,6 +12,7 @@
 #import "SVProgressHUD.h"
 #import "UIApplication+AppVersion.h"
 #import "UIDevice-Hardware.h"
+#import "UWColorSchemeCenter.h"
 
 @implementation FeedbackViewController
 
@@ -31,8 +32,11 @@
     [self.navigationItem setLeftBarButtonItem:cancelButton];
     
     self.title = @"Feedback";
-    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
-    self.navigationController.navigationBar.tintColor = UWBlack;
+//    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
+//    self.navigationController.navigationBar.tintColor = UWBlack;
+    // Register Color Scheme Update Function
+    [self updateColorScheme];
+    [UWColorSchemeCenter registerColorSchemeNotificationForObserver:self selector:@selector(updateColorScheme)];
     
     //[self.tableView registerClass:[CenterTextCell class] forCellReuseIdentifier:@"CenterCell"];
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
@@ -54,6 +58,18 @@
                                                  name:UIKeyboardWillChangeFrameNotification
                                                object:nil];
 
+}
+
+- (void)updateColorScheme {
+    [self.navigationController.navigationBar setBarTintColor:[UWColorSchemeCenter uwGold]];
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         self.navigationController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
+                         [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack]}];
+                     }
+                     completion:nil];
 }
 
 - (void)didReceiveMemoryWarning

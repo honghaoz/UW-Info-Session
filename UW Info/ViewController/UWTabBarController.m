@@ -12,6 +12,7 @@
 #import "SearchViewController.h"
 #import "DetailViewController.h"
 #import "InfoSessionModel.h"
+#import "UWColorSchemeCenter.h"
 
 @interface UWTabBarController ()
 
@@ -33,16 +34,13 @@
     [super viewDidLoad];
     _lastTapped = -1;
 
-    UITabBar* tabBar = self.tabBar;
-    //[tabBar setBarStyle:UIBarStyleBlackOpaque];
-    tabBar.tintColor = UWGold;
-    //[tabBar setTintColor:UWBlack];
-    tabBar.barTintColor = [UIColor blackColor]; //[UIColor colorWithRed:0.07 green:0.08 blue:0.11 alpha:1];
-    [tabBar setBackgroundColor:UWBlack];
-    //[UIColor colorWithRed:0.26 green:0.28 blue:0.33 alpha:1]
-    UITabBarItem* item0 = [tabBar.items objectAtIndex:0];
-    UITabBarItem* item1 = [tabBar.items objectAtIndex:1];
-    UITabBarItem* item2 = [tabBar.items objectAtIndex:2];
+    // Register Color Scheme Update Function
+    [self updateColorScheme];
+    [UWColorSchemeCenter registerColorSchemeNotificationForObserver:self selector:@selector(updateColorScheme)];
+    
+    UITabBarItem* item0 = [self.tabBar.items objectAtIndex:0];
+    UITabBarItem* item1 = [self.tabBar.items objectAtIndex:1];
+    UITabBarItem* item2 = [self.tabBar.items objectAtIndex:2];
     [item0 setSelectedImage:[UIImage imageNamed:@"List-selected"]];
     [item1 setSelectedImage:[UIImage imageNamed:@"star-tab-selected"]];
     [item2 setSelectedImage:[UIImage imageNamed:@"Search-selected"]];
@@ -67,6 +65,18 @@
     _searchViewController.infoSessionModel = self.infoSessionModel;
 
     [self setBadge];
+}
+
+- (void)updateColorScheme {
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         self.tabBar.tintColor = [UWColorSchemeCenter uwGold];
+                         self.tabBar.barTintColor = [UWColorSchemeCenter uwTabBarColor];
+                         [self.tabBar setBackgroundColor:[UWColorSchemeCenter uwBlack]];
+                     }
+                     completion:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

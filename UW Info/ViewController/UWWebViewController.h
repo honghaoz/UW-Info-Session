@@ -16,5 +16,5 @@
 @property (nonatomic, strong) UIProgressView *webProgress;
 
 - (void)setProgressBar:(float)progress;
-
+//- (void)setProgressBarColor:(UIColor *)color;
 @end

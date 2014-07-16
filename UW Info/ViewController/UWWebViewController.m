@@ -7,6 +7,7 @@
 //
 
 #import "UWWebViewController.h"
+#import "UWColorSchemeCenter.h"
 
 @interface UWWebViewController ()
 
@@ -21,7 +22,7 @@
         _webView.scalesPageToFit = YES;
         self.view = _webView;
         _webProgress = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-        _webProgress.progressTintColor = UWBlack;
+        _webProgress.progressTintColor = [UWColorSchemeCenter uwBlack];
         _webProgress.trackTintColor = [UIColor clearColor];
     }
     return self;

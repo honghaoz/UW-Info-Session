@@ -7,6 +7,7 @@
 //
 
 #import "UWDetailRSVPCell.h"
+#import "UWColorSchemeCenter.h"
 
 @implementation UWDetailRSVPCell
 
@@ -20,7 +21,7 @@
         [_titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
         
         _statusSiwtch = [[UISwitch alloc] initWithFrame:CGRectMake(251, 5, 49, 31)];
-        _statusSiwtch.onTintColor = UWGold;
+        _statusSiwtch.onTintColor = [UWColorSchemeCenter uwGold];
         //_statusSiwtch.tintColor = [UIColor lightGrayColor];
         [self.contentView addSubview:_titleLabel];
         [self.contentView addSubview:_statusSiwtch];

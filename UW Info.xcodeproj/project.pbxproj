@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1B01C3091926831B0071AA73 /* ZHHPullView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B01C3081926831B0071AA73 /* ZHHPullView.m */; };
 		1B058350194E28E7000D43C2 /* ZHHHandyMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B05834F194E28E7000D43C2 /* ZHHHandyMacros.m */; };
+		1B09EBF719761C6F00100B98 /* UIImage+ChangeColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B09EBF619761C6F00100B98 /* UIImage+ChangeColor.m */; };
 		1B0A98821923BF61006AF24B /* UWCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B0A98811923BF61006AF24B /* UWCellScrollView.m */; };
 		1B19834918A618A60022A285 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19834818A618A60022A285 /* DetailViewController.m */; };
 		1B19E78719758B940002D1E1 /* UIImage+ApplyAlpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19E78619758B940002D1E1 /* UIImage+ApplyAlpha.m */; };
@@ -62,7 +63,6 @@
 		1B505EDB18D0E3AB00F168F8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B505EDA18D0E3AB00F168F8 /* SystemConfiguration.framework */; };
 		1B527C4218D0241D00A91339 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B527C4118D0241D00A91339 /* MoreViewController.m */; };
 		1B527C4518D026D100A91339 /* MoreNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B527C4418D026D100A91339 /* MoreNavigationViewController.m */; };
-		1B58C36118F0634E003D9F9F /* UWAds.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B58C36018F0634E003D9F9F /* UWAds.m */; };
 		1B59BB2018C441AA00D6112B /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B59BB1F18C441AA00D6112B /* SearchViewController.m */; };
 		1B6F54C618AC218600D3DD47 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6F54C518AC218600D3DD47 /* EventKit.framework */; };
 		1B6F54C818AC219000D3DD47 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6F54C718AC219000D3DD47 /* EventKitUI.framework */; };
@@ -94,11 +94,17 @@
 		1BA1795718F1A4BD00FA5D05 /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1BA1795418F1A4BD00FA5D05 /* iRate.bundle */; };
 		1BA1795818F1A4BD00FA5D05 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BA1795618F1A4BD00FA5D05 /* iRate.m */; };
 		1BA1795C18F1AE5400FA5D05 /* HSLUpdateChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BA1795B18F1AE5400FA5D05 /* HSLUpdateChecker.m */; };
-		1BA43E1D18FCDFCF008299EB /* UWErrorReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BA43E1C18FCDFCF008299EB /* UWErrorReport.m */; };
 		1BAD97E618A98F65006F4546 /* InfoSessionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97E518A98F65006F4546 /* InfoSessionModel.m */; };
 		1BAD97E918A9CAE2006F4546 /* UWTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */; };
 		1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */; };
 		1BB1A12018C908BB00823A0D /* alarm.caf in Resources */ = {isa = PBXBuildFile; fileRef = 1BB1A11F18C9040C00823A0D /* alarm.caf */; };
+		1BB96F1919760B5A00120080 /* UWAds.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F0E19760B5A00120080 /* UWAds.m */; };
+		1BB96F1A19760B5A00120080 /* UWAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F1019760B5A00120080 /* UWAppDelegate.m */; };
+		1BB96F1B19760B5A00120080 /* UWColorSchemeCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F1219760B5A00120080 /* UWColorSchemeCenter.m */; };
+		1BB96F1C19760B5A00120080 /* UWErrorReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F1419760B5A00120080 /* UWErrorReport.m */; };
+		1BB96F1D19760B5A00120080 /* UWGoogleAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F1619760B5A00120080 /* UWGoogleAnalytics.m */; };
+		1BB96F1E19760B5A00120080 /* UWInfoSessionClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F1819760B5A00120080 /* UWInfoSessionClient.m */; };
+		1BB96F211976129300120080 /* UIColor+ApplyAlpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F201976129300120080 /* UIColor+ApplyAlpha.m */; };
 		1BBB19071935786C00E74EBD /* UWWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB19061935786C00E74EBD /* UWWebViewController.m */; };
 		1BC7F35518F38F6900C21CFD /* LINEActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F34018F38F6900C21CFD /* LINEActivity.m */; };
 		1BC7F35618F38F6900C21CFD /* LINEActivityIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34118F38F6900C21CFD /* LINEActivityIcon.png */; };
@@ -130,7 +136,6 @@
 		1BD83A9918A59F1C00EDBB6D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83A9818A59F1C00EDBB6D /* UIKit.framework */; };
 		1BD83A9F18A59F1C00EDBB6D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1BD83A9D18A59F1C00EDBB6D /* InfoPlist.strings */; };
 		1BD83AA118A59F1C00EDBB6D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BD83AA018A59F1C00EDBB6D /* main.m */; };
-		1BD83AA518A59F1C00EDBB6D /* UWAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BD83AA418A59F1C00EDBB6D /* UWAppDelegate.m */; };
 		1BD83AA818A59F1C00EDBB6D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BD83AA618A59F1C00EDBB6D /* Main.storyboard */; };
 		1BD83AB018A59F1C00EDBB6D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BD83AAF18A59F1C00EDBB6D /* Images.xcassets */; };
 		1BD83AB718A59F1D00EDBB6D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD83AB618A59F1D00EDBB6D /* XCTest.framework */; };
@@ -144,9 +149,7 @@
 		1BDD367018EC73820098EAAF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDD366F18EC73820098EAAF /* CoreTelephony.framework */; };
 		1BDD367218EC73880098EAAF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDD367118EC73880098EAAF /* MessageUI.framework */; };
 		1BDD367B18ECE7D70098EAAF /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDD367A18ECE7D70098EAAF /* libGoogleAnalyticsServices.a */; };
-		1BDD368118ECFAF10098EAAF /* UWGoogleAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BDD368018ECFAF10098EAAF /* UWGoogleAnalytics.m */; };
 		1BE6D46A18D4F68500BE31B0 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE6D46918D4F68500BE31B0 /* FeedbackViewController.m */; };
-		1BE858A318CE4323009A9E57 /* UWInfoSessionClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE858A218CE4323009A9E57 /* UWInfoSessionClient.m */; };
 		1BF0542318A93ECC005C04B2 /* DetailSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */; };
 		1BF84FAC18D6AF9F00F7A86D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF84FAB18D6AF9F00F7A86D /* iAd.framework */; };
 /* End PBXBuildFile section */
@@ -166,6 +169,8 @@
 		1B01C3081926831B0071AA73 /* ZHHPullView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZHHPullView.m; path = "UW Info/OtherViews/ZHHPullView.m"; sourceTree = SOURCE_ROOT; };
 		1B05834E194E28E7000D43C2 /* ZHHHandyMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZHHHandyMacros.h; sourceTree = "<group>"; };
 		1B05834F194E28E7000D43C2 /* ZHHHandyMacros.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZHHHandyMacros.m; sourceTree = "<group>"; };
+		1B09EBF519761C6F00100B98 /* UIImage+ChangeColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+ChangeColor.h"; path = "Category/UIImage+ChangeColor.h"; sourceTree = "<group>"; };
+		1B09EBF619761C6F00100B98 /* UIImage+ChangeColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ChangeColor.m"; path = "Category/UIImage+ChangeColor.m"; sourceTree = "<group>"; };
 		1B0A98801923BF61006AF24B /* UWCellScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWCellScrollView.h; path = OtherViews/UWCellScrollView.h; sourceTree = "<group>"; };
 		1B0A98811923BF61006AF24B /* UWCellScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWCellScrollView.m; path = OtherViews/UWCellScrollView.m; sourceTree = "<group>"; };
 		1B19834718A618A60022A285 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ViewController/DetailViewController.h; sourceTree = "<group>"; };
@@ -261,8 +266,6 @@
 		1B527C4118D0241D00A91339 /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoreViewController.m; path = ViewController/MoreViewController.m; sourceTree = "<group>"; };
 		1B527C4318D026D100A91339 /* MoreNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoreNavigationViewController.h; path = ViewController/MoreNavigationViewController.h; sourceTree = "<group>"; };
 		1B527C4418D026D100A91339 /* MoreNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoreNavigationViewController.m; path = ViewController/MoreNavigationViewController.m; sourceTree = "<group>"; };
-		1B58C35F18F0634E003D9F9F /* UWAds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWAds.h; path = "UW Info/UWAds.h"; sourceTree = "<group>"; };
-		1B58C36018F0634E003D9F9F /* UWAds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWAds.m; path = "UW Info/UWAds.m"; sourceTree = "<group>"; };
 		1B59BB1E18C441AA00D6112B /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchViewController.h; path = ViewController/SearchViewController.h; sourceTree = "<group>"; };
 		1B59BB1F18C441AA00D6112B /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = ViewController/SearchViewController.m; sourceTree = "<group>"; };
 		1B6F54C518AC218600D3DD47 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
@@ -326,8 +329,6 @@
 		1BA1795618F1A4BD00FA5D05 /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
 		1BA1795A18F1AE5400FA5D05 /* HSLUpdateChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSLUpdateChecker.h; sourceTree = "<group>"; };
 		1BA1795B18F1AE5400FA5D05 /* HSLUpdateChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSLUpdateChecker.m; sourceTree = "<group>"; };
-		1BA43E1B18FCDFCF008299EB /* UWErrorReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWErrorReport.h; path = "UW Info/UWErrorReport.h"; sourceTree = "<group>"; };
-		1BA43E1C18FCDFCF008299EB /* UWErrorReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWErrorReport.m; path = "UW Info/UWErrorReport.m"; sourceTree = "<group>"; };
 		1BAD97E418A98F65006F4546 /* InfoSessionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InfoSessionModel.h; path = Model/InfoSessionModel.h; sourceTree = "<group>"; };
 		1BAD97E518A98F65006F4546 /* InfoSessionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSessionModel.m; path = Model/InfoSessionModel.m; sourceTree = "<group>"; };
 		1BAD97E718A9CAE2006F4546 /* UWTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWTabBarController.h; path = ViewController/UWTabBarController.h; sourceTree = "<group>"; };
@@ -335,6 +336,20 @@
 		1BAD97ED18A9DEF6006F4546 /* MyInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyInfoViewController.h; path = ViewController/MyInfoViewController.h; sourceTree = "<group>"; };
 		1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyInfoViewController.m; path = ViewController/MyInfoViewController.m; sourceTree = "<group>"; };
 		1BB1A11F18C9040C00823A0D /* alarm.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = alarm.caf; path = Resources/alarm.caf; sourceTree = "<group>"; };
+		1BB96F0D19760B5A00120080 /* UWAds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWAds.h; path = "UW Info/Others/UWAds.h"; sourceTree = "<group>"; };
+		1BB96F0E19760B5A00120080 /* UWAds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWAds.m; path = "UW Info/Others/UWAds.m"; sourceTree = "<group>"; };
+		1BB96F0F19760B5A00120080 /* UWAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWAppDelegate.h; path = "UW Info/Others/UWAppDelegate.h"; sourceTree = "<group>"; };
+		1BB96F1019760B5A00120080 /* UWAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWAppDelegate.m; path = "UW Info/Others/UWAppDelegate.m"; sourceTree = "<group>"; };
+		1BB96F1119760B5A00120080 /* UWColorSchemeCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWColorSchemeCenter.h; path = "UW Info/Others/UWColorSchemeCenter.h"; sourceTree = "<group>"; };
+		1BB96F1219760B5A00120080 /* UWColorSchemeCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWColorSchemeCenter.m; path = "UW Info/Others/UWColorSchemeCenter.m"; sourceTree = "<group>"; };
+		1BB96F1319760B5A00120080 /* UWErrorReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWErrorReport.h; path = "UW Info/Others/UWErrorReport.h"; sourceTree = "<group>"; };
+		1BB96F1419760B5A00120080 /* UWErrorReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWErrorReport.m; path = "UW Info/Others/UWErrorReport.m"; sourceTree = "<group>"; };
+		1BB96F1519760B5A00120080 /* UWGoogleAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWGoogleAnalytics.h; path = "UW Info/Others/UWGoogleAnalytics.h"; sourceTree = "<group>"; };
+		1BB96F1619760B5A00120080 /* UWGoogleAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWGoogleAnalytics.m; path = "UW Info/Others/UWGoogleAnalytics.m"; sourceTree = "<group>"; };
+		1BB96F1719760B5A00120080 /* UWInfoSessionClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWInfoSessionClient.h; path = "UW Info/Others/UWInfoSessionClient.h"; sourceTree = "<group>"; };
+		1BB96F1819760B5A00120080 /* UWInfoSessionClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWInfoSessionClient.m; path = "UW Info/Others/UWInfoSessionClient.m"; sourceTree = "<group>"; };
+		1BB96F1F1976129300120080 /* UIColor+ApplyAlpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+ApplyAlpha.h"; path = "Category/UIColor+ApplyAlpha.h"; sourceTree = "<group>"; };
+		1BB96F201976129300120080 /* UIColor+ApplyAlpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+ApplyAlpha.m"; path = "Category/UIColor+ApplyAlpha.m"; sourceTree = "<group>"; };
 		1BBB19051935786C00E74EBD /* UWWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWWebViewController.h; path = ViewController/UWWebViewController.h; sourceTree = "<group>"; };
 		1BBB19061935786C00E74EBD /* UWWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWWebViewController.m; path = ViewController/UWWebViewController.m; sourceTree = "<group>"; };
 		1BC7F33F18F38F6900C21CFD /* LINEActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LINEActivity.h; sourceTree = "<group>"; };
@@ -380,8 +395,6 @@
 		1BD83A9E18A59F1C00EDBB6D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1BD83AA018A59F1C00EDBB6D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1BD83AA218A59F1C00EDBB6D /* UW Info-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UW Info-Prefix.pch"; sourceTree = "<group>"; };
-		1BD83AA318A59F1C00EDBB6D /* UWAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UWAppDelegate.h; path = "UW Info/UWAppDelegate.h"; sourceTree = "<group>"; };
-		1BD83AA418A59F1C00EDBB6D /* UWAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UWAppDelegate.m; path = "UW Info/UWAppDelegate.m"; sourceTree = "<group>"; };
 		1BD83AA718A59F1C00EDBB6D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1BD83AAF18A59F1C00EDBB6D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1BD83AB518A59F1D00EDBB6D /* UW InfoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UW InfoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -401,12 +414,8 @@
 		1BDD367818ECE7D70098EAAF /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITrackedViewController.h; path = ThridPartySDK/GoogleAnalytics/GAITrackedViewController.h; sourceTree = "<group>"; };
 		1BDD367918ECE7D70098EAAF /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITracker.h; path = ThridPartySDK/GoogleAnalytics/GAITracker.h; sourceTree = "<group>"; };
 		1BDD367A18ECE7D70098EAAF /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalyticsServices.a; path = ThridPartySDK/GoogleAnalytics/libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
-		1BDD367F18ECFAF10098EAAF /* UWGoogleAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWGoogleAnalytics.h; path = "UW Info/UWGoogleAnalytics.h"; sourceTree = "<group>"; };
-		1BDD368018ECFAF10098EAAF /* UWGoogleAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWGoogleAnalytics.m; path = "UW Info/UWGoogleAnalytics.m"; sourceTree = "<group>"; };
 		1BE6D46818D4F68500BE31B0 /* FeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeedbackViewController.h; path = ViewController/FeedbackViewController.h; sourceTree = "<group>"; };
 		1BE6D46918D4F68500BE31B0 /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeedbackViewController.m; path = ViewController/FeedbackViewController.m; sourceTree = "<group>"; };
-		1BE858A118CE4323009A9E57 /* UWInfoSessionClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWInfoSessionClient.h; path = "UW Info/UWInfoSessionClient.h"; sourceTree = "<group>"; };
-		1BE858A218CE4323009A9E57 /* UWInfoSessionClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWInfoSessionClient.m; path = "UW Info/UWInfoSessionClient.m"; sourceTree = "<group>"; };
 		1BF0542118A93ECC005C04B2 /* DetailSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSwitchCell.h; path = TableViewCell/DetailSwitchCell.h; sourceTree = "<group>"; };
 		1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSwitchCell.m; path = TableViewCell/DetailSwitchCell.m; sourceTree = "<group>"; };
 		1BF84FAB18D6AF9F00F7A86D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -624,16 +633,18 @@
 		1B37453D18A5D0D6007CF08C /* Others */ = {
 			isa = PBXGroup;
 			children = (
-				1BE858A118CE4323009A9E57 /* UWInfoSessionClient.h */,
-				1BE858A218CE4323009A9E57 /* UWInfoSessionClient.m */,
-				1BD83AA318A59F1C00EDBB6D /* UWAppDelegate.h */,
-				1BD83AA418A59F1C00EDBB6D /* UWAppDelegate.m */,
-				1BDD367F18ECFAF10098EAAF /* UWGoogleAnalytics.h */,
-				1BDD368018ECFAF10098EAAF /* UWGoogleAnalytics.m */,
-				1B58C35F18F0634E003D9F9F /* UWAds.h */,
-				1B58C36018F0634E003D9F9F /* UWAds.m */,
-				1BA43E1B18FCDFCF008299EB /* UWErrorReport.h */,
-				1BA43E1C18FCDFCF008299EB /* UWErrorReport.m */,
+				1BB96F0F19760B5A00120080 /* UWAppDelegate.h */,
+				1BB96F1019760B5A00120080 /* UWAppDelegate.m */,
+				1BB96F1719760B5A00120080 /* UWInfoSessionClient.h */,
+				1BB96F1819760B5A00120080 /* UWInfoSessionClient.m */,
+				1BB96F0D19760B5A00120080 /* UWAds.h */,
+				1BB96F0E19760B5A00120080 /* UWAds.m */,
+				1BB96F1319760B5A00120080 /* UWErrorReport.h */,
+				1BB96F1419760B5A00120080 /* UWErrorReport.m */,
+				1BB96F1519760B5A00120080 /* UWGoogleAnalytics.h */,
+				1BB96F1619760B5A00120080 /* UWGoogleAnalytics.m */,
+				1BB96F1119760B5A00120080 /* UWColorSchemeCenter.h */,
+				1BB96F1219760B5A00120080 /* UWColorSchemeCenter.m */,
 			);
 			name = Others;
 			path = ..;
@@ -779,6 +790,10 @@
 				1B8EE16018F23DDD00DE8BD8 /* UIImage+ImageEffects.m */,
 				1B19E78519758B940002D1E1 /* UIImage+ApplyAlpha.h */,
 				1B19E78619758B940002D1E1 /* UIImage+ApplyAlpha.m */,
+				1B09EBF519761C6F00100B98 /* UIImage+ChangeColor.h */,
+				1B09EBF619761C6F00100B98 /* UIImage+ChangeColor.m */,
+				1BB96F1F1976129300120080 /* UIColor+ApplyAlpha.h */,
+				1BB96F201976129300120080 /* UIColor+ApplyAlpha.m */,
 			);
 			name = Categories;
 			path = "UW Info";
@@ -1199,24 +1214,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1BD83AA518A59F1C00EDBB6D /* UWAppDelegate.m in Sources */,
 				1B527C4218D0241D00A91339 /* MoreViewController.m in Sources */,
 				1BC7F37E18F3A62000C21CFD /* NSString+Contain.m in Sources */,
 				1B3A33F418D4D8B30046DC73 /* REMenuItemView.m in Sources */,
 				1B3A33F018D4D8B30046DC73 /* RECommonFunctions.m in Sources */,
 				1BD12BAF18F484B3003BAA8C /* SVProgressHUD.m in Sources */,
+				1BB96F1E19760B5A00120080 /* UWInfoSessionClient.m in Sources */,
 				1B97F3EF1975CA5E0087B15F /* PSPDFTextView.m in Sources */,
 				1B19E78719758B940002D1E1 /* UIImage+ApplyAlpha.m in Sources */,
-				1BA43E1D18FCDFCF008299EB /* UWErrorReport.m in Sources */,
 				1BAD97E618A98F65006F4546 /* InfoSessionModel.m in Sources */,
 				1B3A339E18D4D7600046DC73 /* AFURLRequestSerialization.m in Sources */,
 				1B3A33B218D4D7690046DC73 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				1BC7F36018F38F6900C21CFD /* WeixinActivity.m in Sources */,
 				1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */,
 				1B3A33B318D4D7690046DC73 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
-				1BDD368118ECFAF10098EAAF /* UWGoogleAnalytics.m in Sources */,
 				1B3A33F218D4D8B30046DC73 /* REMenuContainerView.m in Sources */,
 				1B78A99C192309A100A4A8AD /* UWGridTableView.m in Sources */,
+				1BB96F1D19760B5A00120080 /* UWGoogleAnalytics.m in Sources */,
 				1B3A33B718D4D7690046DC73 /* UIProgressView+AFNetworking.m in Sources */,
 				1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */,
 				1BE6D46A18D4F68500BE31B0 /* FeedbackViewController.m in Sources */,
@@ -1229,7 +1243,6 @@
 				1BBB19071935786C00E74EBD /* UWWebViewController.m in Sources */,
 				1B717E7618A8294600E20A29 /* DetailNormalCell.m in Sources */,
 				1B3A33FA18D4D99F0046DC73 /* InfoDetailedTitleButton.m in Sources */,
-				1BE858A318CE4323009A9E57 /* UWInfoSessionClient.m in Sources */,
 				1B717E6E18A80A7A00E20A29 /* LoadingCell.m in Sources */,
 				1B3A33B818D4D7690046DC73 /* UIRefreshControl+AFNetworking.m in Sources */,
 				1B8EE15E18F238DC00DE8BD8 /* UWShareView.m in Sources */,
@@ -1237,22 +1250,28 @@
 				1B19834918A618A60022A285 /* DetailViewController.m in Sources */,
 				1B3A33B418D4D7690046DC73 /* UIAlertView+AFNetworking.m in Sources */,
 				1B3A33B518D4D7690046DC73 /* UIButton+AFNetworking.m in Sources */,
+				1BB96F1C19760B5A00120080 /* UWErrorReport.m in Sources */,
+				1BB96F211976129300120080 /* UIColor+ApplyAlpha.m in Sources */,
 				1B717E7118A80B8200E20A29 /* DetailDescriptionCell.m in Sources */,
 				1B3A339C18D4D7600046DC73 /* AFSecurityPolicy.m in Sources */,
 				1B3A33A018D4D7600046DC73 /* AFURLSessionManager.m in Sources */,
+				1B09EBF719761C6F00100B98 /* UIImage+ChangeColor.m in Sources */,
 				1B505EC718D0C63F00F168F8 /* CenterTextCell.m in Sources */,
 				1B058350194E28E7000D43C2 /* ZHHHandyMacros.m in Sources */,
 				1B3A339D18D4D7600046DC73 /* AFURLConnectionOperation.m in Sources */,
 				1B3A339B18D4D7600046DC73 /* AFNetworkReachabilityManager.m in Sources */,
 				1B527C4518D026D100A91339 /* MoreNavigationViewController.m in Sources */,
 				1B97F3F31975CA930087B15F /* Appirater.m in Sources */,
+				1BB96F1A19760B5A00120080 /* UWAppDelegate.m in Sources */,
 				1B3A33F318D4D8B30046DC73 /* REMenuItem.m in Sources */,
 				1BC7F37318F39C4D00C21CFD /* TTAppleMapsActivity.m in Sources */,
 				1B3A33F118D4D8B30046DC73 /* REMenu.m in Sources */,
 				1B8C557C18B7BCB60070CD82 /* EKEvent+NSCoding.m in Sources */,
 				1B3A339918D4D7600046DC73 /* AFHTTPRequestOperationManager.m in Sources */,
+				1BB96F1B19760B5A00120080 /* UWColorSchemeCenter.m in Sources */,
 				1B3A340018D4D9B40046DC73 /* UWTodayButton.m in Sources */,
 				1BC7F36318F38F6900C21CFD /* WeixinTimelineActivity.m in Sources */,
+				1BB96F1919760B5A00120080 /* UWAds.m in Sources */,
 				1B3A339818D4D7600046DC73 /* AFHTTPRequestOperation.m in Sources */,
 				1BC7F35518F38F6900C21CFD /* LINEActivity.m in Sources */,
 				1B3A33F718D4D9250046DC73 /* AlertViewController.m in Sources */,
@@ -1261,7 +1280,6 @@
 				1B0A98821923BF61006AF24B /* UWCellScrollView.m in Sources */,
 				1B717E5F18A7F7DC00E20A29 /* DetailLinkCell.m in Sources */,
 				1B717E6518A809F900E20A29 /* DetailRSVPCell.m in Sources */,
-				1B58C36118F0634E003D9F9F /* UWAds.m in Sources */,
 				1B78A996191F1E7100A4A8AD /* UWDevice.m in Sources */,
 				1B717E6D18A80A7A00E20A29 /* InfoSessionCell.m in Sources */,
 				1BA1795C18F1AE5400FA5D05 /* HSLUpdateChecker.m in Sources */,

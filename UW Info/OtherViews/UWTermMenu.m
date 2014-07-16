@@ -36,6 +36,10 @@
     return _titleButton;
 }
 
+- (void)setMenuButtonColor:(UIColor *)color {
+    [_titleButton setTitleColor:color detailTextColor:color];
+}
+
 /**
  *  Get year number from NSDate
  *

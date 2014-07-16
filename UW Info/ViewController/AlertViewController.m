@@ -10,6 +10,7 @@
 #import "InfoSession.h"
 #import "InfoSessionModel.h"
 #import "UWGoogleAnalytics.h"
+#import "UWColorSchemeCenter.h"
 
 @interface AlertViewController ()
 
@@ -42,7 +43,7 @@
     NSMutableDictionary *theAlert = _infoSession.alerts[_alertIndex];
     _checkRow = [theAlert[@"alertChoice"] integerValue];
     
-    [self.tableView setTintColor:UWBlack];
+    [self.tableView setTintColor:[UWColorSchemeCenter uwBlack]];
     // Google Analytics
     [UWGoogleAnalytics analyticScreen:@"Alert Screen"];
 }

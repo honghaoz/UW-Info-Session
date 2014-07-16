@@ -18,6 +18,7 @@
 #import "GADBannerView.h"
 #import "GADBannerViewDelegate.h"
 #import "GADAdMobExtras.h"
+#import "UWColorSchemeCenter.h"
 
 @interface SearchViewController () <ADBannerViewDelegate, GADBannerViewDelegate>
 
@@ -40,11 +41,6 @@
     CGFloat startContentOffset;
     CGFloat lastContentOffset;
     CGFloat previousScrollViewYOffset;
-//    
-//    CGSize keyboardSize;
-//    ADBannerView *_adBannerView;
-//    GADBannerView *_googleBannerView;
-//    BOOL googleAdRequested;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -61,8 +57,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     // set color
-    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
-    self.navigationController.navigationBar.tintColor = UWBlack;
+//    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
+//    self.navigationController.navigationBar.tintColor = UWBlack;
     
     // initiate search bar
     NSInteger statusBarHeight = 20;
@@ -72,40 +68,9 @@
     _searchBar.delegate = self;
     _searchBar.scopeButtonTitles = [[NSArray alloc] initWithObjects:@"Employer", @"Program", @"Note", nil];
     
-    //_searchBar.searchBarStyle = UISearchBarStyleProminent;
-    //_searchBar.placeholder = @"Search employer, program, note.";
-    _searchBar.tintColor = UWBlack;
+    _searchBar.tintColor = [UWColorSchemeCenter uwBlack];
     _searchBar.placeholder = @"Search Info Session";
-    //_searchBar.barTintColor = UWGold;
-    //_searchBar.backgroundColor = UWGold;
-    //[_searchBar setTranslucent:NO];
-    //_searchBar.backgroundColor = [UIColor clearColor];
-    //_searchBar.backgroundImage = [UIImage imageNamed:@"map_colour300.png"];
     
-//    // iAd
-//    if ([ADBannerView instancesRespondToSelector:@selector(initWithAdType:)]) {
-//        _adBannerView = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
-//    } else {
-//        _adBannerView = [[ADBannerView alloc] init];
-//    }
-//    CGRect bannerFrame = _adBannerView.frame;
-//    bannerFrame.origin.y = [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height - 5;
-//    [_adBannerView setFrame:bannerFrame];
-//    _adBannerView.delegate = self;
-//    [self.view addSubview:_adBannerView];
-//    
-//    // Google Ad
-//    _googleBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
-//    _googleBannerView.adUnitID = @"ca-app-pub-5080537428726834/1211417904";
-//    _googleBannerView.rootViewController = self;
-//    _googleBannerView.alpha = 1;
-//    googleAdRequested = NO;
-//    
-//    bannerFrame.origin.y = [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - bannerFrame.size.height - 5;
-//    [_googleBannerView setFrame:bannerFrame];
-//    
-//    [_googleBannerView setDelegate:self];
-//    //[self.view addSubview:_googleBannerView];
     
     // initiate table view
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height/* - bannerFrame.size.height*/)];
@@ -133,10 +98,12 @@
     textLabel.textAlignment = NSTextAlignmentCenter;
     textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
     textLabel.font = [UIFont boldSystemFontOfSize:17];
+    textLabel.textColor = [UWColorSchemeCenter uwBlack];
     
     _detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 18.0, 180, 14.0)];
     _detailLabel.textAlignment = NSTextAlignmentCenter;
     _detailLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize] - 2.0];
+    _detailLabel.textColor = [UWColorSchemeCenter uwBlack];
     [titleView addSubview:textLabel];
     [titleView addSubview:_detailLabel];
     
@@ -148,25 +115,33 @@
     // reload data
     [self reloadTable];
     
-//    // observe keyboard
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardWillShow:)
-//                                                 name:UIKeyboardWillShowNotification
-//                                               object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardWillShow:)
-//                                                 name:UIKeyboardWillChangeFrameNotification
-//                                               object:nil];
+
     _statusBarCoverView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, 320, 20)];
-    _statusBarCoverView.backgroundColor=UWGold;
+    _statusBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
     _searchBarCoverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, _searchBar.frame.size.height)];
-    _searchBarCoverView.backgroundColor=UWGold;
+    _searchBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollToFirstRow) name:@"infoSessionsChanged" object:nil];
+    
+    // Register Color Scheme Update Function
+    [self updateColorScheme];
+    [UWColorSchemeCenter registerColorSchemeNotificationForObserver:self selector:@selector(updateColorScheme)];
     
     // Google Analytics
     [UWGoogleAnalytics analyticScreen:@"Search Screen"];
     
+}
+
+- (void)updateColorScheme {
+    [self.navigationController.navigationBar setBarTintColor:[UWColorSchemeCenter uwGold]];
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         self.navigationController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
+                         [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack]}];
+                     }
+                     completion:nil];
 }
 
 - (void)scrollToFirstRow{
@@ -180,7 +155,7 @@
     _detailLabel.text = _infoSessionModel.currentTerm;
     [self.tableView reloadData];
     [self.tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
-    [self.tableView setSectionIndexColor:UWBlack];
+    [self.tableView setSectionIndexColor:[UIColor blackColor]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -629,9 +604,9 @@
                              NSLog(@"%f, %f", textSearchField.layer.borderWidth, textSearchField.layer.cornerRadius);
                              textSearchField.layer.borderWidth = 0.5f;
                              textSearchField.layer.cornerRadius = 5.0f;
-                             textSearchField.layer.borderColor = UWBlack.CGColor;
+                             textSearchField.layer.borderColor = [UWColorSchemeCenter uwBlack].CGColor;
                              [_searchBarCoverView addSubview:textSearchField];
-                             _searchBar.scopeBarBackgroundImage = [self imageWithColor:UWGold];
+                             _searchBar.scopeBarBackgroundImage = [self imageWithColor:[UWColorSchemeCenter uwGold]];
                         
                          }
                          completion:^(BOOL finished){

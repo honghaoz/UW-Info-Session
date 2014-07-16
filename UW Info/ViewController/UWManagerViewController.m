@@ -16,6 +16,7 @@
 #import "UWCellScrollView.h"
 #import "InfoSession.h"
 #import <objc/runtime.h>
+#import "UWColorSchemeCenter.h"
 
 @interface UWManagerViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
@@ -90,8 +91,11 @@
 //    [self.navigationItem setLeftBarButtonItem:cancelButton];
     
     self.title = @"UW Info Manager";
-    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
-    self.navigationController.navigationBar.tintColor = UWBlack;
+//    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
+//    self.navigationController.navigationBar.tintColor = UWBlack;
+    // Register Color Scheme Update Function
+    [self updateColorScheme];
+    [UWColorSchemeCenter registerColorSchemeNotificationForObserver:self selector:@selector(updateColorScheme)];
     
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
     CGFloat heightOfTop = 20 + self.navigationController.navigationBar.frame.size.height;
@@ -116,7 +120,7 @@
     CGFloat deviceNameWidth = 200;
     deviceButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [deviceButton setTitle:@"Device Name" forState:UIControlStateNormal];
-    [deviceButton setTitleColor:UWBlack forState:UIControlStateNormal];
+    [deviceButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     deviceButton.frame = CGRectMake(seperatorWidth, 0, deviceNameWidth, heightOfTitleBar);
     deviceButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:deviceButton];
@@ -125,7 +129,7 @@
     CGFloat queryKeyWidth = 30;
     queryKeyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [queryKeyButton setTitle:@"Key" forState:UIControlStateNormal];
-    [queryKeyButton setTitleColor:UWBlack forState:UIControlStateNormal];
+    [queryKeyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     queryKeyButton.frame = CGRectMake(deviceButton.frame.origin.x + deviceButton.frame.size.width + seperatorWidth, 0, queryKeyWidth, heightOfTitleBar);
     queryKeyButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:queryKeyButton];
@@ -134,7 +138,7 @@
     CGFloat openTimesWidth = 40;
     openTimesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [openTimesButton setTitle:@"Open" forState:UIControlStateNormal];
-    [openTimesButton setTitleColor:UWBlack forState:UIControlStateNormal];
+    [openTimesButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     openTimesButton.frame = CGRectMake(queryKeyButton.frame.origin.x + queryKeyButton.frame.size.width + seperatorWidth, 0, openTimesWidth, heightOfTitleBar);
     openTimesButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:openTimesButton];
@@ -143,7 +147,7 @@
     CGFloat appVersionWidth = 70;
     appVersionButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [appVersionButton setTitle:@"Version" forState:UIControlStateNormal];
-    [appVersionButton setTitleColor:UWBlack forState:UIControlStateNormal];
+    [appVersionButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     appVersionButton.frame = CGRectMake(openTimesButton.frame.origin.x + openTimesButton.frame.size.width + seperatorWidth, 0, appVersionWidth, heightOfTitleBar);
     appVersionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:appVersionButton];
@@ -152,7 +156,7 @@
     CGFloat deviceTypeWidth = 200;
     deviceTypeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [deviceTypeButton setTitle:@"Device Type" forState:UIControlStateNormal];
-    [deviceTypeButton setTitleColor:UWBlack forState:UIControlStateNormal];
+    [deviceTypeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     deviceTypeButton.frame = CGRectMake(appVersionButton.frame.origin.x + appVersionButton.frame.size.width + seperatorWidth, 0, deviceTypeWidth, heightOfTitleBar);
     deviceTypeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:deviceTypeButton];
@@ -161,7 +165,7 @@
     CGFloat systemVersionWidth = 70;
     systemVersionButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [systemVersionButton setTitle:@"System" forState:UIControlStateNormal];
-    [systemVersionButton setTitleColor:UWBlack forState:UIControlStateNormal];
+    [systemVersionButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     systemVersionButton.frame = CGRectMake(deviceTypeButton.frame.origin.x + deviceTypeButton.frame.size.width + seperatorWidth, 0, systemVersionWidth, heightOfTitleBar);
     systemVersionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:systemVersionButton];
@@ -170,7 +174,7 @@
     CGFloat channelsWidth = 120;
     channelsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [channelsButton setTitle:@"Channels" forState:UIControlStateNormal];
-    [channelsButton setTitleColor:UWBlack forState:UIControlStateNormal];
+    [channelsButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     channelsButton.frame = CGRectMake(systemVersionButton.frame.origin.x + systemVersionButton.frame.size.width + seperatorWidth, 0, channelsWidth, heightOfTitleBar);
     channelsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:channelsButton];
@@ -179,7 +183,7 @@
     CGFloat createdWidth = 130;
     createdButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [createdButton setTitle:@"Created" forState:UIControlStateNormal];
-    [createdButton setTitleColor:UWBlack forState:UIControlStateNormal];
+    [createdButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     //[createdButton setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.2]];
     createdButton.frame = CGRectMake(channelsButton.frame.origin.x + channelsButton.frame.size.width + seperatorWidth, 0, createdWidth, heightOfTitleBar);
     createdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
@@ -189,7 +193,7 @@
     CGFloat updatedWidth = 130;
     updatedButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [updatedButton setTitle:@"Updated" forState:UIControlStateNormal];
-    [updatedButton setTitleColor:UWBlack forState:UIControlStateNormal];
+    [updatedButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     updatedButton.frame = CGRectMake(createdButton.frame.origin.x + createdButton.frame.size.width + seperatorWidth, 0, updatedWidth, heightOfTitleBar);
     updatedButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:updatedButton];
@@ -198,7 +202,7 @@
     CGFloat noteWidth = 100;
     noteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [noteButton setTitle:@"Notes" forState:UIControlStateNormal];
-    [noteButton setTitleColor:UWBlack forState:UIControlStateNormal];
+    [noteButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     noteButton.frame = CGRectMake(updatedButton.frame.origin.x + updatedButton.frame.size.width + seperatorWidth, 0, noteWidth, heightOfTitleBar);
     noteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [titleBarScrollView addSubview:noteButton];
@@ -312,6 +316,18 @@
         displayedCells = [[NSMutableArray alloc] init];
     }
     //[displayedCells addObject:titleBarScrollView];
+}
+
+- (void)updateColorScheme {
+    [self.navigationController.navigationBar setBarTintColor:[UWColorSchemeCenter uwGold]];
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         self.navigationController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
+                         [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack]}];
+                     }
+                     completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
