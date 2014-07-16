@@ -28,6 +28,8 @@
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) NSArray *sectionIndex;
+
+@property (nonatomic, strong) UILabel *textLabel;
 @property (nonatomic, strong) UILabel *detailLabel;
 
 @property (nonatomic, strong) UIView *statusBarCoverView;
@@ -68,7 +70,7 @@
     _searchBar.delegate = self;
     _searchBar.scopeButtonTitles = [[NSArray alloc] initWithObjects:@"Employer", @"Program", @"Note", nil];
     
-    _searchBar.tintColor = [UWColorSchemeCenter uwBlack];
+//    _searchBar.tintColor = [UWColorSchemeCenter uwBlack];
     _searchBar.placeholder = @"Search Info Session";
     
     
@@ -94,20 +96,20 @@
 
     // initiate titleView
     UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 180.0, 32.0)];
-    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 1.0, 180, 17.0)];
-    textLabel.textAlignment = NSTextAlignmentCenter;
-    textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
-    textLabel.font = [UIFont boldSystemFontOfSize:17];
-    textLabel.textColor = [UWColorSchemeCenter uwBlack];
+    _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 1.0, 180, 17.0)];
+    _textLabel.textAlignment = NSTextAlignmentCenter;
+    _textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+    _textLabel.font = [UIFont boldSystemFontOfSize:17];
+//    textLabel.textColor = [UWColorSchemeCenter uwBlack];
     
     _detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 18.0, 180, 14.0)];
     _detailLabel.textAlignment = NSTextAlignmentCenter;
     _detailLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize] - 2.0];
-    _detailLabel.textColor = [UWColorSchemeCenter uwBlack];
-    [titleView addSubview:textLabel];
+//    _detailLabel.textColor = [UWColorSchemeCenter uwBlack];
+    [titleView addSubview:_textLabel];
     [titleView addSubview:_detailLabel];
     
-    textLabel.text = @"Info Session Search";
+    _textLabel.text = @"Info Session Search";
     _detailLabel.text = _infoSessionModel.currentTerm;
     
     [self.navigationItem setTitleView:titleView];
@@ -117,9 +119,9 @@
     
 
     _statusBarCoverView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, 320, 20)];
-    _statusBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
+//    _statusBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
     _searchBarCoverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, _searchBar.frame.size.height)];
-    _searchBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
+//    _searchBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollToFirstRow) name:@"infoSessionsChanged" object:nil];
     
@@ -140,6 +142,11 @@
                      animations:^{
                          self.navigationController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
                          [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack]}];
+                         _searchBar.tintColor = [UWColorSchemeCenter uwBlack];
+                         _detailLabel.textColor = [UWColorSchemeCenter uwBlack];
+                         _textLabel.textColor = [UWColorSchemeCenter uwBlack];
+                         _statusBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
+                         _searchBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
                      }
                      completion:nil];
 }
