@@ -212,3 +212,36 @@ Parse.Cloud.job("CheckFeedbacks", function (request, status) {
 // Parse.Cloud.define("CheckDevices", function (request, response) {
 //     Check("Device", request, response);
 // });
+
+function Color(red, green, blue, alpha) {
+	this.red = red;
+	this.green = green;
+	this.blue = blue;
+	this.alpha = alpha;
+    this.getDic = function() {
+    	var dic = {};
+    	dic["red"] = red;
+    	dic["green"] = green;
+    	dic["blue"] = blue;
+    	dic["alpha"] = alpha;
+        return dic;
+    };
+}
+
+Parse.Cloud.define("getColorScheme", function(request, response) {
+	var gold = new Color(Math.random(), Math.random(), Math.random(), 1);
+	var black = new Color(Math.random(), Math.random(), Math.random(), 1);
+	var tab = new Color(Math.random(), Math.random(), Math.random(), 1);
+	var statusBar = true;
+	if (Math.random() > 0.5) {
+		statusBar = true;
+	} else {
+		statusBar = false;
+	}
+	var colorSchemeDic = {};
+	colorSchemeDic["uwGoldColor"] = gold.getDic();
+	colorSchemeDic["uwBlackColor"] = black.getDic();
+	colorSchemeDic["uwTabColor"] = tab.getDic();
+	colorSchemeDic["statusBarIsLight"] = statusBar;
+	response.success(colorSchemeDic);
+});

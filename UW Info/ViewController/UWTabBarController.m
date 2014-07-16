@@ -81,8 +81,9 @@
                           delay:0.0
                         options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
-                         self.tabBar.tintColor = [UWColorSchemeCenter uwGold];
                          self.tabBar.barTintColor = [UWColorSchemeCenter uwTabBarColor];
+//                         self.tabBar.selectedImageTintColor = [UIColor redColor];
+                         self.tabBar.tintColor = [UWColorSchemeCenter uwGold];
                          [self.tabBar setBackgroundColor:[UWColorSchemeCenter uwBlack]];
                      }
                      completion:nil];
@@ -97,6 +98,18 @@
         [_myInfoViewController reloadTable];
         [_myInfoViewController performSegueWithIdentifier:@"ShowDetailFromMyInfoSessions" sender:[[NSArray alloc] initWithObjects:@"MyInfoViewController", _infoSessionModel.myInfoSessions[_targetIndexTobeSelectedInMyInfoVC], _infoSessionModel, nil]];
     }
+    
+    // Shake gesture
+    [self becomeFirstResponder];
+}
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    // Do your thing after shaking device
+    [UWColorSchemeCenter updateColorScheme];
 }
 
 - (void)didReceiveMemoryWarning

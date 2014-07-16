@@ -7,6 +7,7 @@
 //
 
 #import "UWColorSchemeCenter.h"
+#import <Parse/Parse.h>
 
 @implementation UWColorSchemeCenter
 
@@ -28,10 +29,10 @@
     self = [super init];
     if (self) {
         _notificationName = @"UpdateColorScheme";
-        _uwGoldColor = [UIColor brownColor];//[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0];
-        _uwBlackColor = [UIColor greenColor];//[UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
+        _uwGoldColor = UW_GOLD;//[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0];
+        _uwBlackColor = UW_BLACK;//[UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
         _tabBarTintColor = TAB_BAR_COLOR;//[UIColor blackColor];
-        _statusBarStyle = UIStatusBarStyleLightContent;
+        _statusBarStyle = UIStatusBarStyleDefault;
     }
     return self;
 }
@@ -89,9 +90,47 @@
 }
 
 - (void)updateColorScheme {
-    _uwGoldColor = [UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0];
-    _uwBlackColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
-    _tabBarTintColor = [UIColor blackColor];
+    [PFCloud callFunctionInBackground:@"getColorScheme"
+                       withParameters:@{}
+                                block:^(NSDictionary *result, NSError *error) {
+                                    if (!error) {
+                                        // result is @"Hello world!"
+                                        NSLog(@"%@", result);
+                                        [self setColorsWithResult:result];
+                                        [self post];
+                                    } else {
+                                        NSLog(@"getColorScheme failed %@", [error description]);
+                                    }
+                                }];
+//    _uwGoldColor = UW_GOLD;
+//    _uwBlackColor = UW_BLACK;
+//    _tabBarTintColor = TAB_BAR_COLOR;
+}
+
+- (void)setColorsWithResult:(NSDictionary *)result {
+    NSDictionary *gold = result[@"uwGoldColor"];
+    NSDictionary *black = result[@"uwBlackColor"];
+    NSDictionary *tabBarColor = result[@"uwTabColor"];
+    if (result[@"statusBarIsLight"]) {
+        _statusBarStyle = UIStatusBarStyleLightContent;
+    } else {
+        _statusBarStyle = UIStatusBarStyleDefault;
+    }
+    _uwGoldColor = [UIColor colorWithRed:[gold[@"red"] floatValue]
+                                   green:[gold[@"green"] floatValue]
+                                    blue:[gold[@"blue"] floatValue]
+                                   alpha:[gold[@"alpha"] floatValue]];
+    _uwBlackColor = [UIColor colorWithRed:[black[@"red"] floatValue]
+                                   green:[black[@"green"] floatValue]
+                                    blue:[black[@"blue"] floatValue]
+                                   alpha:[black[@"alpha"] floatValue]];
+    _tabBarTintColor = [UIColor colorWithRed:[tabBarColor[@"red"] floatValue]
+                                       green:[tabBarColor[@"green"] floatValue]
+                                        blue:[tabBarColor[@"blue"] floatValue]
+                                       alpha:[tabBarColor[@"alpha"] floatValue]];
+}
+
+- (void)post {
     [[UIApplication sharedApplication] setStatusBarStyle:_statusBarStyle];
     [[NSNotificationCenter defaultCenter] postNotificationName:_notificationName object:self userInfo:nil];
 }

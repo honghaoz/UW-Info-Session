@@ -85,13 +85,14 @@
     //    [Appirater setOpenInAppStore:YES];
     //    [Appirater setDelegate:[UWAppiRaterDelegate sharediRateDelegate]];
     ////    [[UWAppiRaterDelegate sharediRateDelegate] appiraterDidDisplayAlert:nil];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * 1e9), dispatch_get_current_queue(),^{
-        [UWColorSchemeCenter  setGoldColor:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
-        [UWColorSchemeCenter setBlackColor:[UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1]];
-        [UWColorSchemeCenter setTabBarColor:[UIColor blackColor]];
-        [UWColorSchemeCenter setStatusStyle:UIStatusBarStyleLightContent];
-        [UWColorSchemeCenter updateColorScheme];
-    });
+
+    //
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [UWColorSchemeCenter updateColorScheme];
+//    });
+    
+    [application setApplicationSupportsShakeToEdit:YES];
+
     return YES;
 }
 
