@@ -31,6 +31,7 @@
         _uwGoldColor = [UIColor brownColor];//[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0];
         _uwBlackColor = [UIColor greenColor];//[UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
         _tabBarTintColor = TAB_BAR_COLOR;//[UIColor blackColor];
+        _statusBarStyle = UIStatusBarStyleLightContent;
     }
     return self;
 }
@@ -45,6 +46,10 @@
 
 + (UIColor *)uwTabBarColor {
     return [UWColorSchemeCenter sharedCenter].tabBarTintColor;
+}
+
++ (UIStatusBarStyle) statusBarStyle {
+    return [UWColorSchemeCenter sharedCenter].statusBarStyle;
 }
 
 + (void)setGoldColor:(UIColor *)gold {
@@ -71,6 +76,14 @@
     _tabBarTintColor = tabBarColor;
 }
 
++ (void)setStatusStyle:(UIStatusBarStyle)statusStyle {
+    [[UWColorSchemeCenter sharedCenter] setStatusStyle:statusStyle];
+}
+
+- (void)setStatusStyle:(UIStatusBarStyle)statusStyle {
+    _statusBarStyle = statusStyle;
+}
+
 + (void)updateColorScheme {
     [[UWColorSchemeCenter sharedCenter] updateColorScheme];
 }
@@ -79,6 +92,7 @@
     _uwGoldColor = [UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0];
     _uwBlackColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
     _tabBarTintColor = [UIColor blackColor];
+    [[UIApplication sharedApplication] setStatusBarStyle:_statusBarStyle];
     [[NSNotificationCenter defaultCenter] postNotificationName:_notificationName object:self userInfo:nil];
 }
 

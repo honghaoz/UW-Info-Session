@@ -66,11 +66,6 @@
     return self;
 }
 
-//- (UIStatusBarStyle)preferredStatusBarStyle
-//{
-//    return UIStatusBarStyleLightContent;
-//}
-
 /**
  *  Initiate left & right bar buttons, reload data for the first time.
  */
@@ -79,8 +74,6 @@
     [super viewDidLoad];
     _infoSessionModel.delegate = self;
     _tabBarController.lastTapped = -1;
-
-//    [self setNeedsStatusBarAppearanceUpdate];
     
     // Show refresh button
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)] animated:YES];

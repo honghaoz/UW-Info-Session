@@ -29,11 +29,20 @@
     return self;
 }
 
+//- (UIStatusBarStyle)preferredStatusBarStyle
+//{
+//    LogMethod;
+////    return UIStatusBarStyleLightContent;
+//    return UIStatusBarStyleDefault;
+//}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     _lastTapped = -1;
 
+//    [self setNeedsStatusBarAppearanceUpdate];
+    
     // Register Color Scheme Update Function
     [self updateColorScheme];
     [UWColorSchemeCenter registerColorSchemeNotificationForObserver:self selector:@selector(updateColorScheme)];

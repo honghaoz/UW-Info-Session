@@ -13,6 +13,7 @@
 @property (nonatomic, strong) UIColor *uwGoldColor;
 @property (nonatomic, strong) UIColor *uwBlackColor;
 @property (nonatomic, strong) UIColor *tabBarTintColor;
+@property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 
 @property (nonatomic, strong) NSString *notificationName;
 
@@ -20,10 +21,12 @@
 + (UIColor *)uwGold;
 + (UIColor *)uwBlack;
 + (UIColor *)uwTabBarColor;
++ (UIStatusBarStyle) statusBarStyle;
 
 + (void)setGoldColor:(UIColor *)gold;
 + (void)setBlackColor:(UIColor *)black;
 + (void)setTabBarColor:(UIColor *)tabBarColor;
++ (void)setStatusStyle:(UIStatusBarStyle)statusStyle;
 + (void)updateColorScheme;
 + (void)registerColorSchemeNotificationForObserver:(id)observer selector:(SEL)selector;
 
