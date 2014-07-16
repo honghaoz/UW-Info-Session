@@ -47,6 +47,30 @@
     return [UWColorSchemeCenter sharedCenter].tabBarTintColor;
 }
 
++ (void)setGoldColor:(UIColor *)gold {
+    [[UWColorSchemeCenter sharedCenter] setGoldColor:gold];
+}
+
+- (void)setGoldColor:(UIColor *)gold {
+    _uwGoldColor = gold;
+}
+
++ (void)setBlackColor:(UIColor *)black {
+    [[UWColorSchemeCenter sharedCenter] setBlackColor:black];
+}
+
+- (void)setBlackColor:(UIColor *)black {
+    _uwBlackColor = black;
+}
+
++ (void)setTabBarColor:(UIColor *)tabBarColor {
+    [[UWColorSchemeCenter sharedCenter] setTabBarColor:tabBarColor];
+}
+
+- (void)setTabBarColor:(UIColor *)tabBarColor {
+    _tabBarTintColor = tabBarColor;
+}
+
 + (void)updateColorScheme {
     [[UWColorSchemeCenter sharedCenter] updateColorScheme];
 }

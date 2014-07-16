@@ -21,6 +21,9 @@
 + (UIColor *)uwBlack;
 + (UIColor *)uwTabBarColor;
 
++ (void)setGoldColor:(UIColor *)gold;
++ (void)setBlackColor:(UIColor *)black;
++ (void)setTabBarColor:(UIColor *)tabBarColor;
 + (void)updateColorScheme;
 + (void)registerColorSchemeNotificationForObserver:(id)observer selector:(SEL)selector;
 
