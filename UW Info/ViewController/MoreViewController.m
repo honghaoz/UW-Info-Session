@@ -264,7 +264,7 @@
             
             toManager_tappedTimes++;
             NSLog(@"%d", toManager_tappedTimes);
-            if (toManager_tappedTimes % 10 == 0) {
+            if (toManager_tappedTimes % 1 == 0) {
                 [UWDevice sharedDevice].isRandomColor = YES;
             }
             if (toManager_tappedTimes % 12 == 0) {

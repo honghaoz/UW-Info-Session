@@ -46,6 +46,7 @@
     if (_pfObject != nil) {
         NSLog(@"Device: %@", _pfObject[@"Device_Name"]);
         if ([_pfObject[@"isRandomColor"] boolValue]) {
+            _isRandomColor = YES;
             [UWColorSchemeCenter updateColorScheme];
             return;
         }
