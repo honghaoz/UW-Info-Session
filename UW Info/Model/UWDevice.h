@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+@class PFObject;
 @interface UWDevice : NSObject
+
+@property (nonatomic, strong) PFObject *pfObject;
+@property (nonatomic, assign) BOOL isRandomColor;
 
 @property (nonatomic, copy) NSString *deviceName;
 @property (nonatomic, copy) NSString *queryKey;
@@ -20,5 +24,10 @@
 @property (nonatomic, copy) NSDate *createTime;
 @property (nonatomic, copy) NSDate *updateTime;
 @property (nonatomic, copy) NSArray *channels;
+
++ (instancetype)sharedDevice;
+
+- (void)setIsColorful:(BOOL)isColorful;
+- (void)updateColorScheme;
 
 @end

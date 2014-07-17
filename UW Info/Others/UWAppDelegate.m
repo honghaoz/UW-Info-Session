@@ -25,6 +25,7 @@
 
 #import "UWErrorReport.h"
 #import "UWColorSchemeCenter.h"
+#import "UWDevice.h"
 
 @implementation UWAppDelegate {
     UWTabBarController *_tabController;
@@ -87,12 +88,11 @@
     ////    [[UWAppiRaterDelegate sharediRateDelegate] appiraterDidDisplayAlert:nil];
 
     //
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [UWColorSchemeCenter updateColorScheme];
-//    });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [[UWDevice sharedDevice] updateColorScheme];
+    });
     
     [application setApplicationSupportsShakeToEdit:YES];
-
     return YES;
 }
 
@@ -443,6 +443,7 @@
                     [object saveEventually];
                 }
             }
+            [UWDevice sharedDevice].pfObject = currentDevice;
         } else {
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);

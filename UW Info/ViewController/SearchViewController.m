@@ -147,6 +147,7 @@
                          _textLabel.textColor = [UWColorSchemeCenter uwBlack];
                          _statusBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
                          _searchBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
+                         _searchBar.scopeBarBackgroundImage = [self imageWithColor:[UWColorSchemeCenter uwGold]];
                      }
                      completion:nil];
 }

@@ -228,20 +228,63 @@ function Color(red, green, blue, alpha) {
     };
 }
 
+function getContrastYIQ(r, g, b, callback){
+	console.log("r: " + r)
+	console.log("g: " + g)
+	console.log("b: " + b)
+	var yiq = ((r * 255 * 299)+(g * 255 * 587)+(b * 255 * 114))/1000;
+	if (yiq >= 128) {
+		callback('black');
+	} else {
+		callback('white');
+	} 
+}
+
+
+
 Parse.Cloud.define("getColorScheme", function(request, response) {
 	var gold = new Color(Math.random(), Math.random(), Math.random(), 1);
-	var black = new Color(Math.random(), Math.random(), Math.random(), 1);
-	var tab = new Color(Math.random(), Math.random(), Math.random(), 1);
-	var statusBar = true;
-	if (Math.random() > 0.5) {
-		statusBar = true;
-	} else {
-		statusBar = false;
-	}
-	var colorSchemeDic = {};
-	colorSchemeDic["uwGoldColor"] = gold.getDic();
-	colorSchemeDic["uwBlackColor"] = black.getDic();
-	colorSchemeDic["uwTabColor"] = tab.getDic();
-	colorSchemeDic["statusBarIsLight"] = statusBar;
-	response.success(colorSchemeDic);
+	//var uwblack = new Color(0.13, 0.14, 0.17, 1); //new Color(Math.random(), Math.random(), Math.random(), 1);
+	var statusBar = false;
+	var black = new Color(0, 0, 0, 1);
+
+	getContrastYIQ(gold.red, gold.green, gold.blue, function (color) {
+		if (color === 'black') {
+			var tab = black;
+			var colorSchemeDic = {};
+			colorSchemeDic["uwGoldColor"] = gold.getDic();
+			colorSchemeDic["uwBlackColor"] = black.getDic();
+			colorSchemeDic["uwTabColor"] = tab.getDic();
+			colorSchemeDic["statusBarIsLight"] = statusBar;
+			response.success(colorSchemeDic);
+		} else {
+			black = new Color(1, 1, 1, 1);
+			statusBar = true;
+			var tab = black;
+			var colorSchemeDic = {};
+			colorSchemeDic["uwGoldColor"] = gold.getDic();
+			colorSchemeDic["uwBlackColor"] = black.getDic();
+			colorSchemeDic["uwTabColor"] = tab.getDic();
+			colorSchemeDic["statusBarIsLight"] = statusBar;
+			response.success(colorSchemeDic);
+		}
+	});
+
+	// if (getContrastYIQ(gold.red, gold.green, gold.blue) == 'white') {
+	// 	black = new Color(1, 1, 1, 1);
+	// 	var statusBar = true;
+	// };
+
+	// var tab = black;//black;//new Color(Math.random(), Math.random(), Math.random(), 1);
+	// if (Math.random() > 0.5) {
+	// 	statusBar = true;
+	// } else {
+	// 	statusBar = false;
+	// }
+	// var colorSchemeDic = {};
+	// colorSchemeDic["uwGoldColor"] = gold.getDic();
+	// colorSchemeDic["uwBlackColor"] = black.getDic();
+	// colorSchemeDic["uwTabColor"] = tab.getDic();
+	// colorSchemeDic["statusBarIsLight"] = statusBar;
+	// response.success(colorSchemeDic);
 });

@@ -33,6 +33,7 @@
 //#import "MYIntroductionPanel.h"
 #import "Appirater.h"
 #import "UWColorSchemeCenter.h"
+#import "UWDevice.h"
 
 #import <StoreKit/StoreKit.h>
 
@@ -263,12 +264,14 @@
             
             toManager_tappedTimes++;
             NSLog(@"%d", toManager_tappedTimes);
+            if (toManager_tappedTimes % 10 == 0) {
+                [UWDevice sharedDevice].isRandomColor = YES;
+            }
             if (toManager_tappedTimes % 12 == 0) {
                 UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"UW Info Manager Login" message:@"Enter Username & Password" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
                 alert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
                 [alert addButtonWithTitle:@"Login"];
                 [alert show];
-                
             }
             
         } else if (indexPath.row == 1){

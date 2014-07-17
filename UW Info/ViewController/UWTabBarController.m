@@ -13,6 +13,7 @@
 #import "DetailViewController.h"
 #import "InfoSessionModel.h"
 #import "UWColorSchemeCenter.h"
+#import "UWDevice.h"
 
 @interface UWTabBarController ()
 
@@ -109,7 +110,9 @@
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     // Do your thing after shaking device
-    [UWColorSchemeCenter updateColorScheme];
+    if ([UWDevice sharedDevice].isRandomColor) {
+        [UWColorSchemeCenter updateColorScheme];
+    }
 }
 
 - (void)didReceiveMemoryWarning

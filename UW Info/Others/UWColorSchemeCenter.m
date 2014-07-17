@@ -111,9 +111,11 @@
     NSDictionary *gold = result[@"uwGoldColor"];
     NSDictionary *black = result[@"uwBlackColor"];
     NSDictionary *tabBarColor = result[@"uwTabColor"];
-    if (result[@"statusBarIsLight"]) {
+    if ([result[@"statusBarIsLight"] boolValue]) {
+        NSLog(@"light");
         _statusBarStyle = UIStatusBarStyleLightContent;
     } else {
+        NSLog(@"dark");
         _statusBarStyle = UIStatusBarStyleDefault;
     }
     _uwGoldColor = [UIColor colorWithRed:[gold[@"red"] floatValue]
