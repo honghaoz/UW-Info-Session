@@ -43,6 +43,7 @@
 
 - (void)updateColorScheme
 {
+    LogMethod;
     if (_pfObject != nil) {
         NSLog(@"Device: %@", _pfObject[@"Device_Name"]);
         if ([_pfObject[@"isRandomColor"] boolValue]) {
@@ -55,33 +56,38 @@
             //        PFQuery *query = [colorScheme_ref query];
             [colorScheme_ref fetchInBackgroundWithBlock:^(PFObject *object, NSError *error) {
                 if (!error) {
-                    //                NSDictionary *result = objects[0];
-                    PFObject *UWGold = object[@"UWGold"];
-                    [UWGold fetchIfNeeded];
-                    PFObject *UWBlack = object[@"UWBlack"];
-                    [UWBlack fetchIfNeeded];
-                    PFObject *TabBar = object[@"TabBar"];
-                    [TabBar fetchIfNeeded];
-                    BOOL statusBarIsLight = [object[@"statusBarIsLight"] boolValue];
-                    if (statusBarIsLight) {
-                        [UWColorSchemeCenter setStatusStyle:UIStatusBarStyleLightContent];
-                    } else {
-                        [UWColorSchemeCenter setStatusStyle:UIStatusBarStyleDefault];
-                    }
                     
-                    [UWColorSchemeCenter setGoldColor:[UIColor colorWithRed:[UWGold[@"red"] floatValue]
-                                                                      green:[UWGold[@"green"] floatValue]
-                                                                       blue:[UWGold[@"blue"] floatValue]
-                                                                      alpha:[UWGold[@"alpha"] floatValue]]];
-                    [UWColorSchemeCenter setBlackColor:[UIColor colorWithRed:[UWBlack[@"red"] floatValue]
-                                                                       green:[UWBlack[@"green"] floatValue]
-                                                                        blue:[UWBlack[@"blue"] floatValue]
-                                                                       alpha:[UWBlack[@"alpha"] floatValue]]];
-                    [UWColorSchemeCenter setTabBarColor:[UIColor colorWithRed:[TabBar[@"red"] floatValue]
-                                                                        green:[TabBar[@"green"] floatValue]
-                                                                         blue:[TabBar[@"blue"] floatValue]
-                                                                        alpha:[TabBar[@"alpha"] floatValue]]];
-                    [[UWColorSchemeCenter sharedCenter] post];
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
+                        PFObject *UWGold = object[@"UWGold"];
+                        [UWGold fetchIfNeeded];
+                        PFObject *UWBlack = object[@"UWBlack"];
+                        [UWBlack fetchIfNeeded];
+                        PFObject *TabBar = object[@"TabBar"];
+                        [TabBar fetchIfNeeded];
+                        BOOL statusBarIsLight = [object[@"statusBarIsLight"] boolValue];
+                        if (statusBarIsLight) {
+                            [UWColorSchemeCenter setStatusStyle:UIStatusBarStyleLightContent];
+                        } else {
+                            [UWColorSchemeCenter setStatusStyle:UIStatusBarStyleDefault];
+                        }
+                        
+                        [UWColorSchemeCenter setGoldColor:[UIColor colorWithRed:[UWGold[@"red"] floatValue]
+                                                                          green:[UWGold[@"green"] floatValue]
+                                                                           blue:[UWGold[@"blue"] floatValue]
+                                                                          alpha:[UWGold[@"alpha"] floatValue]]];
+                        [UWColorSchemeCenter setBlackColor:[UIColor colorWithRed:[UWBlack[@"red"] floatValue]
+                                                                           green:[UWBlack[@"green"] floatValue]
+                                                                            blue:[UWBlack[@"blue"] floatValue]
+                                                                           alpha:[UWBlack[@"alpha"] floatValue]]];
+                        [UWColorSchemeCenter setTabBarColor:[UIColor colorWithRed:[TabBar[@"red"] floatValue]
+                                                                            green:[TabBar[@"green"] floatValue]
+                                                                             blue:[TabBar[@"blue"] floatValue]
+                                                                            alpha:[TabBar[@"alpha"] floatValue]]];
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^(void) {
+                            [UWColorSchemeCenter post];
+                        });
+                    });
                 } else {
                     NSLog(@"No Color Scheme");
                 }

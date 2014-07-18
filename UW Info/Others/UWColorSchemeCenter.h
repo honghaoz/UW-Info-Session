@@ -30,7 +30,12 @@
 + (void)updateColorScheme;
 + (void)registerColorSchemeNotificationForObserver:(id)observer selector:(SEL)selector;
 
+
++ (void)saveColorScheme;
++ (void)readColorScheme;
++ (void)resetColorScheme;
+
 - (void)setColorsWithResult:(NSDictionary *)result;
-- (void)post;
++ (void)post;
 
 @end

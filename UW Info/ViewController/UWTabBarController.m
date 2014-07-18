@@ -75,6 +75,8 @@
     _searchViewController.infoSessionModel = self.infoSessionModel;
 
     [self setBadge];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [[UIApplication sharedApplication] setStatusBarStyle:[UWColorSchemeCenter statusBarStyle]];
 }
 
 - (void)updateColorScheme {

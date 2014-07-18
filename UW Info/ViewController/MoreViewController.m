@@ -50,6 +50,9 @@
     
     UWAds *ad;
     NSInteger toManager_tappedTimes;
+    
+    BOOL _shouldShowRandomColorSwitch;
+    UISwitch *_randomColorSwitch;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -78,6 +81,7 @@
     [self updateColorScheme];
     [UWColorSchemeCenter registerColorSchemeNotificationForObserver:self selector:@selector(updateColorScheme)];
     
+    _shouldShowRandomColorSwitch = [UWDevice sharedDevice].isRandomColor;
     //[self.tableView registerClass:[CenterTextCell class] forCellReuseIdentifier:@"CenterCell"];
     
     itunesURLString = @"http://itunes.apple.com/app/uw-info-session/id837207884?mt=8";
@@ -99,6 +103,7 @@
                      animations:^{
                          self.navigationController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
                          [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack]}];
+                         [_randomColorSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
                      }
                      completion:nil];
 }
@@ -106,7 +111,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     ad = [UWAds singleton];
-    [ad resetAdView:self OriginY:self.view.bounds.size.height - self.navigationController.navigationBar.frame.size.height - ad.iAdBannerView.frame.size.height - 20];
+//    [ad resetAdView:self OriginY:self.view.bounds.size.height - self.navigationController.navigationBar.frame.size.height - ad.iAdBannerView.frame.size.height - 20];
+    [ad resetAdView:self.navigationController OriginY:[UIScreen mainScreen].bounds.size.height - ad.iAdBannerView.frame.size.height];
+    [self.tableView setContentInset:UIEdgeInsetsMake(self.tableView.contentInset.top, 0, ad.iAdBannerView.frame.size.height, 0)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -137,7 +144,11 @@
 {
     // Return the number of rows in the section.
     if (section == 0) {
-        return 2;
+        if (_shouldShowRandomColorSwitch) {
+            return 3;
+        } else {
+            return 2;
+        }
     } else if (section == 1){
         return 3;
     } else {
@@ -172,6 +183,24 @@
             [cell.textLabel setFont:[UIFont systemFontOfSize:18]];
             cell.detailTextLabel.text = @"Honghao";
             [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
+            return cell;
+        } else if (indexPath.row == 2) {
+            NSString *resueIdentifier = @"SwitchCell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:resueIdentifier];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:resueIdentifier];
+            }
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            cell.textLabel.text = @"Random color scheme";
+            [cell.textLabel setFont:[UIFont systemFontOfSize:18]];
+            
+            _randomColorSwitch = [[UISwitch alloc] init];
+//            [_randomColorSwitch setTintColor:[UIColor lightGrayColor]];
+            [_randomColorSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
+            [_randomColorSwitch setOn:[UWDevice sharedDevice].isRandomColor animated:YES];
+            [_randomColorSwitch addTarget:self action:@selector(randomColorSwitch:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell.accessoryView = _randomColorSwitch;
             return cell;
         }
     } else if (indexPath.section == 1) {
@@ -264,8 +293,10 @@
             
             toManager_tappedTimes++;
             NSLog(@"%d", toManager_tappedTimes);
-            if (toManager_tappedTimes % 1 == 0) {
-                [UWDevice sharedDevice].isRandomColor = YES;
+            if (toManager_tappedTimes % 5 == 0) {
+                //[UWDevice sharedDevice].isRandomColor = YES;
+                _shouldShowRandomColorSwitch = YES;
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
             }
             if (toManager_tappedTimes % 12 == 0) {
                 UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"UW Info Manager Login" message:@"Enter Username & Password" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
@@ -613,6 +644,17 @@
                                   otherButtonTitles:nil];
         [alertView show];
     }
+}
+
+#pragma mark - Other methods
+
+- (void)randomColorSwitch:(id)sender {
+    LogMethod;
+    [UWColorSchemeCenter saveColorScheme];
+    UISwitch *theSwitch = sender;
+    [UWDevice sharedDevice].isRandomColor = theSwitch.isOn;
+    [UWDevice sharedDevice].pfObject[@"isRandomColor"] = [NSNumber numberWithBool:theSwitch.isOn];
+    [[UWDevice sharedDevice].pfObject saveEventually];
 }
 
 #pragma mark - SK view controller delegate

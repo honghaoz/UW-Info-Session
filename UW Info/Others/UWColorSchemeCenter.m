@@ -29,10 +29,11 @@
     self = [super init];
     if (self) {
         _notificationName = @"UpdateColorScheme";
-        _uwGoldColor = UW_GOLD;//[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0];
-        _uwBlackColor = UW_BLACK;//[UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
-        _tabBarTintColor = TAB_BAR_COLOR;//[UIColor blackColor];
-        _statusBarStyle = UIStatusBarStyleDefault;
+//        _uwGoldColor = UW_GOLD;
+//        _uwBlackColor = UW_BLACK;
+//        _tabBarTintColor = TAB_BAR_COLOR;
+//        _statusBarStyle = UIStatusBarStyleDefault;
+        [self readColorScheme];
     }
     return self;
 }
@@ -132,7 +133,12 @@
                                        alpha:[tabBarColor[@"alpha"] floatValue]];
 }
 
++ (void)post {
+    [[UWColorSchemeCenter sharedCenter] post];
+}
+
 - (void)post {
+    LogMethod;
     [[UIApplication sharedApplication] setStatusBarStyle:_statusBarStyle];
     [[NSNotificationCenter defaultCenter] postNotificationName:_notificationName object:self userInfo:nil];
 }
@@ -144,6 +150,62 @@
 - (void)registerColorSchemeNotificationForObserver:(id)observer selector:(SEL)selector
 {
     [[NSNotificationCenter defaultCenter] addObserver:observer selector:selector name:_notificationName object:self];
+}
+
++ (void)saveColorScheme {
+    [[UWColorSchemeCenter sharedCenter] saveColorScheme];
+}
+
+- (void)saveColorScheme {
+    LogMethod;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:self.uwGoldColor] forKey:@"uwGoldColor"];
+    
+    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:self.uwBlackColor] forKey:@"uwBlackColor"];
+    
+    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:self.tabBarTintColor] forKey:@"tabBarTintColor"];
+    
+    [defaults setInteger:self.statusBarStyle forKey:@"statusBarStyle"];
+    [defaults synchronize];
+}
+
++ (void)readColorScheme {
+    [[UWColorSchemeCenter sharedCenter] readColorScheme];
+}
+
+- (void)readColorScheme {
+    LogMethod;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    self.uwGoldColor = [NSKeyedUnarchiver unarchiveObjectWithData:[defaults objectForKey:@"uwGoldColor"]];
+    if (self.uwGoldColor == nil) {
+        NSLog(@"Default color: UW_GOLD");
+        self.uwGoldColor = UW_GOLD;
+    }
+    
+    self.uwBlackColor = [NSKeyedUnarchiver unarchiveObjectWithData:[defaults objectForKey:@"uwBlackColor"]];
+    if (self.uwBlackColor == nil) {
+        NSLog(@"Default color: UW_BLACK");
+        self.uwBlackColor = UW_BLACK;
+    }
+    self.tabBarTintColor = [NSKeyedUnarchiver unarchiveObjectWithData:[defaults objectForKey:@"tabBarTintColor"]];
+    if (self.tabBarTintColor == nil) {
+        NSLog(@"Default color: TAB_BAR_COLOR");
+        self.tabBarTintColor = TAB_BAR_COLOR;
+    }
+    self.statusBarStyle = [defaults integerForKey:@"statusBarStyle"];
+}
+
++ (void)resetColorScheme {
+    [[UWColorSchemeCenter sharedCenter] resetColorScheme];
+}
+
+- (void)resetColorScheme {
+    _uwGoldColor = UW_GOLD;
+    _uwBlackColor = UW_BLACK;
+    _tabBarTintColor = TAB_BAR_COLOR;
+    _statusBarStyle = UIStatusBarStyleDefault;
 }
 
 @end
