@@ -281,12 +281,14 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "UW Info/ViewController/MoreViewController.m"
-            timestampString = "427093144.860126"
+            filePath = "UW Info/Others/UWColorSchemeCenter.m"
+            timestampString = "427331777.007429"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31">
+            startingLineNumber = "162"
+            endingLineNumber = "162"
+            landmarkName = "-saveColorScheme"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -295,13 +297,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "UW Info/Others/UWColorSchemeCenter.m"
-            timestampString = "427331777.007429"
+            filePath = "UW Info/ViewController/MoreViewController.m"
+            timestampString = "427441599.181731"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
-            landmarkName = "-saveColorScheme"
+            startingLineNumber = "214"
+            endingLineNumber = "214"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

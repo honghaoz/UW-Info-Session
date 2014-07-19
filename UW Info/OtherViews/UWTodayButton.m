@@ -97,6 +97,7 @@
 
 - (void)setHighlighted:(BOOL)highlighted
 {
+    LogMethod;
     super.highlighted = highlighted;
     _todayLabel.highlighted = highlighted;
     _dateLabel.highlighted = highlighted;
@@ -113,6 +114,7 @@
 
 - (void)setEnabled:(BOOL)enabled
 {
+    LogMethod;
     super.enabled = enabled;
     if (enabled) {
         _todayLabel.textColor = self.normalColor;

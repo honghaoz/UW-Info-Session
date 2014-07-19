@@ -112,7 +112,7 @@
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     // Do your thing after shaking device
-    if ([UWDevice sharedDevice].isRandomColor) {
+    if ([UWDevice sharedDevice].isRandomColor || [UWDevice sharedDevice].isTemporaryRandomColor) {
         [UWColorSchemeCenter updateColorScheme];
     }
 }

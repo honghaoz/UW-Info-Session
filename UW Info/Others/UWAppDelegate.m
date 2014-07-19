@@ -302,7 +302,7 @@
  *  @param timer
  */
 - (void)handleEveryMinute:(NSTimer *)timer {
-    if ([UWDevice sharedDevice].isRandomColor) {
+    if ([UWDevice sharedDevice].isRandomColor || [UWDevice sharedDevice].isTemporaryRandomColor) {
         [UWColorSchemeCenter updateColorScheme];
     }
     // post notification every minute

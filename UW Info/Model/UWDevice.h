@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) PFObject *pfObject;
 @property (nonatomic, assign) BOOL isRandomColor;
+@property (nonatomic, assign) BOOL isTemporaryRandomColor;
 
 @property (nonatomic, copy) NSString *deviceName;
 @property (nonatomic, copy) NSString *queryKey;

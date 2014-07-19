@@ -206,6 +206,8 @@
     _uwBlackColor = UW_BLACK;
     _tabBarTintColor = TAB_BAR_COLOR;
     _statusBarStyle = UIStatusBarStyleDefault;
+    [self post];
+    [self saveColorScheme];
 }
 
 @end

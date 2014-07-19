@@ -34,6 +34,8 @@
 #import "Appirater.h"
 #import "UWColorSchemeCenter.h"
 #import "UWDevice.h"
+#import "GBFlatButton.h"
+#import "GBFlatSelectableButton.h"
 
 #import <StoreKit/StoreKit.h>
 
@@ -53,6 +55,8 @@
     
     BOOL _shouldShowRandomColorSwitch;
     UISwitch *_randomColorSwitch;
+    GBFlatButton *_restButton;
+    GBFlatSelectableButton *_newVersionButton;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -76,6 +80,8 @@
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(done)];
     [self.navigationItem setRightBarButtonItem:doneButton];
     self.title = @"More";
+    
+    self.tableView.delaysContentTouches = NO;
     
     // Register Color Scheme Update Function
     [self updateColorScheme];
@@ -104,6 +110,7 @@
                          self.navigationController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
                          [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack]}];
                          [_randomColorSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
+                         [_restButton setTintColor:[UWColorSchemeCenter uwGold]];
                      }
                      completion:nil];
 }
@@ -195,12 +202,28 @@
             [cell.textLabel setFont:[UIFont systemFontOfSize:18]];
             
             _randomColorSwitch = [[UISwitch alloc] init];
-//            [_randomColorSwitch setTintColor:[UIColor lightGrayColor]];
             [_randomColorSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
             [_randomColorSwitch setOn:[UWDevice sharedDevice].isRandomColor animated:YES];
             [_randomColorSwitch addTarget:self action:@selector(randomColorSwitch:) forControlEvents:UIControlEventTouchUpInside];
             
             cell.accessoryView = _randomColorSwitch;
+            
+            _restButton =  [[GBFlatButton alloc] init];
+            [_restButton setContentEdgeInsets:UIEdgeInsetsMake(0, 2, 0, 2)];
+            [_restButton setTitle:@"Rest" forState:UIControlStateNormal];
+            [_restButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
+            [_restButton sizeToFit];
+            CGRect restButtonRect = CGRectMake(0, 0, _randomColorSwitch.frame.size.width, _randomColorSwitch.frame.size.height);
+            restButtonRect.size.width -= 5;
+            restButtonRect.size.height -= 5;
+            restButtonRect.origin.y = (cell.bounds.size.height - restButtonRect.size.height) / 2;
+            restButtonRect.origin.x = cell.bounds.size.width - restButtonRect.size.width - 72;
+            [_restButton setFrame:restButtonRect];
+            _restButton.tintColor = [UWColorSchemeCenter uwGold];
+            
+            [_restButton addTarget:self action:@selector(resetColor:) forControlEvents:UIControlEventTouchUpInside];
+            [cell addSubview:_restButton];
+            
             return cell;
         }
     } else if (indexPath.section == 1) {
@@ -490,7 +513,7 @@
         // Show the feed dialog
         [FBWebDialogs presentFeedDialogModallyWithSession:nil
                                                parameters:params
-                                                  handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+                                                handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
                                                       if (error) {
                                                           // An error occurred, we need to handle the error
                                                           // See: https://developers.facebook.com/docs/ios/errors
@@ -499,6 +522,8 @@
                                                           if (result == FBWebDialogResultDialogNotCompleted) {
                                                               // User cancelled.
                                                               //NSLog(@"User cancelled.");
+                                                              [UWDevice sharedDevice].isTemporaryRandomColor = YES;
+                                                              [UWColorSchemeCenter updateColorScheme];
                                                           } else {
                                                               // Handle the publish feed callback
                                                               NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
@@ -511,6 +536,9 @@
                                                                   // User clicked the Share button
                                                                   //NSString *result = [NSString stringWithFormat: @"Posted story, id: %@", [urlParams valueForKey:@"post_id"]];
                                                                   //NSLog(@"result %@", result);
+                                                                  [UWDevice sharedDevice].isTemporaryRandomColor = YES;
+                                                                  [UWColorSchemeCenter updateColorScheme];
+                                                                  
                                                               }
                                                           }
                                                       }
@@ -650,11 +678,23 @@
 
 - (void)randomColorSwitch:(id)sender {
     LogMethod;
-    [UWColorSchemeCenter saveColorScheme];
     UISwitch *theSwitch = sender;
     [UWDevice sharedDevice].isRandomColor = theSwitch.isOn;
+    
+    if (!_randomColorSwitch.isOn) {
+        [_restButton removeFromSuperview];
+    } else {
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    
     [UWDevice sharedDevice].pfObject[@"isRandomColor"] = [NSNumber numberWithBool:theSwitch.isOn];
     [[UWDevice sharedDevice].pfObject saveEventually];
+    [UWColorSchemeCenter saveColorScheme];
+}
+
+- (void)resetColor:(id)sender {
+//    _restButton.selected = !_restButton.selected;
+    [UWColorSchemeCenter resetColorScheme];
 }
 
 #pragma mark - SK view controller delegate
