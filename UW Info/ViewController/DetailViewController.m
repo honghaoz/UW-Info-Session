@@ -447,7 +447,7 @@
     addController.editViewDelegate = self;
     self.performedNavigation = @"addCalendarEvent";
     [self presentViewController:addController animated:YES completion:^{
-        [UWColorSchemeCenter setTemporaryRandomColorSchemeMode:YES];
+//        [UWColorSchemeCenter setTemporaryRandomColorSchemeMode:YES];
     }];
 }
 

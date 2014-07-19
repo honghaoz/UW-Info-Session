@@ -212,7 +212,7 @@
             
             cell.accessoryView = _randomColorSwitch;
             
-            _restButton =  [[GBFlatButton alloc] init];
+            _restButton = _restButton ?: [[GBFlatButton alloc] init];
             [_restButton setContentEdgeInsets:UIEdgeInsetsMake(0, 2, 0, 2)];
             [_restButton setTitle:@"Rest" forState:UIControlStateNormal];
             [_restButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
@@ -226,7 +226,9 @@
             _restButton.tintColor = [UWColorSchemeCenter uwGold];
             
             [_restButton addTarget:self action:@selector(resetColor:) forControlEvents:UIControlEventTouchUpInside];
-            [cell addSubview:_restButton];
+            if ([UWDevice sharedDevice].isRandomColor) {
+                [cell addSubview:_restButton];
+            }
             
             return cell;
         }
