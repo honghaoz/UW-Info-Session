@@ -37,7 +37,6 @@
 		1B3A33B818D4D7690046DC73 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A33AF18D4D7690046DC73 /* UIRefreshControl+AFNetworking.m */; };
 		1B3A33B918D4D7690046DC73 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A33B118D4D7690046DC73 /* UIWebView+AFNetworking.m */; };
 		1B3A33BB18D4D7A10046DC73 /* AppIcon-Rounded.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B3A33BA18D4D7A10046DC73 /* AppIcon-Rounded.png */; };
-		1B3A33C218D4D7D90046DC73 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3A33C118D4D7D90046DC73 /* FacebookSDK.framework */; };
 		1B3A33C418D4D7E40046DC73 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3A33C318D4D7E40046DC73 /* Parse.framework */; };
 		1B3A33F018D4D8B30046DC73 /* RECommonFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A33E718D4D8B30046DC73 /* RECommonFunctions.m */; };
 		1B3A33F118D4D8B30046DC73 /* REMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A33E918D4D8B30046DC73 /* REMenu.m */; };
@@ -154,6 +153,7 @@
 		1BDD367B18ECE7D70098EAAF /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDD367A18ECE7D70098EAAF /* libGoogleAnalyticsServices.a */; };
 		1BE6D46A18D4F68500BE31B0 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE6D46918D4F68500BE31B0 /* FeedbackViewController.m */; };
 		1BF0542318A93ECC005C04B2 /* DetailSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */; };
+		1BF43754197A470F009B4634 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF43753197A470F009B4634 /* FacebookSDK.framework */; };
 		1BF84FAC18D6AF9F00F7A86D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF84FAB18D6AF9F00F7A86D /* iAd.framework */; };
 /* End PBXBuildFile section */
 
@@ -228,7 +228,6 @@
 		1B3A33B018D4D7690046DC73 /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIWebView+AFNetworking.h"; path = "ThridPartySDK/UIKit+AFNetworking/UIWebView+AFNetworking.h"; sourceTree = SOURCE_ROOT; };
 		1B3A33B118D4D7690046DC73 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIWebView+AFNetworking.m"; path = "ThridPartySDK/UIKit+AFNetworking/UIWebView+AFNetworking.m"; sourceTree = SOURCE_ROOT; };
 		1B3A33BA18D4D7A10046DC73 /* AppIcon-Rounded.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIcon-Rounded.png"; path = "Resources/AppIcon-Rounded.png"; sourceTree = "<group>"; };
-		1B3A33C118D4D7D90046DC73 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ThridPartySDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		1B3A33C318D4D7E40046DC73 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = ThridPartySDK/Parse.framework; sourceTree = "<group>"; };
 		1B3A33E618D4D8B30046DC73 /* RECommonFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RECommonFunctions.h; path = OpenSource/REMenu/RECommonFunctions.h; sourceTree = SOURCE_ROOT; };
 		1B3A33E718D4D8B30046DC73 /* RECommonFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RECommonFunctions.m; path = OpenSource/REMenu/RECommonFunctions.m; sourceTree = SOURCE_ROOT; };
@@ -427,6 +426,7 @@
 		1BE6D46918D4F68500BE31B0 /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeedbackViewController.m; path = ViewController/FeedbackViewController.m; sourceTree = "<group>"; };
 		1BF0542118A93ECC005C04B2 /* DetailSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSwitchCell.h; path = TableViewCell/DetailSwitchCell.h; sourceTree = "<group>"; };
 		1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSwitchCell.m; path = TableViewCell/DetailSwitchCell.m; sourceTree = "<group>"; };
+		1BF43753197A470F009B4634 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ThridPartySDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		1BF84FAB18D6AF9F00F7A86D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -450,13 +450,13 @@
 				1BF84FAC18D6AF9F00F7A86D /* iAd.framework in Frameworks */,
 				1B3A337918D4BA5D0046DC73 /* Social.framework in Frameworks */,
 				1B78A990191E88B200A4A8AD /* libGoogleAdMobAds.a in Frameworks */,
-				1B3A33C218D4D7D90046DC73 /* FacebookSDK.framework in Frameworks */,
 				1B505ED718D0E39F00F168F8 /* Security.framework in Frameworks */,
 				1B505ED518D0E39900F168F8 /* QuartzCore.framework in Frameworks */,
 				1B505ED318D0E39300F168F8 /* MobileCoreServices.framework in Frameworks */,
 				1B505ECF18D0E38400F168F8 /* CoreLocation.framework in Frameworks */,
 				1B3A338218D4D66C0046DC73 /* libWeChatSDK.a in Frameworks */,
 				1B3A33C418D4D7E40046DC73 /* Parse.framework in Frameworks */,
+				1BF43754197A470F009B4634 /* FacebookSDK.framework in Frameworks */,
 				1B6F54C818AC219000D3DD47 /* EventKitUI.framework in Frameworks */,
 				1B6F54C618AC218600D3DD47 /* EventKit.framework in Frameworks */,
 				1BD83A9918A59F1C00EDBB6D /* UIKit.framework in Frameworks */,
@@ -994,13 +994,13 @@
 		1BD83A9318A59F1C00EDBB6D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1BF43753197A470F009B4634 /* FacebookSDK.framework */,
 				1BDD367118EC73880098EAAF /* MessageUI.framework */,
 				1BDD366F18EC73820098EAAF /* CoreTelephony.framework */,
 				1BDD366D18EC73700098EAAF /* AVFoundation.framework */,
 				1BDD366B18EC735F0098EAAF /* AdSupport.framework */,
 				1BF84FAB18D6AF9F00F7A86D /* iAd.framework */,
 				1B3A33C318D4D7E40046DC73 /* Parse.framework */,
-				1B3A33C118D4D7D90046DC73 /* FacebookSDK.framework */,
 				1B3A337818D4BA5D0046DC73 /* Social.framework */,
 				1B505EDA18D0E3AB00F168F8 /* SystemConfiguration.framework */,
 				1B505ED818D0E3A400F168F8 /* StoreKit.framework */,

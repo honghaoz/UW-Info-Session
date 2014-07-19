@@ -15,6 +15,8 @@
 @property (nonatomic, strong) UIColor *tabBarTintColor;
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 
+@property (nonatomic, assign) BOOL isTemporaryRandomColor;
+
 @property (nonatomic, strong) NSString *notificationName;
 
 + (instancetype)sharedCenter;
@@ -37,5 +39,7 @@
 
 - (void)setColorsWithResult:(NSDictionary *)result;
 + (void)post;
+
++ (void)setTemporaryRandomColorSchemeMode:(BOOL)isTemp;
 
 @end

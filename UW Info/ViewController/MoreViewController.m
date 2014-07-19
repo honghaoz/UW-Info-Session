@@ -96,6 +96,10 @@
     appURLString = @"itms://itunes.apple.com/app/uw-info-session/id837207884?mt=8";
     sharPostString = @"UW Info is a great app to search and manage info sessions #UWaterloo, check it out!";
     
+#if DEBUG
+    [FBSettings enableBetaFeature:FBBetaFeaturesLikeButton];
+#endif
+    
     // Google Analytics
     [UWGoogleAnalytics analyticScreen:@"More Screen"];
     toManager_tappedTimes = 0;
@@ -275,6 +279,9 @@
                 cell = [[CenterTextCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:resueIdentifier];
             }
             cell.centerTextLabel.text = @"Rate this app 😊";
+//            FBLikeControl *like = [[FBLikeControl alloc] init];
+//            like.objectID = @"http://shareitexampleapp.parseapp.com/photo1/";
+//            [cell addSubview:like];
             return cell;
         }
     }
@@ -292,6 +299,7 @@
     //headerLabel.shadowOffset = CGSizeMake(0,1);
     //lbl.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"my_head_bg"]];
     //lbl.alpha = 0.9;
+    
     return headerLabel;
 }
 
@@ -483,6 +491,9 @@
     // If the Facebook app is installed and we can present the share dialog
     if ([FBDialogs canPresentShareDialogWithParams:params]) {
         // Present share dialog
+        NSLog(@"Present share dialog");
+        [UWColorSchemeCenter setTemporaryRandomColorSchemeMode:YES];
+        
         [FBDialogs presentShareDialogWithLink:params.link
                                          name:params.name
                                       caption:params.caption
@@ -501,6 +512,7 @@
                                       }];
     } else {
         // Present the feed dialog
+        NSLog(@"Present feed dialog");
         // Put together the dialog parameters
         NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                        @"UW Info Session", @"name",
@@ -511,34 +523,33 @@
                                        nil];
         
         // Show the feed dialog
+        NSLog(@"Show the feed dialog");
         [FBWebDialogs presentFeedDialogModallyWithSession:nil
                                                parameters:params
                                                 handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
                                                       if (error) {
                                                           // An error occurred, we need to handle the error
                                                           // See: https://developers.facebook.com/docs/ios/errors
-                                                          //NSLog(@"%@", [NSString stringWithFormat:@"Error publishing story: %@", error.description]);
+                                                          NSLog(@"%@", [NSString stringWithFormat:@"Error publishing story: %@", error.description]);
                                                       } else {
+                                                          NSLog(@"User come back");
                                                           if (result == FBWebDialogResultDialogNotCompleted) {
                                                               // User cancelled.
-                                                              //NSLog(@"User cancelled.");
-                                                              [UWDevice sharedDevice].isTemporaryRandomColor = YES;
-                                                              [UWColorSchemeCenter updateColorScheme];
+                                                              NSLog(@"User cancelled.");
+//                                                              [UWDevice sharedDevice].isTemporaryRandomColor = YES;
+//                                                              [UWColorSchemeCenter updateColorScheme];
                                                           } else {
                                                               // Handle the publish feed callback
                                                               NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
                                                               
                                                               if (![urlParams valueForKey:@"post_id"]) {
                                                                   // User cancelled.
-                                                                  //NSLog(@"User cancelled.");
+                                                                  NSLog(@"User cancelled.");
                                                                   
                                                               } else {
                                                                   // User clicked the Share button
-                                                                  //NSString *result = [NSString stringWithFormat: @"Posted story, id: %@", [urlParams valueForKey:@"post_id"]];
-                                                                  //NSLog(@"result %@", result);
-                                                                  [UWDevice sharedDevice].isTemporaryRandomColor = YES;
-                                                                  [UWColorSchemeCenter updateColorScheme];
-                                                                  
+                                                                  NSString *result = [NSString stringWithFormat: @"Posted story, id: %@", [urlParams valueForKey:@"post_id"]];
+                                                                  NSLog(@"result %@", result);
                                                               }
                                                           }
                                                       }
@@ -550,7 +561,7 @@
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-    
+    LogMethod;
     BOOL urlWasHandled = [FBAppCall handleOpenURL:url
                                 sourceApplication:sourceApplication
                                   fallbackHandler:^(FBAppCall *call) {
@@ -576,6 +587,7 @@
 }
 
 - (void)shareOnTwitter {
+    [UWColorSchemeCenter setTemporaryRandomColorSchemeMode:YES];
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
     {
         SLComposeViewController *composeController = [SLComposeViewController
@@ -610,9 +622,11 @@
     if (buttonIndex == 0) {
         // share to friends
         [self shareOnWechatTo:WXSceneTimeline];
+        [UWColorSchemeCenter setTemporaryRandomColorSchemeMode:YES];
     } else if (buttonIndex == 1) {
         // share to moments
         [self shareOnWechatTo:WXSceneSession];
+        [UWColorSchemeCenter setTemporaryRandomColorSchemeMode:YES];
     }
     theActionSheet = nil;
 }
@@ -649,6 +663,7 @@
 }
 
 - (void)shareOnWeibo {
+    [UWColorSchemeCenter setTemporaryRandomColorSchemeMode:YES];
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeSinaWeibo])
     {
         SLComposeViewController *composeController = [SLComposeViewController

@@ -188,6 +188,7 @@
         alert.tag = 0;
         [alert show];
     }
+    [PFPush handlePush:userInfo];
 }
 
 - (BOOL)application:(UIApplication*)application handleOpenURL:(NSURL*)url
@@ -302,7 +303,7 @@
  *  @param timer
  */
 - (void)handleEveryMinute:(NSTimer *)timer {
-    if ([UWDevice sharedDevice].isRandomColor || [UWDevice sharedDevice].isTemporaryRandomColor) {
+    if ([UWDevice sharedDevice].isRandomColor || [UWColorSchemeCenter sharedCenter].isTemporaryRandomColor) {
         [UWColorSchemeCenter updateColorScheme];
     }
     // post notification every minute

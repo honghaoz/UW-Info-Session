@@ -8,6 +8,8 @@
 
 #import "UWColorSchemeCenter.h"
 #import <Parse/Parse.h>
+#import "UWErrorReport.h"
+#import "UIDevice-Hardware.h"
 
 @implementation UWColorSchemeCenter
 
@@ -208,6 +210,16 @@
     _statusBarStyle = UIStatusBarStyleDefault;
     [self post];
     [self saveColorScheme];
+}
+
++ (void)setTemporaryRandomColorSchemeMode:(BOOL)isTemp {
+    [[UWColorSchemeCenter sharedCenter] setTemporaryRandomColorSchemeMode:isTemp];
+    [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"Temporary color scheme mode: Device: %@", [[UIDevice currentDevice] name]]];
+}
+
+- (void)setTemporaryRandomColorSchemeMode:(BOOL)isTemp {
+    _isTemporaryRandomColor = isTemp;
+    [self updateColorScheme];
 }
 
 @end
