@@ -37,6 +37,8 @@
 #import "GBFlatButton.h"
 #import "GBFlatSelectableButton.h"
 
+#import "HSLUpdateChecker.h"
+
 #import <StoreKit/StoreKit.h>
 
 @interface MoreViewController () <UIActionSheetDelegate, ADBannerViewDelegate, GADBannerViewDelegate, UIAlertViewDelegate/*, MYIntroductionDelegate*/, SKStoreProductViewControllerDelegate>
@@ -56,7 +58,8 @@
     BOOL _shouldShowRandomColorSwitch;
     UISwitch *_randomColorSwitch;
     GBFlatButton *_restButton;
-    GBFlatSelectableButton *_newVersionButton;
+    GBFlatButton *_newVersionButton;
+    NSString *_updateURL;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -125,6 +128,31 @@
 //    [ad resetAdView:self OriginY:self.view.bounds.size.height - self.navigationController.navigationBar.frame.size.height - ad.iAdBannerView.frame.size.height - 20];
     [ad resetAdView:self.navigationController OriginY:[UIScreen mainScreen].bounds.size.height - ad.iAdBannerView.frame.size.height];
     [self.tableView setContentInset:UIEdgeInsetsMake(self.tableView.contentInset.top, 0, ad.iAdBannerView.frame.size.height, 0)];
+    
+    [HSLUpdateChecker checkForUpdateWithHandler:^(NSString *appStoreVersion, NSString *localVersion, NSString *releaseNotes, NSString *updateURL) {
+        NSLog(@"appStoreVersion: %@", appStoreVersion);
+        NSLog(@"localVersion: %@", localVersion);
+        NSLog(@"releaseNotes: %@", releaseNotes);
+        NSLog(@"updateURL: %@", updateURL);
+        _updateURL = updateURL;
+        
+        if (!_newVersionButton) {
+            _newVersionButton = [[GBFlatButton alloc] initWithFrame:CGRectZero];
+            [_newVersionButton setContentEdgeInsets:UIEdgeInsetsMake(2, 8, 2, 8)];
+            [_newVersionButton setTintColor:[UIColor colorWithRed:1 green:0.23 blue:0.19 alpha:1]];
+            //        [_newVersionButton setTintAdjustmentMode:UIViewTintAdjustmentModeAutomatic];
+            [_newVersionButton setDisableHighlight:YES];
+            [_newVersionButton setTitle:[NSString stringWithFormat:@"New: %@", appStoreVersion] forState:UIControlStateNormal];
+            [_newVersionButton setTitle:[NSString stringWithFormat:@"New: %@", appStoreVersion] forState:UIControlStateHighlighted];
+            [_newVersionButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
+            [_newVersionButton setSelected:YES];
+            [_newVersionButton sizeToFit];
+//            [_newVersionButton setAdjustsImageWhenHighlighted:NO];
+            [_newVersionButton addTarget:self action:@selector(newVersionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -181,6 +209,20 @@
             [cell.textLabel setFont:[UIFont systemFontOfSize:18]];
             cell.detailTextLabel.text = [UIApplication appVersion];
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            
+            NSLog(@"is new version available?");
+            if (_newVersionButton) {
+                CGSize AppVersionStringSize = [[UIApplication appVersion] sizeWithAttributes:
+                               @{NSFontAttributeName:
+                                     [UIFont systemFontOfSize:18.0f]}];
+//                NSLog(NSStringFromCGSize(size));
+                CGRect newRect = _newVersionButton.frame;
+                newRect.origin.x = cell.bounds.size.width - newRect.size.width - (AppVersionStringSize.width + 25);
+                newRect.origin.y = (cell.bounds.size.height - newRect.size.height) / 2;
+                [_newVersionButton setFrame:newRect];
+                [cell addSubview:_newVersionButton];
+            }
+            
             return cell;
         }
         else if (indexPath.row == 1) {
@@ -329,6 +371,7 @@
             if (toManager_tappedTimes % 5 == 0) {
                 //[UWDevice sharedDevice].isRandomColor = YES;
                 _shouldShowRandomColorSwitch = YES;
+                
                 [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
             }
             if (toManager_tappedTimes % 12 == 0) {
@@ -350,6 +393,8 @@
             [self presentViewController:newMoreNaviVC animated:YES completion:^(){}];
         } else if (indexPath.row == 2) {
 //            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:itunesRateURLString]];
+            
+            // Show store in app
 //            SKStoreProductViewController *productVC = [[SKStoreProductViewController alloc] init];
 //            productVC.delegate = self;
 //            NSDictionary *productParameters = @{ SKStoreProductParameterITunesItemIdentifier : @"837207884"};
@@ -368,9 +413,9 @@
 ////                    [newMoreNaviVC.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(productViewControllerDidFinish:)]];
 ////                    [newMoreNaviVC.navigationBar performSelector:@selector(setBarTintColor:) withObject:[UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]];
 ////                    newMoreNaviVC.navigationBar.tintColor = [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1];
-////                    [self presentViewController:productVC animated:YES completion:nil];
+//                    [self presentViewController:productVC animated:YES completion:nil];
 //                }
-//                
+//            
 //            }];
 //            [Appirater rateApp];
             [[iRate sharedInstance] openRatingsPageInAppStore];
@@ -712,6 +757,11 @@
 - (void)resetColor:(id)sender {
 //    _restButton.selected = !_restButton.selected;
     [UWColorSchemeCenter resetColorScheme];
+}
+
+- (void)newVersionButtonTapped:(id)sender {
+    LogMethod;
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_updateURL]];
 }
 
 #pragma mark - SK view controller delegate

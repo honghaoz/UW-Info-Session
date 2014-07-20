@@ -11,6 +11,9 @@
 @interface HSLUpdateChecker ()
 
 @property (nonatomic, copy) NSString *updateUrl; // We need to remember the URL for the default alert handler
+@property (nonatomic, assign) BOOL newVersionAvailable; // once new version is detected, this will be YES
+@property (nonatomic, assign) BOOL isDebugEnable; // when this is YES, check update will always call handler
+@property (nonatomic, assign) BOOL isPostNotificationEnable; // when this is YES, a @"NewVersionAvailable" notification will be posted
 
 @end
 
@@ -27,12 +30,18 @@
     return _sharedObject;
 }
 
++ (BOOL) isNewVersionAvailable
+{
+    return [HSLUpdateChecker sharedUpdateChecker].newVersionAvailable;
+}
+
 + (void)checkForUpdate
 {
     [self checkForUpdateWithHandler:^(NSString *appStoreVersion, NSString *localVersion, NSString *releaseNotes, NSString *updateURL) {
+        
         // Remember the URL for the alert delegate
         [HSLUpdateChecker sharedUpdateChecker].updateUrl = updateURL;
-
+        
         NSString *titleFormat = NSLocalizedString(@"Version %@ Now Available", @"HSLUpdateChecker upgrade alert message title. The argument is the version number of the update.");
         NSString *messageFormat = NSLocalizedString(@"New in this version:\n%@", @"HSLUpdateChecker upgrade alert message text. The argument is the release notes for the update.");
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:titleFormat, appStoreVersion]
@@ -55,7 +64,7 @@
         NSString *languageCode = [locale objectForKey:NSLocaleLanguageCode];
         NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/lookup?bundleId=%@&country=%@&lang=%@", bundleId, countryCode, languageCode];
         NSURL *url = [NSURL URLWithString:urlString];
-
+        
         NSError *error = nil;
         NSData *jsonData = [NSData dataWithContentsOfURL:url];
         
@@ -86,8 +95,9 @@
                     if (localVersion && ![localVersion isEqualToString:appStoreVersion])
                     {
                         // Different! Tell our handler about it if we haven't already for this appStoreVersion.
+                        // If debug mode is enabled, always call handler.
                         NSString *checkedAppStoreVersionKey = [NSString stringWithFormat:@"HSL_UPDATE_CHECKER_CHECKED_%@", appStoreVersion];
-                        if (![[NSUserDefaults standardUserDefaults] boolForKey:checkedAppStoreVersionKey])
+                        if ([HSLUpdateChecker sharedUpdateChecker].isDebugEnable || (![[NSUserDefaults standardUserDefaults] boolForKey:checkedAppStoreVersionKey]))
                         {
                             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:checkedAppStoreVersionKey];
                             [[NSUserDefaults standardUserDefaults] synchronize];
@@ -100,9 +110,23 @@
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     if (handler)
                                     {
+                                        // Post notification
+                                        if ([HSLUpdateChecker sharedUpdateChecker].isPostNotificationEnable) {
+                                            [[NSNotificationCenter defaultCenter] postNotificationName:@"NewVersionAvailable" object:self userInfo:@{@"LocalVersion":localVersion, @"AppStoreVersion" : appStoreVersion, @"UpdateURL" : updateUrl}];
+                                        }
+                                        
+                                        // Set new version is available
+                                        [HSLUpdateChecker sharedUpdateChecker].newVersionAvailable = YES;
+                                        
+                                        // Call handler
                                         handler(appStoreVersion, localVersion, releaseNotes, updateUrl);
                                     }
                                 });
+                            }
+                            // Version is the same
+                            else {
+                                // Set new version is not available
+                                [HSLUpdateChecker sharedUpdateChecker].newVersionAvailable = NO;
                             }
                         }
                     }
@@ -115,6 +139,14 @@
             NSLog(@"HSLUpdateChecker: Received no data from iTunes API");
         }
     });
+}
+
++ (void) enableDebugMode:(BOOL)enable {
+    [HSLUpdateChecker sharedUpdateChecker].isDebugEnable = enable;
+}
+
++ (void) enablePostNotification:(BOOL)enable {
+    [HSLUpdateChecker sharedUpdateChecker].isPostNotificationEnable = enable;
 }
 
 #pragma mark - UIAlertViewDelegate methods

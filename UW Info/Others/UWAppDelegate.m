@@ -64,6 +64,8 @@
     [self setGoogleAnalytics];
 
     // check update
+    [HSLUpdateChecker enableDebugMode:YES];
+    [HSLUpdateChecker enablePostNotification:YES];
     [HSLUpdateChecker checkForUpdate];
 
     // Register push notification

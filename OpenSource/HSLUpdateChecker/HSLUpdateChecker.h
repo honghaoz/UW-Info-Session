@@ -18,6 +18,11 @@
 */
 @interface HSLUpdateChecker : NSObject <UIAlertViewDelegate>
 
+/** Return whether new version is detected, must call check for update first
+ *
+ */
++ (BOOL) isNewVersionAvailable;
+
 /** Checks for update and presents a UIAlertView if there is an update available.
  
  */
@@ -28,5 +33,25 @@
  @param handler Block that is only called if an update is available.
  */
 + (void) checkForUpdateWithHandler:(void (^)(NSString *appStoreVersion, NSString *localVersion, NSString *releaseNotes, NSString *updateURL))handler;
+
+/** Check update handler can be called when debug mode is enabled.
+ *  Default is NO.
+ *
+ *  @param enable
+ */
++ (void) enableDebugMode:(BOOL)enable;
+
+/** Enable default notification center post a @"NewVersionAvailable" notification.
+ *  Userinfo dictionary: 
+    @{
+        @"LocalVersion": localVersion,
+        @"AppStoreVersion" : appStoreVersion,
+        @"UpdateURL" : updateUrl
+    }
+ *  Default is NO.
+ *
+ *  @param enable
+ */
++ (void) enablePostNotification:(BOOL)enable;
 
 @end

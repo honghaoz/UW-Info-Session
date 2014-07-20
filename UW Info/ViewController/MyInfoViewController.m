@@ -24,6 +24,7 @@
 #import "GADBannerViewDelegate.h"
 //#import "GADAdMobExtras.h"
 #import "UWColorSchemeCenter.h"
+#import "HSLUpdateChecker.h"
 
 @interface MyInfoViewController () <GADBannerViewDelegate>
 
@@ -35,6 +36,7 @@
     
     GADBannerView *_googleBannerView;
     UIButton *_settingButton;
+    UIView *_redDotView;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -46,14 +48,10 @@
     return self;
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    _tabBarController.lastTapped = -1;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    LogMethod;
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -66,7 +64,7 @@
 //    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings"] style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreViewController)];
     
     [self.navigationItem setRightBarButtonItem:moreButton];
-    [self setRedDotToSettingButton:NO];
+//    [self setRedDotToSettingButton:NO];
     
 //    UIBarButtonItem *configButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStyleBordered target:self action:@selector(configuration)];
 //    UIFont *smallerFont = [UIFont systemFontOfSize:[UIFont systemFontSize] - 6.0];
@@ -94,6 +92,7 @@
     
     // receive every minute from notification center
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshEveryMinute) name:@"OneMinute" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedNewVersionNotification:) name:@"NewVersionAvailable" object:nil];
     
     // Google Analytics
     [UWGoogleAnalytics analyticScreen:@"My Info Session Screen"];
@@ -131,6 +130,17 @@
                      completion:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    LogMethod;
+    [super viewWillAppear:animated];
+    _tabBarController.lastTapped = -1;
+    if ([HSLUpdateChecker isNewVersionAvailable]) {
+        [self setRedDotToSettingButton:YES];
+    } else {
+        [self setRedDotToSettingButton:NO];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -139,14 +149,23 @@
 
 #pragma mark - 
 
+- (void)receivedNewVersionNotification:(NSNotification *)notification {
+//    [self setRedDotToSettingButton:YES];
+}
+
 - (void)setRedDotToSettingButton:(BOOL)isSet {
-    [self.navigationItem.rightBarButtonItem.customView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    NSLog(@"setRedDot: %@",  isSet ? @"YES" : @"NO");
+    // Remove red dot
+//    [self.navigationItem.rightBarButtonItem.customView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     if (isSet) {
-        NSLog(@"isSet");
-        UIView *redDot = [[UIView alloc] initWithFrame:CGRectMake(17, -3, 12, 12)];
-        [redDot setBackgroundColor:[UIColor colorWithRed:1 green:0.23 blue:0.19 alpha:1]];
-        redDot.layer.cornerRadius = redDot.frame.size.width / 2;
-        [self.navigationItem.rightBarButtonItem.customView addSubview:redDot];
+        if (!_redDotView) {
+            _redDotView = [[UIView alloc] initWithFrame:CGRectMake(17, -3, 12, 12)];
+            [_redDotView setBackgroundColor:[UIColor colorWithRed:1 green:0.23 blue:0.19 alpha:1]];
+            _redDotView.layer.cornerRadius = _redDotView.frame.size.width / 2;
+        }
+        [self.navigationItem.rightBarButtonItem.customView addSubview:_redDotView];
+    } else {
+        [_redDotView removeFromSuperview];
     }
 }
 

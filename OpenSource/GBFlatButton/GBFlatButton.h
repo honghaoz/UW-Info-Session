@@ -17,4 +17,7 @@
  *  For a fullfilled button, just set the `selected` property to YES.
  */
 @interface GBFlatButton : UIButton
+
+- (void)setDisableHighlight:(BOOL)disableHighlight;
+
 @end
