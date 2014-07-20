@@ -14,6 +14,7 @@
 @property (nonatomic, strong) UIColor *uwBlackColor;
 @property (nonatomic, strong) UIColor *tabBarTintColor;
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
+@property (nonatomic, assign) BOOL isDarkColorScheme;
 
 @property (nonatomic, assign) BOOL isTemporaryRandomColor;
 

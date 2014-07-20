@@ -202,6 +202,7 @@
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:self.tabBarTintColor] forKey:@"tabBarTintColor"];
     
     [defaults setInteger:self.statusBarStyle forKey:@"statusBarStyle"];
+    [defaults setBool:self.isDarkColorScheme forKey:@"isDarkColorScheme"];
     [defaults synchronize];
 }
 
@@ -230,6 +231,7 @@
         self.tabBarTintColor = TAB_BAR_COLOR;
     }
     self.statusBarStyle = [defaults integerForKey:@"statusBarStyle"];
+    self.isDarkColorScheme = [defaults boolForKey:@"isDarkColorScheme"];
 }
 
 + (void)resetColorScheme {
@@ -237,10 +239,18 @@
 }
 
 - (void)resetColorScheme {
-    _uwGoldColor = UW_GOLD;
-    _uwBlackColor = UW_BLACK;
-    _tabBarTintColor = TAB_BAR_COLOR;
-    _statusBarStyle = STATUS_BAR;
+    if (self.isDarkColorScheme) {
+        _uwGoldColor = UW_GOLD1;
+        _uwBlackColor = UW_BLACK1;
+        _tabBarTintColor = TAB_BAR_COLOR1;
+        _statusBarStyle = STATUS_BAR1;
+    } else {
+        _uwGoldColor = UW_GOLD;
+        _uwBlackColor = UW_BLACK;
+        _tabBarTintColor = TAB_BAR_COLOR;
+        _statusBarStyle = STATUS_BAR;
+    }
+    
     [self post];
     [self saveColorScheme];
 }
