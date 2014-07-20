@@ -129,6 +129,7 @@
     [ad resetAdView:self.navigationController OriginY:[UIScreen mainScreen].bounds.size.height - ad.iAdBannerView.frame.size.height];
     [self.tableView setContentInset:UIEdgeInsetsMake(self.tableView.contentInset.top, 0, ad.iAdBannerView.frame.size.height, 0)];
     
+    [HSLUpdateChecker enableDebugMode:YES];
     [HSLUpdateChecker checkForUpdateWithHandler:^(NSString *appStoreVersion, NSString *localVersion, NSString *releaseNotes, NSString *updateURL) {
         NSLog(@"appStoreVersion: %@", appStoreVersion);
         NSLog(@"localVersion: %@", localVersion);
@@ -153,6 +154,7 @@
         
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
+//    [HSLUpdateChecker enableDebugMode:NO];
 }
 
 - (void)didReceiveMemoryWarning
@@ -210,7 +212,7 @@
             cell.detailTextLabel.text = [UIApplication appVersion];
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             
-            NSLog(@"is new version available?");
+//            NSLog(@"is new version available?");
             if (_newVersionButton) {
                 CGSize AppVersionStringSize = [[UIApplication appVersion] sizeWithAttributes:
                                @{NSFontAttributeName:

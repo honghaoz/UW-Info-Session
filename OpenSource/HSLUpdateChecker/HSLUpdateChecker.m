@@ -94,6 +94,18 @@
                     
                     if (localVersion && ![localVersion isEqualToString:appStoreVersion])
                     {
+                        NSString *updateUrl = result[@"trackViewUrl"];
+                        NSString *releaseNotes = result[@"releaseNotes"];
+                        
+                        // Post notification
+                        if ([HSLUpdateChecker sharedUpdateChecker].isPostNotificationEnable) {
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"NewVersionAvailable" object:self userInfo:@{@"LocalVersion":localVersion, @"AppStoreVersion" : appStoreVersion, @"UpdateURL" : updateUrl}];
+                        }
+                        
+                        // Set new version is available
+                        [HSLUpdateChecker sharedUpdateChecker].newVersionAvailable = YES;
+                        
+                        
                         // Different! Tell our handler about it if we haven't already for this appStoreVersion.
                         // If debug mode is enabled, always call handler.
                         NSString *checkedAppStoreVersionKey = [NSString stringWithFormat:@"HSL_UPDATE_CHECKER_CHECKED_%@", appStoreVersion];
@@ -102,33 +114,22 @@
                             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:checkedAppStoreVersionKey];
                             [[NSUserDefaults standardUserDefaults] synchronize];
                             
-                            NSString *updateUrl = result[@"trackViewUrl"];
-                            NSString *releaseNotes = result[@"releaseNotes"];
-                            
                             // If either of these are nil, don't do anything.
                             if (updateUrl && releaseNotes) {
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     if (handler)
                                     {
-                                        // Post notification
-                                        if ([HSLUpdateChecker sharedUpdateChecker].isPostNotificationEnable) {
-                                            [[NSNotificationCenter defaultCenter] postNotificationName:@"NewVersionAvailable" object:self userInfo:@{@"LocalVersion":localVersion, @"AppStoreVersion" : appStoreVersion, @"UpdateURL" : updateUrl}];
-                                        }
-                                        
-                                        // Set new version is available
-                                        [HSLUpdateChecker sharedUpdateChecker].newVersionAvailable = YES;
-                                        
                                         // Call handler
                                         handler(appStoreVersion, localVersion, releaseNotes, updateUrl);
                                     }
                                 });
                             }
-                            // Version is the same
-                            else {
-                                // Set new version is not available
-                                [HSLUpdateChecker sharedUpdateChecker].newVersionAvailable = NO;
-                            }
                         }
+                    }
+                    // Version is the same
+                    else {
+                        // Set new version is not available
+                        [HSLUpdateChecker sharedUpdateChecker].newVersionAvailable = NO;
                     }
                 }
             }

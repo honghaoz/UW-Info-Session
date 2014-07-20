@@ -63,7 +63,6 @@ static BOOL isDisableHighlight = NO;
 
 - (void)setHighlighted:(BOOL)highlighted {
     if (!isDisableHighlight) {
-//        NSLog(@"Hightlighted %@", highlighted? @"YES" : @"NO");
         [super setHighlighted:highlighted];
         if (highlighted) {
             self.backgroundColor = self.tintColor;
@@ -75,7 +74,6 @@ static BOOL isDisableHighlight = NO;
 
 - (void)setSelected:(BOOL)selected
 {
-//    NSLog(@"Selected %@", selected? @"YES" : @"NO");
     [super setSelected:selected];
     
     if (selected)

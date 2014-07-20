@@ -108,6 +108,7 @@
 		1BB96F1E19760B5A00120080 /* UWInfoSessionClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F1819760B5A00120080 /* UWInfoSessionClient.m */; };
 		1BB96F211976129300120080 /* UIColor+ApplyAlpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F201976129300120080 /* UIColor+ApplyAlpha.m */; };
 		1BBB19071935786C00E74EBD /* UWWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB19061935786C00E74EBD /* UWWebViewController.m */; };
+		1BC04F37197C25530045670A /* UIColor+isEqual.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC04F36197C25530045670A /* UIColor+isEqual.m */; };
 		1BC7F35518F38F6900C21CFD /* LINEActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7F34018F38F6900C21CFD /* LINEActivity.m */; };
 		1BC7F35618F38F6900C21CFD /* LINEActivityIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34118F38F6900C21CFD /* LINEActivityIcon.png */; };
 		1BC7F35718F38F6900C21CFD /* LINEActivityIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7F34218F38F6900C21CFD /* LINEActivityIcon@2x.png */; };
@@ -360,6 +361,8 @@
 		1BB96F201976129300120080 /* UIColor+ApplyAlpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+ApplyAlpha.m"; path = "Category/UIColor+ApplyAlpha.m"; sourceTree = "<group>"; };
 		1BBB19051935786C00E74EBD /* UWWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWWebViewController.h; path = ViewController/UWWebViewController.h; sourceTree = "<group>"; };
 		1BBB19061935786C00E74EBD /* UWWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWWebViewController.m; path = ViewController/UWWebViewController.m; sourceTree = "<group>"; };
+		1BC04F35197C25530045670A /* UIColor+isEqual.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+isEqual.h"; path = "Category/UIColor+isEqual.h"; sourceTree = "<group>"; };
+		1BC04F36197C25530045670A /* UIColor+isEqual.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+isEqual.m"; path = "Category/UIColor+isEqual.m"; sourceTree = "<group>"; };
 		1BC7F33F18F38F6900C21CFD /* LINEActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LINEActivity.h; sourceTree = "<group>"; };
 		1BC7F34018F38F6900C21CFD /* LINEActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LINEActivity.m; sourceTree = "<group>"; };
 		1BC7F34118F38F6900C21CFD /* LINEActivityIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LINEActivityIcon.png; sourceTree = "<group>"; };
@@ -818,6 +821,8 @@
 				1B09EBF619761C6F00100B98 /* UIImage+ChangeColor.m */,
 				1BB96F1F1976129300120080 /* UIColor+ApplyAlpha.h */,
 				1BB96F201976129300120080 /* UIColor+ApplyAlpha.m */,
+				1BC04F35197C25530045670A /* UIColor+isEqual.h */,
+				1BC04F36197C25530045670A /* UIColor+isEqual.m */,
 			);
 			name = Categories;
 			path = "UW Info";
@@ -1238,6 +1243,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BC04F37197C25530045670A /* UIColor+isEqual.m in Sources */,
 				1B527C4218D0241D00A91339 /* MoreViewController.m in Sources */,
 				1BC7F37E18F3A62000C21CFD /* NSString+Contain.m in Sources */,
 				1B3A33F418D4D8B30046DC73 /* REMenuItemView.m in Sources */,

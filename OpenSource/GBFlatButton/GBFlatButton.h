@@ -18,6 +18,12 @@
  */
 @interface GBFlatButton : UIButton
 
+/**
+ *  When disable highlight, press button won't change it's color
+ *  Default value is NO
+ *
+ *  @param disableHighlight BOOL
+ */
 - (void)setDisableHighlight:(BOOL)disableHighlight;
 
 @end
