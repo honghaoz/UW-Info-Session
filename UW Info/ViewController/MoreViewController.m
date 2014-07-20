@@ -758,7 +758,8 @@
 
 - (void)resetColor:(id)sender {
 //    _restButton.selected = !_restButton.selected;
-    [UWColorSchemeCenter resetColorScheme];
+//    [UWColorSchemeCenter resetColorScheme];
+    [UWColorSchemeCenter setDarkColorScheme];
 }
 
 - (void)newVersionButtonTapped:(id)sender {

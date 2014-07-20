@@ -32,6 +32,8 @@
 + (void)updateColorScheme;
 + (void)registerColorSchemeNotificationForObserver:(id)observer selector:(SEL)selector;
 
++ (void)setLightColorScheme;
++ (void)setDarkColorScheme;
 
 + (void)saveColorScheme;
 + (void)readColorScheme;

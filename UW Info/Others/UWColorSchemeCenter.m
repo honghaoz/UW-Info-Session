@@ -14,8 +14,15 @@
 @implementation UWColorSchemeCenter
 
 #define UW_BLACK [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1]
-#define UW_GOLD [UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]//[UIColor colorWithRed:0.44 green:0.84 blue:0.97 alpha:1]
+#define UW_GOLD [UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]
 #define TAB_BAR_COLOR [UIColor blackColor]
+#define STATUS_BAR UIStatusBarStyleDefault
+
+#define UW_BLACK1 [UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]
+#define UW_GOLD1 [UIColor colorWithRed:0 green:0 blue:0 alpha:1.0]
+#define TAB_BAR_COLOR1 [UIColor colorWithRed:0.95 green:0.93 blue:0.91 alpha:1]
+//#define TAB_BAR_COLOR1 [UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]
+#define STATUS_BAR1 UIStatusBarStyleLightContent
 
 + (instancetype)sharedCenter
 {
@@ -154,6 +161,32 @@
     [[NSNotificationCenter defaultCenter] addObserver:observer selector:selector name:_notificationName object:self];
 }
 
++ (void)setLightColorScheme {
+    [[UWColorSchemeCenter sharedCenter] setLightColorScheme];
+}
+
+- (void)setLightColorScheme {
+    _uwGoldColor = UW_GOLD;
+    _uwBlackColor = UW_BLACK;
+    _tabBarTintColor = TAB_BAR_COLOR;
+    _statusBarStyle = STATUS_BAR;
+    [self post];
+    [self saveColorScheme];
+}
+
++ (void)setDarkColorScheme {
+    [[UWColorSchemeCenter sharedCenter] setDarkColorScheme];
+}
+
+- (void)setDarkColorScheme {
+    _uwGoldColor = UW_GOLD1;
+    _uwBlackColor = UW_BLACK1;
+    _tabBarTintColor = TAB_BAR_COLOR1;
+    _statusBarStyle = STATUS_BAR1;
+    [self post];
+    [self saveColorScheme];
+}
+
 + (void)saveColorScheme {
     [[UWColorSchemeCenter sharedCenter] saveColorScheme];
 }
@@ -207,7 +240,7 @@
     _uwGoldColor = UW_GOLD;
     _uwBlackColor = UW_BLACK;
     _tabBarTintColor = TAB_BAR_COLOR;
-    _statusBarStyle = UIStatusBarStyleDefault;
+    _statusBarStyle = STATUS_BAR;
     [self post];
     [self saveColorScheme];
 }
