@@ -170,6 +170,7 @@
     _uwBlackColor = UW_BLACK;
     _tabBarTintColor = TAB_BAR_COLOR;
     _statusBarStyle = STATUS_BAR;
+    _isDarkColorScheme = NO;
     [self post];
     [self saveColorScheme];
 }
@@ -183,6 +184,7 @@
     _uwBlackColor = UW_BLACK1;
     _tabBarTintColor = TAB_BAR_COLOR1;
     _statusBarStyle = STATUS_BAR1;
+    _isDarkColorScheme = YES;
     [self post];
     [self saveColorScheme];
 }

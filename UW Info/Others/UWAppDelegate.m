@@ -36,7 +36,7 @@
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
-    self.window.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1];
+    self.window.backgroundColor = [UIColor blackColor];//[UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1];
     [[UIApplication sharedApplication] keyWindow].tintColor = [UWColorSchemeCenter uwBlack];
     
     // Show indicators when there's network connections

@@ -55,6 +55,8 @@
     UWAds *ad;
     NSInteger toManager_tappedTimes;
     
+    UISwitch *_darkThemeSwitch;
+    
     BOOL _shouldShowRandomColorSwitch;
     UISwitch *_randomColorSwitch;
     GBFlatButton *_restButton;
@@ -116,6 +118,7 @@
                      animations:^{
                          self.navigationController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
                          [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack]}];
+                         [_darkThemeSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
                          [_randomColorSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
                          [_restButton setTintColor:[UWColorSchemeCenter uwGold]];
                      }
@@ -152,7 +155,7 @@
             [_newVersionButton addTarget:self action:@selector(newVersionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         }
         
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
 //    [HSLUpdateChecker enableDebugMode:NO];
 }
@@ -168,13 +171,11 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    return 3;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        return nil;
-    } else if (section == 1) {
+    if (section == 2) {
         return @"It's your support \nmakes me do better!";
     } else {
         return nil;
@@ -185,12 +186,15 @@
 {
     // Return the number of rows in the section.
     if (section == 0) {
+        return 1;
+    }
+    else if (section == 1) {
         if (_shouldShowRandomColorSwitch) {
             return 3;
         } else {
             return 2;
         }
-    } else if (section == 1){
+    } else if (section == 2){
         return 3;
     } else {
         return 0;
@@ -200,6 +204,27 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            NSString *resueIdentifier = @"SwitchCell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:resueIdentifier];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:resueIdentifier];
+            }
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            cell.textLabel.text = @"Dark Theme";
+            [cell.textLabel setFont:[UIFont systemFontOfSize:18]];
+            
+            _darkThemeSwitch = [[UISwitch alloc] init];
+            [_darkThemeSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
+            [_darkThemeSwitch setOn:[UWColorSchemeCenter sharedCenter].isDarkColorScheme animated:YES];
+            [_darkThemeSwitch addTarget:self action:@selector(darkThemeSwitch:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell.accessoryView = _darkThemeSwitch;
+            
+            return cell;
+        }
+    }
+    else if (indexPath.section == 1) {
         if (indexPath.row == 0) {
             NSString *resueIdentifier = @"Value1Cell";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:resueIdentifier];
@@ -240,13 +265,13 @@
             [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
             return cell;
         } else if (indexPath.row == 2) {
-            NSString *resueIdentifier = @"SwitchCell";
+            NSString *resueIdentifier = @"ResetSwitchCell";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:resueIdentifier];
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:resueIdentifier];
             }
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-            cell.textLabel.text = @"Random color scheme";
+            cell.textLabel.text = @"Random Theme";
             [cell.textLabel setFont:[UIFont systemFontOfSize:18]];
             
             _randomColorSwitch = [[UISwitch alloc] init];
@@ -276,7 +301,7 @@
             
             return cell;
         }
-    } else if (indexPath.section == 1) {
+    } else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
             NSString *resueIdentifier = @"CenterCell";
             CenterTextCell *cell = [tableView dequeueReusableCellWithIdentifier:resueIdentifier];
@@ -350,7 +375,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 1 && indexPath.row == 0) {
+    if (indexPath.section == 2 && indexPath.row == 0) {
         return 55;
     } else {
         return 44;
@@ -360,6 +385,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
+        //
+    }
+    else if (indexPath.section == 1) {
         if (indexPath.row == 0) {
 //            NSURLSession *session = [NSURLSession sharedSession];
 //            NSURLSessionDataTask *dataTask = [session dataTaskWithURL:[NSURL URLWithString:@"https://h344zhan:Zhh358279765099@info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=2447&mode=on"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -374,7 +402,7 @@
                 //[UWDevice sharedDevice].isRandomColor = YES;
                 _shouldShowRandomColorSwitch = YES;
                 
-                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
             }
             if (toManager_tappedTimes % 12 == 0) {
                 UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"UW Info Manager Login" message:@"Enter Username & Password" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
@@ -386,7 +414,7 @@
         } else if (indexPath.row == 1){
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ca.linkedin.com/in/honghaozhang"]];
         }
-    } else if (indexPath.section == 1) {
+    } else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
             [self showActivityViewController];
         } else if (indexPath.row == 1) {
@@ -740,6 +768,15 @@
 
 #pragma mark - Other methods
 
+- (void)darkThemeSwitch:(id)sender {
+    LogMethod;
+    if (_darkThemeSwitch.isOn) {
+        [UWColorSchemeCenter setDarkColorScheme];
+    } else {
+        [UWColorSchemeCenter setLightColorScheme];
+    }
+}
+
 - (void)randomColorSwitch:(id)sender {
     LogMethod;
     UISwitch *theSwitch = sender;
@@ -748,7 +785,7 @@
     if (!_randomColorSwitch.isOn) {
         [_restButton removeFromSuperview];
     } else {
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     
     [UWDevice sharedDevice].pfObject[@"isRandomColor"] = [NSNumber numberWithBool:theSwitch.isOn];
@@ -765,6 +802,7 @@
 - (void)newVersionButtonTapped:(id)sender {
     LogMethod;
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_updateURL]];
+//    [NSURL URLWithString:appURLString]];
 }
 
 #pragma mark - SK view controller delegate
