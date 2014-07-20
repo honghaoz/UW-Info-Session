@@ -258,9 +258,12 @@ Parse.Cloud.define("getColorScheme", function(request, response) {
 			colorSchemeDic["statusBarIsLight"] = statusBar;
 			response.success(colorSchemeDic);
 		} else {
+			// Change Font color to white color
 			black = new Color(1, 1, 1, 1);
 			statusBar = true;
-			var tab = black;
+			//Drop box tabbar: [UIColor colorWithRed:0.96 green:0.96 blue:0.97 alpha:1]
+			//Parse tabbar: [UIColor colorWithRed:0.93 green:0.91 blue:0.89 alpha:1]
+			var tab = new Color(0.95, 0.93, 0.91, 1);
 			var colorSchemeDic = {};
 			colorSchemeDic["uwGoldColor"] = gold.getDic();
 			colorSchemeDic["uwBlackColor"] = black.getDic();
