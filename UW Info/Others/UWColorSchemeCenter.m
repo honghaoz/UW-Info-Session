@@ -20,6 +20,7 @@
 
 #define UW_BLACK1 [UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]
 #define UW_GOLD1 [UIColor colorWithRed:0 green:0 blue:0 alpha:1.0]
+//#define UW_GOLD1 [UIColor colorWithRed:0.02 green:0.03 blue:0.04 alpha:1]
 #define TAB_BAR_COLOR1 [UIColor colorWithRed:0.95 green:0.93 blue:0.91 alpha:1]
 //#define TAB_BAR_COLOR1 [UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]
 #define STATUS_BAR1 UIStatusBarStyleLightContent

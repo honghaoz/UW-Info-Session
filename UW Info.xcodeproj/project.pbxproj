@@ -74,6 +74,7 @@
 		1B717E6E18A80A7A00E20A29 /* LoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E6C18A80A7A00E20A29 /* LoadingCell.m */; };
 		1B717E7118A80B8200E20A29 /* DetailDescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E7018A80B8200E20A29 /* DetailDescriptionCell.m */; };
 		1B717E7618A8294600E20A29 /* DetailNormalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B717E7518A8294600E20A29 /* DetailNormalCell.m */; };
+		1B781667197CB9E80043664B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1B781666197CB9E80043664B /* Settings.bundle */; };
 		1B78A971191E813C00A4A8AD /* PullHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A970191E813C00A4A8AD /* PullHeaderView.m */; };
 		1B78A97B191E81C000A4A8AD /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B78A973191E81C000A4A8AD /* blackArrow.png */; };
 		1B78A97C191E81C000A4A8AD /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B78A974191E81C000A4A8AD /* blackArrow@2x.png */; };
@@ -291,6 +292,7 @@
 		1B717E7018A80B8200E20A29 /* DetailDescriptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailDescriptionCell.m; path = TableViewCell/DetailDescriptionCell.m; sourceTree = "<group>"; };
 		1B717E7418A8294600E20A29 /* DetailNormalCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailNormalCell.h; path = TableViewCell/DetailNormalCell.h; sourceTree = "<group>"; };
 		1B717E7518A8294600E20A29 /* DetailNormalCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailNormalCell.m; path = TableViewCell/DetailNormalCell.m; sourceTree = "<group>"; };
+		1B781666197CB9E80043664B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Resources/Settings.bundle; sourceTree = "<group>"; };
 		1B78A96F191E813C00A4A8AD /* PullHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullHeaderView.h; sourceTree = "<group>"; };
 		1B78A970191E813C00A4A8AD /* PullHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullHeaderView.m; sourceTree = "<group>"; };
 		1B78A973191E81C000A4A8AD /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackArrow.png; sourceTree = "<group>"; };
@@ -1076,6 +1078,7 @@
 				1B3A33BA18D4D7A10046DC73 /* AppIcon-Rounded.png */,
 				1BB1A11F18C9040C00823A0D /* alarm.caf */,
 				1BC7F37A18F3A25300C21CFD /* uw_building.plist */,
+				1B781666197CB9E80043664B /* Settings.bundle */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1202,6 +1205,7 @@
 				1BC7F37B18F3A25300C21CFD /* uw_building.plist in Resources */,
 				1B78A980191E81C000A4A8AD /* grayArrow@2x.png in Resources */,
 				1B78A981191E81C000A4A8AD /* whiteArrow.png in Resources */,
+				1B781667197CB9E80043664B /* Settings.bundle in Resources */,
 				1B3A33BB18D4D7A10046DC73 /* AppIcon-Rounded.png in Resources */,
 				1BC7F35C18F38F6900C21CFD /* icon_timeline.png in Resources */,
 				1BC7F36B18F3981E00C21CFD /* JNJGoogleMapsActivityMask@2x.png in Resources */,

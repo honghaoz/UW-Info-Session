@@ -94,6 +94,10 @@
         [[UWDevice sharedDevice] updateColorScheme];
     });
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setValue:[UIApplication appVersion] forKey:@"version"];
+    [defaults synchronize];
+    
     [application setApplicationSupportsShakeToEdit:YES];
     return YES;
 }
