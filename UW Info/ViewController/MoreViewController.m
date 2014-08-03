@@ -775,6 +775,7 @@
     } else {
         [UWColorSchemeCenter setLightColorScheme];
     }
+    [UWColorSchemeCenter sharedCenter].isTemporaryRandomColor = NO;
 }
 
 - (void)randomColorSwitch:(id)sender {
@@ -786,6 +787,7 @@
         [_restButton removeFromSuperview];
     } else {
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [UWColorSchemeCenter sharedCenter].isTemporaryRandomColor = NO;
     }
     
     [UWDevice sharedDevice].pfObject[@"isRandomColor"] = [NSNumber numberWithBool:theSwitch.isOn];
@@ -796,7 +798,7 @@
 - (void)resetColor:(id)sender {
 //    _restButton.selected = !_restButton.selected;
     [UWColorSchemeCenter resetColorScheme];
-//    [UWColorSchemeCenter setDarkColorScheme];
+    [UWColorSchemeCenter sharedCenter].isTemporaryRandomColor = NO;
 }
 
 - (void)newVersionButtonTapped:(id)sender {

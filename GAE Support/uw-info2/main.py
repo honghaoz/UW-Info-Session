@@ -21,6 +21,7 @@ import jinja2
 import json
 import urllib
 import urllib2
+import httplib
 
 from google.appengine.ext import ndb
 from google.appengine.api import memcache
@@ -272,6 +273,7 @@ def logKeyUsage(key):
     #queryURL = "http://uw-info.appspot.com/logkey"
     #urllib2.urlopen(queryURL + '?key=' + str(key))
 
+
 class JsonOneMonth(BasicHandler):
     """json format one month"""
     def get(self, monthId):
@@ -313,7 +315,22 @@ class Json(BasicHandler):
         self.response.headers["Content-Type"] = "application/json"
         if key <= getMaxNumberOfKeys():
             currentTerm = getCurrentTerm()
-            response = renderResponse(getMonthsOfTerm(currentTerm))
+            response = renderResponse(getMonthsOfTerm(currentTerm)) 
+            # From here, response contains 
+            # {"data" : [{
+            #           "audience": "Co-op and Graduating Students",
+            #           "date": "May 6, 2014",
+            #           "description": "",
+            #           "employer": "Enflick",
+            #           "end_time": "1:30 PM",
+            #           "id": "",
+            #           "location": "TC 2218",
+            #           "programs": "ALL - MATH faculty, ALL - ENG faculty",
+            #           "start_time": "11:30 AM",
+            #           "website": ""
+            #           }, {} ...],
+            #   "meta" : {"months": [], 
+            #             "term" : "2014 Spring"}} 
             response['meta']['term'] = currentTerm
             logKeyUsage(key)
             self.write(json.dumps(response))
@@ -330,11 +347,56 @@ class getKeyUsage(BasicHandler):
             usage.append({"key" : str(each.key.id()), "uses" : each.uses})
         self.write(json.dumps({'usage': usage, 'status' : 'valid'}))
 
+# Parse related
+
+def createParseInfoSessionObject(infoSessionDictionary):
+    connection = httplib.HTTPSConnection('api.parse.com', 443)
+    connection.connect()
+    connection.request('POST', '/1/classes/InfoSession', json.dumps(infoSessionDictionary), {
+           "X-Parse-Application-Id": "zytbQR05vLnq2h37zHHBDneLWMzaH47qHB978zfx",
+           "X-Parse-REST-API-Key": "93OVEHh2zAc1tz7HIlOENOQJWuB05s1vOXd4KdjB",
+           "Content-Type": "application/json"
+         })
+    result = json.loads(connection.getresponse().read())
+    print result
+
+class UpdateParse(BasicHandler):
+    def get(self):
+        key = int(self.request.get("key"))
+        if key <= getMaxNumberOfKeys():
+            currentTerm = getCurrentTerm()
+            response = renderResponse(getMonthsOfTerm(currentTerm)) 
+            # From here, response contains 
+            # {"data" : [{
+            #           "audience": "Co-op and Graduating Students",
+            #           "date": "May 6, 2014",
+            #           "description": "",
+            #           "employer": "Enflick",
+            #           "end_time": "1:30 PM",
+            #           "id": "",
+            #           "location": "TC 2218",
+            #           "programs": "ALL - MATH faculty, ALL - ENG faculty",
+            #           "start_time": "11:30 AM",
+            #           "website": ""
+            #           }, {} ...],
+            #   "meta" : {"months": [], 
+            #             "term" : "2014 Spring"}} 
+            # Store Objects in Parse
+            for eachInfoSessionDic in response["data"]:
+                infoSessionId = eachInfoSessionDic["id"]
+                eachInfoSessionDic.pop("id", None)
+                eachInfoSessionDic["info_session_id"] = infoSessionId
+                createParseInfoSessionObject(eachInfoSessionDic)
+            self.write("Parse updated")
+        else:
+            self.write("Invalid key")
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/get_key_usage', getKeyUsage),
     ('/set_number_of_keys', setNumberOfKeys),
     ('/infosessions/([0-9]{4}[A-Z]{1}[a-z]{2}).json', JsonOneMonth),
     ('/infosessions/([0-9]{4}[A-Z]{1}[a-z]+).json', JsonOneTerm),
-    ('/infosessions.json', Json)
+    ('/infosessions.json', Json),
+    ('/updateParse', UpdateParse)
 ], debug=True)
