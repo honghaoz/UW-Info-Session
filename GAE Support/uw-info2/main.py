@@ -31,6 +31,7 @@ import datetime
 import sys
 sys.path.insert(0, 'libs')
 import pytz
+import requests
 
 # Global variables for jinja environment
 template_dir = os.path.join(os.path.dirname(__file__), 'html_template')
@@ -365,98 +366,128 @@ def createParseInfoSessionObject(infoSessionDictionary):
         return False
     return True
 
+parseReUpdateTimes = 0
+
+# Test code
+# testTime = 0
+
+def commitUpdateParse():
+    if parseReUpdateTimes > 3:
+        logging.error("Update Parse more than 3 times")
+        return False
+    global parseReUpdateTimes
+    parseReUpdateTimes += 1
+    logging.info("Re update Parse objects")
+
+    try:
+        # Clean out old data
+        # 1: Collecting objectIds
+        try:
+            connection = httplib.HTTPSConnection('api.parse.com', 443)
+            params = urllib.urlencode({"keys":"", "limit":1000})
+            connection.connect()
+            connection.request('GET', '/1/classes/InfoSession?%s' % params, '', {
+                   "X-Parse-Application-Id": "zytbQR05vLnq2h37zHHBDneLWMzaH47qHB978zfx",
+                   "X-Parse-REST-API-Key": "93OVEHh2zAc1tz7HIlOENOQJWuB05s1vOXd4KdjB"
+                 })
+            result = json.loads(connection.getresponse().read())
+            objectIdsToBeDeleted = []
+            for e in result["results"]:
+                objectIdsToBeDeleted.append(e["objectId"])
+        except:
+            logging.error("Get objectIds failed")
+            return commitUpdateParse()
+
+        logging.info("To delete " + str(len(objectIdsToBeDeleted)) + " objects")
+
+        # 2: Construct delete diction
+        requestDictionary = {}
+        requestDictionary["requests"] = []
+
+        # restNumberToBeDeleted = len(objectIdsToBeDeleted)
+        while len(objectIdsToBeDeleted) > 0:
+            logging.info(len(objectIdsToBeDeleted))
+            requestDictionary["requests"] = []
+            # Delete 50 objects in batch
+            deletedEntryNumber = 0
+            for i in range(0, 50):
+                try:
+                    deleteRequest = {}
+                    deleteRequest["method"] = "DELETE"
+                    deleteRequest["path"] = "/1/classes/InfoSession/%s" % objectIdsToBeDeleted[i]
+                except:
+                    deletedEntryNumber = i
+                    break
+                requestDictionary["requests"].append(deleteRequest)
+                deletedEntryNumber = 50;
+
+            # 3: Delete 50 entries
+            connection = httplib.HTTPSConnection('api.parse.com', 443)
+            connection.connect()
+            connection.request('POST', '/1/batch', json.dumps(requestDictionary), {
+                   "X-Parse-Application-Id": "zytbQR05vLnq2h37zHHBDneLWMzaH47qHB978zfx",
+                   "X-Parse-REST-API-Key": "93OVEHh2zAc1tz7HIlOENOQJWuB05s1vOXd4KdjB",
+                   "Content-Type": "application/json"
+                 })
+            result = json.loads(connection.getresponse().read())
+            logging.info(result)
+            objectIdsToBeDeleted = objectIdsToBeDeleted[deletedEntryNumber:]
+    except:
+        logging.error("Delete Parse Object Failed")
+        return commitUpdateParse()
+
+    logging.info("Delete Parse Object Succeed!")
+
+    # Store new data
+    currentTerm = getCurrentTerm()
+    response = renderResponse(getMonthsOfTerm(currentTerm)) 
+    # From here, response contains 
+    # {"data" : [{
+    #           "audience": "Co-op and Graduating Students",
+    #           "date": "May 6, 2014",
+    #           "description": "",
+    #           "employer": "Enflick",
+    #           "end_time": "1:30 PM",
+    #           "id": "",
+    #           "location": "TC 2218",
+    #           "programs": "ALL - MATH faculty, ALL - ENG faculty",
+    #           "start_time": "11:30 AM",
+    #           "website": ""
+    #           }, {} ...],
+    #   "meta" : {"months": [], 
+    #             "term" : "2014 Spring"}} 
+    # Store Objects in Parse
+
+    global testTime
+
+    sum = 0
+    for eachInfoSessionDic in response["data"]:
+        infoSessionId = eachInfoSessionDic["id"]
+        eachInfoSessionDic.pop("id", None)
+        eachInfoSessionDic["info_session_id"] = infoSessionId
+
+        # Test code
+        # if sum == 10 and testTime == 0:
+        #     testTime += 1
+        #     logging.error("Test Create Parse Object Failed")
+        #     return commitUpdateParse()
+
+        if not createParseInfoSessionObject(eachInfoSessionDic):
+            logging.error("Create Parse Object Failed")
+            return commitUpdateParse()
+        sum += 1
+    logging.info("Parse updated: %d" % sum)
+    return True
+
 class UpdateParse(BasicHandler):
     def get(self):
         key = int(self.request.get("key"))
         if key <= getMaxNumberOfKeys():
-            try:
-                # Clean out old data
-                # 1: Collecting objectIds
-                try:
-                    connection = httplib.HTTPSConnection('api.parse.com', 443)
-                    params = urllib.urlencode({"keys":"", "limit":1000})
-                    connection.connect()
-                    connection.request('GET', '/1/classes/InfoSession?%s' % params, '', {
-                           "X-Parse-Application-Id": "zytbQR05vLnq2h37zHHBDneLWMzaH47qHB978zfx",
-                           "X-Parse-REST-API-Key": "93OVEHh2zAc1tz7HIlOENOQJWuB05s1vOXd4KdjB"
-                         })
-                    result = json.loads(connection.getresponse().read())
-                    objectIdsToBeDeleted = []
-                    for e in result["results"]:
-                        objectIdsToBeDeleted.append(e["objectId"])
-                except:
-                    logging.error("Get objectIds failed")
-                    return 
-
-                logging.info("To delete " + str(len(objectIdsToBeDeleted)) + " objects")
-
-                # 2: Construct delete diction
-                requestDictionary = {}
-                requestDictionary["requests"] = []
-
-                # restNumberToBeDeleted = len(objectIdsToBeDeleted)
-                while len(objectIdsToBeDeleted) > 0:
-                    logging.info(len(objectIdsToBeDeleted))
-                    requestDictionary["requests"] = []
-                    # Delete 50 objects in batch
-                    deletedEntryNumber = 0
-                    for i in range(0, 50):
-                        try:
-                            deleteRequest = {}
-                            deleteRequest["method"] = "DELETE"
-                            deleteRequest["path"] = "/1/classes/InfoSession/%s" % objectIdsToBeDeleted[i]
-                        except:
-                            deletedEntryNumber = i
-                            break
-                        requestDictionary["requests"].append(deleteRequest)
-                        deletedEntryNumber = 50;
-
-                    # 3: Delete 50 entries
-                    connection = httplib.HTTPSConnection('api.parse.com', 443)
-                    connection.connect()
-                    connection.request('POST', '/1/batch', json.dumps(requestDictionary), {
-                           "X-Parse-Application-Id": "zytbQR05vLnq2h37zHHBDneLWMzaH47qHB978zfx",
-                           "X-Parse-REST-API-Key": "93OVEHh2zAc1tz7HIlOENOQJWuB05s1vOXd4KdjB",
-                           "Content-Type": "application/json"
-                         })
-                    result = json.loads(connection.getresponse().read())
-                    logging.info(result)
-                    objectIdsToBeDeleted = objectIdsToBeDeleted[deletedEntryNumber:]
-            except:
-                logging.error("Delete Parse Object Failed")
-                return
-
-            logging.info("Delete Parse Object Succeed!")
-
-            # Store new data
-            currentTerm = getCurrentTerm()
-            response = renderResponse(getMonthsOfTerm(currentTerm)) 
-            # From here, response contains 
-            # {"data" : [{
-            #           "audience": "Co-op and Graduating Students",
-            #           "date": "May 6, 2014",
-            #           "description": "",
-            #           "employer": "Enflick",
-            #           "end_time": "1:30 PM",
-            #           "id": "",
-            #           "location": "TC 2218",
-            #           "programs": "ALL - MATH faculty, ALL - ENG faculty",
-            #           "start_time": "11:30 AM",
-            #           "website": ""
-            #           }, {} ...],
-            #   "meta" : {"months": [], 
-            #             "term" : "2014 Spring"}} 
-            # Store Objects in Parse
-            sum = 0
-            for eachInfoSessionDic in response["data"]:
-                infoSessionId = eachInfoSessionDic["id"]
-                eachInfoSessionDic.pop("id", None)
-                eachInfoSessionDic["info_session_id"] = infoSessionId
-                if not createParseInfoSessionObject(eachInfoSessionDic):
-                    logging.error("Create Parse Object Failed")
-                    return
-                sum += 1
-            self.write("Parse updated: %d" % sum)
+            result = commitUpdateParse()
+            if result:
+                self.write("Parse updated successfully")
+            else:
+                self.write("Parse updated failed")
         else:
             self.write("Invalid key")
 
