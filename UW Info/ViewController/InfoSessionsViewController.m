@@ -88,7 +88,7 @@
 
     //    NSLog(@"%@", [NSDate date]);
     _shownYear = [_termMenu getCurrentYear:[NSDate date]];
-    _shownTerm = [_termMenu getCurrentTermFromDate:[NSDate date]];
+    _shownTerm = [_termMenu getCurrentTermFromDate:[[NSDate date] dateByAddingTimeInterval:7 * 24 * 60 * 60]];
     NSLog(@"shown year: %d, shown term: %@", _shownYear, _shownTerm);
 
     self.navigationItem.titleView = (UIView*)[_termMenu getMenuButton];

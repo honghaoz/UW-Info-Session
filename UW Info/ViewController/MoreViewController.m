@@ -84,7 +84,7 @@
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(done)];
     [self.navigationItem setRightBarButtonItem:doneButton];
-    self.title = @"More";
+    self.title = @"Settings";
     
     self.tableView.delaysContentTouches = NO;
     

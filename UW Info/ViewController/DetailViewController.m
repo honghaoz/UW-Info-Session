@@ -639,19 +639,19 @@
                 [cell.contentLabel setTextColor: [UIColor darkGrayColor]];
 //                cell.statusSiwtch.enabled = YES;
                 if (!haveRegistered) {
-                    cell.contentLabel.text = @"Tap here to Register";
+                    cell.contentLabel.text = @"Tap here to RSVP.";
                 } else {
                     if (registerSucceed) {
-                        cell.contentLabel.text = @"Register Succeed!";
+                        cell.contentLabel.text = @"RSVP. Succeed!";
                     } else {
-                        cell.contentLabel.text = @"Register Failed!";
+                        cell.contentLabel.text = @"RSVP. Failed!";
                     }
                 }
             }
             else {
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 [cell.contentLabel setTextColor: [UIColor lightGrayColor]];
-                cell.contentLabel.text = @"Not Available to Register";
+                cell.contentLabel.text = @"Not Available to RSVP.";
 //                cell.statusSiwtch.enabled = NO;
             }
             rsvpCell = cell;
@@ -1121,7 +1121,7 @@
                 [self registerInfoSession];
             } else {
                 [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
-                [SVProgressHUD showErrorWithStatus:@"Register not available!"];
+                [SVProgressHUD showErrorWithStatus:@"RSVP. not available!"];
             }
         }
     }
@@ -1229,10 +1229,10 @@
                                                       haveRegistered = YES;
                                                       registerSucceed = NO;
                                                       _infoSessionModel.uwValid = NO;
-                                                      rsvpCell.contentLabel.text = @"Register Failed!";
+                                                      rsvpCell.contentLabel.text = @"RSVP. Failed!";
                                                       [SVProgressHUD setAnimationDuration:3];
                                                       [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
-                                                      [SVProgressHUD showErrorWithStatus:@"Register Failed!"];
+                                                      [SVProgressHUD showErrorWithStatus:@"RSVP. Failed!"];
                                                       double delayInSeconds = 1.5;
                                                       dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
                                                       dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -1246,10 +1246,10 @@
                                                       haveRegistered = YES;
                                                       registerSucceed = YES;
                                                       _infoSessionModel.uwValid = YES;
-                                                      rsvpCell.contentLabel.text = @"Register Succeed!";
+                                                      rsvpCell.contentLabel.text = @"RSVP. Succeed!";
                                                       [SVProgressHUD setAnimationDuration:3];
                                                       [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
-                                                      [SVProgressHUD showSuccessWithStatus:@"Register Succeed!"];
+                                                      [SVProgressHUD showSuccessWithStatus:@"RSVP. Succeed!"];
                                                   });
                                               }
 //                                          } else {
