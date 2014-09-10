@@ -15,6 +15,12 @@ https://itunes.apple.com/app/uw-info-session/id837207884?ls=1&mt=8
 - Check locations using UWaterloo map or open in map apps
 - RSVP. an info session just in app
 
+### Feedbacks
+Feedbacks are very welcome!
+- Send me feedback in app (Go to "Favorites" => "Setting cog button" => "Send me feedback")
+- Email to me: honghao.zhang@uwaterloo.ca
+- Just wirte a review in App Store,
+
 ###iPhone Screenshots
 ![](http://a2.mzstatic.com/us/r30/Purple/v4/d5/bd/e2/d5bde2e6-d86d-ce1b-25df-7f43590a8545/screen568x568.jpeg)
 
