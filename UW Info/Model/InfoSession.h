@@ -22,7 +22,7 @@
 @property (nonatomic, copy) NSString *website;
 @property (nonatomic, copy) NSString *audience;
 @property (nonatomic, copy) NSString *programs;
-@property (nonatomic, copy) NSString *description;
+@property (nonatomic, copy) NSString *descriptions;
 //@property (nonatomic, readonly, unsafe_unretained) NSURL *logoImageURL;
 @property (nonatomic, assign) NSUInteger weekNum;
 
@@ -41,7 +41,7 @@
 @property (nonatomic, assign) BOOL isCancelled;
 @property (nonatomic, copy) NSString *note;
 
-// Dictionary of alerts description, interval and sequence
+// Dictionary of alerts descriptions, interval and sequence
 + (NSDictionary *) alertChoiceDictionary;
 + (NSString *)getAlertDescription:(NSNumber *)alertChoice;
 + (NSDictionary *) alertIntervalDictionary;

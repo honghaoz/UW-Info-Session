@@ -147,7 +147,7 @@ static EKEventStore *eventStore;
     self.website = [attributes valueForKeyPath:@"website"];
     self.audience = [attributes valueForKeyPath:@"audience"];
     self.programs = [attributes valueForKeyPath:@"programs"];
-    self.description = [attributes valueForKeyPath:@"description"];
+    self.descriptions = [attributes valueForKeyPath:@"description"];
 
     //self.note = @"Taking some notes here.";
 
@@ -529,7 +529,7 @@ static EKEventStore *eventStore;
     copy.website = [self.website copy];
     copy.audience = [self.audience copy];
     copy.programs = [self.programs copy];
-    copy.description = [self.description copy];
+    copy.descriptions = [self.descriptions copy];
     copy.weekNum = self.weekNum;
     copy.isCancelled = self.isCancelled;
     copy.alertIsOn = self.alertIsOn;
@@ -583,7 +583,7 @@ static EKEventStore *eventStore;
         self.website = [aDecoder decodeObjectForKey:@"website"];
         self.audience = [aDecoder decodeObjectForKey:@"audience"];
         self.programs = [aDecoder decodeObjectForKey:@"programs"];
-        self.description = [aDecoder decodeObjectForKey:@"description"];
+        self.descriptions = [aDecoder decodeObjectForKey:@"descriptions"];
 
         self.weekNum = [aDecoder decodeIntegerForKey:@"weekNum"];
         self.isCancelled = [aDecoder decodeBoolForKey:@"isCancelled"];
@@ -608,7 +608,7 @@ static EKEventStore *eventStore;
     [aCoder encodeObject:self.website forKey:@"website"];
     [aCoder encodeObject:self.audience forKey:@"audience"];
     [aCoder encodeObject:self.programs forKey:@"programs"];
-    [aCoder encodeObject:self.description forKey:@"description"];
+    [aCoder encodeObject:self.descriptions forKey:@"descriptions"];
 
     [aCoder encodeInteger:self.weekNum forKey:@"weekNum"];
     [aCoder encodeBool:self.isCancelled forKey:@"isCancelled"];

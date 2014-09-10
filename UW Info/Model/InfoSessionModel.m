@@ -481,7 +481,7 @@
             eachInfoSession.website     = [theCorrespondingInfoSession.website copy];
             eachInfoSession.audience    = [theCorrespondingInfoSession.audience copy];
             eachInfoSession.programs    = [theCorrespondingInfoSession.programs copy];
-            eachInfoSession.description = [theCorrespondingInfoSession.description copy];
+            eachInfoSession.descriptions = [theCorrespondingInfoSession.descriptions copy];
             eachInfoSession.weekNum     = theCorrespondingInfoSession.weekNum;
             eachInfoSession.isCancelled = theCorrespondingInfoSession.isCancelled;
             if (theCorrespondingInfoSession.isCancelled) {

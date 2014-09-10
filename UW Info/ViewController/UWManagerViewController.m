@@ -101,9 +101,9 @@
     CGFloat heightOfTop = 20 + self.navigationController.navigationBar.frame.size.height;
     CGFloat heightOfCountView = 50.0;
     UIView *countView = [[UIView alloc] initWithFrame:CGRectMake(0, heightOfTop, screenSize.width, heightOfCountView)];
-    countView.backgroundColor = [UIColor clearColor];//[UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1];
+    countView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];//[UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1];
     _countOfDevice = [[UILabel alloc] initWithFrame:CGRectInset(countView.bounds, 30, 10)];
-    _countOfDevice.backgroundColor = [UIColor clearColor];
+    _countOfDevice.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
     //_countOfDevice.text =
     [self.view addSubview:countView];
     [countView addSubview:_countOfDevice];
@@ -111,7 +111,7 @@
     CGFloat heightOfTitleBar = 25;
     widthOfTable = 640;
     titleBarScrollView = [[UWCellScrollView alloc] initWithFrame:CGRectMake(0, heightOfTop + heightOfCountView, widthOfTable, heightOfTitleBar)];
-    [titleBarScrollView setBackgroundColor:[UIColor clearColor]];
+    [titleBarScrollView setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
     [self.view addSubview:titleBarScrollView];
     [titleBarScrollView setDelegate:self];
     //[[NSNotificationCenter defaultCenter] addObserver:titleBarScrollView selector:@selector(updateContentOffset:) name:@"UpdateContentOffset" object:nil];

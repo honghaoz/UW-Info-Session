@@ -797,7 +797,7 @@
             [cell.contentText setFont:[UIFont systemFontOfSize:15]];
             [cell.contentText setSelectable:NO];
             cell.titleLabel.text = @"Descriptions";
-            if ([_infoSession.description length] <= 1) {
+            if ([_infoSession.descriptions length] <= 1) {
                 [cell.contentText setTextColor: [UIColor lightGrayColor]];
                 cell.contentText.text = @"No Descriptions";
                 // resize textView height
@@ -806,10 +806,10 @@
                 cell.contentText.frame = textViewFrame;
             } else {
                 [cell.contentText setTextColor: [UIColor blackColor]];
-                cell.contentText.text = _infoSession.description;
+                cell.contentText.text = _infoSession.descriptions;
                 // resize textView height
                 CGRect textViewFrame = cell.contentText.frame;
-                CGFloat calculatedHeight = [self getHeightForString:_infoSession.description fontSize:15 width:280];
+                CGFloat calculatedHeight = [self getHeightForString:_infoSession.descriptions fontSize:15 width:280];
                 NSLog(@"cal height: %0.0f", calculatedHeight);
                 if (calculatedHeight > 243.0f) {
                     textViewFrame.size.height = 243;
@@ -984,7 +984,7 @@
                     break;
                 }
                 case 3: {
-                    CGFloat calculatedHeight = [self getHeightForString:_infoSession.description fontSize:15 width:280];
+                    CGFloat calculatedHeight = [self getHeightForString:_infoSession.descriptions fontSize:15 width:280];
                     //NSLog(_infoSession.programs);
                     if (calculatedHeight > 240) {
                         height = 240.0f + 60.0f;
@@ -1048,7 +1048,7 @@
                 return NO;
             }
         } else if (indexPath.row == 3) {
-            if ([_infoSession.description length] <= 1) {
+            if ([_infoSession.descriptions length] <= 1) {
                 return NO;
             }
         }
@@ -1095,8 +1095,8 @@
                 [UIPasteboard generalPasteboard].string = _infoSession.programs;
                 NSLog(@"%@", _infoSession.programs);
             } else if (indexPath.row == 3) {
-                [UIPasteboard generalPasteboard].string = _infoSession.description;
-                NSLog(@"%@", _infoSession.description);
+                [UIPasteboard generalPasteboard].string = _infoSession.descriptions;
+                NSLog(@"%@", _infoSession.descriptions);
             }
         }
     }
