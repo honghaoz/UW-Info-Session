@@ -53,7 +53,7 @@
 		[components addObject:[NSString stringWithFormat:@"%@=%@,%@", @"ll", [self.latitude stringValue], [self.longitude stringValue]]];
     
 	if (self.zoomLevel > 0)
-		[components addObject:[NSString stringWithFormat:@"%@=%@", @"z", [NSString stringWithFormat:@"%i", self.zoomLevel]]];
+		[components addObject:[NSString stringWithFormat:@"%@=%@", @"z", [NSString stringWithFormat:@"%lu", (unsigned long)self.zoomLevel]]];
 	
 	if (self.mapMode)
 		[components addObject:[NSString stringWithFormat:@"%@=%@", @"t", self.mapMode]];

@@ -11,6 +11,7 @@
 		1B058350194E28E7000D43C2 /* ZHHHandyMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B05834F194E28E7000D43C2 /* ZHHHandyMacros.m */; };
 		1B09EBF719761C6F00100B98 /* UIImage+ChangeColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B09EBF619761C6F00100B98 /* UIImage+ChangeColor.m */; };
 		1B0A98821923BF61006AF24B /* UWCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B0A98811923BF61006AF24B /* UWCellScrollView.m */; };
+		1B18C06C19C002D3007882C4 /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B18C06B19C002D3007882C4 /* libGoogleAdMobAds.a */; };
 		1B19834918A618A60022A285 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19834818A618A60022A285 /* DetailViewController.m */; };
 		1B19E78719758B940002D1E1 /* UIImage+ApplyAlpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19E78619758B940002D1E1 /* UIImage+ApplyAlpha.m */; };
 		1B19FE4B1928673500E0CA2D /* UWDetailRSVPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B19FE4A1928673500E0CA2D /* UWDetailRSVPCell.m */; };
@@ -18,7 +19,6 @@
 		1B3744FA18A5A842007CF08C /* InfoSessionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3744F918A5A842007CF08C /* InfoSessionsViewController.m */; };
 		1B37453718A5BA28007CF08C /* InfoSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B37453618A5BA28007CF08C /* InfoSession.m */; };
 		1B3A337918D4BA5D0046DC73 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3A337818D4BA5D0046DC73 /* Social.framework */; };
-		1B3A338218D4D66C0046DC73 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3A337F18D4D66C0046DC73 /* libWeChatSDK.a */; };
 		1B3A339818D4D7600046DC73 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A338618D4D7600046DC73 /* AFHTTPRequestOperation.m */; };
 		1B3A339918D4D7600046DC73 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A338818D4D7600046DC73 /* AFHTTPRequestOperationManager.m */; };
 		1B3A339A18D4D7600046DC73 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A338A18D4D7600046DC73 /* AFHTTPSessionManager.m */; };
@@ -62,6 +62,7 @@
 		1B505EDB18D0E3AB00F168F8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B505EDA18D0E3AB00F168F8 /* SystemConfiguration.framework */; };
 		1B527C4218D0241D00A91339 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B527C4118D0241D00A91339 /* MoreViewController.m */; };
 		1B527C4518D026D100A91339 /* MoreNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B527C4418D026D100A91339 /* MoreNavigationViewController.m */; };
+		1B52DF6319C00149006CAA9A /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B52DF6019C00149006CAA9A /* libWeChatSDK.a */; };
 		1B59BB2018C441AA00D6112B /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B59BB1F18C441AA00D6112B /* SearchViewController.m */; };
 		1B5A7B2F1978A0C000A66F66 /* GBFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5A7B2A1978A0C000A66F66 /* GBFlatButton.m */; };
 		1B5A7B301978A0C000A66F66 /* GBFlatSelectableButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5A7B2C1978A0C000A66F66 /* GBFlatSelectableButton.m */; };
@@ -84,7 +85,6 @@
 		1B78A980191E81C000A4A8AD /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B78A978191E81C000A4A8AD /* grayArrow@2x.png */; };
 		1B78A981191E81C000A4A8AD /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B78A979191E81C000A4A8AD /* whiteArrow.png */; };
 		1B78A982191E81C000A4A8AD /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B78A97A191E81C000A4A8AD /* whiteArrow@2x.png */; };
-		1B78A990191E88B200A4A8AD /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B78A98F191E88B200A4A8AD /* libGoogleAdMobAds.a */; };
 		1B78A993191F0D8700A4A8AD /* UWManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A992191F0D8700A4A8AD /* UWManagerViewController.m */; };
 		1B78A996191F1E7100A4A8AD /* UWDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A995191F1E7100A4A8AD /* UWDevice.m */; };
 		1B78A999191F24E800A4A8AD /* UWDeviceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A998191F24E800A4A8AD /* UWDeviceCell.m */; };
@@ -178,6 +178,19 @@
 		1B09EBF619761C6F00100B98 /* UIImage+ChangeColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ChangeColor.m"; path = "Category/UIImage+ChangeColor.m"; sourceTree = "<group>"; };
 		1B0A98801923BF61006AF24B /* UWCellScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWCellScrollView.h; path = OtherViews/UWCellScrollView.h; sourceTree = "<group>"; };
 		1B0A98811923BF61006AF24B /* UWCellScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWCellScrollView.m; path = OtherViews/UWCellScrollView.m; sourceTree = "<group>"; };
+		1B18C05F19C002D3007882C4 /* GADAdMobExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADAdMobExtras.h; sourceTree = "<group>"; };
+		1B18C06019C002D3007882C4 /* GADAdNetworkExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADAdNetworkExtras.h; sourceTree = "<group>"; };
+		1B18C06119C002D3007882C4 /* GADAdSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADAdSize.h; sourceTree = "<group>"; };
+		1B18C06219C002D3007882C4 /* GADBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerView.h; sourceTree = "<group>"; };
+		1B18C06319C002D3007882C4 /* GADBannerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerViewDelegate.h; sourceTree = "<group>"; };
+		1B18C06419C002D3007882C4 /* GADInAppPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInAppPurchase.h; sourceTree = "<group>"; };
+		1B18C06519C002D3007882C4 /* GADInAppPurchaseDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInAppPurchaseDelegate.h; sourceTree = "<group>"; };
+		1B18C06619C002D3007882C4 /* GADInterstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitial.h; sourceTree = "<group>"; };
+		1B18C06719C002D3007882C4 /* GADInterstitialDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitialDelegate.h; sourceTree = "<group>"; };
+		1B18C06819C002D3007882C4 /* GADModules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADModules.h; sourceTree = "<group>"; };
+		1B18C06919C002D3007882C4 /* GADRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequest.h; sourceTree = "<group>"; };
+		1B18C06A19C002D3007882C4 /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
+		1B18C06B19C002D3007882C4 /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
 		1B19834718A618A60022A285 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ViewController/DetailViewController.h; sourceTree = "<group>"; };
 		1B19834818A618A60022A285 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController.m; path = ViewController/DetailViewController.m; sourceTree = "<group>"; };
 		1B19E78519758B940002D1E1 /* UIImage+ApplyAlpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+ApplyAlpha.h"; path = "Category/UIImage+ApplyAlpha.h"; sourceTree = "<group>"; };
@@ -190,9 +203,6 @@
 		1B37453518A5BA28007CF08C /* InfoSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InfoSession.h; path = Model/InfoSession.h; sourceTree = "<group>"; };
 		1B37453618A5BA28007CF08C /* InfoSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSession.m; path = Model/InfoSession.m; sourceTree = "<group>"; };
 		1B3A337818D4BA5D0046DC73 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		1B3A337F18D4D66C0046DC73 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWeChatSDK.a; path = "ThridPartySDK/WeChatSDK_1.4.2-1.1/libWeChatSDK.a"; sourceTree = SOURCE_ROOT; };
-		1B3A338018D4D66C0046DC73 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WXApi.h; path = "ThridPartySDK/WeChatSDK_1.4.2-1.1/WXApi.h"; sourceTree = SOURCE_ROOT; };
-		1B3A338118D4D66C0046DC73 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WXApiObject.h; path = "ThridPartySDK/WeChatSDK_1.4.2-1.1/WXApiObject.h"; sourceTree = SOURCE_ROOT; };
 		1B3A338518D4D7600046DC73 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperation.h; path = ThridPartySDK/AFNetworking/AFHTTPRequestOperation.h; sourceTree = SOURCE_ROOT; };
 		1B3A338618D4D7600046DC73 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AFHTTPRequestOperation.m; path = ThridPartySDK/AFNetworking/AFHTTPRequestOperation.m; sourceTree = SOURCE_ROOT; };
 		1B3A338718D4D7600046DC73 /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperationManager.h; path = ThridPartySDK/AFNetworking/AFHTTPRequestOperationManager.h; sourceTree = SOURCE_ROOT; };
@@ -270,6 +280,9 @@
 		1B527C4118D0241D00A91339 /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoreViewController.m; path = ViewController/MoreViewController.m; sourceTree = "<group>"; };
 		1B527C4318D026D100A91339 /* MoreNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoreNavigationViewController.h; path = ViewController/MoreNavigationViewController.h; sourceTree = "<group>"; };
 		1B527C4418D026D100A91339 /* MoreNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoreNavigationViewController.m; path = ViewController/MoreNavigationViewController.m; sourceTree = "<group>"; };
+		1B52DF6019C00149006CAA9A /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
+		1B52DF6119C00149006CAA9A /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
+		1B52DF6219C00149006CAA9A /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		1B59BB1E18C441AA00D6112B /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchViewController.h; path = ViewController/SearchViewController.h; sourceTree = "<group>"; };
 		1B59BB1F18C441AA00D6112B /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = ViewController/SearchViewController.m; sourceTree = "<group>"; };
 		1B5A7B291978A0C000A66F66 /* GBFlatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBFlatButton.h; sourceTree = "<group>"; };
@@ -303,19 +316,6 @@
 		1B78A978191E81C000A4A8AD /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grayArrow@2x.png"; sourceTree = "<group>"; };
 		1B78A979191E81C000A4A8AD /* whiteArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteArrow.png; sourceTree = "<group>"; };
 		1B78A97A191E81C000A4A8AD /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
-		1B78A983191E88B200A4A8AD /* GADAdMobExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADAdMobExtras.h; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/GADAdMobExtras.h"; sourceTree = "<group>"; };
-		1B78A984191E88B200A4A8AD /* GADAdNetworkExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADAdNetworkExtras.h; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/GADAdNetworkExtras.h"; sourceTree = "<group>"; };
-		1B78A985191E88B200A4A8AD /* GADAdSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADAdSize.h; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/GADAdSize.h"; sourceTree = "<group>"; };
-		1B78A986191E88B200A4A8AD /* GADBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADBannerView.h; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/GADBannerView.h"; sourceTree = "<group>"; };
-		1B78A987191E88B200A4A8AD /* GADBannerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADBannerViewDelegate.h; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/GADBannerViewDelegate.h"; sourceTree = "<group>"; };
-		1B78A988191E88B200A4A8AD /* GADInAppPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADInAppPurchase.h; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/GADInAppPurchase.h"; sourceTree = "<group>"; };
-		1B78A989191E88B200A4A8AD /* GADInAppPurchaseDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADInAppPurchaseDelegate.h; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/GADInAppPurchaseDelegate.h"; sourceTree = "<group>"; };
-		1B78A98A191E88B200A4A8AD /* GADInterstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADInterstitial.h; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/GADInterstitial.h"; sourceTree = "<group>"; };
-		1B78A98B191E88B200A4A8AD /* GADInterstitialDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADInterstitialDelegate.h; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/GADInterstitialDelegate.h"; sourceTree = "<group>"; };
-		1B78A98C191E88B200A4A8AD /* GADModules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADModules.h; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/GADModules.h"; sourceTree = "<group>"; };
-		1B78A98D191E88B200A4A8AD /* GADRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADRequest.h; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/GADRequest.h"; sourceTree = "<group>"; };
-		1B78A98E191E88B200A4A8AD /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADRequestError.h; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/GADRequestError.h"; sourceTree = "<group>"; };
-		1B78A98F191E88B200A4A8AD /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAdMobAds.a; path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2/libGoogleAdMobAds.a"; sourceTree = "<group>"; };
 		1B78A991191F0D8700A4A8AD /* UWManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWManagerViewController.h; path = ViewController/UWManagerViewController.h; sourceTree = "<group>"; };
 		1B78A992191F0D8700A4A8AD /* UWManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWManagerViewController.m; path = ViewController/UWManagerViewController.m; sourceTree = "<group>"; };
 		1B78A994191F1E7100A4A8AD /* UWDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWDevice.h; path = Model/UWDevice.h; sourceTree = "<group>"; };
@@ -444,6 +444,7 @@
 				1B505ED118D0E38C00F168F8 /* libz.dylib in Frameworks */,
 				1B505EDB18D0E3AB00F168F8 /* SystemConfiguration.framework in Frameworks */,
 				1B2040BF18B5DCB500C72D51 /* CoreData.framework in Frameworks */,
+				1B52DF6319C00149006CAA9A /* libWeChatSDK.a in Frameworks */,
 				1BDD366C18EC735F0098EAAF /* AdSupport.framework in Frameworks */,
 				1B505ED918D0E3A400F168F8 /* StoreKit.framework in Frameworks */,
 				1BDD367218EC73880098EAAF /* MessageUI.framework in Frameworks */,
@@ -452,14 +453,13 @@
 				1BD83A9718A59F1C00EDBB6D /* CoreGraphics.framework in Frameworks */,
 				1BDD366E18EC73700098EAAF /* AVFoundation.framework in Frameworks */,
 				1B505ECB18D0E36A00F168F8 /* AudioToolbox.framework in Frameworks */,
+				1B18C06C19C002D3007882C4 /* libGoogleAdMobAds.a in Frameworks */,
 				1BF84FAC18D6AF9F00F7A86D /* iAd.framework in Frameworks */,
 				1B3A337918D4BA5D0046DC73 /* Social.framework in Frameworks */,
-				1B78A990191E88B200A4A8AD /* libGoogleAdMobAds.a in Frameworks */,
 				1B505ED718D0E39F00F168F8 /* Security.framework in Frameworks */,
 				1B505ED518D0E39900F168F8 /* QuartzCore.framework in Frameworks */,
 				1B505ED318D0E39300F168F8 /* MobileCoreServices.framework in Frameworks */,
 				1B505ECF18D0E38400F168F8 /* CoreLocation.framework in Frameworks */,
-				1B3A338218D4D66C0046DC73 /* libWeChatSDK.a in Frameworks */,
 				1B3A33C418D4D7E40046DC73 /* Parse.framework in Frameworks */,
 				1BF43754197A470F009B4634 /* FacebookSDK.framework in Frameworks */,
 				1B6F54C818AC219000D3DD47 /* EventKitUI.framework in Frameworks */,
@@ -538,6 +538,27 @@
 			);
 			name = ZHHHandyMacros;
 			path = OpenSource/ZHHHandyMacros;
+			sourceTree = "<group>";
+		};
+		1B18C05E19C002D3007882C4 /* GoogleMobileAdsSdkiOS-6.11.1 */ = {
+			isa = PBXGroup;
+			children = (
+				1B18C05F19C002D3007882C4 /* GADAdMobExtras.h */,
+				1B18C06019C002D3007882C4 /* GADAdNetworkExtras.h */,
+				1B18C06119C002D3007882C4 /* GADAdSize.h */,
+				1B18C06219C002D3007882C4 /* GADBannerView.h */,
+				1B18C06319C002D3007882C4 /* GADBannerViewDelegate.h */,
+				1B18C06419C002D3007882C4 /* GADInAppPurchase.h */,
+				1B18C06519C002D3007882C4 /* GADInAppPurchaseDelegate.h */,
+				1B18C06619C002D3007882C4 /* GADInterstitial.h */,
+				1B18C06719C002D3007882C4 /* GADInterstitialDelegate.h */,
+				1B18C06819C002D3007882C4 /* GADModules.h */,
+				1B18C06919C002D3007882C4 /* GADRequest.h */,
+				1B18C06A19C002D3007882C4 /* GADRequestError.h */,
+				1B18C06B19C002D3007882C4 /* libGoogleAdMobAds.a */,
+			);
+			name = "GoogleMobileAdsSdkiOS-6.11.1";
+			path = "ThridPartySDK/GoogleMobileAdsSdkiOS-6.11.1";
 			sourceTree = "<group>";
 		};
 		1B2076E718AAA56E00FE7088 /* MyInfoViewController */ = {
@@ -664,24 +685,14 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		1B3A337A18D4BEB70046DC73 /* WeChatSDK_1.4.2-1.1 */ = {
-			isa = PBXGroup;
-			children = (
-				1B3A337F18D4D66C0046DC73 /* libWeChatSDK.a */,
-				1B3A338018D4D66C0046DC73 /* WXApi.h */,
-				1B3A338118D4D66C0046DC73 /* WXApiObject.h */,
-			);
-			path = "WeChatSDK_1.4.2-1.1";
-			sourceTree = "<group>";
-		};
 		1B3A338318D4D67C0046DC73 /* ThirdPartySDK */ = {
 			isa = PBXGroup;
 			children = (
+				1B18C05E19C002D3007882C4 /* GoogleMobileAdsSdkiOS-6.11.1 */,
+				1B52DF5F19C00149006CAA9A /* WeChatSDK_64 */,
 				1BDD367318ECE7C90098EAAF /* GoogleAnalytics */,
-				1BDD365F18EC73100098EAAF /* GoogleAd */,
 				1B2F745318AF66190042322B /* AFNetworking */,
 				1B2F747018AF66210042322B /* UIKit+AFNetworking */,
-				1B3A337A18D4BEB70046DC73 /* WeChatSDK_1.4.2-1.1 */,
 			);
 			name = ThirdPartySDK;
 			sourceTree = "<group>";
@@ -733,6 +744,17 @@
 				1B78A99B192309A100A4A8AD /* UWGridTableView.m */,
 			);
 			name = MoreViewController;
+			sourceTree = "<group>";
+		};
+		1B52DF5F19C00149006CAA9A /* WeChatSDK_64 */ = {
+			isa = PBXGroup;
+			children = (
+				1B52DF6019C00149006CAA9A /* libWeChatSDK.a */,
+				1B52DF6119C00149006CAA9A /* WXApi.h */,
+				1B52DF6219C00149006CAA9A /* WXApiObject.h */,
+			);
+			name = WeChatSDK_64;
+			path = ThridPartySDK/WeChatSDK_64;
 			sourceTree = "<group>";
 		};
 		1B5A7B281978A0C000A66F66 /* GBFlatButton */ = {
@@ -1081,26 +1103,6 @@
 				1B781666197CB9E80043664B /* Settings.bundle */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
-		};
-		1BDD365F18EC73100098EAAF /* GoogleAd */ = {
-			isa = PBXGroup;
-			children = (
-				1B78A983191E88B200A4A8AD /* GADAdMobExtras.h */,
-				1B78A984191E88B200A4A8AD /* GADAdNetworkExtras.h */,
-				1B78A985191E88B200A4A8AD /* GADAdSize.h */,
-				1B78A986191E88B200A4A8AD /* GADBannerView.h */,
-				1B78A987191E88B200A4A8AD /* GADBannerViewDelegate.h */,
-				1B78A988191E88B200A4A8AD /* GADInAppPurchase.h */,
-				1B78A989191E88B200A4A8AD /* GADInAppPurchaseDelegate.h */,
-				1B78A98A191E88B200A4A8AD /* GADInterstitial.h */,
-				1B78A98B191E88B200A4A8AD /* GADInterstitialDelegate.h */,
-				1B78A98C191E88B200A4A8AD /* GADModules.h */,
-				1B78A98D191E88B200A4A8AD /* GADRequest.h */,
-				1B78A98E191E88B200A4A8AD /* GADRequestError.h */,
-				1B78A98F191E88B200A4A8AD /* libGoogleAdMobAds.a */,
-			);
-			name = GoogleAd;
 			sourceTree = "<group>";
 		};
 		1BDD367318ECE7C90098EAAF /* GoogleAnalytics */ = {
@@ -1463,7 +1465,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1478,6 +1480,8 @@
 					"$(PROJECT_DIR)/ThridPartySDK/WeChatSDK_1.4.2-1.1",
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleAnalytics",
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2",
+					"$(PROJECT_DIR)/ThridPartySDK/WeChatSDK_64",
+					"$(PROJECT_DIR)/ThridPartySDK/GoogleMobileAdsSdkiOS-6.11.1",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1491,7 +1495,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1506,6 +1510,8 @@
 					"$(PROJECT_DIR)/ThridPartySDK/WeChatSDK_1.4.2-1.1",
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleAnalytics",
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2",
+					"$(PROJECT_DIR)/ThridPartySDK/WeChatSDK_64",
+					"$(PROJECT_DIR)/ThridPartySDK/GoogleMobileAdsSdkiOS-6.11.1",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

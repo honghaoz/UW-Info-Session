@@ -13,7 +13,7 @@
 - (id)initWithCoder:(NSCoder *)aDecoder{
     if ((self = [super init])) {
         self.title = [aDecoder decodeObjectForKey:@"title"];
-        self.availability = [aDecoder decodeIntegerForKey:@"availability"];
+        self.availability = [aDecoder decodeInt32ForKey:@"availability"];
         self.startDate = [aDecoder decodeObjectForKey:@"startDate"];
         self.endDate = [aDecoder decodeObjectForKey:@"endDate"];
         self.allDay = [aDecoder decodeBoolForKey:@"allDay"];

@@ -145,7 +145,7 @@ static NSString* const keyBaseURLString = @"http://uw-info.appspot.com/";
             }
         }
         else{
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Success with wrong code: %d", httpResponse.statusCode]
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Success with wrong code: %ld", (long)httpResponse.statusCode]
                                                                 message:[NSString stringWithFormat:@"All header fields: %@\n\nResponseObject:%@",[httpResponse allHeaderFields], responseObject]
                                                                delegate:nil
                                                       cancelButtonTitle:@"Try again" otherButtonTitles:nil];
@@ -163,7 +163,7 @@ static NSString* const keyBaseURLString = @"http://uw-info.appspot.com/";
             }
         }
         else {
-            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat: @"Query error: %d, Error: %@", httpResponse.statusCode, error.description]];
+            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat: @"Query error: %ld, Error: %@", (long)httpResponse.statusCode, error.description]];
             [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:self cancelButtonTitle:@"Offline data" otherButtonTitles:@"Try again", nil];
         }
     }];

@@ -279,7 +279,7 @@
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
-    _countOfDevice.text = [NSString stringWithFormat:@"Devices: %d+", numberOfDevice];
+    _countOfDevice.text = [NSString stringWithFormat:@"Devices: %ld+", (long)numberOfDevice];
     [_countOfDevice setTextAlignment:NSTextAlignmentCenter];
     [_countOfDevice setFont:[UIFont boldSystemFontOfSize:22]];
     [_countOfDevice setTextColor:[UIColor darkGrayColor]];
@@ -341,7 +341,7 @@
 }
 
 - (void)setNumberOfDevices:(NSInteger )number {
-    _countOfDevice.text = [NSString stringWithFormat:@"Devices: %d+", number];
+    _countOfDevice.text = [NSString stringWithFormat:@"Devices: %ld+", (long)number];
 }
 
 #pragma mark - tableView data source
@@ -390,7 +390,7 @@
     objc_setAssociatedObject(cell.queryKey, @"Device", theDevice, OBJC_ASSOCIATION_RETAIN);
     objc_setAssociatedObject(cell.queryKey, @"Key", @"QueryKey", OBJC_ASSOCIATION_RETAIN);
     
-    cell.openTimes.text = [NSString stringWithFormat:@"%d", [theDevice.openTimes integerValue]];
+    cell.openTimes.text = [NSString stringWithFormat:@"%ld", (long)[theDevice.openTimes integerValue]];
     cell.appVersion.text = theDevice.appVersion;
     if ([theDevice.appVersion isEqualToString:@"null"]) {
         cell.appVersion.textColor = [UIColor lightGrayColor];
