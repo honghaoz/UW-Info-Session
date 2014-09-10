@@ -414,7 +414,7 @@
         NSDateComponents* component = [gregorian components:NSYearCalendarUnit | NSWeekCalendarUnit fromDate:dateOfFirstObjectOfThisWeek];
 
         // set component to monday of that week
-        [component setWeek:weekNum]; //Week of the section
+        [component setWeekOfYear:weekNum]; //Week of the section
         [component setWeekday:2]; //Monday
 
         // initialize begin monday string
@@ -426,7 +426,7 @@
         NSString* beginDate = [dateFormatter stringFromDate:beginningOfWeek];
 
         // set to next monday and initialize next sunday string
-        [component setWeek:weekNum + 1]; //Week of the section
+        [component setWeekOfYear:weekNum + 1]; //Week of the section
         [component setWeekday:1]; // Sunday
         NSDate* beginningOfNextWeek = [gregorian dateFromComponents:component];
         NSString* endDate = [dateFormatter stringFromDate:beginningOfNextWeek];
