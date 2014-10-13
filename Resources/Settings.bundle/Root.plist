@@ -12,7 +12,7 @@
 			<key>Key</key>
 			<string>version</string>
 			<key>DefaultValue</key>
-			<string>1.4.1</string>
+			<string>1.5</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>
