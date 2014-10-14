@@ -20,6 +20,12 @@
 #import "GADAdMobExtras.h"
 #import "UWColorSchemeCenter.h"
 #import "UIColor+isEqual.h"
+#import "UIImage+ApplyAlpha.h"
+#import "UIImage+ChangeColor.h"
+#import "UIImage+ChangeColor.h"
+#import "MoreViewController.h"
+#import "MoreNavigationViewController.h"
+#import "HSLUpdateChecker.h"
 
 @interface SearchViewController () <ADBannerViewDelegate, GADBannerViewDelegate>
 
@@ -44,6 +50,9 @@
     CGFloat startContentOffset;
     CGFloat lastContentOffset;
     CGFloat previousScrollViewYOffset;
+    
+    UIButton *_settingButton;
+    UIView *_redDotView;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -58,10 +67,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     // set color
 //    [self.navigationController.navigationBar performSelector:@selector(setBarTintColor:) withObject:UWGold];
 //    self.navigationController.navigationBar.tintColor = UWBlack;
+    [self initSettingButton];
+    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithCustomView:_settingButton];
+    [self.navigationItem setRightBarButtonItem:moreButton];
     
     // initiate search bar
     NSInteger statusBarHeight = 20;
@@ -135,8 +146,37 @@
     [self updateColorScheme];
     [UWColorSchemeCenter registerColorSchemeNotificationForObserver:self selector:@selector(updateColorScheme)];
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedNewVersionNotification:) name:@"NewVersionAvailable" object:nil];
+    
     // Google Analytics
     [UWGoogleAnalytics analyticScreen:@"Search Screen"];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if ([HSLUpdateChecker isNewVersionAvailable]) {
+        [self setRedDotToSettingButton:YES];
+    } else {
+        [self setRedDotToSettingButton:NO];
+    }
+}
+
+- (void)initSettingButton {
+    UIImage *settingImage = [[UIImage imageNamed:@"settings"] changeToColor:[UWColorSchemeCenter uwBlack]];
+    UIImageView *buttonImageView = [[UIImageView alloc] initWithImage:settingImage];
+    _settingButton = [[UIButton alloc] initWithFrame:buttonImageView.frame];
+    [_settingButton setImage:settingImage forState:UIControlStateNormal];
+    [_settingButton setImage:[settingImage imageByApplyingAlpha:0.3] forState:UIControlStateHighlighted];
+    
+    //    [settingButton addSubview:imageView];
+    [_settingButton addTarget:self action:@selector(showMoreViewController) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)changeSettingButtonColor:(UIColor *)color {
+    UIImage *settingImage = [[UIImage imageNamed:@"settings"] changeToColor:color];
+    [_settingButton setImage:settingImage forState:UIControlStateNormal];
+    [_settingButton setImage:[settingImage imageByApplyingAlpha:0.3] forState:UIControlStateHighlighted];
 }
 
 - (void)updateColorScheme {
@@ -443,6 +483,27 @@
     }
 }
 
+#pragma mark -
+
+- (void)receivedNewVersionNotification:(NSNotification *)notification {
+    [self setRedDotToSettingButton:YES];
+}
+
+- (void)setRedDotToSettingButton:(BOOL)isSet {
+    NSLog(@"setRedDot: %@",  isSet ? @"YES" : @"NO");
+    // Remove red dot
+    //    [self.navigationItem.rightBarButtonItem.customView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    if (isSet) {
+        if (!_redDotView) {
+            _redDotView = [[UIView alloc] initWithFrame:CGRectMake(17, -3, 12, 12)];
+            [_redDotView setBackgroundColor:[UIColor colorWithRed:1 green:0.23 blue:0.19 alpha:1]];
+            _redDotView.layer.cornerRadius = _redDotView.frame.size.width / 2;
+        }
+        [self.navigationItem.rightBarButtonItem.customView addSubview:_redDotView];
+    } else {
+        [_redDotView removeFromSuperview];
+    }
+}
 
 #pragma mark - Set Hide When Scroll
 //// ???? Why scroll canbe detected? This is a simple ViewController, not scroll view
@@ -697,6 +758,15 @@
     controlletr.infoSessionModel = sender[2];
     controlletr.tabBarController = _tabBarController;
 }
+
+- (void)showMoreViewController {
+    MoreViewController *newMoreVC = [[MoreViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    MoreNavigationViewController *newMoreNaviVC = [[MoreNavigationViewController alloc] initWithRootViewController:newMoreVC];
+    //[self presentViewController:newMoreVc animated:YES completion:^(){}];
+    //[self.navigationController pushViewController:newMoreNaviVC animated:YES];
+    [self presentViewController:newMoreNaviVC animated:YES completion:^(){}];
+}
+
 //
 //#pragma mark - iAd delegate methods
 //

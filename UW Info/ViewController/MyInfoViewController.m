@@ -150,7 +150,7 @@
 #pragma mark - 
 
 - (void)receivedNewVersionNotification:(NSNotification *)notification {
-//    [self setRedDotToSettingButton:YES];
+    [self setRedDotToSettingButton:YES];
 }
 
 - (void)setRedDotToSettingButton:(BOOL)isSet {

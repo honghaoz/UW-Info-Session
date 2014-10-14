@@ -512,6 +512,7 @@
     // if current time is befor start time, set dark (future sessions)
     if ([[NSDate date] compare:infoSession.startTime] == NSOrderedAscending) {
         [cell.employer setTextColor:[UIColor blackColor]];
+//        cell.employer.layer.shadowRadius = 10.0f;
 //        [cell.locationLabel setTextColor:[UIColor darkGrayColor]];
         [cell.location setTextColor:[UIColor darkGrayColor]];
 //        [cell.dateLabel setTextColor:[UIColor darkGrayColor]];
@@ -524,6 +525,7 @@
         [cell.employer setTextColor:fontColor];
         cell.employer.shadowColor = [UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1.0];
         cell.employer.shadowOffset = CGSizeMake(0.0, 1.0);
+        cell.employer.layer.shadowRadius = 3.0f;
 //        [cell.locationLabel setTextColor:fontColor];
         [cell.location setTextColor:fontColor];
 //        [cell.dateLabel setTextColor:fontColor];

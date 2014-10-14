@@ -686,7 +686,7 @@
             // the last row, add more alert
             else if (indexPath.row == [_infoSession.alerts count] + 1) {
                 LoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddAlertCell"];
-                cell.loadingLabel.text = @"Add more alert";
+                cell.loadingLabel.text = @"Add more alerts";
                 [cell.loadingLabel setTextColor:[UIColor darkGrayColor]];
                 return cell;
             }

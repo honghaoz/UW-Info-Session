@@ -209,7 +209,7 @@
         [menuItems addObject:termIterm];
     }
 
-    REMenuItem* yearItem = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%i  ▾", year + 1]
+    REMenuItem* yearItem = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%li  ▾", year + 1]
                                                        image:nil
                                             highlightedImage:nil
                                                       action:^(REMenuItem* item) {
