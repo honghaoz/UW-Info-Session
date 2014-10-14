@@ -1479,7 +1479,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/ThridPartySDK/WeChatSDK_1.4.2-1.1",
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleAnalytics",
-					"$(PROJECT_DIR)/ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2",
 					"$(PROJECT_DIR)/ThridPartySDK/WeChatSDK_64",
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleMobileAdsSdkiOS-6.11.1",
 				);
@@ -1509,7 +1508,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/ThridPartySDK/WeChatSDK_1.4.2-1.1",
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleAnalytics",
-					"$(PROJECT_DIR)/ThridPartySDK/GoogleMobileAdsSdkiOS-6.9.2",
 					"$(PROJECT_DIR)/ThridPartySDK/WeChatSDK_64",
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleMobileAdsSdkiOS-6.11.1",
 				);
