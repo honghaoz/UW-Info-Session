@@ -24,12 +24,10 @@
         _iAdBannerView.delegate = self;
         
         // Google ad
-        _googleBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+        _googleBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait];
         _googleBannerView.adUnitID = @"ca-app-pub-5080537428726834/9792615501";
         _googleBannerView.delegate = self;
         _googleAdisLoaded = NO;
-        
-        
     }
     return self;
 }

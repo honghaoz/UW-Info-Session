@@ -87,7 +87,7 @@
     [self.scrollView setAutoresizesSubviews:YES];
     
     [self.scrollView setZoomScale:0.4 animated:NO];
-    [self.scrollView setContentOffset:CGPointMake(825, 375) animated:NO];
+    [self.scrollView setContentOffset:CGPointMake(815, 365) animated:NO];
 
     self->barIsHidden = NO;
     
