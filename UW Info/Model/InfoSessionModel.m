@@ -398,7 +398,6 @@
 
 + (UIImage*)loadMap
 {
-
     //    NSData *pngData = [NSData dataWithContentsOfFile:[self dataFilePath:@"uw_map.png"]];
     NSData* pngData = [NSData dataWithContentsOfFile:[[self cachesDirectory] stringByAppendingPathComponent:@"uw_map.png"]];
     return [UIImage imageWithData:pngData];

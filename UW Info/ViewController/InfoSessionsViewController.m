@@ -469,7 +469,7 @@
         LoadingCell* cell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell"];
         cell.loadingIndicator.hidden = NO;
         [cell.loadingIndicator startAnimating];
-        cell.loadingLabel.text = @"      Refreshing...";
+        cell.loadingLabel.text = @"         Refreshing...";
         [cell.loadingLabel setTextAlignment:NSTextAlignmentLeft];
         [cell.loadingLabel setTextColor:[UIColor darkGrayColor]];
         //        [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
@@ -597,12 +597,12 @@
 - (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView* background = [[UIView alloc] init];
-    background.frame = CGRectMake(0, 0, 320, 24);
+    background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 24);
     background.backgroundColor = [UIColor colorWithRed:0.96 green:0.94 blue:0.93 alpha:1];
 //    [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1];
 
     UILabel* myLabel = [[UILabel alloc] init];
-    myLabel.frame = CGRectMake(15, 0, 320, 24);
+    myLabel.frame = CGRectMake(15, 0, [UIScreen mainScreen].bounds.size.width, 24);
     myLabel.font = [UIFont boldSystemFontOfSize:14];
     myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
 

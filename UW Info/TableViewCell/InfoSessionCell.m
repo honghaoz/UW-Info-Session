@@ -15,7 +15,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        _employer = [[UILabel alloc] initWithFrame:CGRectMake(15, 6, 272, 25)];
+        _employer = [[UILabel alloc] initWithFrame:CGRectMake(15, 6, [UIScreen mainScreen].bounds.size.width - 52, 25)];
         [_employer setFont:[UIFont boldSystemFontOfSize:17]];
         [_employer setTextColor:[UIColor blackColor]];
 
@@ -29,11 +29,11 @@
         //        [_dateLabel setTextColor:[UIColor darkGrayColor]];
         //        [_dateLabel setText:@"Date: "];
 
-        _location = [[UILabel alloc] initWithFrame:CGRectMake(80, 45, 202, 21)];
+        _location = [[UILabel alloc] initWithFrame:CGRectMake(80, 45, [UIScreen mainScreen].bounds.size.width - 118, 21)];
         [_location setFont:[UIFont systemFontOfSize:14]];
         [_location setTextColor:[UIColor darkGrayColor]];
 
-        _date = [[UILabel alloc] initWithFrame:CGRectMake(15, 28, 267, 21)];
+        _date = [[UILabel alloc] initWithFrame:CGRectMake(15, 28, [UIScreen mainScreen].bounds.size.width - 53, 21)];
         [_date setFont:[UIFont systemFontOfSize:14]];
         [_date setTextColor:[UIColor darkGrayColor]];
 

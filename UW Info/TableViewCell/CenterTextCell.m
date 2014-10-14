@@ -15,7 +15,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        _centerTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 24)];
+        _centerTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - 300) / 2.0, 10, 300, 24)];
         [_centerTextLabel setTextAlignment:NSTextAlignmentCenter];
         [_centerTextLabel setFont:[UIFont systemFontOfSize:18]];
         [self.contentView addSubview:_centerTextLabel];

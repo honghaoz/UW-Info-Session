@@ -67,17 +67,18 @@
     NSInteger statusBarHeight = 20;
     NSInteger navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
     
-    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0,  statusBarHeight + navigationBarHeight, 320, 44)];
+    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0,  statusBarHeight + navigationBarHeight, [UIScreen mainScreen].bounds.size.width, 44)];
     _searchBar.delegate = self;
     _searchBar.scopeButtonTitles = [[NSArray alloc] initWithObjects:@"Employer", @"Program", @"Note", nil];
     
 //    _searchBar.tintColor = [UWColorSchemeCenter uwBlack];
     _searchBar.placeholder = @"Search Info Session";
     
+    [self setAutomaticallyAdjustsScrollViewInsets:NO];
     
     // initiate table view
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height/* - bannerFrame.size.height*/)];
-    [_tableView setContentInset:UIEdgeInsetsMake(navigationBarHeight, 0, 0, 0)];
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    [_tableView setContentInset:UIEdgeInsetsMake(statusBarHeight + navigationBarHeight + _searchBar.bounds.size.height, 0, 0, 0)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
@@ -119,9 +120,9 @@
     [self reloadTable];
     
 
-    _statusBarCoverView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, 320, 20)];
+    _statusBarCoverView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, [UIScreen mainScreen].bounds.size.width, 20)];
 //    _statusBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
-    _searchBarCoverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, _searchBar.frame.size.height)];
+    _searchBarCoverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, _searchBar.frame.size.height)];
 //    _searchBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollToFirstRow) name:@"infoSessionsChanged" object:nil];
@@ -408,11 +409,11 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *background = [[UIView alloc] init];
-    background.frame = CGRectMake(0, 0, 320, 24);
+    background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 24);
     background.backgroundColor = [UIColor colorWithRed:0.96 green:0.94 blue:0.93 alpha:1];//[UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1];
     
     UILabel *myLabel = [[UILabel alloc] init];
-    myLabel.frame = CGRectMake(15, 0, 320, 24);
+    myLabel.frame = CGRectMake(15, 0, [UIScreen mainScreen].bounds.size.width, 24);
     myLabel.font = [UIFont boldSystemFontOfSize:17];
     myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
     
@@ -606,10 +607,10 @@
                                                            _searchBar.frame.size.width,
                                                            _searchBar.frame.size.height);
                              // move tableView down
-                             [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x,
-                                                                 _searchBar.frame.size.height,
-                                                                 self.tableView.frame.size.width,
-                                                                 [UIScreen mainScreen].bounds.size.height - 210)];
+//                             [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x,
+//                                                                 _searchBar.frame.size.height,
+//                                                                 self.tableView.frame.size.width,
+//                                                                 [UIScreen mainScreen].bounds.size.height - 210)];
                              
                              _searchBar.barTintColor = [UIColor clearColor];
                              UITextField *textSearchField = [_searchBar valueForKey:@"_searchField"];
@@ -642,12 +643,10 @@
                                                            _searchBar.frame.size.width,
                                                            _searchBar.frame.size.height);
                              // move table view up
-                             [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x,
-                                                                 0,
-                                                                 self.tableView.frame.size.width,
-                                                                 [UIScreen mainScreen].bounds.size.height)];
-                             
-                             
+//                             [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x,
+//                                                                 0,
+//                                                                 self.tableView.frame.size.width,
+//                                                                 [UIScreen mainScreen].bounds.size.height)];
                          }
                          completion:^(BOOL finished){
                              //whatever else you may need to do
@@ -703,7 +702,7 @@
 //    [UIView beginAnimations:nil context:nil];
 //    [UIView setAnimationDuration:1];
 //    [banner setAlpha:1];
-//    [_tableView setFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height - banner.frame.size.height)];
+//    [_tableView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - banner.frame.size.height)];
 //    [UIView commitAnimations];
 //}
 //
@@ -749,7 +748,7 @@
 //    [UIView beginAnimations:nil context:nil];
 //    [UIView setAnimationDuration:1];
 //    [_googleBannerView setAlpha:1];
-//    [_tableView setFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height - bannerView.frame.size.height)];
+//    [_tableView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - bannerView.frame.size.height)];
 //    [UIView commitAnimations];
 //    
 //}
@@ -761,7 +760,7 @@
 //    [UIView beginAnimations:nil context:nil];
 //    [UIView setAnimationDuration:1];
 //    [bannerView setAlpha:0];
-//    [_tableView setFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height)];
+//    [_tableView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
 //    [UIView commitAnimations];
 //}
 //

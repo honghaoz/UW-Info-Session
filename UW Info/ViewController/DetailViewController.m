@@ -1641,7 +1641,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 
 - (void)updateNoteCellHeight {
     // calculate lines of string
-    CGFloat calculatedHeight = [self getHeightForString:_infoSession.note fontSize:15 width:280];
+    CGFloat calculatedHeight = [self getHeightForString:_infoSession.note fontSize:15 width:[UIScreen mainScreen].bounds.size.width - 40];
     NSInteger lines = (NSInteger)(calculatedHeight - 34) / 18 + 1;
     // is lines changes, need to refresh tableView
     if (lines != noteLines) {
@@ -1674,7 +1674,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
     NSInteger lines = (NSInteger)(calculatedHeight - 34) / 18 + 1;
     NSLog(@"lines : %i", lines);
     // calculate the offset need to scroll
-    CGRect rectToScroll = CGRectMake(0, self.noteCell.frame.origin.y + lines * 20 - 95, 320, 120);
+    CGRect rectToScroll = CGRectMake(0, self.noteCell.frame.origin.y + lines * 20 - 95, [UIScreen mainScreen].bounds.size.width, 120);
     // scroll tableview to rect that cursor is visible
     [self.tableView scrollRectToVisible:rectToScroll animated:YES];
 }
@@ -2003,7 +2003,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
     //if (startContentOffset < -10.0) {
        // NSLog(@"scroll tableview");
         //NSLog(@"%@", NSStringFromCGRect(self.tableView.contentOffset));
-        //[self.tableView scrollRectToVisible:CGRectMake(0, self.tableView.contentOffset.y - 100, 320, 320) animated:YES];
+        //[self.tableView scrollRectToVisible:CGRectMake(0, self.tableView.contentOffset.y - 100, [UIScreen mainScreen].bounds.size.width, 320) animated:YES];
         //[self.tableView scrollRectToVisible:<#(CGRect)#> animated:<#(BOOL)#>];
     //}
 //    NSMutableArray *indexPathToReload = [[NSMutableArray alloc] init];

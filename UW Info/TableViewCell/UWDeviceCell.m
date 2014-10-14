@@ -16,7 +16,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        _scrollView = [[UWCellScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 32)];
+        _scrollView = [[UWCellScrollView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 32)];
         
         _scrollView.backgroundColor = [UIColor clearColor];
         [_scrollView setShowsHorizontalScrollIndicator:NO];

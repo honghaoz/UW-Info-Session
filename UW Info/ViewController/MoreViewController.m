@@ -309,10 +309,11 @@
                 cell = [[CenterTextCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:resueIdentifier];
             }
             cell.centerTextLabel.text = @"    Share on ";
-            [cell.centerTextLabel setFrame:CGRectMake(10, 15, 280, 24)];
+            [cell.centerTextLabel setFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - 300) / 2.0, 15, 300, 24)];
+            
             [cell.centerTextLabel setTextAlignment:NSTextAlignmentLeft];
             
-            CGFloat leftX = 115;
+            CGFloat leftX = 115 + ([UIScreen mainScreen].bounds.size.width - 320.0) / 2.0;
             CGFloat buttonSize = 39;
             
             UIButton *facebookButton = [[UIButton alloc] initWithFrame:CGRectMake(leftX, 8, buttonSize, buttonSize)];

@@ -25,7 +25,7 @@ static int kObservingContentSizeChangesContext;
 - (id)initWithScrollView:(UIScrollView*)sv arrowImageName:(NSString *)arrow textColor:(UIColor *)textColor subText:(NSString *)subText position:(PullHeaderPosition)position  {
 	
 	CGRect frame = [self makeFrameForScrollView:sv position:position];
-//	  CGRect frame = CGRectMake(0.0f, 0.0f - 65.0f, 320.0f, 65.0f);
+//	  CGRect frame = CGRectMake(0.0f, 0.0f - 65.0f, [UIScreen mainScreen].bounds.size.width, 65.0f);
 //	  NSLog(@"initializing frame: x: %f y: %f w: %f h: %f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 	if((self = [super initWithFrame:frame])) {
 		CALayer *layer;

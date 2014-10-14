@@ -176,7 +176,7 @@
     NSInteger theNumberOfYearsBefore = 2;
 
     for (int i = (int)theNumberOfYearsBefore; i > 0; i--) {
-        REMenuItem* yearItem = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%i  ▾", year - i]
+        REMenuItem* yearItem = [[REMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%li  ▾", year - i]
                                                            image:nil
                                                 highlightedImage:nil
                                                           action:^(REMenuItem* item) {
