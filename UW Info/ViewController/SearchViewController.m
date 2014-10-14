@@ -120,7 +120,7 @@
     [self reloadTable];
     
 
-    _statusBarCoverView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, [UIScreen mainScreen].bounds.size.width, 20)];
+    _statusBarCoverView = [[UIView alloc] initWithFrame:CGRectMake(0, -20 * 3, [UIScreen mainScreen].bounds.size.width, 20 * 3)];
 //    _statusBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
     _searchBarCoverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, _searchBar.frame.size.height)];
 //    _searchBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
