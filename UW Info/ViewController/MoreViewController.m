@@ -244,7 +244,7 @@
                                      [UIFont systemFontOfSize:18.0f]}];
 //                NSLog(NSStringFromCGSize(size));
                 CGRect newRect = _newVersionButton.frame;
-                newRect.origin.x = cell.bounds.size.width - newRect.size.width - (AppVersionStringSize.width + 25);
+                newRect.origin.x = [UIScreen mainScreen].bounds.size.width - newRect.size.width - (AppVersionStringSize.width + 25)/* + ([UIScreen mainScreen].bounds.size.width - 320.0f)*/;
                 newRect.origin.y = (cell.bounds.size.height - newRect.size.height) / 2;
                 [_newVersionButton setFrame:newRect];
                 [cell addSubview:_newVersionButton];
@@ -290,7 +290,7 @@
             restButtonRect.size.width -= 5;
             restButtonRect.size.height -= 5;
             restButtonRect.origin.y = (cell.bounds.size.height - restButtonRect.size.height) / 2;
-            restButtonRect.origin.x = cell.bounds.size.width - restButtonRect.size.width - 72;
+            restButtonRect.origin.x = [UIScreen mainScreen].bounds.size.width - restButtonRect.size.width - 72;
             [_restButton setFrame:restButtonRect];
             _restButton.tintColor = [UWColorSchemeCenter uwGold];
             
