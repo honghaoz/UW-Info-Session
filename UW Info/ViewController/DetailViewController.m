@@ -1021,6 +1021,7 @@
 }
 
 - (CGFloat)getHeightForString:(NSString *)string fontSize:(CGFloat)fontSize width:(CGFloat)width {
+    width = width + [UIScreen mainScreen].bounds.size.width - 320;
     UITextView *calculationView = [[UITextView alloc] init];
     [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:string == nil? @"" : string]];
     [calculationView setFont:[UIFont systemFontOfSize:fontSize]];
@@ -1641,7 +1642,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 
 - (void)updateNoteCellHeight {
     // calculate lines of string
-    CGFloat calculatedHeight = [self getHeightForString:_infoSession.note fontSize:15 width:[UIScreen mainScreen].bounds.size.width - 40];
+    CGFloat calculatedHeight = [self getHeightForString:_infoSession.note fontSize:15 width:280];
     NSInteger lines = (NSInteger)(calculatedHeight - 34) / 18 + 1;
     // is lines changes, need to refresh tableView
     if (lines != noteLines) {
