@@ -11,10 +11,10 @@
 @interface InfoSessionCell : UITableViewCell
 
 @property (nonatomic, strong) IBOutlet UILabel *employer;
-@property (nonatomic, strong) IBOutlet UILabel *locationLabel;
+//@property (nonatomic, strong) IBOutlet UILabel *locationLabel;
 @property (nonatomic, strong) IBOutlet UILabel *location;
 @property (nonatomic, strong) IBOutlet UILabel *date;
-@property (nonatomic, strong) IBOutlet UILabel *dateLabel;
+//@property (nonatomic, strong) IBOutlet UILabel *dateLabel;
 
 //@property (nonatomic, strong) IBOutlet UIImageView *logo;
 

@@ -24,7 +24,9 @@
 + (UIColor *)uwGold;
 + (UIColor *)uwBlack;
 + (UIColor *)uwTabBarColor;
-+ (UIStatusBarStyle) statusBarStyle;
++ (UIStatusBarStyle)statusBarStyle;
++ (UIFont *)helveticaNeueLightFont:(float)size;
++ (UIFont *)helveticaNeueRegularFont:(float)size;
 
 + (void)setGoldColor:(UIColor *)gold;
 + (void)setBlackColor:(UIColor *)black;

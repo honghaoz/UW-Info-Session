@@ -11,6 +11,7 @@
 #import "InfoDetailedTitleButton.h"
 #import "InfoSessionModel.h"
 #import "InfoSessionsViewController.h"
+#import "UWColorSchemeCenter.h"
 
 @implementation UWTermMenu
 
@@ -196,7 +197,7 @@
                                                               [self tapTermAction:year term:[self convertUWTermToTermString:i]];
                                                            }];
         if ([currentTerm isEqualToString:[self convertUWTermToTermString:i]]) {
-            termIterm.font = [UIFont boldSystemFontOfSize:20];
+            termIterm.font = [UWColorSchemeCenter helveticaNeueRegularFont:20];//[UIFont boldSystemFontOfSize:20];
             termIterm.textColor = [UIColor blackColor];
             termIterm.highlightedTextColor = [UIColor blackColor];
         }
@@ -267,8 +268,8 @@
     [_titleButton setText:@"Info Sessions" andDetailText:@""];
 
     // create font
-    UIFont* smallerFont = [UIFont systemFontOfSize:[UIFont systemFontSize] - 6.0];
-    UIFont* regularFont = [UIFont systemFontOfSize:[UIFont systemFontSize] - 2.0];
+    UIFont* smallerFont = [UWColorSchemeCenter helveticaNeueLightFont:[UIFont systemFontSize] - 6.0];//[UIFont systemFontOfSize:[UIFont systemFontSize] - 6.0];
+    UIFont* regularFont = [UWColorSchemeCenter helveticaNeueLightFont:[UIFont systemFontSize] - 2.0];//[UIFont systemFontOfSize:[UIFont systemFontSize] - 2.0];
     // create the attributes
     NSDictionary* attrsForSmaller = [NSDictionary dictionaryWithObjectsAndKeys:smallerFont, NSFontAttributeName, nil];
     NSDictionary* attrsForRegular = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, nil];
@@ -324,7 +325,7 @@
     _menu = [[REMenu alloc] initWithItems:items];
 
     _menu.backgroundColor = [UIColor colorWithWhite:0.92 alpha:0.97];
-    _menu.font = [UIFont systemFontOfSize:20];
+    _menu.font = [UWColorSchemeCenter helveticaNeueLightFont:20];//[UIFont systemFontOfSize:20];
     _menu.textColor = [UIColor darkGrayColor];
     _menu.textShadowColor = [UIColor blackColor];
     //    _menu.textShadowOffset = CGSizeMake(0.0, 1.0);

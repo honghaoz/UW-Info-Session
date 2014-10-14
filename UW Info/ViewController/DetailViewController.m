@@ -619,7 +619,7 @@
         else if (indexPath.row == 3) {
             DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            [cell.contentLabel setFont:[UIFont systemFontOfSize:16]];
+            [cell.contentLabel setFont:[UWColorSchemeCenter helveticaNeueLightFont:16]];//[UIFont systemFontOfSize:16]];
             cell.titleLabel.text = @"Location";
             if ([_infoSession.location length] <= 1) {
                 [cell.contentLabel setTextColor: [UIColor lightGrayColor]];
@@ -693,7 +693,7 @@
             // alert item rows
             else {
                 DetailLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailLinkCell"];
-                [cell.contentLabel setFont:[UIFont systemFontOfSize:16]];
+                [cell.contentLabel setFont:[UWColorSchemeCenter helveticaNeueLightFont:16]];
                 [cell.contentLabel setTextColor: [UIColor blackColor]];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             
@@ -726,13 +726,13 @@
             cell.titleLabel.text = @"Website";
             if ([_infoSession.website length] <= 7) {
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                [cell.contentLabel setFont:[UIFont systemFontOfSize:16]];
+                [cell.contentLabel setFont:[UWColorSchemeCenter helveticaNeueLightFont:16]];
                 [cell.contentLabel setTextColor: [UIColor lightGrayColor]];
                 cell.contentLabel.text = @"No Website Provided";
                 return cell;
             } else {
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-                [cell.contentLabel setFont:[UIFont systemFontOfSize:15]];
+                [cell.contentLabel setFont:[UWColorSchemeCenter helveticaNeueLightFont:15]];
                 [cell.contentLabel setTextColor: [UIColor blackColor]];
                 cell.contentLabel.text = [_infoSession.website substringFromIndex:7];
 //                CGFloat calculatedHeight = [self getHeightForString:_infoSession.website fontSize:15 width:240];
@@ -759,7 +759,7 @@
             DetailDescriptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailDescriptionCell"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.contentText setSelectable:YES];
-            [cell.contentText setFont:[UIFont systemFontOfSize:15]];
+            [cell.contentText setFont:[UWColorSchemeCenter helveticaNeueLightFont:15]];
             [cell.contentText setSelectable:NO];
             cell.titleLabel.text = @"Programs";
             
@@ -794,7 +794,7 @@
             DetailDescriptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailDescriptionCell"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.contentText setSelectable:YES];
-            [cell.contentText setFont:[UIFont systemFontOfSize:15]];
+            [cell.contentText setFont:[UWColorSchemeCenter helveticaNeueLightFont:15]];
             [cell.contentText setSelectable:NO];
             cell.titleLabel.text = @"Descriptions";
             if ([_infoSession.descriptions length] <= 1) {
@@ -833,7 +833,7 @@
             cell.titleLabel.text = @"Notes";
             [cell.contentText setSelectable:YES];
             [cell.contentText setEditable:YES];
-            [cell.contentText setFont:[UIFont systemFontOfSize:15]];
+            [cell.contentText setFont:[UWColorSchemeCenter helveticaNeueLightFont:15]];
             [cell.contentText setScrollEnabled:NO];
             if (_infoSession.note == nil || [_infoSession.note length] == 0) {
                 cell.contentText.text = @"Take some notes here.";
@@ -1003,7 +1003,7 @@
                     } else {
                         [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:_infoSession.note]];
                     }
-                    [calculationView setFont:[UIFont systemFontOfSize:15]];
+                    [calculationView setFont:[UWColorSchemeCenter helveticaNeueLightFont:15]];
                     CGSize size = [calculationView sizeThatFits:CGSizeMake(280.0f, FLT_MAX)];
                     
                     height = size.height + 50.0f;
@@ -1024,7 +1024,7 @@
     width = width + [UIScreen mainScreen].bounds.size.width - 320;
     UITextView *calculationView = [[UITextView alloc] init];
     [calculationView setAttributedText:[[NSAttributedString alloc] initWithString:string == nil? @"" : string]];
-    [calculationView setFont:[UIFont systemFontOfSize:fontSize]];
+    [calculationView setFont:[UWColorSchemeCenter helveticaNeueLightFont:fontSize]];
     return [calculationView sizeThatFits:CGSizeMake(width, FLT_MAX)].height;
 }
 

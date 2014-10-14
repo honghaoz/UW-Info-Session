@@ -7,6 +7,7 @@
 //
 
 #import "CenterTextCell.h"
+#import "UWColorSchemeCenter.h"
 
 @implementation CenterTextCell
 
@@ -17,7 +18,7 @@
         // Initialization code
         _centerTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - 300) / 2.0, 10, 300, 24)];
         [_centerTextLabel setTextAlignment:NSTextAlignmentCenter];
-        [_centerTextLabel setFont:[UIFont systemFontOfSize:18]];
+        [_centerTextLabel setFont:[UWColorSchemeCenter helveticaNeueLightFont:18]]; //[UIFont systemFontOfSize:18]];
         [self.contentView addSubview:_centerTextLabel];
     }
     return self;

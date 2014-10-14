@@ -67,12 +67,16 @@
     NSInteger statusBarHeight = 20;
     NSInteger navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
     
+//    [[UISegmentedControl appearance] setTitleTextAttributes:@{NSFontAttributeName: [UWColorSchemeCenter helveticaNeueRegularFont:14]} forState:UIControlStateSelected];
+    
     _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0,  statusBarHeight + navigationBarHeight, [UIScreen mainScreen].bounds.size.width, 44)];
     _searchBar.delegate = self;
     _searchBar.scopeButtonTitles = [[NSArray alloc] initWithObjects:@"Employer", @"Program", @"Note", nil];
     
 //    _searchBar.tintColor = [UWColorSchemeCenter uwBlack];
     _searchBar.placeholder = @"Search Info Session";
+    UITextField *searchField = [self textFieldForSearchBar:_searchBar];
+    [searchField setFont:[UWColorSchemeCenter helveticaNeueLightFont:14]];
     
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
     
@@ -101,12 +105,12 @@
     _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 1.0, 180, 17.0)];
     _textLabel.textAlignment = NSTextAlignmentCenter;
     _textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
-    _textLabel.font = [UIFont boldSystemFontOfSize:17];
+    _textLabel.font = [UWColorSchemeCenter helveticaNeueRegularFont:17];//[UIFont boldSystemFontOfSize:17];
 //    textLabel.textColor = [UWColorSchemeCenter uwBlack];
     
     _detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 18.0, 180, 14.0)];
     _detailLabel.textAlignment = NSTextAlignmentCenter;
-    _detailLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize] - 2.0];
+    _detailLabel.font = [UWColorSchemeCenter helveticaNeueLightFont:[UIFont systemFontSize] - 2.0];//[UIFont systemFontOfSize:[UIFont systemFontSize] - 2.0];
 //    _detailLabel.textColor = [UWColorSchemeCenter uwBlack];
     [titleView addSubview:_textLabel];
     [titleView addSubview:_detailLabel];
@@ -133,7 +137,6 @@
     
     // Google Analytics
     [UWGoogleAnalytics analyticScreen:@"Search Screen"];
-    
 }
 
 - (void)updateColorScheme {
@@ -332,16 +335,16 @@
     InfoSession *infoSession = [infoSessions objectAtIndex:indexPath.row];
     if (infoSession.isCancelled == YES) {
         [cell.employer setTextColor: [UIColor lightGrayColor]];
-        [cell.locationLabel setTextColor:[UIColor lightGrayColor]];
+//        [cell.locationLabel setTextColor:[UIColor lightGrayColor]];
         [cell.location setTextColor:[UIColor lightGrayColor]];
-        [cell.dateLabel setTextColor:[UIColor lightGrayColor]];
+//        [cell.dateLabel setTextColor:[UIColor lightGrayColor]];
         [cell.date setTextColor:[UIColor lightGrayColor]];
     }
     else {
         [cell.employer setTextColor: [UIColor blackColor]];
-        [cell.locationLabel setTextColor:[UIColor darkGrayColor]];
+//        [cell.locationLabel setTextColor:[UIColor darkGrayColor]];
         [cell.location setTextColor:[UIColor darkGrayColor]];
-        [cell.dateLabel setTextColor:[UIColor darkGrayColor]];
+//        [cell.dateLabel setTextColor:[UIColor darkGrayColor]];
         [cell.date setTextColor:[UIColor darkGrayColor]];
     }
     
@@ -414,7 +417,7 @@
     
     UILabel *myLabel = [[UILabel alloc] init];
     myLabel.frame = CGRectMake(15, 0, [UIScreen mainScreen].bounds.size.width, 24);
-    myLabel.font = [UIFont boldSystemFontOfSize:17];
+    myLabel.font = [UWColorSchemeCenter helveticaNeueRegularFont:17];//[UIFont boldSystemFontOfSize:17];
     myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
     
     UIView *headerView = [[UIView alloc] init];
@@ -613,7 +616,8 @@
 //                                                                 [UIScreen mainScreen].bounds.size.height - 210)];
                              
                              _searchBar.barTintColor = [UIColor clearColor];
-                             UITextField *textSearchField = [_searchBar valueForKey:@"_searchField"];
+//                             UITextField *textSearchField = [_searchBar valueForKey:@"_searchField"];
+                             UITextField *textSearchField = [self textFieldForSearchBar:_searchBar];
                              NSLog(@"%f, %f", textSearchField.layer.borderWidth, textSearchField.layer.cornerRadius);
                              textSearchField.layer.borderWidth = 0.5f;
                              textSearchField.layer.cornerRadius = 5.0f;
@@ -764,5 +768,19 @@
 //    [UIView commitAnimations];
 //}
 //
+
+#pragma mark - Helpers
+
+- (UITextField *)textFieldForSearchBar:(UISearchBar *)searchBar {
+    for(UIView *subView in searchBar.subviews) {
+        for (UIView *lowSubView in subView.subviews) {
+            if ([lowSubView isKindOfClass:[UITextField class]]) {
+                UITextField *searchField = (UITextField *)lowSubView;
+                return searchField;
+            }
+        }
+    }
+    return nil;
+}
 
 @end

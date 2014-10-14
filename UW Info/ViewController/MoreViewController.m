@@ -117,7 +117,7 @@
                         options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
                          self.navigationController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
-                         [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack]}];
+                         [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack], NSFontAttributeName: [UWColorSchemeCenter helveticaNeueRegularFont:18]}];
                          [_darkThemeSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
                          [_randomColorSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
                          [_restButton setTintColor:[UWColorSchemeCenter uwGold]];
@@ -148,7 +148,7 @@
             [_newVersionButton setDisableHighlight:YES];
             [_newVersionButton setTitle:[NSString stringWithFormat:@"New: %@", appStoreVersion] forState:UIControlStateNormal];
             [_newVersionButton setTitle:[NSString stringWithFormat:@"New: %@", appStoreVersion] forState:UIControlStateHighlighted];
-            [_newVersionButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
+            [_newVersionButton.titleLabel setFont:[UWColorSchemeCenter helveticaNeueLightFont:15]];
             [_newVersionButton setSelected:YES];
             [_newVersionButton sizeToFit];
 //            [_newVersionButton setAdjustsImageWhenHighlighted:NO];
@@ -212,7 +212,7 @@
             }
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             cell.textLabel.text = @"Dark Theme";
-            [cell.textLabel setFont:[UIFont systemFontOfSize:18]];
+            [cell.textLabel setFont:[UWColorSchemeCenter helveticaNeueLightFont:18]];
             
             _darkThemeSwitch = [[UISwitch alloc] init];
             [_darkThemeSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
@@ -233,7 +233,7 @@
             }
             
             cell.textLabel.text = @"App Version";
-            [cell.textLabel setFont:[UIFont systemFontOfSize:18]];
+            [cell.textLabel setFont:[UWColorSchemeCenter helveticaNeueLightFont:18]];
             cell.detailTextLabel.text = [UIApplication appVersion];
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             
@@ -241,7 +241,7 @@
             if (_newVersionButton) {
                 CGSize AppVersionStringSize = [[UIApplication appVersion] sizeWithAttributes:
                                @{NSFontAttributeName:
-                                     [UIFont systemFontOfSize:18.0f]}];
+                                     [UWColorSchemeCenter helveticaNeueLightFont:18]}];
 //                NSLog(NSStringFromCGSize(size));
                 CGRect newRect = _newVersionButton.frame;
                 newRect.origin.x = [UIScreen mainScreen].bounds.size.width - newRect.size.width - (AppVersionStringSize.width + 25)/* + ([UIScreen mainScreen].bounds.size.width - 320.0f)*/;
@@ -260,7 +260,7 @@
             }
             
             cell.textLabel.text = @"Developed by";
-            [cell.textLabel setFont:[UIFont systemFontOfSize:18]];
+            [cell.textLabel setFont:[UWColorSchemeCenter helveticaNeueLightFont:18]];
             cell.detailTextLabel.text = @"Honghao";
             [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
             return cell;
@@ -272,7 +272,7 @@
             }
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             cell.textLabel.text = @"Random Theme";
-            [cell.textLabel setFont:[UIFont systemFontOfSize:18]];
+            [cell.textLabel setFont:[UWColorSchemeCenter helveticaNeueLightFont:18]];
             
             _randomColorSwitch = [[UISwitch alloc] init];
             [_randomColorSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
@@ -284,7 +284,7 @@
             _restButton = _restButton ?: [[GBFlatButton alloc] init];
             [_restButton setContentEdgeInsets:UIEdgeInsetsMake(0, 2, 0, 2)];
             [_restButton setTitle:@"Rest" forState:UIControlStateNormal];
-            [_restButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
+            [_restButton.titleLabel setFont:[UWColorSchemeCenter helveticaNeueLightFont:13]];
             [_restButton sizeToFit];
             CGRect restButtonRect = CGRectMake(0, 0, _randomColorSwitch.frame.size.width, _randomColorSwitch.frame.size.height);
             restButtonRect.size.width -= 5;
@@ -364,7 +364,7 @@
     UILabel *headerLabel = [[UILabel alloc] init];
     [headerLabel setTextAlignment:NSTextAlignmentCenter];
     headerLabel.numberOfLines = 0;
-    headerLabel.font = [UIFont systemFontOfSize:18];
+    headerLabel.font = [UWColorSchemeCenter helveticaNeueLightFont:18];
     headerLabel.text = [self tableView:tableView titleForHeaderInSection:section];
     headerLabel.textColor = [UIColor colorWithWhite:0.1 alpha:0.5];
     //headerLabel.shadowColor = [UIColor lightGrayColor];

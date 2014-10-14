@@ -60,8 +60,16 @@
     return [UWColorSchemeCenter sharedCenter].tabBarTintColor;
 }
 
-+ (UIStatusBarStyle) statusBarStyle {
++ (UIStatusBarStyle)statusBarStyle {
     return [UWColorSchemeCenter sharedCenter].statusBarStyle;
+}
+
++ (UIFont *)helveticaNeueLightFont:(float)size {
+    return [UIFont fontWithName:@"HelveticaNeue-Light" size:size];
+}
+
++ (UIFont *)helveticaNeueRegularFont:(float)size {
+    return [UIFont fontWithName:@"HelveticaNeue" size:size];
 }
 
 + (void)setGoldColor:(UIColor *)gold {

@@ -9,6 +9,7 @@
 #import "UWTodayButton.h"
 #import "InfoSession.h"
 #import "UIColor+ApplyAlpha.h"
+#import "UWColorSchemeCenter.h"
 
 @interface UWTodayButton ()
 
@@ -51,7 +52,7 @@
         _todayLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 1, buttonWidth, 15)];
         _todayLabel.textAlignment = NSTextAlignmentCenter;
         _todayLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
-        _todayLabel.font = [UIFont systemFontOfSize:13];
+        _todayLabel.font = [UWColorSchemeCenter helveticaNeueLightFont:13];//[UIFont systemFontOfSize:13];
         _todayLabel.text = title;
         _todayLabel.textColor = self.normalColor;
         _todayLabel.highlightedTextColor = self.highlightColor;//[UIColor colorWithWhite:0.0 alpha:0.3];
@@ -59,7 +60,7 @@
         _dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 16, buttonWidth, 14)];
         _dateLabel.textAlignment = NSTextAlignmentCenter;
         _dateLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
-        _dateLabel.font = [UIFont boldSystemFontOfSize:11];
+        _dateLabel.font = [UWColorSchemeCenter helveticaNeueRegularFont:11];//[UIFont boldSystemFontOfSize:11];
         _dateLabel.textColor = self.normalColor;
         _dateLabel.highlightedTextColor = self.highlightColor;//[UIColor colorWithWhite:0.0 alpha:0.3];
 

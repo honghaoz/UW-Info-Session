@@ -7,6 +7,7 @@
 //
 
 #import "LoadingCell.h"
+#import "UWColorSchemeCenter.h"
 
 @implementation LoadingCell
 
@@ -18,7 +19,7 @@
         _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [_loadingLabel setFrame:CGRectMake(203, 11, 20, 20)];
         _loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 11, 181, 21)];
-        [_loadingLabel setFont:[UIFont systemFontOfSize:17.0]];
+        [_loadingLabel setFont:[UWColorSchemeCenter helveticaNeueLightFont:17]];//[UIFont systemFontOfSize:17.0]];
         [_loadingLabel setTextColor:[UIColor darkGrayColor]];
 
         [self.contentView addSubview:_loadingLabel];

@@ -18,7 +18,7 @@
         // Initialization code
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 100, 21)];
         [_titleLabel setText:@"Register"];
-        [_titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
+        [_titleLabel setFont:[UWColorSchemeCenter helveticaNeueRegularFont:17]];//[UIFont boldSystemFontOfSize:17]];
         
         _statusSiwtch = [[UISwitch alloc] initWithFrame:CGRectMake(251, 5, 49, 31)];
         _statusSiwtch.onTintColor = [UWColorSchemeCenter uwGold];

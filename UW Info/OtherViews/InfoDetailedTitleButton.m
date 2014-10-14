@@ -7,6 +7,7 @@
 //
 
 #import "InfoDetailedTitleButton.h"
+#import "UWColorSchemeCenter.h"
 
 @interface InfoDetailedTitleButton ()
 
@@ -25,11 +26,11 @@
         UILabel* textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 1.0, labelWidth, 17.0)];
         textLabel.textAlignment = NSTextAlignmentCenter;
         textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
-        textLabel.font = [UIFont boldSystemFontOfSize:17];
+        textLabel.font = [UWColorSchemeCenter helveticaNeueRegularFont:17];//[UIFont boldSystemFontOfSize:17];
 
         UILabel* detailTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 18.0, labelWidth, 14.0)];
         detailTextLabel.textAlignment = NSTextAlignmentCenter;
-        detailTextLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize] - 2.0];
+        detailTextLabel.font = [UWColorSchemeCenter helveticaNeueLightFont:15];//[UIFont systemFontOfSize:[UIFont systemFontSize] - 2.0];
 
         [self addSubview:textLabel];
         [self addSubview:detailTextLabel];

@@ -41,7 +41,7 @@
     //[self.tableView registerClass:[CenterTextCell class] forCellReuseIdentifier:@"CenterCell"];
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
     _feedbackTextView = [[PSPDFTextView alloc] initWithFrame:CGRectMake(10, 10, screenSize.width - 20, screenSize.height - 262)];
-    [_feedbackTextView setFont:[UIFont boldSystemFontOfSize:[UIFont systemFontSize] + 2]];
+    [_feedbackTextView setFont:[UWColorSchemeCenter helveticaNeueRegularFont:18]];
 //    [_feedbackTextView setBackgroundColor:[UIColor blueColor]];
     [self.view addSubview:_feedbackTextView];
     [_feedbackTextView becomeFirstResponder];
