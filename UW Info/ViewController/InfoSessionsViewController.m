@@ -520,16 +520,23 @@
     }
     // if current time is between start time and end time, set blue (ongoing sessions)
     else if (([infoSession.startTime compare:[NSDate date]] == NSOrderedAscending) && ([[NSDate date] compare:infoSession.endTime] == NSOrderedAscending)) {
-        UIColor* fontColor = [UWColorSchemeCenter uwGold];
+        UIColor *fontColor = [UWColorSchemeCenter uwHightLightGoldColor];
+        UIColor *shadowColor = [UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1.0];
         //[UIColor colorWithRed:0.08 green:0.46 blue:1 alpha:1]
         [cell.employer setTextColor:fontColor];
-        cell.employer.shadowColor = [UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1.0];
+        cell.employer.shadowColor = shadowColor;
         cell.employer.shadowOffset = CGSizeMake(0.0, 1.0);
         cell.employer.layer.shadowRadius = 3.0f;
-//        [cell.locationLabel setTextColor:fontColor];
+
         [cell.location setTextColor:fontColor];
-//        [cell.dateLabel setTextColor:fontColor];
+        cell.location.shadowColor = shadowColor;
+        cell.location.shadowOffset = CGSizeMake(0.0, 1.0);
+        cell.location.layer.shadowRadius = 3.0f;
+
         [cell.date setTextColor:fontColor];
+        cell.date.shadowColor = shadowColor;
+        cell.date.shadowOffset = CGSizeMake(0.0, 1.0);
+        cell.date.layer.shadowRadius = 3.0f;
     }
     // set light grey (past sessions)
     else {

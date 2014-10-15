@@ -43,6 +43,7 @@
 //        _uwBlackColor = UW_BLACK;
 //        _tabBarTintColor = TAB_BAR_COLOR;
 //        _statusBarStyle = UIStatusBarStyleDefault;
+        _uwHightLightGoldColor = [UIColor colorWithRed:255/255 green:208.11/255 blue:0 alpha:1.0];
         [self readColorScheme];
     }
     return self;
@@ -58,6 +59,10 @@
 
 + (UIColor *)uwTabBarColor {
     return [UWColorSchemeCenter sharedCenter].tabBarTintColor;
+}
+
++ (UIColor *)uwHightLightGoldColor {
+    return [UWColorSchemeCenter sharedCenter].uwHightLightGoldColor;
 }
 
 + (UIStatusBarStyle)statusBarStyle {

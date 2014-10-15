@@ -40,7 +40,7 @@
     [[UIApplication sharedApplication] keyWindow].tintColor = [UWColorSchemeCenter uwBlack];
     
     // Show indicators when there's network connections
-    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = NO;
 
     // Init
     _tabController = (UWTabBarController*)self.window.rootViewController;

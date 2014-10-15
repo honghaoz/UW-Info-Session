@@ -13,6 +13,7 @@
 @property (nonatomic, strong) UIColor *uwGoldColor;
 @property (nonatomic, strong) UIColor *uwBlackColor;
 @property (nonatomic, strong) UIColor *tabBarTintColor;
+@property (nonatomic, strong) UIColor *uwHightLightGoldColor;
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, assign) BOOL isDarkColorScheme;
 
@@ -24,6 +25,7 @@
 + (UIColor *)uwGold;
 + (UIColor *)uwBlack;
 + (UIColor *)uwTabBarColor;
++ (UIColor *)uwHightLightGoldColor;
 + (UIStatusBarStyle)statusBarStyle;
 + (UIFont *)helveticaNeueLightFont:(float)size;
 + (UIFont *)helveticaNeueRegularFont:(float)size;
