@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>UW Info Widget.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>UW Info.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,6 +17,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>1BAC187319EDADEE005B8221</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>1BD83A9018A59F1C00EDBB6D</key>
 		<dict>
 			<key>primary</key>

@@ -102,7 +102,7 @@
     sharPostString = @"UW Info is a great app to search and manage info sessions #UWaterloo, check it out!";
     
 #if DEBUG
-    [FBSettings enableBetaFeature:FBBetaFeaturesLikeButton];
+//    [FBSettings enableBetaFeature:FBBetaFeaturesLikeButton];
 #endif
     
     // Google Analytics
@@ -559,12 +559,19 @@
 
 - (void)shareOnFacebook {
     // Check if the Facebook app is installed and we can present the share dialog
-    FBShareDialogParams *params = [[FBShareDialogParams alloc] init];
+//    FBShareDialogParams *params = [[FBShareDialogParams alloc] init];
+//    params.link = [NSURL URLWithString:itunesURLString];
+//    params.name = @"UW Info Session";
+//    params.caption = @"Search, notify and manage your info sessions @ UWaterloo";
+//    params.picture = [NSURL URLWithString:@"https://scontent-b-ord.xx.fbcdn.net/hphotos-prn1/t1.0-9/10009853_721591927881510_1258200664_n.jpg"];
+//    params.description = @"Search, notify and manage your info sessions @ UWaterloo.";
+    
+    FBLinkShareParams *params = [[FBLinkShareParams alloc] init];
     params.link = [NSURL URLWithString:itunesURLString];
     params.name = @"UW Info Session";
     params.caption = @"Search, notify and manage your info sessions @ UWaterloo";
     params.picture = [NSURL URLWithString:@"https://scontent-b-ord.xx.fbcdn.net/hphotos-prn1/t1.0-9/10009853_721591927881510_1258200664_n.jpg"];
-    params.description = @"Search, notify and manage your info sessions @ UWaterloo.";
+    params.linkDescription = @"Search, notify and manage your info sessions @ UWaterloo.";
     
     // If the Facebook app is installed and we can present the share dialog
     if ([FBDialogs canPresentShareDialogWithParams:params]) {
@@ -575,7 +582,7 @@
         [FBDialogs presentShareDialogWithLink:params.link
                                          name:params.name
                                       caption:params.caption
-                                  description:params.description
+                                  description:params.linkDescription
                                       picture:params.picture
                                   clientState:nil
                                       handler:^(FBAppCall *call, NSDictionary *results, NSError *error) {

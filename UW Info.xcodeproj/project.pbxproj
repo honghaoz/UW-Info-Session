@@ -97,6 +97,10 @@
 		1BA1795718F1A4BD00FA5D05 /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1BA1795418F1A4BD00FA5D05 /* iRate.bundle */; };
 		1BA1795818F1A4BD00FA5D05 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BA1795618F1A4BD00FA5D05 /* iRate.m */; };
 		1BA1795C18F1AE5400FA5D05 /* HSLUpdateChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BA1795B18F1AE5400FA5D05 /* HSLUpdateChecker.m */; };
+		1BAC187619EDADEF005B8221 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BAC187519EDADEF005B8221 /* NotificationCenter.framework */; };
+		1BAC187C19EDADEF005B8221 /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAC187B19EDADEF005B8221 /* TodayViewController.m */; };
+		1BAC187E19EDADEF005B8221 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BAC187D19EDADEF005B8221 /* MainInterface.storyboard */; };
+		1BAC188119EDADEF005B8221 /* UW Info Widget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1BAC187419EDADEE005B8221 /* UW Info Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1BAD97E618A98F65006F4546 /* InfoSessionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97E518A98F65006F4546 /* InfoSessionModel.m */; };
 		1BAD97E918A9CAE2006F4546 /* UWTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97E818A9CAE2006F4546 /* UWTabBarController.m */; };
 		1BAD97EF18A9DEF6006F4546 /* MyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD97EE18A9DEF6006F4546 /* MyInfoViewController.m */; };
@@ -160,6 +164,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1BAC187F19EDADEF005B8221 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BD83A8918A59F1C00EDBB6D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1BAC187319EDADEE005B8221;
+			remoteInfo = "UW Info Widget";
+		};
+		1BAC188219EDADEF005B8221 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BD83A8918A59F1C00EDBB6D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1BAC187319EDADEE005B8221;
+			remoteInfo = "UW Info Widget";
+		};
 		1BD83ABA18A59F1D00EDBB6D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1BD83A8918A59F1C00EDBB6D /* Project object */;
@@ -168,6 +186,20 @@
 			remoteInfo = "UW Info";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1BAC188719EDADEF005B8221 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				1BAC188119EDADEF005B8221 /* UW Info Widget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1B01C3071926831B0071AA73 /* ZHHPullView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZHHPullView.h; path = "UW Info/OtherViews/ZHHPullView.h"; sourceTree = SOURCE_ROOT; };
@@ -340,6 +372,12 @@
 		1BA1795618F1A4BD00FA5D05 /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
 		1BA1795A18F1AE5400FA5D05 /* HSLUpdateChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSLUpdateChecker.h; sourceTree = "<group>"; };
 		1BA1795B18F1AE5400FA5D05 /* HSLUpdateChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSLUpdateChecker.m; sourceTree = "<group>"; };
+		1BAC187419EDADEE005B8221 /* UW Info Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "UW Info Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BAC187519EDADEF005B8221 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		1BAC187919EDADEF005B8221 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1BAC187A19EDADEF005B8221 /* TodayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TodayViewController.h; sourceTree = "<group>"; };
+		1BAC187B19EDADEF005B8221 /* TodayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TodayViewController.m; sourceTree = "<group>"; };
+		1BAC187D19EDADEF005B8221 /* MainInterface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		1BAD97E418A98F65006F4546 /* InfoSessionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InfoSessionModel.h; path = Model/InfoSessionModel.h; sourceTree = "<group>"; };
 		1BAD97E518A98F65006F4546 /* InfoSessionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoSessionModel.m; path = Model/InfoSessionModel.m; sourceTree = "<group>"; };
 		1BAD97E718A9CAE2006F4546 /* UWTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWTabBarController.h; path = ViewController/UWTabBarController.h; sourceTree = "<group>"; };
@@ -436,6 +474,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1BAC187119EDADEE005B8221 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BAC187619EDADEF005B8221 /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1BD83A8E18A59F1C00EDBB6D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -896,6 +942,25 @@
 			path = OpenSource/HSLUpdateChecker;
 			sourceTree = "<group>";
 		};
+		1BAC187719EDADEF005B8221 /* UW Info Widget */ = {
+			isa = PBXGroup;
+			children = (
+				1BAC187A19EDADEF005B8221 /* TodayViewController.h */,
+				1BAC187B19EDADEF005B8221 /* TodayViewController.m */,
+				1BAC187D19EDADEF005B8221 /* MainInterface.storyboard */,
+				1BAC187819EDADEF005B8221 /* Supporting Files */,
+			);
+			path = "UW Info Widget";
+			sourceTree = "<group>";
+		};
+		1BAC187819EDADEF005B8221 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				1BAC187919EDADEF005B8221 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		1BBD1BD01974E7D80040081A /* Appirater */ = {
 			isa = PBXGroup;
 			children = (
@@ -1006,6 +1071,7 @@
 				1B8C557918B72B490070CD82 /* Categories */,
 				1BD83A9A18A59F1C00EDBB6D /* UW Info */,
 				1BD83ABC18A59F1D00EDBB6D /* UW InfoTests */,
+				1BAC187719EDADEF005B8221 /* UW Info Widget */,
 				1BD83A9318A59F1C00EDBB6D /* Frameworks */,
 				1BD83A9218A59F1C00EDBB6D /* Products */,
 			);
@@ -1016,6 +1082,7 @@
 			children = (
 				1BD83A9118A59F1C00EDBB6D /* UW Info.app */,
 				1BD83AB518A59F1D00EDBB6D /* UW InfoTests.xctest */,
+				1BAC187419EDADEE005B8221 /* UW Info Widget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1047,6 +1114,7 @@
 				1BD83A9618A59F1C00EDBB6D /* CoreGraphics.framework */,
 				1BD83A9818A59F1C00EDBB6D /* UIKit.framework */,
 				1BD83AB618A59F1D00EDBB6D /* XCTest.framework */,
+				1BAC187519EDADEF005B8221 /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1122,6 +1190,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1BAC187319EDADEE005B8221 /* UW Info Widget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1BAC188619EDADEF005B8221 /* Build configuration list for PBXNativeTarget "UW Info Widget" */;
+			buildPhases = (
+				1BAC187019EDADEE005B8221 /* Sources */,
+				1BAC187119EDADEE005B8221 /* Frameworks */,
+				1BAC187219EDADEE005B8221 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "UW Info Widget";
+			productName = "UW Info Widget";
+			productReference = 1BAC187419EDADEE005B8221 /* UW Info Widget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		1BD83A9018A59F1C00EDBB6D /* UW Info */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1BD83AC618A59F1D00EDBB6D /* Build configuration list for PBXNativeTarget "UW Info" */;
@@ -1129,10 +1214,13 @@
 				1BD83A8D18A59F1C00EDBB6D /* Sources */,
 				1BD83A8E18A59F1C00EDBB6D /* Frameworks */,
 				1BD83A8F18A59F1C00EDBB6D /* Resources */,
+				1BAC188719EDADEF005B8221 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				1BAC188019EDADEF005B8221 /* PBXTargetDependency */,
+				1BAC188319EDADEF005B8221 /* PBXTargetDependency */,
 			);
 			name = "UW Info";
 			productName = "UW Info";
@@ -1167,6 +1255,10 @@
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "org-honghao";
 				TargetAttributes = {
+					1BAC187319EDADEE005B8221 = {
+						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = UYW9ZSKZAQ;
+					};
 					1BD83A9018A59F1C00EDBB6D = {
 						DevelopmentTeam = UYW9ZSKZAQ;
 					};
@@ -1190,11 +1282,20 @@
 			targets = (
 				1BD83A9018A59F1C00EDBB6D /* UW Info */,
 				1BD83AB418A59F1D00EDBB6D /* UW InfoTests */,
+				1BAC187319EDADEE005B8221 /* UW Info Widget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1BAC187219EDADEE005B8221 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BAC187E19EDADEF005B8221 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1BD83A8F18A59F1C00EDBB6D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1245,6 +1346,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1BAC187019EDADEE005B8221 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BAC187C19EDADEF005B8221 /* TodayViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1BD83A8D18A59F1C00EDBB6D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1350,6 +1459,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1BAC188019EDADEF005B8221 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1BAC187319EDADEE005B8221 /* UW Info Widget */;
+			targetProxy = 1BAC187F19EDADEF005B8221 /* PBXContainerItemProxy */;
+		};
+		1BAC188319EDADEF005B8221 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1BAC187319EDADEE005B8221 /* UW Info Widget */;
+			targetProxy = 1BAC188219EDADEF005B8221 /* PBXContainerItemProxy */;
+		};
 		1BD83ABB18A59F1D00EDBB6D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1BD83A9018A59F1C00EDBB6D /* UW Info */;
@@ -1385,6 +1504,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1BAC188419EDADEF005B8221 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "UW Info Widget/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "3e5083c2-8b9d-4e09-998f-d1751a34c3c3";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		1BAC188519EDADEF005B8221 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "UW Info Widget/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "3e5083c2-8b9d-4e09-998f-d1751a34c3c3";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		1BD83AC418A59F1D00EDBB6D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1561,6 +1720,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1BAC188619EDADEF005B8221 /* Build configuration list for PBXNativeTarget "UW Info Widget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BAC188419EDADEF005B8221 /* Debug */,
+				1BAC188519EDADEF005B8221 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		1BD83A8C18A59F1C00EDBB6D /* Build configuration list for PBXProject "UW Info" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
