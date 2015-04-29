@@ -70,7 +70,7 @@ def get_by_label(label, html):
         return []
 
 def get_others(html):
-    return re.findall('<tr><td width="60%" colspan="2"><i>For (.+?) - (.*?)</i></td></tr>.+?<tr><td width="60%" colspan="2"><i>(.*?)</i></td></tr>', html, re.DOTALL)
+    return re.findall('<tr><td width="60%" colspan="2"><i>For (.*?)<br />(.*?)<br />(.*?)</i></td></tr>.+?<tr><td width="60%" colspan="2"><i>(.*?)</i></td></tr>', html, re.DOTALL)
 
 def get_ids(html):
     return re.findall('<a href=".+id=(\d+).+?">RSVP \(students\)</a>', html)
@@ -120,6 +120,16 @@ def renderResponse(listOfMonths):
         #logging.info("others: %s" % len(others))
 
         # make sure each session has all the required fields
+        logging.error("employers len: %d" % len(employers))
+        logging.error("dates len: %d" % len(dates))
+        logging.error("times len: %d" % len(times))
+        logging.error("locations len: %d" % len(locations))
+        logging.error("websites len: %d" % len(websites))
+        logging.error("others len: %d" % len(others))
+        logging.error("others[0]: %s" % others[1][0])
+        logging.error("others[1]: %s" % others[1][1])
+        logging.error("others[2]: %s" % others[1][2])
+        logging.error("others[2]: %s" % others[1][3])
         if not (len(employers) == len(dates) == len(times) == len(locations) == len(websites) == len(others)):
             raise Exception, 'Some sessions are missing info'
 
@@ -144,11 +154,11 @@ def renderResponse(listOfMonths):
             #logging.info("location: %s" % session["location"])
             session["website"] = unicode(websites[i], errors = 'ignore')
             #logging.info("website: %s" % session["website"])
-            session["audience"] = unicode(others[i][0], errors = 'ignore')
+            session["audience"] = unicode((others[i][0] + " " + others[i][1]).strip(), errors = 'ignore')
             #logging.info("audience: %s" % session["audience"])
-            session["programs"] = unicode(others[i][1], errors = 'ignore')
+            session["programs"] = unicode(others[i][2], errors = 'ignore')
             #logging.info("programs: %s" % session["programs"])
-            session["description"] = unicode(others[i][2].replace('</p>', '').replace('<br/>', '\n'), errors = 'ignore')
+            session["description"] = unicode(others[i][3].replace('</p>', '').replace('<br />', '\n').strip(), errors = 'ignore')
             #logging.info("description: %s" % session["description"])
             sessions.append(session)
 
