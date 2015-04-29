@@ -129,7 +129,7 @@ def renderResponse(listOfMonths):
         logging.error("others[0]: %s" % others[1][0])
         logging.error("others[1]: %s" % others[1][1])
         logging.error("others[2]: %s" % others[1][2])
-        logging.error("others[2]: %s" % others[1][3])
+        logging.error("others[3]: %s" % others[1][3])
         if not (len(employers) == len(dates) == len(times) == len(locations) == len(websites) == len(others)):
             raise Exception, 'Some sessions are missing info'
 
