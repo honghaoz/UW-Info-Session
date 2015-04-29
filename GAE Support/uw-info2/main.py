@@ -72,7 +72,7 @@ def get_by_label(label, html):
         return []
 
 def get_others(html):
-    return re.findall('<tr><td width="60%" colspan="2"><i>For (.+?) - (.*?)</i></td></tr>.+?<tr><td width="60%" colspan="2"><i>(.*?)</i></td></tr>', html, re.DOTALL)
+    return re.findall('<tr><td width="60%" colspan="2"><i>For (.*?)<br />(.*?)<br />(.*?)</i></td></tr>.+?<tr><td width="60%" colspan="2"><i>(.*?)</i></td></tr>', html, re.DOTALL)
 
 def get_ids(html):
     return re.findall('<a href=".+id=(\d+).+?">RSVP \(students\)</a>', html)
@@ -146,11 +146,11 @@ def renderResponse(listOfMonths):
             #logging.info("location: %s" % session["location"])
             session["website"] = unicode(websites[i], errors = 'ignore')
             #logging.info("website: %s" % session["website"])
-            session["audience"] = unicode(others[i][0], errors = 'ignore')
+            session["audience"] = unicode((others[i][0] + " " + others[i][1]).strip(), errors = 'ignore')
             #logging.info("audience: %s" % session["audience"])
-            session["programs"] = unicode(others[i][1], errors = 'ignore')
+            session["programs"] = unicode(others[i][2], errors = 'ignore')
             #logging.info("programs: %s" % session["programs"])
-            session["description"] = unicode(others[i][2].replace('</p>', '').replace('<br/>', '\n'), errors = 'ignore')
+            session["description"] = unicode(others[i][3].replace('</p>', '').replace('<br />', '\n').strip(), errors = 'ignore')
             #logging.info("description: %s" % session["description"])
             sessions.append(session)
 
