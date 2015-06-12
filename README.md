@@ -33,4 +33,3 @@ Feedbacks are very welcome!
 
 ![](http://a2.mzstatic.com/us/r30/Purple4/v4/b5/5a/c3/b55ac3b1-ab1a-4990-da2f-f16026175e09/screen568x568.jpeg)
 
-### Licence
