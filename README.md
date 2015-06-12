@@ -23,13 +23,7 @@ Feedbacks are very welcome!
 
 ###iPhone Screenshots
 
-![](http://a2.mzstatic.com/us/r30/Purple3/v4/ec/77/65/ec77659b-5dae-0dd1-0f2d-57a1d728b751/screen568x568.jpeg)
-
-![](http://a5.mzstatic.com/us/r30/Purple1/v4/f8/f5/19/f8f519fb-bf50-9995-c0ca-1db8f2aa021e/screen568x568.jpeg)
-
-![](http://a2.mzstatic.com/us/r30/Purple3/v4/95/29/04/9529040c-5fa6-520a-c47f-a15301248ead/screen568x568.jpeg)
-
-![](http://a3.mzstatic.com/us/r30/Purple1/v4/2e/24/f0/2e24f0cc-3746-8adb-ca8d-9afd232bbba4/screen568x568.jpeg)
-
-![](http://a2.mzstatic.com/us/r30/Purple4/v4/b5/5a/c3/b55ac3b1-ab1a-4990-da2f-f16026175e09/screen568x568.jpeg)
-
+![](http://a2.mzstatic.com/us/r30/Purple3/v4/ec/77/65/ec77659b-5dae-0dd1-0f2d-57a1d728b751/screen568x568.jpeg) | ![](http://a5.mzstatic.com/us/r30/Purple1/v4/f8/f5/19/f8f519fb-bf50-9995-c0ca-1db8f2aa021e/screen568x568.jpeg)
+------------ | -------------
+![](http://a2.mzstatic.com/us/r30/Purple3/v4/95/29/04/9529040c-5fa6-520a-c47f-a15301248ead/screen568x568.jpeg) | ![](http://a3.mzstatic.com/us/r30/Purple1/v4/2e/24/f0/2e24f0cc-3746-8adb-ca8d-9afd232bbba4/screen568x568.jpeg)
+![](http://a2.mzstatic.com/us/r30/Purple4/v4/b5/5a/c3/b55ac3b1-ab1a-4990-da2f-f16026175e09/screen568x568.jpeg) |  
