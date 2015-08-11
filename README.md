@@ -2,6 +2,8 @@
 
 UWaterloo Info Session is an unofficial iOS app for University of Waterloo to look up updated employer information sessions.
 
+**Note**: UW Info Session 2.0 is in progress.
+
 ###App Store:
 https://itunes.apple.com/app/uw-info-session/id837207884?ls=1&mt=8
 
