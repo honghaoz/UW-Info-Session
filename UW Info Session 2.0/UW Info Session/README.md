@@ -13,8 +13,20 @@ So I want to use my current experience to rebuild this app.
 ## Contribution
 
 - Fork and clone this repo to your local machine.
+  ```bash
+  git clone --recursive git@github.com:honghaoz/UW-Info-Session-iOS.git
+  ```
+  
+  or
+  
+  ```bash
+  git clone git@github.com:honghaoz/UW-Info-Session-iOS.git
+  cd UW-Info-Session-iOS
+  git submodule update --init --recursive
+  ```
 - Make sure you have [CocoaPods](http://cocoapods.org) installed.
 - Under directory **./UW Info Session 2.0/UW Info Session/**, run the following command:
+  
   ```bash
   $ pod install
   ```
