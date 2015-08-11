@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  RootViewController.swift
 //  UW Info Session
 //
 //  Created by Honghao Zhang on 2015-08-10.
@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import ChouTi
 
-class ViewController: UIViewController {
-
+class RootViewController: UIViewController {
+	@IBOutlet weak var tabBar: UITabBar!
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+//		UIViewController.viewControllerForUnwindSegueAction(<#UIViewController#>)
 		// Do any additional setup after loading the view, typically from a nib.
 	}
 
@@ -19,7 +22,5 @@ class ViewController: UIViewController {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
-
-
 }
 
