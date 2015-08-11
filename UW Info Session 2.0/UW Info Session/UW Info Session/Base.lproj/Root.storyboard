@@ -23,7 +23,7 @@
                                     <constraint firstAttribute="height" constant="49" id="BBY-2p-6hZ"/>
                                 </constraints>
                                 <items>
-                                    <tabBarItem systemItem="favorites" id="3wo-of-nkS"/>
+                                    <tabBarItem systemItem="favorites" id="3wo-of-nkS" userLabel="Info Sessions"/>
                                     <tabBarItem systemItem="more" id="il9-QP-yeg"/>
                                 </items>
                             </tabBar>
@@ -36,6 +36,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="infoSessionsListBarItem" destination="3wo-of-nkS" id="Td9-Qc-jJM"/>
                         <outlet property="tabBar" destination="jQP-jd-4Xy" id="eiC-M8-CY8"/>
                     </connections>
                 </viewController>
