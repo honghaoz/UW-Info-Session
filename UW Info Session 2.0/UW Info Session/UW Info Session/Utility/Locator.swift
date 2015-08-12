@@ -21,6 +21,15 @@ class Locator {
         return sharedInstance._rootViewController
     }
     
+    // MARK: - Split View Controller
+    private lazy var _splitViewController: UISplitViewController = {
+        var splitController = UISplitViewController()
+        return splitController
+    }()
+    class var splitViewController: UISplitViewController {
+        return sharedInstance._splitViewController
+    }
+    
     // MARK: - List View Controller
     private lazy var _listNavigationController: UINavigationController = {
         var controller = UIViewController.viewControllerInStoryboard("Root", viewControllerName: "ListNavigationController") as! UINavigationController

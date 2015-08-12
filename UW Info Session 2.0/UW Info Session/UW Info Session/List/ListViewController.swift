@@ -10,8 +10,48 @@ import UIKit
 
 class ListViewController: UIViewController {
     
+	@IBOutlet weak var listTableView: UITableView!
+	
     override func viewDidLoad() {
         super.viewDidLoad()
+		
+		setupTableView()
+    }
+	
+	private func setupTableView() {
+		ListCell.registerInTableView(listTableView)
+		
+		listTableView.dataSource = self
+		listTableView.delegate = self
+		
+		listTableView.rowHeight = UITableViewAutomaticDimension
+	}
+}
+
+extension ListViewController: UITableViewDataSource {
+	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+		return 1
+	}
+	
+	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return 5
+	}
+	
+	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCellWithIdentifier(ListCell.identifier()) as! ListCell
+		return cell
+	}
+}
+
+extension ListViewController: UITableViewDelegate {
+    // MARK: - Rows
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return ListCell.estimatedRowHeight()
+    }
+    
+    // MARK: - Selections
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
     }
 }

@@ -23,16 +23,10 @@
                                     <constraint firstAttribute="height" constant="49" id="BBY-2p-6hZ"/>
                                 </constraints>
                                 <items>
-                                    <tabBarItem systemItem="favorites" id="3wo-of-nkS" userLabel="Info Sessions"/>
-                                    <tabBarItem systemItem="more" id="il9-QP-yeg"/>
+                                    <tabBarItem title="Info Sessions" id="3wo-of-nkS" userLabel="Info Sessions"/>
+                                    <tabBarItem title="Favorites" id="il9-QP-yeg"/>
                                 </items>
                             </tabBar>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Root" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6RX-ds-Lyr">
-                                <rect key="frame" x="112" y="263" width="37" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -42,6 +36,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="favoritesBarItem" destination="il9-QP-yeg" id="cNJ-2t-TFZ"/>
                         <outlet property="infoSessionsListBarItem" destination="3wo-of-nkS" id="Td9-Qc-jJM"/>
                         <outlet property="tabBar" destination="jQP-jd-4Xy" id="eiC-M8-CY8"/>
                     </connections>
@@ -62,16 +57,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="List" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nrz-vp-uFW">
-                                <rect key="frame" x="71" y="249" width="28" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="c4Q-xs-bU6" userLabel="ListTableView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="c4Q-xs-bU6" firstAttribute="leading" secondItem="Il1-1L-g9w" secondAttribute="leading" id="Hf9-6G-fPY"/>
+                            <constraint firstItem="c4Q-xs-bU6" firstAttribute="top" secondItem="Il1-1L-g9w" secondAttribute="top" id="JGs-xM-8dc"/>
+                            <constraint firstAttribute="trailing" secondItem="c4Q-xs-bU6" secondAttribute="trailing" id="Mss-uP-ayz"/>
+                            <constraint firstItem="z7a-Oc-zvZ" firstAttribute="top" secondItem="c4Q-xs-bU6" secondAttribute="bottom" id="iSA-TQ-Nmv"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="1OS-tW-kQt"/>
+                    <connections>
+                        <outlet property="listTableView" destination="c4Q-xs-bU6" id="RU5-ua-AEv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zlH-VR-EOg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

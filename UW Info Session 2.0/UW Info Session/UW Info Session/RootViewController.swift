@@ -11,13 +11,16 @@ import ChouTi
 
 class RootViewController: UIViewController {
     @IBOutlet weak var infoSessionsListBarItem: UITabBarItem!
+    @IBOutlet weak var favoritesBarItem: UITabBarItem!
     @IBOutlet weak var tabBar: UITabBar!
     
     lazy var mySplitViewController: UISplitViewController = {
-        var splitController = UISplitViewController()
+        var splitController = Locator.splitViewController
         splitController.viewControllers = [self.listNavigationController, self.detailViewController]
         splitController.preferredDisplayMode = UISplitViewControllerDisplayMode.AllVisible
         splitController.delegate = self
+        
+        splitController.hidesBottomBarWhenPushed = true
         return splitController
     }()
     
@@ -31,10 +34,8 @@ class RootViewController: UIViewController {
             switch tabBarSelectedIndex {
             case 0:
                 tabBar.selectedItem = infoSessionsListBarItem
-                displayContentViewController(mySplitViewController)
             case 1:
-                //				tabBar.selectedItem =
-                displayContentViewController(detailViewController)
+                tabBar.selectedItem = favoritesBarItem
             default:
                 break
             }
@@ -46,6 +47,7 @@ class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        displayContentViewController(mySplitViewController)
         tabBarSelectedIndex = 0
     }
     
