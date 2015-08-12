@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BBB40CEB06A059F6D7086991 /* Pods_UW_Info_Session.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20655DB8C5744C66C864499B /* Pods_UW_Info_Session.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		E4BF8BBE1B7A3F790016A61E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BF8BBD1B7A3F790016A61E /* DetailViewController.swift */; };
 		E4F3B83E1B798704006E1BF9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F3B83D1B798704006E1BF9 /* AppDelegate.swift */; };
 		E4F3B8411B798704006E1BF9 /* UW_Info_Session.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E4F3B83F1B798704006E1BF9 /* UW_Info_Session.xcdatamodeld */; };
 		E4F3B8431B798704006E1BF9 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F3B8421B798704006E1BF9 /* RootViewController.swift */; };
@@ -33,19 +34,20 @@
 		20655DB8C5744C66C864499B /* Pods_UW_Info_Session.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UW_Info_Session.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B2AC351EACCC9067A5180DB /* Pods-UW Info Session.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UW Info Session.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UW Info Session/Pods-UW Info Session.debug.xcconfig"; sourceTree = "<group>"; };
 		B58649F9AEDE409BCA159849 /* Pods-UW Info Session.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UW Info Session.release.xcconfig"; path = "Pods/Target Support Files/Pods-UW Info Session/Pods-UW Info Session.release.xcconfig"; sourceTree = "<group>"; };
+		E4BF8BBD1B7A3F790016A61E /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; usesTabs = 0; };
 		E4F3B8381B798704006E1BF9 /* UW Info Session.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UW Info Session.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4F3B83C1B798704006E1BF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E4F3B83D1B798704006E1BF9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E4F3B83D1B798704006E1BF9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; usesTabs = 0; };
 		E4F3B8401B798704006E1BF9 /* UW_Info_Session.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UW_Info_Session.xcdatamodel; sourceTree = "<group>"; };
-		E4F3B8421B798704006E1BF9 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		E4F3B8421B798704006E1BF9 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; usesTabs = 0; };
 		E4F3B8451B798704006E1BF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Root.storyboard; sourceTree = "<group>"; };
 		E4F3B8471B798704006E1BF9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E4F3B84A1B798704006E1BF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		E4F3B8501B798704006E1BF9 /* UW Info SessionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UW Info SessionTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4F3B8551B798704006E1BF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E4F3B8561B798704006E1BF9 /* UW_Info_SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UW_Info_SessionTests.swift; sourceTree = "<group>"; };
-		E4F3B8611B798A16006E1BF9 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
-		E4F3B8641B798E3A006E1BF9 /* Locator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Locator.swift; sourceTree = "<group>"; };
+		E4F3B8561B798704006E1BF9 /* UW_Info_SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UW_Info_SessionTests.swift; sourceTree = "<group>"; usesTabs = 0; };
+		E4F3B8611B798A16006E1BF9 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; usesTabs = 0; };
+		E4F3B8641B798E3A006E1BF9 /* Locator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Locator.swift; sourceTree = "<group>"; usesTabs = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E4BF8BBC1B7A3F6A0016A61E /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				E4BF8BBD1B7A3F790016A61E /* DetailViewController.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
 		E4F3B82F1B798704006E1BF9 = {
 			isa = PBXGroup;
 			children = (
@@ -112,6 +122,7 @@
 				E4F3B8421B798704006E1BF9 /* RootViewController.swift */,
 				E4F3B8631B798E30006E1BF9 /* Utility */,
 				E4F3B8601B798A04006E1BF9 /* List */,
+				E4BF8BBC1B7A3F6A0016A61E /* Detail */,
 				E4F3B8471B798704006E1BF9 /* Images.xcassets */,
 				E4F3B8491B798704006E1BF9 /* LaunchScreen.xib */,
 				E4F3B83F1B798704006E1BF9 /* UW_Info_Session.xcdatamodeld */,
@@ -315,6 +326,7 @@
 				E4F3B8431B798704006E1BF9 /* RootViewController.swift in Sources */,
 				E4F3B8651B798E3A006E1BF9 /* Locator.swift in Sources */,
 				E4F3B8411B798704006E1BF9 /* UW_Info_Session.xcdatamodeld in Sources */,
+				E4BF8BBE1B7A3F790016A61E /* DetailViewController.swift in Sources */,
 				E4F3B8621B798A16006E1BF9 /* ListViewController.swift in Sources */,
 				E4F3B83E1B798704006E1BF9 /* AppDelegate.swift in Sources */,
 			);
