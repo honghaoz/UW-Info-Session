@@ -8,9 +8,10 @@
 
 import Foundation
 import Ji
+import SwiftyJSON
 
-class InfoSessionSourceHTMLParser {
-    class func parserHTMLString(string: String) {
+struct InfoSessionSourceHTMLParser {
+    static func parserHTMLString(string: String) {
         println("Parsing")
         let doc: Ji! = Ji(htmlString: string)
         if doc == nil {

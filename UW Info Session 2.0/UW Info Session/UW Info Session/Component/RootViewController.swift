@@ -9,7 +9,8 @@
 import UIKit
 import ChouTi
 
-class RootViewController: UIViewController {
+class RootViewController: BaseViewController {
+    
     @IBOutlet weak var infoSessionsListBarItem: UITabBarItem!
     @IBOutlet weak var favoritesBarItem: UITabBarItem!
     @IBOutlet weak var tabBar: UITabBar!
@@ -92,5 +93,11 @@ extension RootViewController: UISplitViewControllerDelegate {
     
     func splitViewController(splitViewController: UISplitViewController, separateSecondaryViewControllerFromPrimaryViewController primaryViewController: UIViewController!) -> UIViewController? {
         return Locator.detailNavigationController
+    }
+}
+
+extension RootViewController: Analytics {
+    override func screenName() -> String? {
+        return "Root View"
     }
 }

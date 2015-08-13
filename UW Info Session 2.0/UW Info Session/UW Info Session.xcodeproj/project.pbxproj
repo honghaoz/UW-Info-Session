@@ -11,6 +11,9 @@
 		E43925F21B7C168900616CDE /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43925F11B7C168900616CDE /* Client.swift */; };
 		E43925F41B7C276500616CDE /* InfoSessionSourceHTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43925F31B7C276500616CDE /* InfoSessionSourceHTMLParser.swift */; };
 		E43925F71B7C2EFC00616CDE /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43925F61B7C2EFC00616CDE /* Constant.swift */; };
+		E43925F91B7C507E00616CDE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E43925F81B7C507E00616CDE /* GoogleService-Info.plist */; };
+		E43925FE1B7C536500616CDE /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43925FD1B7C536500616CDE /* BaseViewController.swift */; };
+		E43926021B7C602700616CDE /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43926011B7C602700616CDE /* Analytics.swift */; };
 		E43D1A481B7AF80F006BA418 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43D1A461B7AF80F006BA418 /* ListCell.swift */; };
 		E43D1A491B7AF80F006BA418 /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E43D1A471B7AF80F006BA418 /* ListCell.xib */; };
 		E43D1A4C1B7AFA64006BA418 /* TableViewInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43D1A4B1B7AFA64006BA418 /* TableViewInfo.swift */; };
@@ -43,6 +46,10 @@
 		E43925F11B7C168900616CDE /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; usesTabs = 0; };
 		E43925F31B7C276500616CDE /* InfoSessionSourceHTMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoSessionSourceHTMLParser.swift; sourceTree = "<group>"; usesTabs = 0; };
 		E43925F61B7C2EFC00616CDE /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; usesTabs = 0; };
+		E43925F81B7C507E00616CDE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E43925FA1B7C50C000616CDE /* UW-Info-Session-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UW-Info-Session-Bridging-Header.h"; sourceTree = "<group>"; };
+		E43925FD1B7C536500616CDE /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; usesTabs = 0; };
+		E43926011B7C602700616CDE /* Analytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; usesTabs = 0; };
 		E43D1A461B7AF80F006BA418 /* ListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; usesTabs = 0; };
 		E43D1A471B7AF80F006BA418 /* ListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
 		E43D1A4B1B7AFA64006BA418 /* TableViewInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewInfo.swift; sourceTree = "<group>"; usesTabs = 0; };
@@ -110,6 +117,7 @@
 		E43925F51B7C2DE100616CDE /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				E43925FD1B7C536500616CDE /* BaseViewController.swift */,
 				E4F3B8441B798704006E1BF9 /* Root.storyboard */,
 				E4F3B8421B798704006E1BF9 /* RootViewController.swift */,
 				E4F3B8601B798A04006E1BF9 /* List */,
@@ -131,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				E43D1A4B1B7AFA64006BA418 /* TableViewInfo.swift */,
+				E43926011B7C602700616CDE /* Analytics.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -182,9 +191,11 @@
 		E4F3B83B1B798704006E1BF9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E43925FA1B7C50C000616CDE /* UW-Info-Session-Bridging-Header.h */,
 				E4F3B83C1B798704006E1BF9 /* Info.plist */,
+				E43925F81B7C507E00616CDE /* GoogleService-Info.plist */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		E4F3B8531B798704006E1BF9 /* UW Info SessionTests */ = {
@@ -307,6 +318,7 @@
 			files = (
 				E4F3B8461B798704006E1BF9 /* Root.storyboard in Resources */,
 				E43D1A491B7AF80F006BA418 /* ListCell.xib in Resources */,
+				E43925F91B7C507E00616CDE /* GoogleService-Info.plist in Resources */,
 				E4F3B84B1B798704006E1BF9 /* LaunchScreen.xib in Resources */,
 				E4F3B8481B798704006E1BF9 /* Images.xcassets in Resources */,
 			);
@@ -375,10 +387,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				E43925F41B7C276500616CDE /* InfoSessionSourceHTMLParser.swift in Sources */,
+				E43926021B7C602700616CDE /* Analytics.swift in Sources */,
 				E4F3B8431B798704006E1BF9 /* RootViewController.swift in Sources */,
 				E4F3B8651B798E3A006E1BF9 /* Locator.swift in Sources */,
 				E4F3B8411B798704006E1BF9 /* UW_Info_Session.xcdatamodeld in Sources */,
 				E43D1A481B7AF80F006BA418 /* ListCell.swift in Sources */,
+				E43925FE1B7C536500616CDE /* BaseViewController.swift in Sources */,
 				E4BF8BBE1B7A3F790016A61E /* DetailViewController.swift in Sources */,
 				E4F3B8621B798A16006E1BF9 /* ListViewController.swift in Sources */,
 				E43D1A4C1B7AFA64006BA418 /* TableViewInfo.swift in Sources */,
@@ -514,9 +528,12 @@
 			baseConfigurationReference = 7B2AC351EACCC9067A5180DB /* Pods-UW Info Session.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = "UW Info Session/Info.plist";
+				CLANG_ENABLE_MODULES = YES;
+				INFOPLIST_FILE = "UW Info Session/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UW Info Session/Supporting Files/UW-Info-Session-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -525,9 +542,11 @@
 			baseConfigurationReference = B58649F9AEDE409BCA159849 /* Pods-UW Info Session.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = "UW Info Session/Info.plist";
+				CLANG_ENABLE_MODULES = YES;
+				INFOPLIST_FILE = "UW Info Session/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UW Info Session/Supporting Files/UW-Info-Session-Bridging-Header.h";
 			};
 			name = Release;
 		};

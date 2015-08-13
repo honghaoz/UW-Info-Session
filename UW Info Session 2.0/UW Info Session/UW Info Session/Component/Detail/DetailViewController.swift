@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: BaseViewController {
     
     var shouldHide: Bool = true
     
@@ -34,4 +34,10 @@ class DetailViewController: UIViewController {
     }
     */
     
+}
+
+extension DetailViewController: Analytics {
+    override func screenName() -> String? {
+        return "Detail View"
+    }
 }

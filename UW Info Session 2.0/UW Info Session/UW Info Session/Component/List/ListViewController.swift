@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ListViewController: UIViewController {
+class ListViewController: BaseViewController {
     
 	@IBOutlet weak var listTableView: UITableView!
 	
@@ -58,5 +58,11 @@ extension ListViewController: UITableViewDelegate {
         // https://www.shinobicontrols.com/blog/ios8-day-by-day-day-18-uisplitviewcontroller
         
         Locator.splitViewController.showDetailViewController(Locator.detailNavigationController, sender: self)
+    }
+}
+
+extension ListViewController: Analytics {
+    override func screenName() -> String? {
+        return "List View"
     }
 }
