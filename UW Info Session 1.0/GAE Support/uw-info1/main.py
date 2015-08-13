@@ -126,10 +126,11 @@ def renderResponse(listOfMonths):
         logging.error("locations len: %d" % len(locations))
         logging.error("websites len: %d" % len(websites))
         logging.error("others len: %d" % len(others))
-        logging.error("others[0]: %s" % others[1][0])
-        logging.error("others[1]: %s" % others[1][1])
-        logging.error("others[2]: %s" % others[1][2])
-        logging.error("others[3]: %s" % others[1][3])
+        # logging.error("others: %s", others)
+        # logging.error("others[0]: %s" % others[1][0])
+        # logging.error("others[1]: %s" % others[1][1])
+        # logging.error("others[2]: %s" % others[1][2])
+        # logging.error("others[3]: %s" % others[1][3])
         if not (len(employers) == len(dates) == len(times) == len(locations) == len(websites) == len(others)):
             raise Exception, 'Some sessions are missing info'
 
@@ -141,8 +142,11 @@ def renderResponse(listOfMonths):
                 session["id"] = ""
             else:
                 session["id"] = ids[i - idOffset]
+            logging.info("i: %d", i)
             #logging.info("#: %s" % str(i))
             session["employer"] = unicode(employers[i], errors = 'ignore')
+            if session["employer"] == "No info sessions":
+            	continue
             #logging.info("employer: %s" % session["employer"])
             session["date"] = unicode(dates[i], errors = 'ignore')
             #logging.info("date: %s" % session["date"])
@@ -176,9 +180,9 @@ def renderResponse(listOfMonths):
     # add data to response dict
     response = {}
     response["meta"] = {"months" : numbers}
-    response["data"] = sessions
+    logging.info("sessions count: %d", len(sessions))
+    response["data"] = sessions[:]
     return response
-
 # get term string from year and month, eg: 2014Jan -> 2014 Winter
 def getTermFromYearMonth(theMonthId):
     year = theMonthId[:4]
