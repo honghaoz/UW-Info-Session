@@ -10,12 +10,20 @@ import Foundation
 import Alamofire
 
 class Client {
-	let infoSessionSourceURL = "http://www.ceca.uwaterloo.ca/students/sessions_details.php?id=2015Jun"
-	static let sharedInstance = Client()
-	
-	func updateFromSourceURL() {
-		Alamofire.request(.GET, infoSessionSourceURL).responseString { (request, response, string, error) -> Void in
-			println(string)
-		}
-	}
+    let infoSessionSourceURL = "http://www.ceca.uwaterloo.ca/students/sessions_details.php?id=%d%@"
+    static let sharedInstance = Client()
+    
+    func updateFromSourceURLForYear(year: Int, month: Month) {
+        let sourceURL = String(format: infoSessionSourceURL, year, month.rawValue)
+        println("Request: \(sourceURL)")
+        
+        Alamofire.request(.GET, sourceURL).responseString { (request, response, string, error) -> Void in
+            if let string = string {
+                println("Get content successfully!")
+                InfoSessionSourceHTMLParser.parserHTMLString(string)
+            } else {
+                println("ERROR: Get HTML String error")
+            }
+        }
+    }
 }

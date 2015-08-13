@@ -58,7 +58,7 @@ class RootViewController: UIViewController {
         displayContentViewController(mySplitViewController)
         tabBarSelectedIndex = 0
         
-        Locator.clinet.updateFromSourceURL()
+        Locator.clinet.updateFromSourceURLForYear(2015, month: .Jul)
     }
     
     func displayContentViewController(viewController: UIViewController) {

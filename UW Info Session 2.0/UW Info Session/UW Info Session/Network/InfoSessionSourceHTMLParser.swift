@@ -7,3 +7,22 @@
 //
 
 import Foundation
+import Ji
+
+class InfoSessionSourceHTMLParser {
+    class func parserHTMLString(string: String) {
+        println("Parsing")
+        let doc: Ji! = Ji(htmlString: string)
+        if doc == nil {
+            println("ERROR: Setup Ji doc error")
+        }
+        
+        let nodes = doc.xPath("//*[@id='tableform']")
+        if let tableNode = nodes?.first where tableNode.name == "table" {
+            for (index, tr) in enumerate(tableNode) {
+                print("\(index): ")
+                println(tr.content)
+            }
+        }
+    }
+}

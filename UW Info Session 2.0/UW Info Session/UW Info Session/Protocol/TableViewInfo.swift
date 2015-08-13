@@ -1,5 +1,5 @@
 //
-//  UITableView+Identifier.swift
+//  TableViewInfo.swift
 //  UW Info Session
 //
 //  Created by Honghao Zhang on 2015-08-11.
@@ -9,7 +9,7 @@
 import UIKit
 
 protocol TableViewInfo {
-	static func identifier() -> String
-	static func estimatedRowHeight() -> CGFloat
-	static func registerInTableView(tableView: UITableView)
+    static func identifier() -> String
+    static func estimatedRowHeight() -> CGFloat
+    static func registerInTableView(tableView: UITableView)
 }
