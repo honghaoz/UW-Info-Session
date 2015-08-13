@@ -53,5 +53,10 @@ extension ListViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
+        Locator.detailViewController.shouldHide = false
+        
+        // https://www.shinobicontrols.com/blog/ios8-day-by-day-day-18-uisplitviewcontroller
+        
+        Locator.splitViewController.showDetailViewController(Locator.detailNavigationController, sender: self)
     }
 }

@@ -12,6 +12,9 @@ import ChouTi
 class Locator {
     static let sharedInstance = Locator()
     
+    // MARK: - Client
+    class var clinet: Client { return Client.sharedInstance }
+    
     // MARK: - Root View Controller
     private lazy var _rootViewController: RootViewController = {
         var controller = UIViewController.viewControllerInStoryboard("Root", viewControllerName: "RootViewController") as! RootViewController
@@ -50,6 +53,15 @@ class Locator {
     }
     
     // MARK: - Detail View Controller
+    private lazy var _detailNavigationController: UINavigationController = {
+        var controller = UIViewController.viewControllerInStoryboard("Root", viewControllerName: "DetailNavigationController") as! UINavigationController
+        return controller
+        }()
+    
+    class var detailNavigationController: UINavigationController {
+        return sharedInstance._detailNavigationController
+    }
+    
     private lazy var _detailViewController: DetailViewController = {
         var controller = UIViewController.viewControllerInStoryboard("Root", viewControllerName: "DetailViewController") as! DetailViewController
         return controller

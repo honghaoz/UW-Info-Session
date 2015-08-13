@@ -16,17 +16,25 @@ class RootViewController: UIViewController {
     
     lazy var mySplitViewController: UISplitViewController = {
         var splitController = Locator.splitViewController
-        splitController.viewControllers = [self.listNavigationController, self.detailViewController]
+        
+        // Setup childViewControllers
+        switch self.traitCollection.horizontalSizeClass {
+        case .Compact:
+            splitController.viewControllers = [self.listNavigationController]
+        default:
+            splitController.viewControllers = [self.listNavigationController, self.detailNavigationController]
+        }
+
         splitController.preferredDisplayMode = UISplitViewControllerDisplayMode.AllVisible
         splitController.delegate = self
-        
         splitController.hidesBottomBarWhenPushed = true
+        
         return splitController
     }()
     
     var listNavigationController: UINavigationController { return Locator.listNavigationController }
     var listViewController: ListViewController { return Locator.listViewController }
-    
+    var detailNavigationController: UINavigationController { return Locator.detailNavigationController }
     var detailViewController: DetailViewController { return Locator.detailViewController }
     
     var tabBarSelectedIndex: Int = 0 {
@@ -49,6 +57,8 @@ class RootViewController: UIViewController {
         
         displayContentViewController(mySplitViewController)
         tabBarSelectedIndex = 0
+        
+        Locator.clinet.updateFromSourceURL()
     }
     
     func displayContentViewController(viewController: UIViewController) {
@@ -70,6 +80,17 @@ class RootViewController: UIViewController {
 
 extension RootViewController: UISplitViewControllerDelegate {
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController!, ontoPrimaryViewController primaryViewController: UIViewController!) -> Bool {
+        
+        if let navigationController = secondaryViewController as? UINavigationController {
+            if let detailViewController = navigationController.topViewController as? DetailViewController {
+                return detailViewController.shouldHide
+            }
+        }
+        
         return true
+    }
+    
+    func splitViewController(splitViewController: UISplitViewController, separateSecondaryViewControllerFromPrimaryViewController primaryViewController: UIViewController!) -> UIViewController? {
+        return Locator.detailNavigationController
     }
 }

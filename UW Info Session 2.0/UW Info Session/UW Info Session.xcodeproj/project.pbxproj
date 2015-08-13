@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BBB40CEB06A059F6D7086991 /* Pods_UW_Info_Session.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20655DB8C5744C66C864499B /* Pods_UW_Info_Session.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		E43925F21B7C168900616CDE /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43925F11B7C168900616CDE /* Client.swift */; };
+		E43925F41B7C276500616CDE /* InfoSessionSourceHTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43925F31B7C276500616CDE /* InfoSessionSourceHTMLParser.swift */; };
 		E43D1A481B7AF80F006BA418 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43D1A461B7AF80F006BA418 /* ListCell.swift */; };
 		E43D1A491B7AF80F006BA418 /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E43D1A471B7AF80F006BA418 /* ListCell.xib */; };
 		E43D1A4C1B7AFA64006BA418 /* UITableView+Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43D1A4B1B7AFA64006BA418 /* UITableView+Identifier.swift */; };
@@ -37,6 +39,8 @@
 		20655DB8C5744C66C864499B /* Pods_UW_Info_Session.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UW_Info_Session.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B2AC351EACCC9067A5180DB /* Pods-UW Info Session.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UW Info Session.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UW Info Session/Pods-UW Info Session.debug.xcconfig"; sourceTree = "<group>"; };
 		B58649F9AEDE409BCA159849 /* Pods-UW Info Session.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UW Info Session.release.xcconfig"; path = "Pods/Target Support Files/Pods-UW Info Session/Pods-UW Info Session.release.xcconfig"; sourceTree = "<group>"; };
+		E43925F11B7C168900616CDE /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		E43925F31B7C276500616CDE /* InfoSessionSourceHTMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoSessionSourceHTMLParser.swift; sourceTree = "<group>"; };
 		E43D1A461B7AF80F006BA418 /* ListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; usesTabs = 0; };
 		E43D1A471B7AF80F006BA418 /* ListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
 		E43D1A4B1B7AFA64006BA418 /* UITableView+Identifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Identifier.swift"; sourceTree = "<group>"; };
@@ -92,6 +96,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E43925F01B7C165B00616CDE /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				E43925F11B7C168900616CDE /* Client.swift */,
+				E43925F31B7C276500616CDE /* InfoSessionSourceHTMLParser.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		E43D1A451B7AF80F006BA418 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -144,6 +157,7 @@
 				E4F3B8441B798704006E1BF9 /* Root.storyboard */,
 				E4F3B8421B798704006E1BF9 /* RootViewController.swift */,
 				E4F3B8631B798E30006E1BF9 /* Utility */,
+				E43925F01B7C165B00616CDE /* Network */,
 				E43D1A4A1B7AFA53006BA418 /* Protocol */,
 				E4F3B8601B798A04006E1BF9 /* List */,
 				E4BF8BBC1B7A3F6A0016A61E /* Detail */,
@@ -349,6 +363,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E43925F41B7C276500616CDE /* InfoSessionSourceHTMLParser.swift in Sources */,
 				E4F3B8431B798704006E1BF9 /* RootViewController.swift in Sources */,
 				E4F3B8651B798E3A006E1BF9 /* Locator.swift in Sources */,
 				E4F3B8411B798704006E1BF9 /* UW_Info_Session.xcdatamodeld in Sources */,
@@ -357,6 +372,7 @@
 				E4F3B8621B798A16006E1BF9 /* ListViewController.swift in Sources */,
 				E43D1A4C1B7AFA64006BA418 /* UITableView+Identifier.swift in Sources */,
 				E4F3B83E1B798704006E1BF9 /* AppDelegate.swift in Sources */,
+				E43925F21B7C168900616CDE /* Client.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

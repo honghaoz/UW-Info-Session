@@ -10,6 +10,8 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
+    var shouldHide: Bool = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
