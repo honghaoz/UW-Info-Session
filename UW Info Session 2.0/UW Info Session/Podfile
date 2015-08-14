@@ -12,6 +12,7 @@ pod 'ChouTi', :path => '../../Submodules/ChouTi/'
 pod 'Ji', '~> 1.0'
 pod 'Alamofire', '~> 1.3'
 pod 'SwiftyJSON', '~> 2.2.1'
+pod 'Loggerithm'
 
 # Analytics
 pod 'Google/Analytics'

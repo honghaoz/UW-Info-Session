@@ -8,6 +8,9 @@
 
 import UIKit
 import CoreData
+import Loggerithm
+
+let log = Loggerithm()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,21 +20,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
+        log.debug("")
+        
         setupAnalytics(application, launchOptions: launchOptions)
         
         return true
     }
     
     func setupAnalytics(application: UIApplication, launchOptions: [NSObject: AnyObject]?) {
+        // Google Analytics
         // Configure tracker from GoogleService-Info.plist.
         var configureError:NSError?
         GGLContext.sharedInstance().configureWithError(&configureError)
         assert(configureError == nil, "Error configuring Google services: \(configureError)")
         
-        // configure GAI options.
+        // Configure GAI options.
         var gai = GAI.sharedInstance()
         gai.trackUncaughtExceptions = true  // report uncaught exceptions
-        gai.logger.logLevel = GAILogLevel.Verbose  // remove before app release
+        #if DEBUG
+            gai.logger.logLevel = GAILogLevel.Verbose
+        #else
+            gai.logger.logLevel = GAILogLevel.None
+        #endif
     }
     
     func applicationWillResignActive(application: UIApplication) {
