@@ -1,3 +1,6 @@
 [submodule "Submodules/ChouTi"]
 	path = Submodules/ChouTi
 	url = https://github.com/honghaoz/ChouTi
+[submodule "Submodules/Ji"]
+	path = Submodules/Ji
+	url = git@github.com:honghaoz/Ji.git

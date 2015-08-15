@@ -9,7 +9,7 @@ target 'UW Info Session' do
 pod 'ChouTi', :path => '../../Submodules/ChouTi/'
 
 # Utilities
-pod 'Ji', '~> 1.0'
+pod 'Ji', :path => '../../Submodules/Ji/'
 pod 'Alamofire', '~> 1.3'
 pod 'SwiftyJSON', '~> 2.2.1'
 pod 'Loggerithm'
