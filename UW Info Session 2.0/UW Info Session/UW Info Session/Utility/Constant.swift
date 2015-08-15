@@ -7,6 +7,15 @@
 //
 
 import Foundation
+import Loggerithm
+
+#if DEBUG
+let DEBUG = true
+#else
+let DEBUG = false
+#endif
+
+var log = Loggerithm()
 
 enum Month: String {
     case Jan = "Jan"

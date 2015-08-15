@@ -11,19 +11,201 @@ import Ji
 import SwiftyJSON
 
 struct InfoSessionSourceHTMLParser {
-    static func parserHTMLString(string: String) {
-        println("Parsing")
+    let kEmployer = "Employer"
+    let kDate = "Date"
+    let kTime = "Time"
+    let kLocation = "Location"
+    let kWebSite = "Web Site"
+    
+    var result = [String: AnyObject]()
+    
+    func parserHTMLString(string: String) {
+        log.debug("Parsing")
+        
         let doc: Ji! = Ji(htmlString: string)
         if doc == nil {
-            println("ERROR: Setup Ji doc error")
+            log.error("Setup Ji doc failed")
         }
         
         let nodes = doc.xPath("//*[@id='tableform']")
         if let tableNode = nodes?.first where tableNode.name == "table" {
-            for (index, tr) in enumerate(tableNode) {
-                print("\(index): ")
-                println(tr.content)
+            // Divide trs into different sessions
+            // Each session is a list of string, which contains raw content of tr
+            var sessions = [[String]]()
+            var session: [String]?
+            for tr in tableNode {
+                if var content = tr.content {
+                    if content.hasPrefix("\(kEmployer):") {
+                        if let session = session { sessions.append(session) }
+                        session = [content]
+                        continue
+                    }
+                    session!.append(content)
+                }
             }
+            
+            // Process each session to a dictionary
+//            log.debug(sessions)
+            let json = JSON(sessions.map { self.processSession($0) })
+            log.debug(json)
+        }
+    }
+    
+    private func processSession(session: [String]) -> [[String: String]] {
+        var result = [[String: String]]()
+        
+        for eachString in session {
+            if eachString.hasPrefix("\(kEmployer):") {
+                result.append(splitSessionString(eachString, forKey: kEmployer))
+            } else if eachString.hasPrefix("\(kDate):") {
+                result.append(splitSessionString(eachString, forKey: kDate))
+            } else if eachString.hasPrefix("\(kTime):") {
+                result.append(splitSessionString(eachString, forKey: kTime))
+            } else if eachString.hasPrefix("\(kLocation):") {
+                result.append(splitSessionString(eachString, forKey: kLocation))
+            } else if eachString.hasPrefix("\(kWebSite):") {
+                result.append(splitSessionString(eachString, forKey: kWebSite))
+            } else {
+                // TODO:
+            }
+        }
+        
+        return result
+    }
+    
+    private func splitSessionString(string: String, forKey key: String) -> [String: String] {
+        let components = string.componentsSeparatedByString(": \r\n")
+        if components.count == 2 {
+            return [key: components[1].trimmed()]
+        } else if components.count == 1 {
+            return [key: ""]
+        } else {
+            log.error("\(key) split failed")
+            return [key: "null"]
         }
     }
 }
+
+// Summary
+// 0: Employer √
+// 1: Date √
+// 2: Time √
+// 3: Location √
+// 4: Web Site √
+// 5: Audiences + Programm
+// 6: Description
+// 7: Attendance ???
+// 8: Bakc to listing
+// 9: You are not logged in
+
+// MARK: - 2015 Jul Sample
+//    0: Optional("Employer: \r\n         No info sessions")[;
+//    [fg60,161,202;1: Optional("Date: \r\n         July 1, 2015")[;
+//    [fg60,161,202;2: Optional("Time: \r\n         08:00 AM - 11:30 PM")[;
+//    [fg60,161,202;3: Optional("Location:")[;
+//    [fg60,161,202;4: Optional("Web Site: \r\n         http://")[;
+//    [fg60,161,202;5: Optional("For   Students")[;
+//    [fg60,161,202;6: Optional("")[;
+//    [fg60,161,202;7: Optional("Attendance: \r\n            0")[;
+//    [fg60,161,202;8: Optional("Back to Listing |\r\n                              Check registrations (employers)")[;
+//    [fg60,161,202;9: Optional("You are not logged in.")[
+
+//    [fg60,161,202;10: Optional("Employer: \r\n         Canada Day")[;
+//    [fg60,161,202;11: Optional("Date: \r\n         July 1, 2015")[;
+//    [fg60,161,202;12: Optional("Time: \r\n         08:00 AM - 11:30 PM")[;
+//    [fg60,161,202;13: Optional("Location:")[;
+//    [fg60,161,202;14: Optional("Web Site: \r\n         http://")[;
+//    [fg60,161,202;15: Optional("For   Students")[;
+//    [fg60,161,202;16: Optional("")[;
+//    [fg60,161,202;17: Optional("Attendance: \r\n            1")[;
+//    [fg60,161,202;18: Optional("Back to Listing |\r\n                              Check registrations (employers)")[;
+//    [fg60,161,202;19: Optional("You are not logged in.")[;
+
+//    [fg60,161,202;20: Optional("Employer: \r\n         Spin Master Ltd.")[;
+//    [fg60,161,202;21: Optional("Date: \r\n         July 2, 2015")[;
+//    [fg60,161,202;22: Optional("Time: \r\n         11:30 AM - 1:30 PM")[;
+//    [fg60,161,202;23: Optional("Location: \r\n         DC 1301")[;
+//    [fg60,161,202;24: Optional("Web Site: \r\n         http://www.spinmaster.com")[;
+//    [fg60,161,202;25: Optional("For Junior, Intermediate, Senior, MastersCo-op Students ENG - Mechatronics, ENG - Mechanical, ENG - Electrical")[;
+//    [fg60,161,202;26: Optional("An opportunity to get to know one of the world\'s largest and most innovative toy companies.  Learn about our products, our process and how you can be an integral part of the team!")[;
+//    [fg60,161,202;27: Optional("Back to Listing |\r\n                              Check registrations (employers)")[;
+//    [fg60,161,202;28: Optional("You are not logged in.")[;
+
+//    [fg60,161,202;29: Optional("Employer: \r\n         BlackBerry")[;
+//    [fg60,161,202;30: Optional("Date: \r\n         July 21, 2015")[;
+//    [fg60,161,202;31: Optional("Time: \r\n         5:00 PM - 7:00 PM")[;
+//    [fg60,161,202;32: Optional("Location: \r\n         TC 2218")[;
+//    [fg60,161,202;33: Optional("Web Site: \r\n         http://")[;
+//    [fg60,161,202;34: Optional("For Junior, Intermediate, Senior, Masters, PhDGraduating,Co-op Students ENG - System Design, ENG - Software, ENG - Nanotechnology, ENG - Mechatronics, ENG - Mechanical, ENG - Management, ENG - Electrical, ENG - Computer")[;
+//    [fg60,161,202;35: Optional("Connecting the world - people, machines and devices - securely and reliably is in our DNA.You can help us push the boundaries of innovation and enable people and businesses to not just do more, but be more.UNIVERSITY OF WATERLOO, INFO SESSION:Come join BlackBerry\'s University of Waterloo campus ambassadors to learn more about the co-op and full time opportunities at BlackBerry.")[;
+//    [fg60,161,202;36: Optional("Back to Listing |\r\n                              Check registrations (employers)")[;
+//    [fg60,161,202;37: Optional("You are not logged in.")[;
+
+//    [fg60,161,202;38: Optional("Employer: \r\n         Lectures end")[;
+//    [fg60,161,202;39: Optional("Date: \r\n         July 28, 2015")[;
+//    [fg60,161,202;40: Optional("Time: \r\n         08:00 AM - 11:30 PM")[;
+//    [fg60,161,202;41: Optional("Location:")[;
+//    [fg60,161,202;42: Optional("Web Site: \r\n         http://")[;
+//    [fg60,161,202;43: Optional("For  Students")[;
+//    [fg60,161,202;44: Optional("")[;
+//    [fg60,161,202;45: Optional("Attendance: \r\n            0")[;
+//    [fg60,161,202;46: Optional("Back to Listing |\r\n                              Check registrations (employers)")[;
+//    [fg60,161,202;47: Optional("You are not logged in.")[;
+
+//    [fg60,161,202;48: Optional("Employer: \r\n         No info sessions")[;
+//    [fg60,161,202;49: Optional("Date: \r\n         July 28, 2015")[;
+//    [fg60,161,202;50: Optional("Time: \r\n         08:00 AM - 11:30 PM")[;
+//    [fg60,161,202;51: Optional("Location:")[;
+//    [fg60,161,202;52: Optional("Web Site: \r\n         http://")[;
+//    [fg60,161,202;53: Optional("For  Students")[;
+//    [fg60,161,202;54: Optional("")[;
+//    [fg60,161,202;55: Optional("Attendance: \r\n            0")[;
+//    [fg60,161,202;56: Optional("Back to Listing |\r\n                              Check registrations (employers)")[;
+//    [fg60,161,202;57: Optional("You are not logged in.")[;
+
+
+// MARK: - 2015 Oct Sample
+//    0: Optional("Employer: \r\n         Dematic Limited")[;
+//    [fg60,161,202;1: Optional("Date: \r\n         October 1, 2015")[;
+//    [fg60,161,202;2: Optional("Time: \r\n         09:00 AM - 11:00 AM")[;
+//    [fg60,161,202;3: Optional("Location: \r\n         Tatham Centre 2218 A & B")[;
+//    [fg60,161,202;4: Optional("Web Site: \r\n         http://www.dematic.com")[;
+//    [fg60,161,202;5: Optional("For Junior, Intermediate, Senior, Masters, PhDGraduating,Co-op Students MATH - Scientific Computation, MATH - Information Technology Management, MATH - Computer Science, MATH - Computational Mathematics, MATH - Applied Mathematics, ENG - Software")[;
+//    [fg60,161,202;6: Optional("Our new team in Waterloo is designing and developing a new analytics software platform to provide our customers with a revolutionary level of warehouse automation visibility.  Our customers, many of the largest distributors and manufacturers in the world, depend on Dematic to enable the delivery of products to stores and doorsteps faster than ever before.")[;
+//    [fg60,161,202;7: Optional("<tr><td width=\"100\" colspan=\"3\"><b>You are currently not registered for the above information session. Please <a href=\"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=3524&mode=on\">RSVP</a> if you will be attending this session.</b></td></tr>")[;
+//    [fg60,161,202;8: Optional("Please register if you will be attending this session or cancel the session if you have registered for this and no longer want to attend it.")[;
+//    [fg60,161,202;9: Optional("Back to Listing |\r\n         Register (students) |                     Check registrations (employers)")[;
+//    [fg60,161,202;10: Optional("You are not logged in.")[;
+//    [fg60,161,202;11: Optional("Employer: \r\n         Visier Solutions")[;
+//    [fg60,161,202;12: Optional("Date: \r\n         October 1, 2015")[;
+//    [fg60,161,202;13: Optional("Time: \r\n         11:30 AM - 1:30 PM")[;
+//    [fg60,161,202;14: Optional("Location: \r\n         Fed Hall - Multipurpose Room A")[;
+//    [fg60,161,202;15: Optional("Web Site: \r\n         http://www.visier.com")[;
+//    [fg60,161,202;16: Optional("For Junior, Intermediate, Senior, Masters, PhDCo-op and Graduating Students MATH - Computer Science, ENG - Software, ENG - Computer")[;
+//    [fg60,161,202;17: Optional("")[;
+//    [fg60,161,202;18: Optional("<tr><td width=\"100\" colspan=\"3\"><b>You are currently not registered for the above information session. Please <a href=\"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=3205&mode=on\">RSVP</a> if you will be attending this session.</b></td></tr>")[;
+//    [fg60,161,202;19: Optional("Please register if you will be attending this session or cancel the session if you have registered for this and no longer want to attend it.")[;
+//    [fg60,161,202;20: Optional("Back to Listing |\r\n         Register (students) |                     Check registrations (employers)")[;
+//    [fg60,161,202;21: Optional("You are not logged in.")[;
+//    [fg60,161,202;22: Optional("Employer: \r\n         Metro Vancouver")[;
+//    [fg60,161,202;23: Optional("Date: \r\n         October 1, 2015")[;
+//    [fg60,161,202;24: Optional("Time: \r\n         11:30 AM - 1:30 PM")[;
+//    [fg60,161,202;25: Optional("Location: \r\n         TC 2218")[;
+//    [fg60,161,202;26: Optional("Web Site: \r\n         http://www.metrovancouver.org")[;
+//    [fg60,161,202;27: Optional("For BachelorGraduating Students ENG - System Design, ENG - Mechanical, ENG - Management, ENG - Geological, ENG - Environmental, ENG - Electrical, ENG - Civil")[;
+//    [fg60,161,202;28: Optional("")[;
+//    [fg60,161,202;29: Optional("<tr><td width=\"100\" colspan=\"3\"><b>You are currently not registered for the above information session. Please <a href=\"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=3553&mode=on\">RSVP</a> if you will be attending this session.</b></td></tr>")[;
+//    [fg60,161,202;30: Optional("Please register if you will be attending this session or cancel the session if you have registered for this and no longer want to attend it.")[;
+//    [fg60,161,202;31: Optional("Back to Listing |\r\n         Register (students) |                     Check registrations (employers)")[;
+//    [fg60,161,202;32: Optional("You are not logged in.")[;
+//    [fg60,161,202;33: Optional("Employer: \r\n         Wealthsimple")[;
+//    [fg60,161,202;34: Optional("Date: \r\n         October 1, 2015")[;
+//    [fg60,161,202;35: Optional("Time: \r\n         2:30 PM - 4:30 PM")[;
+//    [fg60,161,202;36: Optional("Location: \r\n         TC 2218")[;
+//    [fg60,161,202;37: Optional("Web Site: \r\n         http://www.wealthsimple.com")[;
+//    [fg60,161,202;38: Optional("For Intermediate, Senior, Masters, PhDCo-op,Graduating Students ENG - Software, MATH - Computing & Financial Management, MATH - Computer Science, MATH - Applied Mathematics, ENG - System Design")[;
+//    [fg60,161,202;39: Optional("Wealthsimple is on a mission to make investing smarter and simpler for everyone. As one of the fastest growing startups in Canada, we recently raised a $30M series A to accelerate growth and expand our team. If you think you\'d be a good fit, we\'d love to meet you!")[;
+//    [fg60,161,202;40: Optional("<tr><td width=\"100\" colspan=\"3\"><b>You are currently not registered for the above information session. Please <a href=\"https://info.uwaterloo.ca/infocecs/students/rsvp/index.php?id=3461&mode=on\">RSVP</a> if you will be attending this session.</b></td></tr>")[;
+//    [fg60,161,202;41: Optional("Please register if you will be attending this session or cancel the session if you have registered for this and no longer want to attend it.")[;
+//    [fg60,161,202;42: Optional("Back to Listing |\r\n         Register (students) |                     Check registrations (employers)")[;
+//    [fg60,161,202;43: Optional("You are not logged in.")[;

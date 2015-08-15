@@ -8,9 +8,6 @@
 
 import UIKit
 import CoreData
-import Loggerithm
-
-let log = Loggerithm()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,9 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-        log.debug("")
-        
         setupAnalytics(application, launchOptions: launchOptions)
+        
+        log.showDateTime = false
+        log.showLogLevel = false
+        log.showFileName = false
+        log.showFunctionName = false
         
         return true
     }
@@ -37,11 +37,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Configure GAI options.
         var gai = GAI.sharedInstance()
         gai.trackUncaughtExceptions = true  // report uncaught exceptions
-        #if DEBUG
+        gai.dispatchInterval = 10
+        
+        if DEBUG {
             gai.logger.logLevel = GAILogLevel.Verbose
-        #else
+            gai.defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Application", action: "App Opens", label: "DEBUG", value: nil).build() as [NSObject : AnyObject])
+        } else {
             gai.logger.logLevel = GAILogLevel.None
-        #endif
+            gai.defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Application", action: "App Opens", label: "RELEASE", value: nil).build() as [NSObject : AnyObject])
+        }
     }
     
     func applicationWillResignActive(application: UIApplication) {

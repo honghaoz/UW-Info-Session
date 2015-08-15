@@ -28,8 +28,10 @@ class BaseViewController: UIViewController {
         let tracker = GAI.sharedInstance().defaultTracker
         
         if let screenName = self.screenName() {
-            println("aaaa: \(screenName)")
+            log.info("Screen Name: \(screenName)")
             tracker.set(kGAIScreenName, value: screenName)
+            let builder = GAIDictionaryBuilder.createScreenView()
+            tracker.send(builder.build() as [NSObject : AnyObject])
         }
     }
 }

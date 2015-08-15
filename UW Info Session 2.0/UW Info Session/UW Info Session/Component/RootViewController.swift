@@ -59,7 +59,7 @@ class RootViewController: BaseViewController {
         displayContentViewController(mySplitViewController)
         tabBarSelectedIndex = 0
         
-        Locator.clinet.updateFromSourceURLForYear(2015, month: .Jul)
+        Locator.clinet.updateFromSourceURLForYear(2015, month: .Jul )
     }
     
     func displayContentViewController(viewController: UIViewController) {
@@ -93,11 +93,5 @@ extension RootViewController: UISplitViewControllerDelegate {
     
     func splitViewController(splitViewController: UISplitViewController, separateSecondaryViewControllerFromPrimaryViewController primaryViewController: UIViewController!) -> UIViewController? {
         return Locator.detailNavigationController
-    }
-}
-
-extension RootViewController: Analytics {
-    override func screenName() -> String? {
-        return "Root View"
     }
 }
