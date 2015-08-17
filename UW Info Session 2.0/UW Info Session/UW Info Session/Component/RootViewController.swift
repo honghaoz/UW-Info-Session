@@ -8,6 +8,7 @@
 
 import UIKit
 import ChouTi
+import CoreData
 
 class RootViewController: BaseViewController {
     
@@ -60,6 +61,28 @@ class RootViewController: BaseViewController {
         tabBarSelectedIndex = 0
         
         Locator.clinet.updateFromSourceURLForYear(2015, month: .Jul )
+        
+        // Test for core data
+        let session = NSEntityDescription.entityForName("Session", inManagedObjectContext: Locator.managedObjectContext)
+        let newSession = Session(entity: session!, insertIntoManagedObjectContext: Locator.managedObjectContext)
+        
+        newSession.employer = "Dummy"
+        newSession.startTime = NSDate()
+        newSession.endTime = NSDate()
+        newSession.location = "Dummy"
+        newSession.website = "Dummy"
+        newSession.audience = "Dummy"
+        newSession.program = "Dummy"
+        newSession.descriptions = "Dummy"
+        newSession.rating = Float(4.2)
+        
+        Locator.managedObjectContext.save(nil)
+        
+        let request = NSFetchRequest(entityName: "Session")
+        let sessions = Locator.managedObjectContext.executeFetchRequest(request, error: nil) as! [Session]
+        
+        log.debug("Session count: \(sessions.count)")
+        log.debug("session[0]: \(sessions.first?.startTime)")
     }
     
     func displayContentViewController(viewController: UIViewController) {

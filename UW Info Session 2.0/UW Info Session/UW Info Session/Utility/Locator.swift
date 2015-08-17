@@ -8,6 +8,7 @@
 
 import UIKit
 import ChouTi
+import CoreData
 
 class Locator {
     static let sharedInstance = Locator()
@@ -69,5 +70,18 @@ class Locator {
     
     class var detailViewController: DetailViewController {
         return sharedInstance._detailViewController
+    }
+    
+    class var delegate: AppDelegate { return UIApplication.sharedApplication().delegate as! AppDelegate }
+    
+    // MARK: - Core Data
+    class var managedObjectContext: NSManagedObjectContext {
+        if let context = Locator.delegate.managedObjectContext {
+            return context
+        } else {
+            log.error("managedObjectContext is nil")
+            assertionFailure("")
+            return NSManagedObjectContext()
+        }
     }
 }
