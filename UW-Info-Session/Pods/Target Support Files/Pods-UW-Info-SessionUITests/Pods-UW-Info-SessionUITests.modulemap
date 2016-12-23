@@ -1,0 +1,6 @@
+framework module Pods_UW_Info_SessionUITests {
+  umbrella header "Pods-UW-Info-SessionUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,22 @@
+target 'UW-Info-Session' do
+  use_frameworks!
+
+  pod 'ChouTi/Core', :path => '../Submodules/ChouTi'
+  pod 'ChouTi/UI', :path => '../Submodules/ChouTi'
+  pod 'ChouTi/Animators', :path => '../Submodules/ChouTi'
+  pod 'ChouTi/Utilities', :path => '../Submodules/ChouTi'
+
+  pod 'Alamofire', '~> 4.2'
+  pod 'Then', '~> 2.1'
+
+  target 'UW-Info-SessionTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'UW-Info-SessionUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
