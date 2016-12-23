@@ -1,0 +1,93 @@
+PODS:
+  - Alamofire (4.2.0)
+  - ChouTi/Animators (0.2):
+    - ChouTi/Animators/DropPresentingAnimator (= 0.2)
+    - ChouTi/Core
+  - ChouTi/Animators/DropPresentingAnimator (0.2):
+    - ChouTi/Core
+  - ChouTi/Core (0.2):
+    - ChouTi/Core/CodeSnippets (= 0.2)
+    - ChouTi/Core/DataStructure (= 0.2)
+    - ChouTi/Core/Extensions (= 0.2)
+    - ChouTi/Core/Miscellaneous (= 0.2)
+    - ChouTi/Core/Protocols (= 0.2)
+    - ChouTi/Core/UI (= 0.2)
+  - ChouTi/Core/CodeSnippets (0.2)
+  - ChouTi/Core/DataStructure (0.2)
+  - ChouTi/Core/Extensions (0.2)
+  - ChouTi/Core/Miscellaneous (0.2)
+  - ChouTi/Core/Protocols (0.2)
+  - ChouTi/Core/UI (0.2):
+    - ChouTi/Core/UI/CollectionViewCells (= 0.2)
+    - ChouTi/Core/UI/TableViewCells (= 0.2)
+  - ChouTi/Core/UI/CollectionViewCells (0.2)
+  - ChouTi/Core/UI/TableViewCells (0.2)
+  - ChouTi/UI (0.2):
+    - ChouTi/Animators
+    - ChouTi/Core
+    - ChouTi/UI/AlertView (= 0.2)
+    - ChouTi/UI/AutoLinesLabel (= 0.2)
+    - ChouTi/UI/CollectionViewCells (= 0.2)
+    - ChouTi/UI/DatePickerViewController (= 0.2)
+    - ChouTi/UI/DropDownMenu (= 0.2)
+    - ChouTi/UI/MenuPageViewController (= 0.2)
+    - ChouTi/UI/NavigationBarStatusBar (= 0.2)
+    - ChouTi/UI/SegmentedControl (= 0.2)
+    - ChouTi/UI/TableViewCells (= 0.2)
+  - ChouTi/UI/AlertView (0.2):
+    - ChouTi/Animators
+    - ChouTi/Core
+  - ChouTi/UI/AutoLinesLabel (0.2):
+    - ChouTi/Animators
+    - ChouTi/Core
+  - ChouTi/UI/CollectionViewCells (0.2):
+    - ChouTi/Animators
+    - ChouTi/Core
+  - ChouTi/UI/DatePickerViewController (0.2):
+    - ChouTi/Animators
+    - ChouTi/Core
+  - ChouTi/UI/DropDownMenu (0.2):
+    - ChouTi/Animators
+    - ChouTi/Core
+  - ChouTi/UI/MenuPageViewController (0.2):
+    - ChouTi/Animators
+    - ChouTi/Core
+  - ChouTi/UI/NavigationBarStatusBar (0.2):
+    - ChouTi/Animators
+    - ChouTi/Core
+  - ChouTi/UI/SegmentedControl (0.2):
+    - ChouTi/Animators
+    - ChouTi/Core
+  - ChouTi/UI/TableViewCells (0.2):
+    - ChouTi/Animators
+    - ChouTi/Core
+  - ChouTi/Utilities (0.2):
+    - ChouTi/Core
+    - ChouTi/Utilities/TableView+SectionRowExtensions (= 0.2)
+  - ChouTi/Utilities/TableView+SectionRowExtensions (0.2):
+    - ChouTi/Core
+  - IGListKit (2.0.0)
+  - Then (2.1.0)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.2)
+  - ChouTi/Animators (from `../Submodules/ChouTi`)
+  - ChouTi/Core (from `../Submodules/ChouTi`)
+  - ChouTi/UI (from `../Submodules/ChouTi`)
+  - ChouTi/Utilities (from `../Submodules/ChouTi`)
+  - IGListKit (~> 2.0)
+  - Then (~> 2.1)
+
+EXTERNAL SOURCES:
+  ChouTi:
+    :path: "../Submodules/ChouTi"
+
+SPEC CHECKSUMS:
+  Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
+  ChouTi: 4b8a61b6985d884e1c9f27cd6c7a950715e22977
+  IGListKit: ee255e4e61865bc3e01ca96b690c5435c2887849
+  Then: 8496793c8fcac95482b943909b440724c7d8d82c
+
+PODFILE CHECKSUM: a4d9d0daecf33ba6c4f11d48de8b2c5c5374a23a
+
+COCOAPODS: 1.2.0.beta.1

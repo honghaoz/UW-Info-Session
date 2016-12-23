@@ -1,6 +1,0 @@
-framework module Pods_UW_Info_Session {
-  umbrella header "Pods-UW-Info-Session-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -6,6 +6,8 @@ target 'UW-Info-Session' do
   pod 'ChouTi/Animators', :path => '../Submodules/ChouTi'
   pod 'ChouTi/Utilities', :path => '../Submodules/ChouTi'
 
+  pod 'IGListKit', '~> 2.0'
+
   pod 'Alamofire', '~> 4.2'
   pod 'Then', '~> 2.1'
 
