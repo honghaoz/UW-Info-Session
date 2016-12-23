@@ -1,6 +1,0 @@
-cron:
-- description: sum up usage every 12 hour
-  url: /sum_up_usage
-  schedule: every 60 minutes from 0:00 to 23:59
-  timezone: Canada/Eastern
-  target: uw-info
