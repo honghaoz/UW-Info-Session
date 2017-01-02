@@ -66,8 +66,23 @@ PODS:
     - ChouTi/Utilities/TableView+SectionRowExtensions (= 0.2)
   - ChouTi/Utilities/TableView+SectionRowExtensions (0.2):
     - ChouTi/Core
+  - DynamicColor (3.2.1)
   - IGListKit (2.0.0)
+  - Moya (8.0.0-beta.6):
+    - Moya/Core (= 8.0.0-beta.6)
+  - Moya/Core (8.0.0-beta.6):
+    - Alamofire (~> 4.0)
+    - Result (~> 3.0)
+  - ObjectMapper (2.2.2)
+  - R.swift (3.2.0):
+    - R.swift.Library (~> 3.0.2)
+  - R.swift.Library (3.0.2)
+  - Result (3.1.0)
+  - SwiftDate (4.0.10)
   - Then (2.1.0)
+  - XCGLogger (4.0.0):
+    - XCGLogger/Core (= 4.0.0)
+  - XCGLogger/Core (4.0.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.2)
@@ -75,8 +90,15 @@ DEPENDENCIES:
   - ChouTi/Core (from `../Submodules/ChouTi`)
   - ChouTi/UI (from `../Submodules/ChouTi`)
   - ChouTi/Utilities (from `../Submodules/ChouTi`)
+  - DynamicColor (~> 3.0)
   - IGListKit (~> 2.0)
+  - Moya (= 8.0.0-beta.6)
+  - ObjectMapper (~> 2.2)
+  - R.swift (~> 3.0)
+  - Result (~> 3.1)
+  - SwiftDate (~> 4.0)
   - Then (~> 2.1)
+  - XCGLogger (~> 4.0.0)
 
 EXTERNAL SOURCES:
   ChouTi:
@@ -85,9 +107,17 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
   ChouTi: 4b8a61b6985d884e1c9f27cd6c7a950715e22977
+  DynamicColor: 4786d650c69da6c3f2cbfe068348288ec4e5521f
   IGListKit: ee255e4e61865bc3e01ca96b690c5435c2887849
+  Moya: a29e2503a0c5067d462ba2f07cc6b6b1f3fc172d
+  ObjectMapper: 9e385c2295bcc4e16eabbcfc85db801442bba545
+  R.swift: 207a372a2b5977caef440c696a368009460641d1
+  R.swift.Library: fbdec16c9802ad104fc1ba53415dc190e6ec5c73
+  Result: 4e3ed5995ed94d0cd6a09be9a431fce3f3624bbf
+  SwiftDate: efdff69cf3750c2e4ef4fb9f0461e22b40c4c942
   Then: 8496793c8fcac95482b943909b440724c7d8d82c
+  XCGLogger: 38063ea89b4c8b23232d18efd2e12eb0005f3ea4
 
-PODFILE CHECKSUM: a4d9d0daecf33ba6c4f11d48de8b2c5c5374a23a
+PODFILE CHECKSUM: 31a6b3bd8198660b094fc2658eda896f00c4583f
 
 COCOAPODS: 1.2.0.beta.1
