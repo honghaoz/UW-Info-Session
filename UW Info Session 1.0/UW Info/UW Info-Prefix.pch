@@ -1,0 +1,31 @@
+//
+//  Prefix header
+//
+//  The contents of this file are implicitly included at the beginning of every source file.
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+//    #define NSIntegerToString(i) [NSString stringWithFormat:@"%lu", (unsigned long)i]
+    #define GetBoolFromDic(dic, key) [dic[key] boolValue]
+//    #define UWBlack [UIColor colorWithRed:0.13 green:0.14 blue:0.17 alpha:1]
+//    #define UWGold [UIColor colorWithRed:255/255 green:221.11/255 blue:0 alpha:1.0]//[UIColor colorWithRed:0.44 green:0.84 blue:0.97 alpha:1]
+
+//    #define printNil(object) NSLog(@"%@ is %@", [object class], object == nil? @"nil" : @"not nil")
+//    #define logSelector NSLog(@"%@", NSStringFromSelector(_cmd))
+//
+//    #ifdef DEBUG
+//    #   define NSLog(...) NSLog(__VA_ARGS__)
+//    #else
+//    #   define NSLog(...)
+//    #endif
+    #import "ZHHHandyMacros.h"
+
+#endif
