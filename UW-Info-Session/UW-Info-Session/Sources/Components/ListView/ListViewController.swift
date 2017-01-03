@@ -10,6 +10,8 @@ import UIKit
 import Then
 import ChouTi
 
+// TODO: Calling Status top overlay view bug
+
 class ListViewController: BaseViewController {
 	let tableView = UITableView().then {
 		$0.translatesAutoresizingMaskIntoConstraints = false
@@ -135,6 +137,8 @@ extension ListViewController: UITableViewDataSource {
 
 		let infoSession = groupedInfoSessions[indexPath.section].1[indexPath.row]
 		cell.configure(with: infoSession)
+		
+		cell.selectionStyle = infoSession.isNotice ? .none : .default
 		
 		// Last row configuration
 		let rowsCount = tableView.numberOfRows(inSection: indexPath.section)
