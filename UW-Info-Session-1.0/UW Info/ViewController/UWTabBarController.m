@@ -13,7 +13,6 @@
 #import "DetailViewController.h"
 #import "InfoSessionModel.h"
 #import "UWColorSchemeCenter.h"
-//#import "UWDevice.h"
 
 @interface UWTabBarController ()
 

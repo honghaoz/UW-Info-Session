@@ -12,6 +12,7 @@
 
 @interface SearchViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) InfoSessionModel *infoSessionModel;
 @property (nonatomic, weak) UWTabBarController *tabBarController;
 

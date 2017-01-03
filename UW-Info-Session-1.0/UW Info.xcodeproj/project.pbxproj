@@ -151,7 +151,6 @@
 		1BE6D46A18D4F68500BE31B0 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE6D46918D4F68500BE31B0 /* FeedbackViewController.m */; };
 		1BF0542318A93ECC005C04B2 /* DetailSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */; };
 		1BF43754197A470F009B4634 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF43753197A470F009B4634 /* FacebookSDK.framework */; };
-		1BF84FAC18D6AF9F00F7A86D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF84FAB18D6AF9F00F7A86D /* iAd.framework */; };
 		E41CA0341B2B0F3D00F0E133 /* SVIndefiniteAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = E41CA02F1B2B0F3D00F0E133 /* SVIndefiniteAnimatedView.m */; };
 		E41CA0351B2B0F3D00F0E133 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E41CA0311B2B0F3D00F0E133 /* SVProgressHUD.bundle */; };
 		E41CA0361B2B0F3D00F0E133 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E41CA0331B2B0F3D00F0E133 /* SVProgressHUD.m */; };
@@ -435,7 +434,6 @@
 		1BF0542118A93ECC005C04B2 /* DetailSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSwitchCell.h; path = TableViewCell/DetailSwitchCell.h; sourceTree = "<group>"; };
 		1BF0542218A93ECC005C04B2 /* DetailSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSwitchCell.m; path = TableViewCell/DetailSwitchCell.m; sourceTree = "<group>"; };
 		1BF43753197A470F009B4634 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ThridPartySDK/FacebookSDK.framework; sourceTree = "<group>"; };
-		1BF84FAB18D6AF9F00F7A86D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		E41CA02E1B2B0F3D00F0E133 /* SVIndefiniteAnimatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVIndefiniteAnimatedView.h; sourceTree = "<group>"; };
 		E41CA02F1B2B0F3D00F0E133 /* SVIndefiniteAnimatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVIndefiniteAnimatedView.m; sourceTree = "<group>"; };
 		E41CA0301B2B0F3D00F0E133 /* SVProgressHUD-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
@@ -463,7 +461,6 @@
 				1BDD366E18EC73700098EAAF /* AVFoundation.framework in Frameworks */,
 				1B505ECB18D0E36A00F168F8 /* AudioToolbox.framework in Frameworks */,
 				1B18C06C19C002D3007882C4 /* libGoogleAdMobAds.a in Frameworks */,
-				1BF84FAC18D6AF9F00F7A86D /* iAd.framework in Frameworks */,
 				1B3A337918D4BA5D0046DC73 /* Social.framework in Frameworks */,
 				1B505ED718D0E39F00F168F8 /* Security.framework in Frameworks */,
 				1B505ED518D0E39900F168F8 /* QuartzCore.framework in Frameworks */,
@@ -1020,7 +1017,6 @@
 				1BDD366F18EC73820098EAAF /* CoreTelephony.framework */,
 				1BDD366D18EC73700098EAAF /* AVFoundation.framework */,
 				1BDD366B18EC735F0098EAAF /* AdSupport.framework */,
-				1BF84FAB18D6AF9F00F7A86D /* iAd.framework */,
 				1B3A337818D4BA5D0046DC73 /* Social.framework */,
 				1B505EDA18D0E3AB00F168F8 /* SystemConfiguration.framework */,
 				1B505ED818D0E3A400F168F8 /* StoreKit.framework */,
@@ -1170,7 +1166,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = UW;
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "org-honghao";
 				TargetAttributes = {
 					1BD83A9018A59F1C00EDBB6D = {
@@ -1404,14 +1400,20 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1424,7 +1426,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "0FFC7814-4C2A-4A59-A0C1-44CDFDBFD5B4";
 				SDKROOT = iphoneos;
@@ -1445,21 +1447,26 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PROVISIONING_PROFILE = "C2EBDF47-3A03-4678-99AC-6964803FE4E5";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1473,6 +1480,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1489,6 +1497,7 @@
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleMobileAdsSdkiOS-6.11.1",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.honghao.UW-Info";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -1502,6 +1511,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Honghao Zhang (UYW9ZSKZAQ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1518,6 +1528,7 @@
 					"$(PROJECT_DIR)/ThridPartySDK/GoogleMobileAdsSdkiOS-6.11.1",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.honghao.UW-Info";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -1540,6 +1551,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "UW InfoTests/UW InfoTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.honghao.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -1558,6 +1570,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UW Info/UW Info-Prefix.pch";
 				INFOPLIST_FILE = "UW InfoTests/UW InfoTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.honghao.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

@@ -32,8 +32,6 @@
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UISearchDisplayController *searchController;
 
-@property (nonatomic, strong) UITableView *tableView;
-
 @property (nonatomic, strong) NSArray *sectionIndex;
 
 @property (nonatomic, strong) UILabel *textLabel;

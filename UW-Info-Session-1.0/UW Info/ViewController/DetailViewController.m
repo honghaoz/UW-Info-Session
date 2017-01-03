@@ -36,7 +36,6 @@
 #import "PSPDFTextView.h"
 #import "UWGoogleAnalytics.h"
 
-#import <iAd/iAd.h>
 #import "GADBannerView.h"
 #import "GADBannerViewDelegate.h"
 #import "GADAdMobExtras.h"

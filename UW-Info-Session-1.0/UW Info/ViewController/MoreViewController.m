@@ -27,8 +27,6 @@
 #import "WeixinActivity.h"
 #import "LINEActivity.h"
 #import "UWManagerViewController.h"
-//#import "MYBlurIntroductionView.h"
-//#import "MYIntroductionPanel.h"
 #import "Appirater.h"
 #import "UWColorSchemeCenter.h"
 #import "GBFlatButton.h"
@@ -155,12 +153,6 @@
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
 //    [HSLUpdateChecker enableDebugMode:NO];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
