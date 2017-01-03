@@ -1159,7 +1159,7 @@
         if (indexPath.row == 0 && [_infoSession.website length] > 7) {
 
             _webViewVC = [[UWWebViewController alloc] init];
-            NSString *webURL = [@"http://" stringByAppendingString:[[_infoSession.website substringFromIndex:7] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+            NSString *webURL = [@"https://" stringByAppendingString:[[_infoSession.website substringFromIndex:7] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
             //NSLog(@"%@", webURL);
             _webViewVC.URL = [NSURL URLWithString:webURL];
             //NSLog(@"%@", _webViewVC.URL);
@@ -1918,7 +1918,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
     
     NSString *postText = [NSString stringWithFormat:@"%@, %@, %@, at %@", _infoSession.employer, timeString, dateString, _infoSession.location];
     //UIImage *postImage = [UIImage imageNamed:@"AppIcon-Rounded.png"];
-    NSURL *postURL = [NSURL URLWithString:@"http://goo.gl/bQyyH0"];
+    NSURL *postURL = [NSURL URLWithString:@"https://goo.gl/bQyyH0"];
     NSArray *location = [[NSArray alloc] initWithObjects:latitude, longitude, nil];
     
     NSArray *activityItems = @[postText, /*postImage,*/ postURL, location];

@@ -37,7 +37,6 @@
 		1B3A33B818D4D7690046DC73 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A33AF18D4D7690046DC73 /* UIRefreshControl+AFNetworking.m */; };
 		1B3A33B918D4D7690046DC73 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A33B118D4D7690046DC73 /* UIWebView+AFNetworking.m */; };
 		1B3A33BB18D4D7A10046DC73 /* AppIcon-Rounded.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B3A33BA18D4D7A10046DC73 /* AppIcon-Rounded.png */; };
-		1B3A33C418D4D7E40046DC73 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3A33C318D4D7E40046DC73 /* Parse.framework */; };
 		1B3A33F018D4D8B30046DC73 /* RECommonFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A33E718D4D8B30046DC73 /* RECommonFunctions.m */; };
 		1B3A33F118D4D8B30046DC73 /* REMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A33E918D4D8B30046DC73 /* REMenu.m */; };
 		1B3A33F218D4D8B30046DC73 /* REMenuContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A33EB18D4D8B30046DC73 /* REMenuContainerView.m */; };
@@ -86,7 +85,6 @@
 		1B78A981191E81C000A4A8AD /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B78A979191E81C000A4A8AD /* whiteArrow.png */; };
 		1B78A982191E81C000A4A8AD /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B78A97A191E81C000A4A8AD /* whiteArrow@2x.png */; };
 		1B78A993191F0D8700A4A8AD /* UWManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A992191F0D8700A4A8AD /* UWManagerViewController.m */; };
-		1B78A996191F1E7100A4A8AD /* UWDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A995191F1E7100A4A8AD /* UWDevice.m */; };
 		1B78A999191F24E800A4A8AD /* UWDeviceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A998191F24E800A4A8AD /* UWDeviceCell.m */; };
 		1B78A99C192309A100A4A8AD /* UWGridTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B78A99B192309A100A4A8AD /* UWGridTableView.m */; };
 		1B8C557C18B7BCB60070CD82 /* EKEvent+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C557B18B7BCB60070CD82 /* EKEvent+NSCoding.m */; };
@@ -104,7 +102,6 @@
 		1BB96F1919760B5A00120080 /* UWAds.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F0E19760B5A00120080 /* UWAds.m */; };
 		1BB96F1A19760B5A00120080 /* UWAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F1019760B5A00120080 /* UWAppDelegate.m */; };
 		1BB96F1B19760B5A00120080 /* UWColorSchemeCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F1219760B5A00120080 /* UWColorSchemeCenter.m */; };
-		1BB96F1C19760B5A00120080 /* UWErrorReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F1419760B5A00120080 /* UWErrorReport.m */; };
 		1BB96F1D19760B5A00120080 /* UWGoogleAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F1619760B5A00120080 /* UWGoogleAnalytics.m */; };
 		1BB96F1E19760B5A00120080 /* UWInfoSessionClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F1819760B5A00120080 /* UWInfoSessionClient.m */; };
 		1BB96F211976129300120080 /* UIColor+ApplyAlpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB96F201976129300120080 /* UIColor+ApplyAlpha.m */; };
@@ -254,7 +251,6 @@
 		1B3A33B018D4D7690046DC73 /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIWebView+AFNetworking.h"; path = "ThridPartySDK/UIKit+AFNetworking/UIWebView+AFNetworking.h"; sourceTree = SOURCE_ROOT; };
 		1B3A33B118D4D7690046DC73 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIWebView+AFNetworking.m"; path = "ThridPartySDK/UIKit+AFNetworking/UIWebView+AFNetworking.m"; sourceTree = SOURCE_ROOT; };
 		1B3A33BA18D4D7A10046DC73 /* AppIcon-Rounded.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIcon-Rounded.png"; path = "Resources/AppIcon-Rounded.png"; sourceTree = "<group>"; };
-		1B3A33C318D4D7E40046DC73 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = ThridPartySDK/Parse.framework; sourceTree = "<group>"; };
 		1B3A33E618D4D8B30046DC73 /* RECommonFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RECommonFunctions.h; path = OpenSource/REMenu/RECommonFunctions.h; sourceTree = SOURCE_ROOT; };
 		1B3A33E718D4D8B30046DC73 /* RECommonFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RECommonFunctions.m; path = OpenSource/REMenu/RECommonFunctions.m; sourceTree = SOURCE_ROOT; };
 		1B3A33E818D4D8B30046DC73 /* REMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = REMenu.h; path = OpenSource/REMenu/REMenu.h; sourceTree = SOURCE_ROOT; };
@@ -332,8 +328,6 @@
 		1B78A97A191E81C000A4A8AD /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
 		1B78A991191F0D8700A4A8AD /* UWManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWManagerViewController.h; path = ViewController/UWManagerViewController.h; sourceTree = "<group>"; };
 		1B78A992191F0D8700A4A8AD /* UWManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWManagerViewController.m; path = ViewController/UWManagerViewController.m; sourceTree = "<group>"; };
-		1B78A994191F1E7100A4A8AD /* UWDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWDevice.h; path = Model/UWDevice.h; sourceTree = "<group>"; };
-		1B78A995191F1E7100A4A8AD /* UWDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWDevice.m; path = Model/UWDevice.m; sourceTree = "<group>"; };
 		1B78A997191F24E800A4A8AD /* UWDeviceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWDeviceCell.h; path = TableViewCell/UWDeviceCell.h; sourceTree = "<group>"; };
 		1B78A998191F24E800A4A8AD /* UWDeviceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWDeviceCell.m; path = TableViewCell/UWDeviceCell.m; sourceTree = "<group>"; };
 		1B78A99A192309A100A4A8AD /* UWGridTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWGridTableView.h; path = OtherViews/UWGridTableView.h; sourceTree = "<group>"; };
@@ -368,8 +362,6 @@
 		1BB96F1019760B5A00120080 /* UWAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWAppDelegate.m; path = "UW Info/Others/UWAppDelegate.m"; sourceTree = "<group>"; };
 		1BB96F1119760B5A00120080 /* UWColorSchemeCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWColorSchemeCenter.h; path = "UW Info/Others/UWColorSchemeCenter.h"; sourceTree = "<group>"; };
 		1BB96F1219760B5A00120080 /* UWColorSchemeCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWColorSchemeCenter.m; path = "UW Info/Others/UWColorSchemeCenter.m"; sourceTree = "<group>"; };
-		1BB96F1319760B5A00120080 /* UWErrorReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWErrorReport.h; path = "UW Info/Others/UWErrorReport.h"; sourceTree = "<group>"; };
-		1BB96F1419760B5A00120080 /* UWErrorReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWErrorReport.m; path = "UW Info/Others/UWErrorReport.m"; sourceTree = "<group>"; };
 		1BB96F1519760B5A00120080 /* UWGoogleAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWGoogleAnalytics.h; path = "UW Info/Others/UWGoogleAnalytics.h"; sourceTree = "<group>"; };
 		1BB96F1619760B5A00120080 /* UWGoogleAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UWGoogleAnalytics.m; path = "UW Info/Others/UWGoogleAnalytics.m"; sourceTree = "<group>"; };
 		1BB96F1719760B5A00120080 /* UWInfoSessionClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UWInfoSessionClient.h; path = "UW Info/Others/UWInfoSessionClient.h"; sourceTree = "<group>"; };
@@ -477,7 +469,6 @@
 				1B505ED518D0E39900F168F8 /* QuartzCore.framework in Frameworks */,
 				1B505ED318D0E39300F168F8 /* MobileCoreServices.framework in Frameworks */,
 				1B505ECF18D0E38400F168F8 /* CoreLocation.framework in Frameworks */,
-				1B3A33C418D4D7E40046DC73 /* Parse.framework in Frameworks */,
 				1BF43754197A470F009B4634 /* FacebookSDK.framework in Frameworks */,
 				1B6F54C818AC219000D3DD47 /* EventKitUI.framework in Frameworks */,
 				1B6F54C618AC218600D3DD47 /* EventKit.framework in Frameworks */,
@@ -662,8 +653,6 @@
 				1B37453618A5BA28007CF08C /* InfoSession.m */,
 				1BAD97E418A98F65006F4546 /* InfoSessionModel.h */,
 				1BAD97E518A98F65006F4546 /* InfoSessionModel.m */,
-				1B78A994191F1E7100A4A8AD /* UWDevice.h */,
-				1B78A995191F1E7100A4A8AD /* UWDevice.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -691,8 +680,6 @@
 				1BB96F1819760B5A00120080 /* UWInfoSessionClient.m */,
 				1BB96F0D19760B5A00120080 /* UWAds.h */,
 				1BB96F0E19760B5A00120080 /* UWAds.m */,
-				1BB96F1319760B5A00120080 /* UWErrorReport.h */,
-				1BB96F1419760B5A00120080 /* UWErrorReport.m */,
 				1BB96F1519760B5A00120080 /* UWGoogleAnalytics.h */,
 				1BB96F1619760B5A00120080 /* UWGoogleAnalytics.m */,
 				1BB96F1119760B5A00120080 /* UWColorSchemeCenter.h */,
@@ -1034,7 +1021,6 @@
 				1BDD366D18EC73700098EAAF /* AVFoundation.framework */,
 				1BDD366B18EC735F0098EAAF /* AdSupport.framework */,
 				1BF84FAB18D6AF9F00F7A86D /* iAd.framework */,
-				1B3A33C318D4D7E40046DC73 /* Parse.framework */,
 				1B3A337818D4BA5D0046DC73 /* Social.framework */,
 				1B505EDA18D0E3AB00F168F8 /* SystemConfiguration.framework */,
 				1B505ED818D0E3A400F168F8 /* StoreKit.framework */,
@@ -1189,6 +1175,7 @@
 				TargetAttributes = {
 					1BD83A9018A59F1C00EDBB6D = {
 						DevelopmentTeam = UYW9ZSKZAQ;
+						ProvisioningStyle = Automatic;
 					};
 					1BD83AB418A59F1D00EDBB6D = {
 						TestTargetID = 1BD83A9018A59F1C00EDBB6D;
@@ -1306,7 +1293,6 @@
 				1B19834918A618A60022A285 /* DetailViewController.m in Sources */,
 				1B3A33B418D4D7690046DC73 /* UIAlertView+AFNetworking.m in Sources */,
 				1B3A33B518D4D7690046DC73 /* UIButton+AFNetworking.m in Sources */,
-				1BB96F1C19760B5A00120080 /* UWErrorReport.m in Sources */,
 				1BB96F211976129300120080 /* UIColor+ApplyAlpha.m in Sources */,
 				1B717E7118A80B8200E20A29 /* DetailDescriptionCell.m in Sources */,
 				1B3A339C18D4D7600046DC73 /* AFSecurityPolicy.m in Sources */,
@@ -1340,7 +1326,6 @@
 				1B0A98821923BF61006AF24B /* UWCellScrollView.m in Sources */,
 				1B717E5F18A7F7DC00E20A29 /* DetailLinkCell.m in Sources */,
 				1B717E6518A809F900E20A29 /* DetailRSVPCell.m in Sources */,
-				1B78A996191F1E7100A4A8AD /* UWDevice.m in Sources */,
 				1B717E6D18A80A7A00E20A29 /* InfoSessionCell.m in Sources */,
 				1BA1795C18F1AE5400FA5D05 /* HSLUpdateChecker.m in Sources */,
 				1B78A993191F0D8700A4A8AD /* UWManagerViewController.m in Sources */,
@@ -1487,7 +1472,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1505,7 +1490,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0FFC7814-4C2A-4A59-A0C1-44CDFDBFD5B4";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1516,7 +1501,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Honghao Zhang (UYW9ZSKZAQ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1534,7 +1519,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "C2EBDF47-3A03-4678-99AC-6964803FE4E5";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -9,7 +9,6 @@
 #import "MoreViewController.h"
 #import "UIApplication+AppVersion.h"
 #import "CenterTextCell.h"
-#import <Parse/Parse.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import <Social/Social.h>
 #import "WXApi.h"
@@ -27,13 +26,11 @@
 #import "iRate.h"
 #import "WeixinActivity.h"
 #import "LINEActivity.h"
-#import "UWErrorReport.h"
 #import "UWManagerViewController.h"
 //#import "MYBlurIntroductionView.h"
 //#import "MYIntroductionPanel.h"
 #import "Appirater.h"
 #import "UWColorSchemeCenter.h"
-#import "UWDevice.h"
 #import "GBFlatButton.h"
 #import "GBFlatSelectableButton.h"
 
@@ -92,12 +89,12 @@
     [self updateColorScheme];
     [UWColorSchemeCenter registerColorSchemeNotificationForObserver:self selector:@selector(updateColorScheme)];
     
-    _shouldShowRandomColorSwitch = [UWDevice sharedDevice].isRandomColor;
+//    _shouldShowRandomColorSwitch = [UWDevice sharedDevice].isRandomColor;
     //[self.tableView registerClass:[CenterTextCell class] forCellReuseIdentifier:@"CenterCell"];
     
-    itunesURLString = @"http://itunes.apple.com/app/uw-info-session/id837207884?mt=8";
+    itunesURLString = @"https://itunes.apple.com/app/uw-info-session/id837207884?mt=8";
     itunesRateURLString = @"itms-apps://itunes.apple.com/app/id837207884";
-    itunesShortURLString = @"http://goo.gl/bQyyH0";
+    itunesShortURLString = @"https://goo.gl/bQyyH0";
     appURLString = @"itms://itunes.apple.com/app/uw-info-session/id837207884?mt=8";
     sharPostString = @"UW Info is a great app to search and manage info sessions #UWaterloo, check it out!";
     
@@ -276,7 +273,7 @@
             
             _randomColorSwitch = [[UISwitch alloc] init];
             [_randomColorSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
-            [_randomColorSwitch setOn:[UWDevice sharedDevice].isRandomColor animated:YES];
+//            [_randomColorSwitch setOn:[UWDevice sharedDevice].isRandomColor animated:YES];
             [_randomColorSwitch addTarget:self action:@selector(randomColorSwitch:) forControlEvents:UIControlEventTouchUpInside];
             
             cell.accessoryView = _randomColorSwitch;
@@ -295,10 +292,10 @@
             _restButton.tintColor = [UWColorSchemeCenter uwGold];
             
             [_restButton addTarget:self action:@selector(resetColor:) forControlEvents:UIControlEventTouchUpInside];
-            if ([UWDevice sharedDevice].isRandomColor) {
-                [cell addSubview:_restButton];
-            }
-            
+//            if ([UWDevice sharedDevice].isRandomColor) {
+//                [cell addSubview:_restButton];
+//            }
+			
             return cell;
         }
     } else if (indexPath.section == 2) {
@@ -352,7 +349,7 @@
             }
             cell.centerTextLabel.text = @"Rate this app 😊";
 //            FBLikeControl *like = [[FBLikeControl alloc] init];
-//            like.objectID = @"http://shareitexampleapp.parseapp.com/photo1/";
+//            like.objectID = @"https://shareitexampleapp.parseapp.com/photo1/";
 //            [cell addSubview:like];
             return cell;
         }
@@ -413,7 +410,7 @@
             }
             
         } else if (indexPath.row == 1){
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ca.linkedin.com/in/honghaozhang"]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://ca.linkedin.com/in/honghaozhang"]];
         }
     } else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
@@ -456,68 +453,68 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex == 1) {
-        UITextField *usernameTextField = [alertView textFieldAtIndex:0];
-        UITextField *passwordTextField = [alertView textFieldAtIndex:1];
-        NSString *username = usernameTextField.text;
-        NSString *password = passwordTextField.text;
-        
-        if ([username length] >= 1) {
-            PFQuery *queryForId = [PFQuery queryWithClassName:@"ManagerUsers"];
-            [queryForId whereKey:@"Username" equalTo:username];
-            [queryForId findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                if (!error) {
-                    // The find succeeded.
-                    // no object for this id, query with device name
-                    if (objects.count == 0) {
-                        [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"Error Manager user: %@, password: %@", username, password]];
-                        UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"No username matched"
-                                                                         message:@""
-                                                                        delegate:self
-                                                               cancelButtonTitle:@"OK"
-                                                               otherButtonTitles: nil];
-                        //                    [alert addButtonWithTitle:@"GOO"];
-                        [alert show];
-                    }
-                    else {
-                        for (PFObject *object in objects) {
-                            // only one user is matched
-                            NSString *passwordFromPase = object[@"Password"];
-                            if ([passwordFromPase isEqualToString:password]) {
-                                [self showManagerView];
-                            }
-                            else {
-                                UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Username/Password doesn't matched"
-                                                                                 message:@""
-                                                                                delegate:self
-                                                                       cancelButtonTitle:@"OK"
-                                                                       otherButtonTitles: nil];
-                                //                    [alert addButtonWithTitle:@"GOO"];
-                                [alert show];
-                            }
-                        }
-                    }
-                } else {
-                    NSLog(@"Error: %@ %@", error, [error userInfo]);
-                }
-            }];
-        }
-        else {
-            UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Please input at least one character"
-                                                             message:@""
-                                                            delegate:self
-                                                   cancelButtonTitle:@"OK"
-                                                   otherButtonTitles: nil];
-            //                    [alert addButtonWithTitle:@"GOO"];
-            [alert show];
-        }
-    }
+//    if(buttonIndex == 1) {
+//        UITextField *usernameTextField = [alertView textFieldAtIndex:0];
+//        UITextField *passwordTextField = [alertView textFieldAtIndex:1];
+//        NSString *username = usernameTextField.text;
+//        NSString *password = passwordTextField.text;
+//        
+//        if ([username length] >= 1) {
+//            PFQuery *queryForId = [PFQuery queryWithClassName:@"ManagerUsers"];
+//            [queryForId whereKey:@"Username" equalTo:username];
+//            [queryForId findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//                if (!error) {
+//                    // The find succeeded.
+//                    // no object for this id, query with device name
+//                    if (objects.count == 0) {
+//                        [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"Error Manager user: %@, password: %@", username, password]];
+//                        UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"No username matched"
+//                                                                         message:@""
+//                                                                        delegate:self
+//                                                               cancelButtonTitle:@"OK"
+//                                                               otherButtonTitles: nil];
+//                        //                    [alert addButtonWithTitle:@"GOO"];
+//                        [alert show];
+//                    }
+//                    else {
+//                        for (PFObject *object in objects) {
+//                            // only one user is matched
+//                            NSString *passwordFromPase = object[@"Password"];
+//                            if ([passwordFromPase isEqualToString:password]) {
+//                                [self showManagerView];
+//                            }
+//                            else {
+//                                UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Username/Password doesn't matched"
+//                                                                                 message:@""
+//                                                                                delegate:self
+//                                                                       cancelButtonTitle:@"OK"
+//                                                                       otherButtonTitles: nil];
+//                                //                    [alert addButtonWithTitle:@"GOO"];
+//                                [alert show];
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    NSLog(@"Error: %@ %@", error, [error userInfo]);
+//                }
+//            }];
+//        }
+//        else {
+//            UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Please input at least one character"
+//                                                             message:@""
+//                                                            delegate:self
+//                                                   cancelButtonTitle:@"OK"
+//                                                   otherButtonTitles: nil];
+//            //                    [alert addButtonWithTitle:@"GOO"];
+//            [alert show];
+//        }
+//    }
 }
 
 - (void)showManagerView {
-    UWManagerViewController *newManagerView = [[UWManagerViewController alloc] init];
-    MoreNavigationViewController *newNaviVC = [[MoreNavigationViewController alloc] initWithRootViewController:newManagerView];
-    [self presentViewController:newNaviVC animated:YES completion:^(){}];
+//    UWManagerViewController *newManagerView = [[UWManagerViewController alloc] init];
+//    MoreNavigationViewController *newNaviVC = [[MoreNavigationViewController alloc] initWithRootViewController:newManagerView];
+//    [self presentViewController:newNaviVC animated:YES completion:^(){}];
 }
 
 //- (void)preformTransitionToViewController:(UIViewController*)dest direction:(NSString*)direction {
@@ -725,7 +722,7 @@
         [message setThumbImage:[UIImage imageNamed:@"AppIcon-Rounded.png"]];
         
         WXWebpageObject *ext = [WXWebpageObject object];
-        ext.webpageUrl = @"http://uw-info.honghaoz.com"; //itunesURLString;
+        ext.webpageUrl = @"https://uw-info.honghaoz.com"; //itunesURLString;
         
         message.mediaObject = ext;
         
@@ -787,10 +784,10 @@
 }
 
 - (void)randomColorSwitch:(id)sender {
-    LogMethod;
-    UISwitch *theSwitch = sender;
-    [UWDevice sharedDevice].isRandomColor = theSwitch.isOn;
-    
+//    LogMethod;
+//    UISwitch *theSwitch = sender;
+//    [UWDevice sharedDevice].isRandomColor = theSwitch.isOn;
+	
     if (!_randomColorSwitch.isOn) {
         [_restButton removeFromSuperview];
     } else {
@@ -798,8 +795,8 @@
         [UWColorSchemeCenter sharedCenter].isTemporaryRandomColor = NO;
     }
     
-    [UWDevice sharedDevice].pfObject[@"isRandomColor"] = [NSNumber numberWithBool:theSwitch.isOn];
-    [[UWDevice sharedDevice].pfObject saveEventually];
+//    [UWDevice sharedDevice].pfObject[@"isRandomColor"] = [NSNumber numberWithBool:theSwitch.isOn];
+//    [[UWDevice sharedDevice].pfObject saveEventually];
     [UWColorSchemeCenter saveColorScheme];
 }
 

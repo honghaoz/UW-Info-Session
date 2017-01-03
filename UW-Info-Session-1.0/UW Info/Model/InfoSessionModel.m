@@ -12,8 +12,8 @@
 #import "InfoSessionModel.h"
 #import "InfoSession.h"
 
-#import <Parse/Parse.h>
-#import "UWErrorReport.h"
+//#import <Parse/Parse.h>
+//#import "UWErrorReport.h"
 
 //const NSString *apiKey =  @"abc498ac42354084bf594d52f5570977";
 //const NSString *apiKey1 =  @"913034dae16d7233dd1683713cbb4721";
@@ -106,7 +106,7 @@
 - (NSString*)infoSessionBaseURLString
 {
     if (_infoSessionBaseURLString == nil) {
-        _infoSessionBaseURLString = @"http://uw-info1.appspot.com/";
+        _infoSessionBaseURLString = @"https://uw-info1.appspot.com/";
     }
     return _infoSessionBaseURLString;
 }
@@ -114,10 +114,10 @@
 - (void)switchInfoSessionBaseURLString
 {
     NSLog(@"switch!");
-    if ([self.infoSessionBaseURLString isEqual:@"http://uw-info1.appspot.com/"]) {
-        self.infoSessionBaseURLString = @"http://uw-info2.appspot.com/";
-    } else if ([self.infoSessionBaseURLString isEqual:@"http://uw-info2.appspot.com/"]) {
-        self.infoSessionBaseURLString = @"http://uw-info1.appspot.com/";
+    if ([self.infoSessionBaseURLString isEqual:@"https://uw-info1.appspot.com/"]) {
+        self.infoSessionBaseURLString = @"https://uw-info2.appspot.com/";
+    } else if ([self.infoSessionBaseURLString isEqual:@"https://uw-info2.appspot.com/"]) {
+        self.infoSessionBaseURLString = @"https://uw-info1.appspot.com/";
     }
     NSLog(@"switched to %@", self.infoSessionBaseURLString);
 }
@@ -618,65 +618,65 @@
         _year = year;
         _term = term;
         if ([self.apiKey isEqualToString:@"0"]) {
-            // if key is not vaild
-            // first to look up parse keys
-            PFQuery* queryForId = [PFQuery queryWithClassName:@"Device"];
-            [queryForId whereKey:@"Identifier" equalTo:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
-            [queryForId findObjectsInBackgroundWithBlock:^(NSArray* objects, NSError* error) {
-                if (!error) {
-                    if (objects.count == 0) {
-                        NSLog(@"Queried with identifier, but no match found");
-                        PFQuery *queryForDeviceName = [PFQuery queryWithClassName:@"Device"];
-                        [queryForDeviceName whereKey:@"Device_Name" equalTo:[[UIDevice currentDevice] name]];
-                        [queryForDeviceName findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                            if (!error) {
-                                if (objects.count == 0) {
-                                    NSLog(@"Queried with device name, but no match found");
-                                    [self setApiKey];
-                                } else {
-                                    for (PFObject *object in objects) {
-                                        if (object[@"Query_Key"] == nil) {
-                                            NSLog(@"Queried, Found key: nil");
-                                            [self setApiKey];
-                                        } else {
-                                            self.apiKey = object[@"Query_Key"];
-                                            NSLog(@"Queried, Found key: %@", self.apiKey);
-                                            if ([self.apiKey isEqualToString:@"0"]) {
-                                                self.apiKey = @"1";
-                                                [UWErrorReport reportErrorWithDescription:@"Wrong key: 0, set 1 insted (Set key: Device_Name)"];
-                                            }
-                                            [self updateInfoSessionsWithYear:_year andTerm:_term];
-                                            return;
-                                        }
-                                    }
-                                }
-                            } else {
-                                // Log details of the failure
-                                NSLog(@"Error: %@ %@", error, [error userInfo]);
-                                [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"Set Key, device name error: %@ %@", error, [error userInfo]]];
-                                [self setApiKey];
-                                
-                            }
-                        }];
-                    } else {
-                        for (PFObject *object in objects) {
-                            self.apiKey = object[@"Query_Key"];
-                            NSLog(@"Queried, Found key: %@", self.apiKey);
-                            if ([self.apiKey isEqualToString:@"0"]) {
-                                self.apiKey = @"1";
-                                [UWErrorReport reportErrorWithDescription:@"Wrong key: 0, set 1 insted (Set key: Device_Identifier)"];
-                            }
-                            [self updateInfoSessionsWithYear:_year andTerm:_term];
-                            return;
-                        }
-                    }
-                } else {
-                    // Log details of the failure
-                    NSLog(@"Error: %@ %@", error, [error userInfo]);
-                    [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"Set Key, device identifier error: %@ %@", error, [error userInfo]]];
-                    [self setApiKey];
-                }
-            }];
+//            // if key is not vaild
+//            // first to look up parse keys
+//            PFQuery* queryForId = [PFQuery queryWithClassName:@"Device"];
+//            [queryForId whereKey:@"Identifier" equalTo:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
+//            [queryForId findObjectsInBackgroundWithBlock:^(NSArray* objects, NSError* error) {
+//                if (!error) {
+//                    if (objects.count == 0) {
+//                        NSLog(@"Queried with identifier, but no match found");
+//                        PFQuery *queryForDeviceName = [PFQuery queryWithClassName:@"Device"];
+//                        [queryForDeviceName whereKey:@"Device_Name" equalTo:[[UIDevice currentDevice] name]];
+//                        [queryForDeviceName findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//                            if (!error) {
+//                                if (objects.count == 0) {
+//                                    NSLog(@"Queried with device name, but no match found");
+//                                    [self setApiKey];
+//                                } else {
+//                                    for (PFObject *object in objects) {
+//                                        if (object[@"Query_Key"] == nil) {
+//                                            NSLog(@"Queried, Found key: nil");
+//                                            [self setApiKey];
+//                                        } else {
+//                                            self.apiKey = object[@"Query_Key"];
+//                                            NSLog(@"Queried, Found key: %@", self.apiKey);
+//                                            if ([self.apiKey isEqualToString:@"0"]) {
+//                                                self.apiKey = @"1";
+//                                                [UWErrorReport reportErrorWithDescription:@"Wrong key: 0, set 1 insted (Set key: Device_Name)"];
+//                                            }
+//                                            [self updateInfoSessionsWithYear:_year andTerm:_term];
+//                                            return;
+//                                        }
+//                                    }
+//                                }
+//                            } else {
+//                                // Log details of the failure
+//                                NSLog(@"Error: %@ %@", error, [error userInfo]);
+//                                [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"Set Key, device name error: %@ %@", error, [error userInfo]]];
+//                                [self setApiKey];
+//                                
+//                            }
+//                        }];
+//                    } else {
+//                        for (PFObject *object in objects) {
+//                            self.apiKey = object[@"Query_Key"];
+//                            NSLog(@"Queried, Found key: %@", self.apiKey);
+//                            if ([self.apiKey isEqualToString:@"0"]) {
+//                                self.apiKey = @"1";
+//                                [UWErrorReport reportErrorWithDescription:@"Wrong key: 0, set 1 insted (Set key: Device_Identifier)"];
+//                            }
+//                            [self updateInfoSessionsWithYear:_year andTerm:_term];
+//                            return;
+//                        }
+//                    }
+//                } else {
+//                    // Log details of the failure
+//                    NSLog(@"Error: %@ %@", error, [error userInfo]);
+//                    [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"Set Key, device identifier error: %@ %@", error, [error userInfo]]];
+//                    [self setApiKey];
+//                }
+//            }];
             //  NSLog(@"key is 0");
 
         } else {
@@ -757,42 +757,42 @@
     self.apiKey = (NSString*)[apiKey copy];
     //    NSLog(@"update again");
     // add key to parseObject
-    PFQuery* queryForId = [PFQuery queryWithClassName:@"Device"];
-    [queryForId whereKey:@"Identifier" equalTo:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
-    [queryForId findObjectsInBackgroundWithBlock:^(NSArray* objects, NSError* error) {
-        if (!error) {
-            if (objects.count == 0) {
-                NSLog(@"never reach");
-                [UWErrorReport reportErrorWithDescription:@"didUpdateWithApiKey, but identifier not found"];
-                PFQuery *queryForDeviceName = [PFQuery queryWithClassName:@"Device"];
-                [queryForDeviceName whereKey:@"Device_Name" equalTo:[[UIDevice currentDevice] name]];
-                [queryForDeviceName findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                    if (!error) {
-                        if (objects.count == 0) {
-                            NSLog(@"never never reach");
-                        } else {
-                            for (PFObject *object in objects) {
-                                object[@"Query_Key"] = self.apiKey;
-                                [object saveEventually];
-                            }
-                        }
-                    } else {
-                        NSLog(@"Error: %@ %@", error, [error userInfo]);
-                        [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"didUpdateWithApiKey, device name error: %@ %@", error, [error userInfo]]];
-                    }
-                }];
-            } else {
-                for (PFObject *object in objects) {
-                    object[@"Query_Key"] = self.apiKey;
-                    [object saveEventually];
-                }
-            }
-        } else {
-            // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
-            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"didUpdateWithApiKey, device identifier error: %@ %@", error, [error userInfo]]];
-        }
-    }];
+//    PFQuery* queryForId = [PFQuery queryWithClassName:@"Device"];
+//    [queryForId whereKey:@"Identifier" equalTo:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
+//    [queryForId findObjectsInBackgroundWithBlock:^(NSArray* objects, NSError* error) {
+//        if (!error) {
+//            if (objects.count == 0) {
+//                NSLog(@"never reach");
+//                [UWErrorReport reportErrorWithDescription:@"didUpdateWithApiKey, but identifier not found"];
+//                PFQuery *queryForDeviceName = [PFQuery queryWithClassName:@"Device"];
+//                [queryForDeviceName whereKey:@"Device_Name" equalTo:[[UIDevice currentDevice] name]];
+//                [queryForDeviceName findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//                    if (!error) {
+//                        if (objects.count == 0) {
+//                            NSLog(@"never never reach");
+//                        } else {
+//                            for (PFObject *object in objects) {
+//                                object[@"Query_Key"] = self.apiKey;
+//                                [object saveEventually];
+//                            }
+//                        }
+//                    } else {
+//                        NSLog(@"Error: %@ %@", error, [error userInfo]);
+//                        [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"didUpdateWithApiKey, device name error: %@ %@", error, [error userInfo]]];
+//                    }
+//                }];
+//            } else {
+//                for (PFObject *object in objects) {
+//                    object[@"Query_Key"] = self.apiKey;
+//                    [object saveEventually];
+//                }
+//            }
+//        } else {
+//            // Log details of the failure
+//            NSLog(@"Error: %@ %@", error, [error userInfo]);
+//            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"didUpdateWithApiKey, device identifier error: %@ %@", error, [error userInfo]]];
+//        }
+//    }];
     [self updateInfoSessionsWithYear:_year andTerm:_term];
 }
 

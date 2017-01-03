@@ -7,8 +7,6 @@
 //
 
 #import "UWColorSchemeCenter.h"
-#import <Parse/Parse.h>
-#import "UWErrorReport.h"
 #import "UIDevice-Hardware.h"
 
 @implementation UWColorSchemeCenter
@@ -114,18 +112,18 @@
 }
 
 - (void)updateColorScheme {
-    [PFCloud callFunctionInBackground:@"getColorScheme"
-                       withParameters:@{}
-                                block:^(NSDictionary *result, NSError *error) {
-                                    if (!error) {
-                                        // result is @"Hello world!"
-                                        NSLog(@"%@", result);
-                                        [self setColorsWithResult:result];
-                                        [self post];
-                                    } else {
-                                        NSLog(@"getColorScheme failed %@", [error description]);
-                                    }
-                                }];
+//    [PFCloud callFunctionInBackground:@"getColorScheme"
+//                       withParameters:@{}
+//                                block:^(NSDictionary *result, NSError *error) {
+//                                    if (!error) {
+//                                        // result is @"Hello world!"
+//                                        NSLog(@"%@", result);
+//                                        [self setColorsWithResult:result];
+//                                        [self post];
+//                                    } else {
+//                                        NSLog(@"getColorScheme failed %@", [error description]);
+//                                    }
+//                                }];
 //    _uwGoldColor = UW_GOLD;
 //    _uwBlackColor = UW_BLACK;
 //    _tabBarTintColor = TAB_BAR_COLOR;
@@ -273,7 +271,7 @@
 
 + (void)setTemporaryRandomColorSchemeMode:(BOOL)isTemp {
     [[UWColorSchemeCenter sharedCenter] setTemporaryRandomColorSchemeMode:isTemp];
-    [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"Temporary color scheme mode: Device: %@", [[UIDevice currentDevice] name]]];
+//    [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"Temporary color scheme mode: Device: %@", [[UIDevice currentDevice] name]]];
 }
 
 - (void)setTemporaryRandomColorSchemeMode:(BOOL)isTemp {

@@ -13,7 +13,6 @@
 
 #import "AFNetworkActivityIndicatorManager.h"
 
-#import <Parse/Parse.h>
 #import "WXApi.h"
 #import "GAI.h"
 #import "iRate.h"
@@ -23,14 +22,11 @@
 #import "UIApplication+AppVersion.h"
 #import "UIDevice-Hardware.h"
 
-#import "UWErrorReport.h"
 #import "UWColorSchemeCenter.h"
-#import "UWDevice.h"
 
 @implementation UWAppDelegate {
     UWTabBarController *_tabController;
     InfoSessionModel* _infoSessionModel;
-    PFObject* currentDevice;
     NSArray* pushChannels;
 }
 
@@ -90,10 +86,10 @@
     ////    [[UWAppiRaterDelegate sharediRateDelegate] appiraterDidDisplayAlert:nil];
 
     //
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [[UWDevice sharedDevice] updateColorScheme];
-    });
-    
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [[UWDevice sharedDevice] updateColorScheme];
+//    });
+	
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setValue:[UIApplication appVersion] forKey:@"version"];
     [defaults synchronize];
@@ -146,11 +142,11 @@
 - (void)applicationDidBecomeActive:(UIApplication*)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    PFInstallation* currentInstallation = [PFInstallation currentInstallation];
-    if (currentInstallation.badge != 0) {
-        currentInstallation.badge = 0;
-        [currentInstallation saveEventually];
-    }
+//    PFInstallation* currentInstallation = [PFInstallation currentInstallation];
+//    if (currentInstallation.badge != 0) {
+//        currentInstallation.badge = 0;
+//        [currentInstallation saveEventually];
+//    }
 }
 
 - (void)applicationWillTerminate:(UIApplication*)application
@@ -194,7 +190,7 @@
         alert.tag = 0;
         [alert show];
     }
-    [PFPush handlePush:userInfo];
+//    [PFPush handlePush:userInfo];
 }
 
 - (BOOL)application:(UIApplication*)application handleOpenURL:(NSURL*)url
@@ -209,24 +205,24 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)newDeviceToken
 {
-    NSLog(@"register push");
-    // Store the deviceToken in the current installation and save it to Parse.
-    PFInstallation* currentInstallation = [PFInstallation currentInstallation];
-    currentInstallation.badge = application.applicationIconBadgeNumber;
-    //[currentInstallation addUniqueObject:@"Info_News" forKey:@"channels"];
-    [currentInstallation setDeviceTokenFromData:newDeviceToken];
-    currentInstallation[@"Device_Name"] = [[UIDevice currentDevice] name];
-    [currentInstallation saveInBackground];
+//    NSLog(@"register push");
+//    // Store the deviceToken in the current installation and save it to Parse.
+//    PFInstallation* currentInstallation = [PFInstallation currentInstallation];
+//    currentInstallation.badge = application.applicationIconBadgeNumber;
+//    //[currentInstallation addUniqueObject:@"Info_News" forKey:@"channels"];
+//    [currentInstallation setDeviceTokenFromData:newDeviceToken];
+//    currentInstallation[@"Device_Name"] = [[UIDevice currentDevice] name];
+//    [currentInstallation saveInBackground];
 }
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
     application.applicationIconBadgeNumber = 0;
-    PFInstallation* currentInstallation = [PFInstallation currentInstallation];
-    currentInstallation.badge = 0;
-    currentInstallation[@"Device_Name"] = [[UIDevice currentDevice] name];
-    [currentInstallation saveInBackground];
-    [PFPush handlePush:userInfo];
+//    PFInstallation* currentInstallation = [PFInstallation currentInstallation];
+//    currentInstallation.badge = 0;
+//    currentInstallation[@"Device_Name"] = [[UIDevice currentDevice] name];
+//    [currentInstallation saveInBackground];
+//    [PFPush handlePush:userInfo];
 }
 
 #pragma mark - Initialization methods
@@ -309,9 +305,9 @@
  *  @param timer
  */
 - (void)handleEveryMinute:(NSTimer *)timer {
-    if ([UWDevice sharedDevice].isRandomColor || [UWColorSchemeCenter sharedCenter].isTemporaryRandomColor) {
-        [UWColorSchemeCenter updateColorScheme];
-    }
+//    if ([UWDevice sharedDevice].isRandomColor || [UWColorSchemeCenter sharedCenter].isTemporaryRandomColor) {
+//        [UWColorSchemeCenter updateColorScheme];
+//    }
     // post notification every minute
     [[NSNotificationCenter defaultCenter] postNotificationName:@"OneMinute" object:self];
 }
@@ -320,146 +316,146 @@
  *  Set up Parse Services
  */
 - (void)setParse:(NSDictionary *)launchOptions {
-    [Parse setApplicationId:@"zytbQR05vLnq2h37zHHBDneLWMzaH47qHB978zfx"
-                  clientKey:@"O107hqVq0uYHr3QLFGSCTJPCCC5YKY5vx2BQXS2q"];
-    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-    
-    NSString *deviceName = [[UIDevice currentDevice] name];
-    NSString *identifierForVendor = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    
-    NSString *deviceType = [NSString stringWithFormat:@"%@ %@(%@)", [[UIDevice currentDevice] platformString], [[UIDevice currentDevice] platform], [[UIDevice currentDevice] hwmodel]];
-    NSLog(@"%@", deviceType);
-    
-    PFQuery *queryForId = [PFQuery queryWithClassName:@"Device"];
-    [queryForId whereKey:@"Identifier" equalTo:identifierForVendor];
-    [queryForId findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            // The find succeeded.
-            NSLog(@"delegate Successfully retrieved %lu devices.", (unsigned long)objects.count);
-            // no object for this id, query with device name
-            if (objects.count == 0) {
-                PFQuery *queryForDeviceName = [PFQuery queryWithClassName:@"Device"];
-                [queryForDeviceName whereKey:@"Device_Name" equalTo:deviceName];
-                [queryForDeviceName findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                    if (!error) {
-                        // The find succeeded.
-                        NSLog(@"delegate Successfully retrieved %lu devices.", (unsigned long)objects.count);
-                        // if no object for this device name, create a new object
-                        if (objects.count == 0) {
-                            PFObject *device = [PFObject objectWithClassName:@"Device"];
-                            device[@"Device_Name"] = deviceName;
-                            //device[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
-                            device[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
-                            device[@"Opens"] = @1;
-                            device[@"Identifier"] = identifierForVendor;
-                            device[@"App_Version"] = [UIApplication appVersion];
-                            device[@"Installation"] = [PFInstallation currentInstallation];
-                            //device[@"channels"] = [PFInstallation currentInstallation][];
-                            device[@"Device_Type"] = deviceType;
-                            //                            device[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
-                            //device[@"Query_Key"] = _infoSessionModel.apiKey;
-                            currentDevice = device;
-                            [device saveEventually];
-                        }
-                        // Do something with the found objects
-                        else {
-                            for (PFObject *object in objects) {
-                                object[@"Device_Name"] = deviceName;
-                                //object[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
-                                object[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
-                                object[@"Opens"] = [NSNumber numberWithInteger:[object[@"Opens"] integerValue] + 1];
-                                object[@"Identifier"] = identifierForVendor;
-                                //NSLog(@"update key: %@", object[@"Query_Key"]);
-                                object[@"App_Version"] = [UIApplication appVersion];
-                                object[@"Installation"] = [PFInstallation currentInstallation];
-                                object[@"Device_Type"] = deviceType;
-                                //                                object[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
-                                // initiate channels
-                                if (object[@"Channels"] != nil) {
-                                    NSLog(@"set channels");
-                                    [[PFInstallation currentInstallation] removeObjectForKey:@"channels"];
-                                    [[PFInstallation currentInstallation] addUniqueObjectsFromArray:object[@"Channels"] forKey:@"channels"];
-                                    //                                    pushChannels = object[@"channels"];
-                                } else {
-                                    //                                    pushChannels = nil;
-                                }
-                                if (object[@"Query_Key"] == nil && ![_infoSessionModel.apiKey isEqualToString:@"0"]) {
-                                    NSLog(@"Key is nil, restore key");
-                                    object[@"Query_Key"] = _infoSessionModel.apiKey;
-                                } else if (object[@"Query_Key"] == nil && [_infoSessionModel.apiKey isEqualToString:@"0"]) {
-                                    //                                    NSLog(@"WTF??? object[@Query_Key] == nil && [_infoSessionModel.apiKey isEqualToString:@0]");
-                                    _infoSessionModel.apiKey = @"1";
-                                    
-                                    [UWErrorReport reportErrorWithDescription:@"Delegate: Wrong key: 0, set 1 insted"];
-                                    
-                                    object[@"Query_Key"] = _infoSessionModel.apiKey;
-                                    [UWErrorReport reportErrorWithDescription:@"object[@Query_Key] == nil && [_infoSessionModel.apiKey isEqualToString:@0], query device name"];
-                                }
-                                else {
-                                    NSLog(@"update key: %@", object[@"Query_Key"]);
-                                    _infoSessionModel.apiKey = object[@"Query_Key"];
-                                }
-                                //_infoSessionModel.apiKey = object[@"Query_Key"];
-                                // for retrive old key stored in device
-                                //object[@"Query_Key"] = _infoSessionModel.apiKey;
-                                currentDevice = object;
-                                [object saveEventually];
-                            }
-                        }
-                    } else {
-                        // Log details of the failure
-                        NSLog(@"Error: %@ %@", error, [error userInfo]);
-                        [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"query device name error: %@ %@", error, [error userInfo]]];
-                    }
-                }];
-            }
-            // Do something with the found objects
-            else {
-                for (PFObject *object in objects) {
-                    //NSLog(@"%@", object[@"Installation"][@"deviceToken"]);
-                    object[@"Device_Name"] = deviceName;
-                    //object[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
-                    object[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
-                    object[@"Opens"] = [NSNumber numberWithInteger:[object[@"Opens"] integerValue] + 1];
-                    object[@"App_Version"] = [UIApplication appVersion];
-                    object[@"Installation"] = [PFInstallation currentInstallation];
-                    // initiate channels
-                    NSLog(@"start to set channels");
-                    if (object[@"Channels"] != nil) {
-                        NSLog(@"set channels");
-                        [[PFInstallation currentInstallation] removeObjectForKey:@"channels"];
-                        [[PFInstallation currentInstallation] addUniqueObjectsFromArray:object[@"Channels"] forKey:@"channels"];
-                        //                        pushChannels = object[@"channels"];
-                    } else {
-                        //                        pushChannels = nil;
-                    }
-                    object[@"Device_Type"] = deviceType;
-                    //                    object[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
-                    if (object[@"Query_Key"] == nil && ![_infoSessionModel.apiKey isEqualToString:@"0"]) {
-                        NSLog(@"Key is nil, restore key");
-                        object[@"Query_Key"] = _infoSessionModel.apiKey;
-                    } else if (object[@"Query_Key"] == nil && [_infoSessionModel.apiKey isEqualToString:@"0"]) {
-                        //NSLog(@"WTF??? object[@Query_Key] == nil && [_infoSessionModel.apiKey isEqualToString:@0]");
-                        _infoSessionModel.apiKey = @"1";
-                        object[@"Query_Key"] = _infoSessionModel.apiKey;
-                        [UWErrorReport reportErrorWithDescription:@"object[@Query_Key] == nil && [_infoSessionModel.apiKey isEqualToString:@0], query device identifier"];
-                    }
-                    else {
-                        NSLog(@"update key: %@", object[@"Query_Key"]);
-                        _infoSessionModel.apiKey = object[@"Query_Key"];
-                    }
-                    //object[@"Query_Key"] = _infoSessionModel.apiKey;
-                    currentDevice = object;
-                    [object saveEventually];
-                }
-            }
-            [UWDevice sharedDevice].pfObject = currentDevice;
-        } else {
-            // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
-            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"query device identifier error: %@ %@", error, [error userInfo]]];
-        }
-    }];
+//    [Parse setApplicationId:@"zytbQR05vLnq2h37zHHBDneLWMzaH47qHB978zfx"
+//                  clientKey:@"O107hqVq0uYHr3QLFGSCTJPCCC5YKY5vx2BQXS2q"];
+//    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+//    
+//    NSString *deviceName = [[UIDevice currentDevice] name];
+//    NSString *identifierForVendor = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+//    
+//    NSString *deviceType = [NSString stringWithFormat:@"%@ %@(%@)", [[UIDevice currentDevice] platformString], [[UIDevice currentDevice] platform], [[UIDevice currentDevice] hwmodel]];
+//    NSLog(@"%@", deviceType);
+//    
+//    PFQuery *queryForId = [PFQuery queryWithClassName:@"Device"];
+//    [queryForId whereKey:@"Identifier" equalTo:identifierForVendor];
+//    [queryForId findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//        if (!error) {
+//            // The find succeeded.
+//            NSLog(@"delegate Successfully retrieved %lu devices.", (unsigned long)objects.count);
+//            // no object for this id, query with device name
+//            if (objects.count == 0) {
+//                PFQuery *queryForDeviceName = [PFQuery queryWithClassName:@"Device"];
+//                [queryForDeviceName whereKey:@"Device_Name" equalTo:deviceName];
+//                [queryForDeviceName findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//                    if (!error) {
+//                        // The find succeeded.
+//                        NSLog(@"delegate Successfully retrieved %lu devices.", (unsigned long)objects.count);
+//                        // if no object for this device name, create a new object
+//                        if (objects.count == 0) {
+//                            PFObject *device = [PFObject objectWithClassName:@"Device"];
+//                            device[@"Device_Name"] = deviceName;
+//                            //device[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
+//                            device[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
+//                            device[@"Opens"] = @1;
+//                            device[@"Identifier"] = identifierForVendor;
+//                            device[@"App_Version"] = [UIApplication appVersion];
+//                            device[@"Installation"] = [PFInstallation currentInstallation];
+//                            //device[@"channels"] = [PFInstallation currentInstallation][];
+//                            device[@"Device_Type"] = deviceType;
+//                            //                            device[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
+//                            //device[@"Query_Key"] = _infoSessionModel.apiKey;
+//                            currentDevice = device;
+//                            [device saveEventually];
+//                        }
+//                        // Do something with the found objects
+//                        else {
+//                            for (PFObject *object in objects) {
+//                                object[@"Device_Name"] = deviceName;
+//                                //object[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
+//                                object[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
+//                                object[@"Opens"] = [NSNumber numberWithInteger:[object[@"Opens"] integerValue] + 1];
+//                                object[@"Identifier"] = identifierForVendor;
+//                                //NSLog(@"update key: %@", object[@"Query_Key"]);
+//                                object[@"App_Version"] = [UIApplication appVersion];
+//                                object[@"Installation"] = [PFInstallation currentInstallation];
+//                                object[@"Device_Type"] = deviceType;
+//                                //                                object[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
+//                                // initiate channels
+//                                if (object[@"Channels"] != nil) {
+//                                    NSLog(@"set channels");
+//                                    [[PFInstallation currentInstallation] removeObjectForKey:@"channels"];
+//                                    [[PFInstallation currentInstallation] addUniqueObjectsFromArray:object[@"Channels"] forKey:@"channels"];
+//                                    //                                    pushChannels = object[@"channels"];
+//                                } else {
+//                                    //                                    pushChannels = nil;
+//                                }
+//                                if (object[@"Query_Key"] == nil && ![_infoSessionModel.apiKey isEqualToString:@"0"]) {
+//                                    NSLog(@"Key is nil, restore key");
+//                                    object[@"Query_Key"] = _infoSessionModel.apiKey;
+//                                } else if (object[@"Query_Key"] == nil && [_infoSessionModel.apiKey isEqualToString:@"0"]) {
+//                                    //                                    NSLog(@"WTF??? object[@Query_Key] == nil && [_infoSessionModel.apiKey isEqualToString:@0]");
+//                                    _infoSessionModel.apiKey = @"1";
+//                                    
+//                                    [UWErrorReport reportErrorWithDescription:@"Delegate: Wrong key: 0, set 1 insted"];
+//                                    
+//                                    object[@"Query_Key"] = _infoSessionModel.apiKey;
+//                                    [UWErrorReport reportErrorWithDescription:@"object[@Query_Key] == nil && [_infoSessionModel.apiKey isEqualToString:@0], query device name"];
+//                                }
+//                                else {
+//                                    NSLog(@"update key: %@", object[@"Query_Key"]);
+//                                    _infoSessionModel.apiKey = object[@"Query_Key"];
+//                                }
+//                                //_infoSessionModel.apiKey = object[@"Query_Key"];
+//                                // for retrive old key stored in device
+//                                //object[@"Query_Key"] = _infoSessionModel.apiKey;
+//                                currentDevice = object;
+//                                [object saveEventually];
+//                            }
+//                        }
+//                    } else {
+//                        // Log details of the failure
+//                        NSLog(@"Error: %@ %@", error, [error userInfo]);
+//                        [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"query device name error: %@ %@", error, [error userInfo]]];
+//                    }
+//                }];
+//            }
+//            // Do something with the found objects
+//            else {
+//                for (PFObject *object in objects) {
+//                    //NSLog(@"%@", object[@"Installation"][@"deviceToken"]);
+//                    object[@"Device_Name"] = deviceName;
+//                    //object[@"Platform_Name"] = [[UIDevice currentDevice] systemName];
+//                    object[@"System_Version"] = [[UIDevice currentDevice] systemVersion];
+//                    object[@"Opens"] = [NSNumber numberWithInteger:[object[@"Opens"] integerValue] + 1];
+//                    object[@"App_Version"] = [UIApplication appVersion];
+//                    object[@"Installation"] = [PFInstallation currentInstallation];
+//                    // initiate channels
+//                    NSLog(@"start to set channels");
+//                    if (object[@"Channels"] != nil) {
+//                        NSLog(@"set channels");
+//                        [[PFInstallation currentInstallation] removeObjectForKey:@"channels"];
+//                        [[PFInstallation currentInstallation] addUniqueObjectsFromArray:object[@"Channels"] forKey:@"channels"];
+//                        //                        pushChannels = object[@"channels"];
+//                    } else {
+//                        //                        pushChannels = nil;
+//                    }
+//                    object[@"Device_Type"] = deviceType;
+//                    //                    object[@"Device_Token"] = [PFInstallation currentInstallation].deviceToken;
+//                    if (object[@"Query_Key"] == nil && ![_infoSessionModel.apiKey isEqualToString:@"0"]) {
+//                        NSLog(@"Key is nil, restore key");
+//                        object[@"Query_Key"] = _infoSessionModel.apiKey;
+//                    } else if (object[@"Query_Key"] == nil && [_infoSessionModel.apiKey isEqualToString:@"0"]) {
+//                        //NSLog(@"WTF??? object[@Query_Key] == nil && [_infoSessionModel.apiKey isEqualToString:@0]");
+//                        _infoSessionModel.apiKey = @"1";
+//                        object[@"Query_Key"] = _infoSessionModel.apiKey;
+//                        [UWErrorReport reportErrorWithDescription:@"object[@Query_Key] == nil && [_infoSessionModel.apiKey isEqualToString:@0], query device identifier"];
+//                    }
+//                    else {
+//                        NSLog(@"update key: %@", object[@"Query_Key"]);
+//                        _infoSessionModel.apiKey = object[@"Query_Key"];
+//                    }
+//                    //object[@"Query_Key"] = _infoSessionModel.apiKey;
+//                    currentDevice = object;
+//                    [object saveEventually];
+//                }
+//            }
+//            [UWDevice sharedDevice].pfObject = currentDevice;
+//        } else {
+//            // Log details of the failure
+//            NSLog(@"Error: %@ %@", error, [error userInfo]);
+//            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"query device identifier error: %@ %@", error, [error userInfo]]];
+//        }
+//    }];
 }
 
 /**
@@ -508,27 +504,27 @@
 {
     if (alertView.tag == 0) {
         if (buttonIndex == 1) { //Send
-            // Create our Installation query
-            NSString* senderName = [alertView.title substringFromIndex:9];
-            PFQuery* pushQuery = [PFInstallation query];
-            [pushQuery whereKey:@"Device_Name" equalTo:senderName];
-            // Send push notification to query
-            UITextField* message = [alertView textFieldAtIndex:0];
-            NSDictionary* data = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                   @"YES", @"ShouldReply",
-                                                   [[UIDevice currentDevice] name], @"Sender",
-                                                   message.text, @"Message",
-                                                   message.text, @"alert",
-                                                   @"Increment", @"badge",
-                                                   @"alarm.caf", @"sound",
-                                                   nil];
-            NSLog(@"sender: %@", [[UIDevice currentDevice] name]);
-            NSLog(@"receiver: %@", senderName);
-            NSLog(@"message: %@", message.text);
-            PFPush* push = [[PFPush alloc] init];
-            [push setQuery:pushQuery]; // Set our Installation query
-            [push setData:data];
-            [push sendPushInBackground];
+//            // Create our Installation query
+//            NSString* senderName = [alertView.title substringFromIndex:9];
+//            PFQuery* pushQuery = [PFInstallation query];
+//            [pushQuery whereKey:@"Device_Name" equalTo:senderName];
+//            // Send push notification to query
+//            UITextField* message = [alertView textFieldAtIndex:0];
+//            NSDictionary* data = [NSDictionary dictionaryWithObjectsAndKeys:
+//                                                   @"YES", @"ShouldReply",
+//                                                   [[UIDevice currentDevice] name], @"Sender",
+//                                                   message.text, @"Message",
+//                                                   message.text, @"alert",
+//                                                   @"Increment", @"badge",
+//                                                   @"alarm.caf", @"sound",
+//                                                   nil];
+//            NSLog(@"sender: %@", [[UIDevice currentDevice] name]);
+//            NSLog(@"receiver: %@", senderName);
+//            NSLog(@"message: %@", message.text);
+//            PFPush* push = [[PFPush alloc] init];
+//            [push setQuery:pushQuery]; // Set our Installation query
+//            [push setData:data];
+//            [push sendPushInBackground];
         }
     }
 }

@@ -9,11 +9,11 @@
 #import "AFHTTPSessionManager.h"
 #import "UWInfoSessionClient.h"
 #import "UIAlertView+AFNetworking.h"
-#import "UWErrorReport.h"
+//#import "UWErrorReport.h"
 
 ////static NSString * const AFUwaterlooApiBaseURLString = @"https://api.uwaterloo.ca/v2/";
 ////static NSString * const getFaviconBaseURLString = @"http://g.etfv.co/";
-static NSString* const keyBaseURLString = @"http://uw-info.appspot.com/";
+static NSString* const keyBaseURLString = @"https://uw-info.appspot.com/";
 
 //static NSString * const infoSessionBaseURLString = @"http://uw-app.appspot.com/";
 //static NSString * const baseURLString = @"http://localhost:13080/";
@@ -108,7 +108,7 @@ static NSString* const keyBaseURLString = @"http://uw-info.appspot.com/";
 //        else {
 //            //NSLog(@"key failed");
 //        }
-        [UWErrorReport reportErrorWithDescription:@"Query key error"];
+//        [UWErrorReport reportErrorWithDescription:@"Query key error"];
         if ([self.delegate respondsToSelector:@selector(apiClient:didFailWithError:)]) {
             [self.delegate apiClient:self didFailWithError:error];
         }
@@ -157,13 +157,13 @@ static NSString* const keyBaseURLString = @"http://uw-info.appspot.com/";
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
         if (httpResponse.statusCode == 503 || httpResponse.statusCode == 500) {
             //NSLog(@"503");
-            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat: @"Query error: 503, Error: %@", error.description]];
+//            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat: @"Query error: 503, Error: %@", error.description]];
             if ([self.delegate respondsToSelector:@selector(infoSessionClient:didFailWithCode:)]) {
                 [self.delegate infoSessionClient:self didFailWithCode:httpResponse.statusCode];
             }
         }
         else {
-            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat: @"Query error: %ld, Error: %@", (long)httpResponse.statusCode, error.description]];
+//            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat: @"Query error: %ld, Error: %@", (long)httpResponse.statusCode, error.description]];
             [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:self cancelButtonTitle:@"Offline data" otherButtonTitles:@"Try again", nil];
         }
     }];

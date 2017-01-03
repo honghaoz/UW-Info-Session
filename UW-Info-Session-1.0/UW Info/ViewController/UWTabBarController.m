@@ -13,7 +13,7 @@
 #import "DetailViewController.h"
 #import "InfoSessionModel.h"
 #import "UWColorSchemeCenter.h"
-#import "UWDevice.h"
+//#import "UWDevice.h"
 
 @interface UWTabBarController ()
 
@@ -29,13 +29,6 @@
     }
     return self;
 }
-
-//- (UIStatusBarStyle)preferredStatusBarStyle
-//{
-//    LogMethod;
-////    return UIStatusBarStyleLightContent;
-//    return UIStatusBarStyleDefault;
-//}
 
 - (void)viewDidLoad
 {
@@ -112,9 +105,9 @@
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     // Do your thing after shaking device
-    if ([UWDevice sharedDevice].isRandomColor || [UWColorSchemeCenter sharedCenter].isTemporaryRandomColor) {
-        [UWColorSchemeCenter updateColorScheme];
-    }
+//    if ([UWDevice sharedDevice].isRandomColor || [UWColorSchemeCenter sharedCenter].isTemporaryRandomColor) {
+//        [UWColorSchemeCenter updateColorScheme];
+//    }
 }
 
 - (void)didReceiveMemoryWarning
