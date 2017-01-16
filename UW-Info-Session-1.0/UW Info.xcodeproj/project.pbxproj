@@ -180,6 +180,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		02FD904E1E1C50FB00D3D5D4 /* UW Info.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "UW Info.entitlements"; sourceTree = "<group>"; };
 		1B01C3071926831B0071AA73 /* ZHHPullView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZHHPullView.h; path = "UW Info/OtherViews/ZHHPullView.h"; sourceTree = SOURCE_ROOT; };
 		1B01C3081926831B0071AA73 /* ZHHPullView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZHHPullView.m; path = "UW Info/OtherViews/ZHHPullView.m"; sourceTree = SOURCE_ROOT; };
 		1B05834E194E28E7000D43C2 /* ZHHHandyMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZHHHandyMacros.h; sourceTree = "<group>"; };
@@ -1042,6 +1043,7 @@
 		1BD83A9A18A59F1C00EDBB6D /* UW Info */ = {
 			isa = PBXGroup;
 			children = (
+				02FD904E1E1C50FB00D3D5D4 /* UW Info.entitlements */,
 				1B37453D18A5D0D6007CF08C /* Others */,
 				1B37453818A5BA2C007CF08C /* Models */,
 				1B37453918A5BA3D007CF08C /* Controllers */,
@@ -1172,6 +1174,11 @@
 					1BD83A9018A59F1C00EDBB6D = {
 						DevelopmentTeam = UYW9ZSKZAQ;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					1BD83AB418A59F1D00EDBB6D = {
 						TestTargetID = 1BD83A9018A59F1C00EDBB6D;
@@ -1478,6 +1485,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = "UW Info/UW Info.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
@@ -1509,6 +1517,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = "UW Info/UW Info.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Honghao Zhang (UYW9ZSKZAQ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;

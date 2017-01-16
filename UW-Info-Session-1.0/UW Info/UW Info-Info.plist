@@ -48,13 +48,15 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>4</string>
 	<key>FacebookAppID</key>
 	<string>1458006871096420</string>
 	<key>FacebookDisplayName</key>
 	<string>UW Info Session</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Allow app to create calendar event from an info session</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

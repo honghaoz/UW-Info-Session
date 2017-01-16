@@ -25,8 +25,9 @@ class InfoSession: Mappable {
 	
 	/// Whether this is a notice item
 	var isNotice: Bool {
-		return location == nil || location!.isEmpty
-			|| employer?.lowercased() == "closed info session" // special case
+		return employer?.lowercased() == "closed info session" ||
+			employer?.lowercased() == "closed information session" ||
+			location == nil || location!.isEmpty
 	}
 	
 	required init?(map: Map) {}
