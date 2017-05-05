@@ -94,7 +94,7 @@ class ListViewController: BaseViewController {
 
 extension ListViewController {
 	func loadData() {
-		InfoSessionProvider.fetchInfoSessions(year: 2017, term: .winter) { (infoSessions, error) in
+		InfoSessionProvider.fetchInfoSessions(year: 2017, term: .spring) { (infoSessions, error) in
 			guard let infoSessions = infoSessions else {
 				log.error(error?.localizedDescription)
 				return
