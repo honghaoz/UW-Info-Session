@@ -2,12 +2,12 @@ import Vapor
 
 let drop = Droplet()
 
+drop.console.info(("Environment: \(drop.environment)"))
+
 drop.get { req in
-    return try drop.view.make("welcome", [
-    	"message": drop.localization[req.lang, "welcome", "title"]
-    ])
+	return "UWaterloo Info Session API!"
 }
 
-drop.resource("posts", PostController())
+//drop.resource("api/infosessions", PostController())
 
 drop.run()
