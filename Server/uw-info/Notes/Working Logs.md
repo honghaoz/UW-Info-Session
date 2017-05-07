@@ -3,3 +3,5 @@
   - `vapor build`
   - `vapor run`
 - Deploy to Heroku
+  - `heroku update`: Update heroku toolbelt if needed
+  - 
