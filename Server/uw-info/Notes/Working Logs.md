@@ -1,0 +1,5 @@
+- Setup Vapor Project
+  - `vapor new uw-info`
+  - `vapor build`
+  - `vapor run`
+- Deploy to Heroku
