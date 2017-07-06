@@ -57,7 +57,10 @@ class MainHandler(BasicHandler):
 
 #=========================================================
 # base url
-CECA_URL = "http://www.ceca.uwaterloo.ca/students/sessions_details.php?id=%s"
+#CECA_URL = "http://www.ceca.uwaterloo.ca/students/sessions_details.php?id=%s"
+CECA_URL = "http://www.ceca.uwaterloo.ca/students/sessions.php?month_num=%(month)s&year_num=%(year)s"# % {'month': '1', 'year': '2'}
+info_session_url = "http://www.ceca.uwaterloo.ca/students/sessions_details.php?id=%(id)s"# % {'id': '5000'}
+
 # sessions list
 sessions = []
 numbers = []
@@ -67,15 +70,16 @@ numbers = []
 def get_by_label(label, html):
     # regex is very slow if it doesn't exist (too many wildcards); prevent that.
     if label in html:
-        return re.findall("<td.*?>%s </td>.*?<td.*?>(.*?)</td>"%label, html, re.DOTALL)
+        return re.findall("<td.*?>%s </td>.*?<td.*?>(.*?)</td>" % label, html, re.DOTALL)
     else:
         return []
 
 def get_others(html):
-    return re.findall('<tr><td width="60%" colspan="2"><i>For (.*?)<br />(.*?)<br />(.*?)</i></td></tr>.+?<tr><td width="60%" colspan="2"><i>(.*?)</i></td></tr>', html, re.DOTALL)
+    #    audience, programms, descriptions
+    return re.findall('<tr><td width="60%" colspan="2"><i>For (.+?(<br />|<br>).+?)(<br />|<br>)(.*?)</i></td></tr>.+?<tr><td width="60%" colspan="2"><i>(.*?)</i></td></tr>', html, re.DOTALL)
 
 def get_ids(html):
-    return re.findall('<a href=".+id=(\d+).+?">RSVP \(students\)</a>', html)
+    return re.findall('<a href="sessions_details.php\?id=(\d+)"', html)
 
 def parse_link(html):
     link = re.findall('<a href="(.+?)".*?>', html)[0]
@@ -86,40 +90,64 @@ def parse_link(html):
 def parse_time(html):
     return html.split(" - ")
 
+# listOfMonths: [(2017, 5), (2017, 6), (2017, 7), (2017, 8)]
 def renderResponse(listOfMonths):
     sessions = []
     numbers = []
-    for month in listOfMonths:
+    for (year, month) in listOfMonths:
         try:
-            html = urllib2.urlopen(CECA_URL%month).read()
+            html = urllib2.urlopen(CECA_URL % {'month': month, 'year': year}).read()
         except urllib2.HTTPError, e:
             logging.error('render CECA_URL error: Exception thrown')
             logging.error(e.code)
             logging.error(e.msg)
             logging.error(e.headers)
             logging.error(e.fp.read())
-        logging.info(month)
+        
+        logging.info((year, month))
         # find all the fields individually. note the order matters.
         ids = get_ids(html)
-        #logging.info("ids: %s" % len(ids))
+        
+        #        logging.info("ids: %s" % len(ids))
+        
+        employers = []
+        dates = []
+        times = []
+        locations = []
+        websites = []
+        others = []
+        
+        # get event details from ids
+        for id in ids:
+            try:
+                html = urllib2.urlopen(info_session_url % {'id': id}).read()
+            except urllib2.HTTPError, e:
+                logging.error('render CECA_URL error: Exception thrown')
+                logging.error(e.code)
+                logging.error(e.msg)
+                logging.error(e.headers)
+                logging.error(e.fp.read())
+        
+            employer = get_by_label("Employer:", html)
+            date = get_by_label("Date:", html)
+            time = map(parse_time, get_by_label("Time:", html))
+            location = get_by_label("Location:", html)
+            website = map(parse_link, get_by_label("Web Site:", html))
+            other = get_others(html)
 
-        employers = get_by_label("Employer:", html)
-        #logging.info("employers: %s" % len(employers))
+            employers.append(employer[0] if len(employer) > 0 else "")
+            dates.append(date[0] if len(date) > 0 else "")
+            times.append(time[0] if len(time) > 0 else "")
+            locations.append(location[0] if len(location) > 0 else "")
+            websites.append(website[0] if len(website) > 0 else "")
+            others.append(other[0] if len(other) > 0 else ("", "", "", "", ""))
 
-        dates = get_by_label("Date:", html)
-        #logging.info("dates: %s" % len(dates))
-
-        times = map(parse_time, get_by_label("Time:", html))
-        #logging.info("times: %s" % len(times))
-
-        locations = get_by_label("Location:", html)
-        #logging.info("locations: %s" % len(locations))
-
-        websites = map(parse_link, get_by_label("Web Site:", html))
-        #logging.info("websites: %s" % len(websites))
-
-        others = get_others(html)
-        #logging.info("others: %s" % len(others))
+#        logging.info("employers: %s" % employers)
+#        logging.info("dates: %s" % dates)
+#        logging.info("times: %s" % times)
+#        logging.info("locations: %s" % locations)
+#        logging.info("websites: %s" % websites)
+#        logging.info("others: %s" % others)
 
         # make sure each session has all the required fields
         if not (len(employers) == len(dates) == len(times) == len(locations) == len(websites) == len(others)):
@@ -134,28 +162,28 @@ def renderResponse(listOfMonths):
             else:
                 session["id"] = ids[i - idOffset]
             #logging.info("#: %s" % str(i))
-            session["employer"] = unicode(employers[i], errors = 'ignore')
+            session["employer"] = unicode(employers[i].strip(), errors = 'ignore')
             #logging.info("employer: %s" % session["employer"])
-            session["date"] = unicode(dates[i], errors = 'ignore')
+            session["date"] = unicode(dates[i].strip(), errors = 'ignore')
             #logging.info("date: %s" % session["date"])
-            session["start_time"] = unicode(times[i][0], errors = 'ignore')
+            session["start_time"] = unicode(times[i][0].strip(), errors = 'ignore')
             #logging.info("start_time: %s" % session["start_time"])
-            session["end_time"] = unicode(times[i][1], errors = 'ignore')
+            session["end_time"] = unicode(times[i][1].strip(), errors = 'ignore')
             #logging.info("end_time: %s" % session["end_time"])
-            session["location"] = unicode(locations[i], errors = 'ignore')
+            session["location"] = unicode(locations[i].strip(), errors = 'ignore')
             #logging.info("location: %s" % session["location"])
-            session["website"] = unicode(websites[i], errors = 'ignore')
+            session["website"] = unicode(websites[i].strip(), errors = 'ignore')
             #logging.info("website: %s" % session["website"])
-            session["audience"] = unicode((others[i][0] + " " + others[i][1]).strip(), errors = 'ignore')
+            session["audience"] = unicode(others[i][0].replace('<br/>', ' ').replace('<br />', ' ').replace('<br>', ' ').strip(), errors = 'ignore')
             #logging.info("audience: %s" % session["audience"])
-            session["programs"] = unicode(others[i][2], errors = 'ignore')
+            session["programs"] = unicode(others[i][3].strip(), errors = 'ignore')
             #logging.info("programs: %s" % session["programs"])
-            session["description"] = unicode(others[i][3].replace('</p>', '').replace('<br />', '\n').strip(), errors = 'ignore')
+            session["description"] = unicode(others[i][4].replace('</p>', '').replace('<p>', '').replace('<br/>', ' ').replace('<br />', ' ').replace('<br>', ' ').replace('</br>', ' ').strip(), errors = 'ignore')
             #logging.info("description: %s" % session["description"])
             sessions.append(session)
 
         number = {}
-        number["month"] = month
+        number["month"] = yearMonthString((year, month))
         number["ids"] = str(len(ids))
         number["employers"] = str(len(employers))
         number["date"] = str(len(dates))
@@ -190,21 +218,52 @@ def getCurrentTerm():
     currentTerm = getTermFromYearMonth(currentDate.strftime("%Y%b"))
     return currentTerm
 
+# 2017Spring -> [2017May, 2017Jun, 2017Jul, 2017Aug]
+# 2017Spring -> [(2017, 5), (2017, 6), (2017, 7), (2017, 8)]
 def getMonthsOfTerm(theTerm):
     year, term = theTerm.split(" ")
     year = year.strip()
     term = term.strip()
     result = []
     if term == 'Winter':
-        result = [year + 'Jan', year + 'Feb', year + 'Mar', year + 'Apr']
+        result = [(year, 1), (year, 2), (year, 3), (year, 4)]
     elif term == 'Spring':
-        result = [year + 'May', year + 'Jun', year + 'Jul', year + 'Aug']
+        result = [(year, 5), (year, 6), (year, 7), (year, 8)]
     elif term == 'Fall':
-        result = [year + 'Sep', year + 'Oct', year + 'Nov', year + 'Dec']
+        result = [(year, 9), (year, 10), (year, 11), (year, 12)]
     else:
         result = []
     return result
 
+# (2017, 5) -> 2017May
+def yearMonthString(year_month):
+    year, month = year_month
+    if month == 1:
+        return "%sJan" % year
+    elif month == 2:
+        return "%sFeb" % year
+    elif month == 3:
+        return "%sMar" % year
+    elif month == 4:
+        return "%sApr" % year
+    elif month == 5:
+        return "%sMay" % year
+    elif month == 6:
+        return "%sJun" % year
+    elif month == 7:
+        return "%sJul" % year
+    elif month == 8:
+        return "%sAug" % year
+    elif month == 9:
+        return "%sSep" % year
+    elif month == 10:
+        return "%sOct" % year
+    elif month == 11:
+        return "%sNov" % year
+    elif month == 12:
+        return "%sDec" % year
+    else:
+        return ""
 
 class Keys(ndb.Model):
     number_of_keys = ndb.IntegerProperty(required = True)
@@ -501,4 +560,4 @@ app = webapp2.WSGIApplication([
     ('/infosessions/([0-9]{4}[A-Z]{1}[a-z]+).json', JsonOneTerm),
     ('/infosessions.json', Json),
     ('/updateParse', UpdateParse)
-], debug=True)
+], debug=False)
