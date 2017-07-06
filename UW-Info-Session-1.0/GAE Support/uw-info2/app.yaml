@@ -19,3 +19,4 @@ libraries:
 # Deplay Command:
 # Run locally: `dev_appserver.py ./`
 # Deploy: `gcloud app deploy app.yaml index.yaml --project uw-info2 -v 1-3-2017-07-06`
+# Deploy: `gcloud app deploy app.yaml index.yaml --project uw-info1 -v 1-3-2017-07-06`
