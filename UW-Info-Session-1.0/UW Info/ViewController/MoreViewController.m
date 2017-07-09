@@ -339,7 +339,7 @@
             if (cell == nil) {
                 cell = [[CenterTextCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:resueIdentifier];
             }
-            cell.centerTextLabel.text = @"Rate this app 😊";
+            cell.centerTextLabel.text = @"Rate app and Hide AD";
 //            FBLikeControl *like = [[FBLikeControl alloc] init];
 //            like.objectID = @"https://shareitexampleapp.parseapp.com/photo1/";
 //            [cell addSubview:like];
@@ -439,6 +439,9 @@
 //            }];
 //            [Appirater rateApp];
             [[iRate sharedInstance] openRatingsPageInAppStore];
+            
+            // Bonus: hide add
+            [UWAds singleton].googleBannerView.hidden = YES;
         }
     }
 }

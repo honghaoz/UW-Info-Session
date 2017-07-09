@@ -27,6 +27,8 @@
 #import "MoreNavigationViewController.h"
 #import "HSLUpdateChecker.h"
 
+#import "UWAds.h"
+
 @interface SearchViewController () <ADBannerViewDelegate, GADBannerViewDelegate>
 
 @property (nonatomic, strong) UISearchBar *searchBar;
@@ -158,6 +160,12 @@
     } else {
         [self setRedDotToSettingButton:NO];
     }
+    
+    UWAds *ad = [UWAds singleton];
+    CGFloat bottomHeight = ad.iAdBannerView.frame.size.height + self.tabBarController.tabBar.bounds.size.height;
+    [ad resetAdView:self.tabBarController OriginY:[UIScreen mainScreen].bounds.size.height - bottomHeight];
+    [self.tableView setContentInset:UIEdgeInsetsMake(self.tableView.contentInset.top, 0, bottomHeight, 0)];
+    self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
 }
 
 - (void)initSettingButton {

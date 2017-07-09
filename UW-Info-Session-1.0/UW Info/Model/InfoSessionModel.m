@@ -613,11 +613,12 @@
 // Magic...
 - (void)updateInfoSessionsWithYear:(NSInteger)year andTerm:(NSString*)term
 {
+    self.apiKey = @"1"; // Quick Fix for Key management issue. 
     if (isOffLineMode == NO) {
         //    NSLog(@"start to update");
         _year = year;
         _term = term;
-        if ([self.apiKey isEqualToString:@"0"]) {
+//        if ([self.apiKey isEqualToString:@"0"]) {
 //            // if key is not vaild
 //            // first to look up parse keys
 //            PFQuery* queryForId = [PFQuery queryWithClassName:@"Device"];
@@ -679,13 +680,13 @@
 //            }];
             //  NSLog(@"key is 0");
 
-        } else {
+//        } else {
             //        NSLog(@"key is %@", self.apiKey);
 
             UWInfoSessionClient* client = [UWInfoSessionClient infoSessionClientWithBaseURL:[NSURL URLWithString:self.infoSessionBaseURLString]];
             client.delegate = self;
             [client updateInfoSessionsForYear:year andTerm:term andApiKey:self.apiKey];
-        }
+//        }
     } else {
         [self updateUnderOfflineMode:year andTerm:term];
     }
