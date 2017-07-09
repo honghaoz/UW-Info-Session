@@ -21,7 +21,6 @@ import jinja2
 import json
 import urllib
 import urllib2
-import httplib
 
 from google.appengine.ext import ndb
 from google.appengine.api import memcache
@@ -32,6 +31,8 @@ import sys
 sys.path.insert(0, 'libs')
 import pytz
 import requests
+from google.appengine.api import urlfetch
+import functools
 
 # Global variables for jinja environment
 template_dir = os.path.join(os.path.dirname(__file__), 'html_template')
@@ -57,7 +58,7 @@ class MainHandler(BasicHandler):
 
 #=========================================================
 # base url
-#CECA_URL = "http://www.ceca.uwaterloo.ca/students/sessions_details.php?id=%s"
+#CECA_URL = "http://www.ceca.uwaterloo.ca/students/sessions_details.php?id=%s" # Old URL
 CECA_URL = "http://www.ceca.uwaterloo.ca/students/sessions.php?month_num=%(month)s&year_num=%(year)s"# % {'month': '1', 'year': '2'}
 info_session_url = "http://www.ceca.uwaterloo.ca/students/sessions_details.php?id=%(id)s"# % {'id': '5000'}
 
@@ -75,7 +76,7 @@ def get_by_label(label, html):
         return []
 
 def get_others(html):
-    #    audience, programms, descriptions
+    # [audience, br, br, programms, descriptions]
     return re.findall('<tr><td width="60%" colspan="2"><i>For (.+?(<br />|<br>).+?)(<br />|<br>)(.*?)</i></td></tr>.+?<tr><td width="60%" colspan="2"><i>(.*?)</i></td></tr>', html, re.DOTALL)
 
 def get_ids(html):
@@ -91,107 +92,110 @@ def parse_time(html):
     return html.split(" - ")
 
 # listOfMonths: [(2017, 5), (2017, 6), (2017, 7), (2017, 8)]
-def renderResponse(listOfMonths):
-    sessions = []
-    numbers = []
-    for (year, month) in listOfMonths:
-        try:
-            html = urllib2.urlopen(CECA_URL % {'month': month, 'year': year}).read()
-        except urllib2.HTTPError, e:
-            logging.error('render CECA_URL error: Exception thrown')
-            logging.error(e.code)
-            logging.error(e.msg)
-            logging.error(e.headers)
-            logging.error(e.fp.read())
-        
-        logging.info((year, month))
-        # find all the fields individually. note the order matters.
-        ids = get_ids(html)
-        
-        #        logging.info("ids: %s" % len(ids))
-        
-        employers = []
-        dates = []
-        times = []
-        locations = []
-        websites = []
-        others = []
-        
-        # get event details from ids
-        for id in ids:
-            try:
-                html = urllib2.urlopen(info_session_url % {'id': id}).read()
-            except urllib2.HTTPError, e:
-                logging.error('render CECA_URL error: Exception thrown')
-                logging.error(e.code)
-                logging.error(e.msg)
-                logging.error(e.headers)
-                logging.error(e.fp.read())
-        
-            employer = get_by_label("Employer:", html)
-            date = get_by_label("Date:", html)
-            time = map(parse_time, get_by_label("Time:", html))
-            location = get_by_label("Location:", html)
-            website = map(parse_link, get_by_label("Web Site:", html))
-            other = get_others(html)
+def renderResponse(year_months):
+    urlfetch.set_default_fetch_deadline(7)
+    sessions = [] # stores a list of info session dicts
+    numbers = [] # stores numbers of events for months. Aka months
 
-            employers.append(employer[0] if len(employer) > 0 else "")
-            dates.append(date[0] if len(date) > 0 else "")
-            times.append(time[0] if len(time) > 0 else "")
-            locations.append(location[0] if len(location) > 0 else "")
-            websites.append(website[0] if len(website) > 0 else "")
-            others.append(other[0] if len(other) > 0 else ("", "", "", "", ""))
-
-#        logging.info("employers: %s" % employers)
-#        logging.info("dates: %s" % dates)
-#        logging.info("times: %s" % times)
-#        logging.info("locations: %s" % locations)
-#        logging.info("websites: %s" % websites)
-#        logging.info("others: %s" % others)
-
-        # make sure each session has all the required fields
-        if not (len(employers) == len(dates) == len(times) == len(locations) == len(websites) == len(others)):
-            raise Exception, 'Some sessions are missing info'
-
-        # merge/zipper all the fields together per info sessions
-        idOffset = len(employers) - len(ids)
-        for i in range(0, len(employers)):
-            session = {}
-            if i < idOffset:
-                session["id"] = ""
-            else:
-                session["id"] = ids[i - idOffset]
-            #logging.info("#: %s" % str(i))
-            session["employer"] = unicode(employers[i].strip(), errors = 'ignore')
-            #logging.info("employer: %s" % session["employer"])
-            session["date"] = unicode(dates[i].strip(), errors = 'ignore')
-            #logging.info("date: %s" % session["date"])
-            session["start_time"] = unicode(times[i][0].strip(), errors = 'ignore')
-            #logging.info("start_time: %s" % session["start_time"])
-            session["end_time"] = unicode(times[i][1].strip(), errors = 'ignore')
-            #logging.info("end_time: %s" % session["end_time"])
-            session["location"] = unicode(locations[i].strip(), errors = 'ignore')
-            #logging.info("location: %s" % session["location"])
-            session["website"] = unicode(websites[i].strip(), errors = 'ignore')
-            #logging.info("website: %s" % session["website"])
-            session["audience"] = unicode(others[i][0].replace('<br/>', ' ').replace('<br />', ' ').replace('<br>', ' ').strip(), errors = 'ignore')
-            #logging.info("audience: %s" % session["audience"])
-            session["programs"] = unicode(others[i][3].strip(), errors = 'ignore')
-            #logging.info("programs: %s" % session["programs"])
-            session["description"] = unicode(others[i][4].replace('</p>', '').replace('<p>', '').replace('<br/>', ' ').replace('<br />', ' ').replace('<br>', ' ').replace('</br>', ' ').strip(), errors = 'ignore')
-            #logging.info("description: %s" % session["description"])
+    session_rpcs = []
+    def process_session(session_id):
+        session = memcache.get(session_id)
+        if session is not None:
             sessions.append(session)
+            return
+        else:
+            session_url = info_session_url % {'id': session_id}
 
-        number = {}
-        number["month"] = yearMonthString((year, month))
-        number["ids"] = str(len(ids))
-        number["employers"] = str(len(employers))
-        number["date"] = str(len(dates))
-        number["times"] = str(len(times))
-        number["locations"] = str(len(locations))
-        number["websites"] = str(len(websites))
-        number["others"] = str(len(others))
-        numbers.append(number)
+            def handle_result(rpc, session_id):
+                session_html = rpc.get_result().content
+
+                def parse_session(session_html):
+                    employer = get_by_label("Employer:", session_html)
+                    employer = employer[0] if len(employer) > 0 else ""
+                    date = get_by_label("Date:", session_html)
+                    date = date[0] if len(date) > 0 else ""
+                    time = map(parse_time, get_by_label("Time:", session_html))
+                    time = time[0] if len(time) > 0 else ""
+                    location = get_by_label("Location:", session_html)
+                    location = location[0] if len(location) > 0 else ""
+                    website = map(parse_link, get_by_label("Web Site:", session_html))
+                    website = website[0] if len(website) > 0 else ""
+                    other = get_others(session_html)
+                    other = other[0] if len(other) > 0 else ("", "", "", "", "")
+
+                    session = {}
+                    session["id"] = int(session_id)
+                    session["employer"] = unicode(employer.strip(), errors = 'ignore')
+                    # logging.info("employer: %s" % session["employer"])
+                    session["date"] = unicode(date.strip(), errors = 'ignore')
+                    # logging.info("date: %s" % session["date"])
+                    session["start_time"] = unicode(time[0].strip(), errors = 'ignore')
+                    # logging.info("start_time: %s" % session["start_time"])
+                    session["end_time"] = unicode(time[1].strip(), errors = 'ignore')
+                    # logging.info("end_time: %s" % session["end_time"])
+                    session["location"] = unicode(location.strip(), errors = 'ignore')
+                    # logging.info("location: %s" % session["location"])
+                    session["website"] = unicode(website.strip(), errors = 'ignore')
+                    # logging.info("website: %s" % session["website"])
+                    session["audience"] = unicode(other[0].replace('<br/>', ' ').replace('<br />', ' ').replace('<br>', ' ').strip(), errors = 'ignore')
+                    # logging.info("audience: %s" % session["audience"])
+                    session["programs"] = unicode(other[3].strip(), errors = 'ignore')
+                    # logging.info("programs: %s" % session["programs"])
+                    session["description"] = unicode(other[4].replace('</p>', '').replace('<p>', '').replace('<br/>', ' ').replace('<br />', ' ').replace('<br>', ' ').replace('</br>', ' ').strip(), errors = 'ignore')
+                    # logging.info("description: %s" % session["description"])
+
+                    return session
+
+                session = parse_session(session_html)
+                memcache.add(session_id, session, 60 * 10) # 10min cache
+                sessions.append(session)
+
+            rpc = urlfetch.create_rpc()
+            rpc.callback = functools.partial(handle_result, rpc, session_id)
+            urlfetch.make_fetch_call(rpc, session_url)
+
+            session_rpcs.append(rpc)
+
+    month_rpcs = []
+    def process_month(year, month):
+        month_url = CECA_URL % {'month': month, 'year': year}
+
+        def handle_result(rpc, year_month):
+#            logging.info("Processing: %s" % str(year_month))
+            month_html = rpc.get_result().content
+            ids = get_ids(month_html)
+            for id in ids:
+                process_session(id)
+
+            number = {}
+            number["month"] = yearMonthString(year_month)
+            number["ids"] = len(ids)
+            number["employers"] = len(ids)
+            number["date"] = len(ids)
+            number["times"] = len(ids)
+            number["locations"] = len(ids)
+            number["websites"] = len(ids)
+            number["others"] = len(ids)
+            numbers.append(number)
+
+            for rpc in session_rpcs:
+                rpc.wait()
+
+        rpc = urlfetch.create_rpc()
+        rpc.callback = functools.partial(handle_result, rpc, (year, month))
+        urlfetch.make_fetch_call(rpc, month_url)
+
+        month_rpcs.append(rpc)
+
+    # Start
+    for (year, month) in year_months:
+        process_month(year, month)
+
+    # Waiting for completion
+    for rpc in month_rpcs:
+        rpc.wait()
+
+    logging.info('Done')
 
     # add data to response dict
     response = {}
@@ -354,19 +358,19 @@ class JsonOneTerm(BasicHandler):
         term = theTerm[4:]
         key = int(self.request.get("key"))
         self.response.headers["Content-Type"] = "application/json"
-        if key <= getMaxNumberOfKeys():
-            response = renderResponse(getMonthsOfTerm(year + " " + term))
-            response['meta']['term'] = year + " " + term
-            logKeyUsage(key)
-            self.write(json.dumps(response))
+#        if key <= getMaxNumberOfKeys():
+        response = renderResponse(getMonthsOfTerm(year + " " + term))
+        response['meta']['term'] = year + " " + term
+        logKeyUsage(key)
+        self.write(json.dumps(response))
         # elif key == 'text':
         #     self.response.headers["Content-Type"] = "text/html"
         #     self.write('Text web page, used for test')
         # elif key == '503error':
         #     self.response.set_status(503)
         #     self.write('error, code: 503')
-        else:
-            self.write(json.dumps(renderResponse([])))
+#        else:
+#            self.write(json.dumps(renderResponse([])))
 
 class Json(BasicHandler):
     """json format"""
@@ -375,8 +379,8 @@ class Json(BasicHandler):
         self.response.headers["Content-Type"] = "application/json"
         if key <= getMaxNumberOfKeys():
             currentTerm = getCurrentTerm()
-            response = renderResponse(getMonthsOfTerm(currentTerm)) 
-            # From here, response contains 
+            response = renderResponse(getMonthsOfTerm(currentTerm))
+            # From here, response contains
             # {"data" : [{
             #           "audience": "Co-op and Graduating Students",
             #           "date": "May 6, 2014",
@@ -389,8 +393,8 @@ class Json(BasicHandler):
             #           "start_time": "11:30 AM",
             #           "website": ""
             #           }, {} ...],
-            #   "meta" : {"months": [], 
-            #             "term" : "2014 Spring"}} 
+            #   "meta" : {"months": [],
+            #             "term" : "2014 Spring"}}
             response['meta']['term'] = currentTerm
             logKeyUsage(key)
             self.write(json.dumps(response))
@@ -499,8 +503,8 @@ def commitUpdateParse():
 
     # Store new data
     currentTerm = getCurrentTerm()
-    response = renderResponse(getMonthsOfTerm(currentTerm)) 
-    # From here, response contains 
+    response = renderResponse(getMonthsOfTerm(currentTerm))
+    # From here, response contains
     # {"data" : [{
     #           "audience": "Co-op and Graduating Students",
     #           "date": "May 6, 2014",
@@ -513,8 +517,8 @@ def commitUpdateParse():
     #           "start_time": "11:30 AM",
     #           "website": ""
     #           }, {} ...],
-    #   "meta" : {"months": [], 
-    #             "term" : "2014 Spring"}} 
+    #   "meta" : {"months": [],
+    #             "term" : "2014 Spring"}}
     # Store Objects in Parse
 
     global testTime
