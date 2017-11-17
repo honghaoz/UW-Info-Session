@@ -6,6 +6,7 @@ handlers:
 - url: /favicon\.ico
   static_files: favicon.ico
   upload: favicon\.ico
+  application_readable: true
 
 - url: .*
   script: main.app

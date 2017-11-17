@@ -1,1 +1,5 @@
 cron:
+- description: fetch current term info session data
+  url: /fetch_data
+  schedule: every 10 minutes from 0:00 to 23:59
+  timezone: Canada/Eastern

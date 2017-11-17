@@ -23,6 +23,7 @@ import urllib
 import urllib2
 
 from google.appengine.ext import ndb
+from google.appengine.ext import deferred
 from google.appengine.api import memcache
 
 import logging
@@ -61,10 +62,13 @@ class MainHandler(BasicHandler):
 #CECA_URL = "http://www.ceca.uwaterloo.ca/students/sessions_details.php?id=%s" # Old URL
 CECA_URL = "http://www.ceca.uwaterloo.ca/students/sessions.php?month_num=%(month)s&year_num=%(year)s"# % {'month': '1', 'year': '2'}
 info_session_url = "http://www.ceca.uwaterloo.ca/students/sessions_details.php?id=%(id)s"# % {'id': '5000'}
+cache_duration = 60 * 60 * 24 * 20 # 20 days experiation
+fetch_deadline = 10
 
 # sessions list
 sessions = []
 numbers = []
+fetching_months = {}
 
 # messy regex scraping was required. see source of above page for more info. :(
 # global functions
@@ -93,7 +97,7 @@ def parse_time(html):
 
 # listOfMonths: [(2017, 5), (2017, 6), (2017, 7), (2017, 8)]
 def renderResponse(year_months):
-    urlfetch.set_default_fetch_deadline(7)
+    urlfetch.set_default_fetch_deadline(fetch_deadline)
     sessions = [] # stores a list of info session dicts
     numbers = [] # stores numbers of events for months. Aka months
 
@@ -101,11 +105,12 @@ def renderResponse(year_months):
     def process_session(session_id):
         session = memcache.get(session_id)
         if session is not None:
+            # logging.info("found id: %s" % session_id)
             sessions.append(session)
             return
         else:
             session_url = info_session_url % {'id': session_id}
-
+            # logging.info("request id: %s" % session_id)
             def handle_result(rpc, session_id):
                 session_html = rpc.get_result().content
 
@@ -146,8 +151,15 @@ def renderResponse(year_months):
 
                     return session
 
+                # logging.info("done request id: %s" % session_id)
                 session = parse_session(session_html)
-                memcache.add(session_id, session, 60 * 10) # 10min cache
+
+                # Clean cached info session
+                existing_session = memcache.get(session_id)
+                if existing_session is not None:
+                    # logging.info("session id: %s exists, delete..." % session_id)
+                    memcache.delete(session_id)
+                memcache.add(session_id, session, cache_duration)
                 sessions.append(session)
 
             rpc = urlfetch.create_rpc()
@@ -161,7 +173,7 @@ def renderResponse(year_months):
         month_url = CECA_URL % {'month': month, 'year': year}
 
         def handle_result(rpc, year_month):
-#            logging.info("Processing: %s" % str(year_month))
+            # logging.info("Processing: %s" % str(year_month))
             month_html = rpc.get_result().content
             ids = get_ids(month_html)
             for id in ids:
@@ -195,13 +207,121 @@ def renderResponse(year_months):
     for rpc in month_rpcs:
         rpc.wait()
 
-    logging.info('Done')
+    # logging.info('Done')
 
     # add data to response dict
     response = {}
     response["meta"] = {"months" : numbers}
     response["data"] = sessions
     return response
+
+# Wants to fetch months, fliter out currently fetching months
+def fetch_months_in_background(months):
+    months_to_fetch = []
+    for year_month in months:
+        if not year_month in fetching_months:
+            months_to_fetch.append(year_month)
+
+    if len(months_to_fetch) > 0:
+        deferred.defer(fetchDataInBackground, months_to_fetch)
+
+# listOfMonths: [(2017, 5), (2017, 6), (2017, 7), (2017, 8)]
+def fetchDataInBackground(year_months):
+    logging.info("Fetching %(year_months)s in background..." % {'year_months': year_months})
+
+    urlfetch.set_default_fetch_deadline(fetch_deadline)
+
+    session_rpcs = []
+    def process_session(session_id):
+        session_url = info_session_url % {'id': session_id}
+
+        def handle_result(rpc, session_id):
+            session_html = rpc.get_result().content
+
+            def parse_session(session_html):
+                employer = get_by_label("Employer:", session_html)
+                employer = employer[0] if len(employer) > 0 else ""
+                date = get_by_label("Date:", session_html)
+                date = date[0] if len(date) > 0 else ""
+                time = map(parse_time, get_by_label("Time:", session_html))
+                time = time[0] if len(time) > 0 else ""
+                location = get_by_label("Location:", session_html)
+                location = location[0] if len(location) > 0 else ""
+                website = map(parse_link, get_by_label("Web Site:", session_html))
+                website = website[0] if len(website) > 0 else ""
+                other = get_others(session_html)
+                other = other[0] if len(other) > 0 else ("", "", "", "", "")
+
+                session = {}
+                session["id"] = int(session_id)
+                session["employer"] = unicode(employer.strip(), errors = 'ignore')
+                # logging.info("employer: %s" % session["employer"])
+                session["date"] = unicode(date.strip(), errors = 'ignore')
+                # logging.info("date: %s" % session["date"])
+                session["start_time"] = unicode(time[0].strip(), errors = 'ignore')
+                # logging.info("start_time: %s" % session["start_time"])
+                session["end_time"] = unicode(time[1].strip(), errors = 'ignore')
+                # logging.info("end_time: %s" % session["end_time"])
+                session["location"] = unicode(location.strip(), errors = 'ignore')
+                # logging.info("location: %s" % session["location"])
+                session["website"] = unicode(website.strip(), errors = 'ignore')
+                # logging.info("website: %s" % session["website"])
+                session["audience"] = unicode(other[0].replace('<br/>', ' ').replace('<br />', ' ').replace('<br>', ' ').strip(), errors = 'ignore')
+                # logging.info("audience: %s" % session["audience"])
+                session["programs"] = unicode(other[3].strip(), errors = 'ignore')
+                # logging.info("programs: %s" % session["programs"])
+                session["description"] = unicode(other[4].replace('</p>', '').replace('<p>', '').replace('<br/>', ' ').replace('<br />', ' ').replace('<br>', ' ').replace('</br>', ' ').strip(), errors = 'ignore')
+                # logging.info("description: %s" % session["description"])
+
+                return session
+
+            session = parse_session(session_html)
+            # Clean cached info session
+            existing_session = memcache.get(session_id)
+            if existing_session is not None:
+                # logging.info("session id: %s exists, delete..." % session_id)
+                memcache.delete(session_id)
+            # logging.info("add session id: %s" % session_id)
+            memcache.add(session_id, session, cache_duration)
+            sessions.append(session)
+
+        rpc = urlfetch.create_rpc()
+        rpc.callback = functools.partial(handle_result, rpc, session_id)
+        urlfetch.make_fetch_call(rpc, session_url)
+
+        session_rpcs.append(rpc)
+
+    month_rpcs = []
+    def process_month(year, month):
+        month_url = CECA_URL % {'month': month, 'year': year}
+
+        def handle_result(rpc, year_month):
+            # logging.info("Processing: %s" % str(year_month))
+            month_html = rpc.get_result().content
+            ids = get_ids(month_html)
+            for id in ids:
+                process_session(id)
+
+            for rpc in session_rpcs:
+                rpc.wait()
+
+            fetching_months.pop((year, month), None)
+            logging.info("Fetching %(year)s, %(month)s in background... Completed" % {'year': year, 'month': month})
+
+        rpc = urlfetch.create_rpc()
+        rpc.callback = functools.partial(handle_result, rpc, (year, month))
+        urlfetch.make_fetch_call(rpc, month_url)
+
+        month_rpcs.append(rpc)
+
+    # Start
+    for (year, month) in year_months:
+        fetching_months[(year, month)] = True
+        process_month(year, month)
+
+    # Waiting for completion
+    for rpc in month_rpcs:
+        rpc.wait()
 
 # get term string from year and month, eg: 2014Jan -> 2014 Winter
 def getTermFromYearMonth(theMonthId):
@@ -218,7 +338,7 @@ def getTermFromYearMonth(theMonthId):
 def getCurrentTerm():
     timezone = pytz.timezone('EST')
     currentDate = datetime.datetime.now(timezone)
-    logging.info(currentDate.strftime("%Y%b"))
+    # logging.info(currentDate.strftime("%Y%b"))
     currentTerm = getTermFromYearMonth(currentDate.strftime("%Y%b"))
     return currentTerm
 
@@ -358,19 +478,33 @@ class JsonOneTerm(BasicHandler):
         term = theTerm[4:]
         key = int(self.request.get("key"))
         self.response.headers["Content-Type"] = "application/json"
-#        if key <= getMaxNumberOfKeys():
-        response = renderResponse(getMonthsOfTerm(year + " " + term))
+
+        months = getMonthsOfTerm(year + " " + term)
+
+        # if key <= getMaxNumberOfKeys():
+        response = renderResponse(months)
         response['meta']['term'] = year + " " + term
-        logKeyUsage(key)
+        # logKeyUsage(key)
         self.write(json.dumps(response))
+
+        fetch_months_in_background(months)
+        # months_to_fetch = []
+        # for year_month in months:
+        #     if not year_month in fetching_months:
+        #         months_to_fetch.append(year_month)
+        #
+        # if len(months_to_fetch) > 0:
+        #     deferred.defer(fetchDataInBackground, months_to_fetch)
+        #     return
+
         # elif key == 'text':
         #     self.response.headers["Content-Type"] = "text/html"
         #     self.write('Text web page, used for test')
         # elif key == '503error':
         #     self.response.set_status(503)
         #     self.write('error, code: 503')
-#        else:
-#            self.write(json.dumps(renderResponse([])))
+        # else:
+        #     self.write(json.dumps(renderResponse([])))
 
 class Json(BasicHandler):
     """json format"""
@@ -412,7 +546,6 @@ class getKeyUsage(BasicHandler):
         self.write(json.dumps({'usage': usage, 'status' : 'valid'}))
 
 # Parse related
-
 def createParseInfoSessionObject(infoSessionDictionary):
     try:
         connection = httplib.HTTPSConnection('api.parse.com', 443)
@@ -556,6 +689,14 @@ class UpdateParse(BasicHandler):
         else:
             self.write("Invalid key")
 
+class fetchData(BasicHandler):
+    def get(self):
+        currentTerm = getCurrentTerm()
+        months = getMonthsOfTerm(currentTerm)
+        self.write(currentTerm)
+
+        fetch_months_in_background(months)
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/get_key_usage', getKeyUsage),
@@ -563,5 +704,6 @@ app = webapp2.WSGIApplication([
     ('/infosessions/([0-9]{4}[A-Z]{1}[a-z]{2}).json', JsonOneMonth),
     ('/infosessions/([0-9]{4}[A-Z]{1}[a-z]+).json', JsonOneTerm),
     ('/infosessions.json', Json),
-    ('/updateParse', UpdateParse)
+    ('/updateParse', UpdateParse),
+    ('/fetch_data', fetchData)
 ], debug=False)
