@@ -1,6 +1,0 @@
-cron:
-- description: Upload new data every 10 minutes
-  url: /updateParse?key=1
-  schedule: every 10 minutes from 0:05 to 0:04
-  timezone: Canada/Eastern
-  target: uw-info4
