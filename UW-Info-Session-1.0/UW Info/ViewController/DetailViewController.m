@@ -1226,10 +1226,10 @@
                                               NSLog(@"%@", result? @"YES" : @"NO");
                                               if (!result) {
                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                      haveRegistered = YES;
-                                                      registerSucceed = NO;
-                                                      _infoSessionModel.uwValid = NO;
-                                                      rsvpCell.contentLabel.text = @"RSVP. Failed!";
+                                                      self->haveRegistered = YES;
+                                                      self->registerSucceed = NO;
+                                                      self->_infoSessionModel.uwValid = NO;
+                                                      self->rsvpCell.contentLabel.text = @"RSVP. Failed!";
                                                       [SVProgressHUD setAnimationDuration:3];
                                                       [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
                                                       [SVProgressHUD showErrorWithStatus:@"RSVP. Failed!"];
@@ -1243,10 +1243,10 @@
                                                   });
                                               } else {
                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                      haveRegistered = YES;
-                                                      registerSucceed = YES;
-                                                      _infoSessionModel.uwValid = YES;
-                                                      rsvpCell.contentLabel.text = @"RSVP. Succeed!";
+                                                      self->haveRegistered = YES;
+                                                      self->registerSucceed = YES;
+                                                      self->_infoSessionModel.uwValid = YES;
+                                                      self->rsvpCell.contentLabel.text = @"RSVP. Succeed!";
                                                       [SVProgressHUD setAnimationDuration:3];
                                                       [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
                                                       [SVProgressHUD showSuccessWithStatus:@"RSVP. Succeed!"];
@@ -1312,7 +1312,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
     for (int i = 5; i < 50; i++) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, i * 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             
-            [_webViewVC setProgressBar:_webViewVC.webProgress.progress + 0.0001 * (51 - i)];
+            [self->_webViewVC setProgressBar:self->_webViewVC.webProgress.progress + 0.0001 * (51 - i)];
         });
     }
     
@@ -1335,8 +1335,8 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
     LogMethod;
     [_webViewVC setProgressBar:1];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.7 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        _webViewVC.webProgress.hidden = YES;
-        [_webViewVC.webProgress setProgress:0];
+        self->_webViewVC.webProgress.hidden = YES;
+        [self->_webViewVC.webProgress setProgress:0];
     });
     
     NSString *theTitle=[webView stringByEvaluatingJavaScriptFromString:@"document.title"];
@@ -1431,27 +1431,27 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
         
         [UIView animateWithDuration:0.2 animations:^{
             self.performedNavigation = @"DeleteInfoSession";
-            if (![NSStringFromClass([sender class]) isEqualToString:@"UIBarButtonItem"] || ([_caller isEqualToString:@"MyInfoViewController"])) {
+            if (![NSStringFromClass([sender class]) isEqualToString:@"UIBarButtonItem"] || ([self->_caller isEqualToString:@"MyInfoViewController"])) {
                 [self.navigationController popViewControllerAnimated:YES];
             }
         }completion:^(BOOL finished) {
-            InfoSession *infoSessionDeleted = _infoSession;
+            InfoSession *infoSessionDeleted = self->_infoSession;
             if ([senderClass isEqualToString:@"UIBarButtonItem"]) {
                 // restore to original info session
-                _infoSession = _originalInfoSession;
-                _openedMyInfo = NO;
+                self->_infoSession = self->_originalInfoSession;
+                self->_openedMyInfo = NO;
                 [self updateBarIcon];
                 [self.tableView reloadData];
                 [self backupInfoSession];
             }
             // set badge for second barItem
-            [_tabBarController setBadge];
-            _infoSessionBackup = nil;
+            [self->_tabBarController setBadge];
+            self->_infoSessionBackup = nil;
             
             // if deletion operation is commited in MyInfoVC
-            if ([_caller isEqualToString:@"MyInfoViewController"]) {
+            if ([self->_caller isEqualToString:@"MyInfoViewController"]) {
                 // if caller is MyInfoViewController, after pop up, need reload data
-                [_tabBarController.myInfoViewController reloadTable];
+                [self->_tabBarController.myInfoViewController reloadTable];
                 
                 UINavigationController *infoSessionVCNavigationController = self.tabBarController.infoSessionsViewController.navigationController;
                 // if count > 1, means detailView is shown
@@ -1494,7 +1494,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
                         }
                     }
                 }
-            } else if ([_caller isEqualToString:@"InfoSessionsViewController"]) {
+            } else if ([self->_caller isEqualToString:@"InfoSessionsViewController"]) {
                 UINavigationController *myInfoVCNavigationController = self.tabBarController.myInfoViewController.navigationController;
                 // if count > 1, means detailView is shown
                 if ([myInfoVCNavigationController.viewControllers count] > 1) {
@@ -1525,7 +1525,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
                         }
                     }
                 }
-            } else if ([_caller isEqualToString:@"SearchViewController"]) {
+            } else if ([self->_caller isEqualToString:@"SearchViewController"]) {
                 
                 UINavigationController *infoSessionVCNavigationController = self.tabBarController.infoSessionsViewController.navigationController;
                 // if count > 1, means detailView is shown
@@ -1725,24 +1725,24 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
             //myInfoViewController.infoSessionModel = _infoSessionModel;
             
             [UIView animateWithDuration:0.2 animations:^{
-                [self animateSnapshotOfView:self.view.window toTab:_tabBarController.viewControllers[1]];
+                [self animateSnapshotOfView:self.view.window toTab:self->_tabBarController.viewControllers[1]];
                 // set badge
             }completion:^(BOOL finished) {
-                [_tabBarController setBadge];
+                [self->_tabBarController setBadge];
                 // if added, replace _infoSession to the added infoSession in myInfoSession
-                NSInteger existIndex = [InfoSessionModel findInfoSession:_infoSession in:_infoSessionModel.myInfoSessions];
-                InfoSession *infoSessionReplaced = _infoSession;
-                _infoSession = _infoSessionModel.myInfoSessions[existIndex];
+                NSInteger existIndex = [InfoSessionModel findInfoSession:self->_infoSession in:self->_infoSessionModel.myInfoSessions];
+                InfoSession *infoSessionReplaced = self->_infoSession;
+                self->_infoSession = self->_infoSessionModel.myInfoSessions[existIndex];
                 // at this time, the data from myInfo, so set YES
                 
                 NSLog(@"open = yes");
-                _openedMyInfo = YES;
+                self->_openedMyInfo = YES;
                 [self updateBarIcon];
                 // reload tabale
                 [self.tableView reloadData];
                 
                 // update if other view is show this infosession
-                if ([_caller isEqualToString:@"InfoSessionsViewController"]) {
+                if ([self->_caller isEqualToString:@"InfoSessionsViewController"]) {
                     UINavigationController *searchVCNavigationController = self.tabBarController.searchViewController.navigationController;
                     // if count > 1, means detailView is shown
                     if ([searchVCNavigationController.viewControllers count] > 1) {
@@ -1753,13 +1753,13 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
                             // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
                             if ([infoSessionReplaced isEqual:detailController.infoSession]) {
                                 NSLog(@"add: tab0->tab2");
-                                detailController.infoSession = _infoSession;
+                                detailController.infoSession = self->_infoSession;
                                 detailController.openedMyInfo = YES;
                                 //                            detailController.infoSessionBackup = nil;
                             }
                         }
                     }
-                } else if ([_caller isEqualToString:@"SearchViewController"]) {
+                } else if ([self->_caller isEqualToString:@"SearchViewController"]) {
                     UINavigationController *infoSessionVCNavigationController = self.tabBarController.infoSessionsViewController.navigationController;
                     // if count > 1, means detailView is shown
                     if ([infoSessionVCNavigationController.viewControllers count] > 1) {
@@ -1770,7 +1770,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
                             // if the tabbar item0's detailView is shown infoSession to be deleted, then let it pop up.
                             if ([infoSessionReplaced isEqual:detailController.infoSession]) {
                                 NSLog(@"tab2->tab0");
-                                detailController.infoSession = _infoSession;
+                                detailController.infoSession = self->_infoSession;
                                 detailController.openedMyInfo = YES;
                                 //detailController.infoSessionBackup = nil;
                             }
@@ -1779,7 +1779,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
                 }
                 
                 // save to file
-                [_infoSessionModel saveInfoSessions];
+                [self->_infoSessionModel saveInfoSessions];
             }];
         }
     }

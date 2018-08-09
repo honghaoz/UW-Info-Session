@@ -113,9 +113,9 @@
                      animations:^{
                          self.navigationController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
                          [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack], NSFontAttributeName: [UWColorSchemeCenter helveticaNeueRegularFont:18]}];
-                         [_darkThemeSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
-                         [_randomColorSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
-                         [_restButton setTintColor:[UWColorSchemeCenter uwGold]];
+                         [self->_darkThemeSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
+                         [self->_randomColorSwitch setOnTintColor:[UWColorSchemeCenter uwGold]];
+                         [self->_restButton setTintColor:[UWColorSchemeCenter uwGold]];
                      }
                      completion:nil];
 }
@@ -133,21 +133,21 @@
         NSLog(@"localVersion: %@", localVersion);
         NSLog(@"releaseNotes: %@", releaseNotes);
         NSLog(@"updateURL: %@", updateURL);
-        _updateURL = updateURL;
+        self->_updateURL = updateURL;
         
-        if (!_newVersionButton) {
-            _newVersionButton = [[GBFlatButton alloc] initWithFrame:CGRectZero];
-            [_newVersionButton setContentEdgeInsets:UIEdgeInsetsMake(2, 8, 2, 8)];
-            [_newVersionButton setTintColor:[UIColor colorWithRed:1 green:0.23 blue:0.19 alpha:1]];
+        if (!self->_newVersionButton) {
+            self->_newVersionButton = [[GBFlatButton alloc] initWithFrame:CGRectZero];
+            [self->_newVersionButton setContentEdgeInsets:UIEdgeInsetsMake(2, 8, 2, 8)];
+            [self->_newVersionButton setTintColor:[UIColor colorWithRed:1 green:0.23 blue:0.19 alpha:1]];
             //        [_newVersionButton setTintAdjustmentMode:UIViewTintAdjustmentModeAutomatic];
-            [_newVersionButton setDisableHighlight:YES];
-            [_newVersionButton setTitle:[NSString stringWithFormat:@"New: %@", appStoreVersion] forState:UIControlStateNormal];
-            [_newVersionButton setTitle:[NSString stringWithFormat:@"New: %@", appStoreVersion] forState:UIControlStateHighlighted];
-            [_newVersionButton.titleLabel setFont:[UWColorSchemeCenter helveticaNeueLightFont:15]];
-            [_newVersionButton setSelected:YES];
-            [_newVersionButton sizeToFit];
+            [self->_newVersionButton setDisableHighlight:YES];
+            [self->_newVersionButton setTitle:[NSString stringWithFormat:@"New: %@", appStoreVersion] forState:UIControlStateNormal];
+            [self->_newVersionButton setTitle:[NSString stringWithFormat:@"New: %@", appStoreVersion] forState:UIControlStateHighlighted];
+            [self->_newVersionButton.titleLabel setFont:[UWColorSchemeCenter helveticaNeueLightFont:15]];
+            [self->_newVersionButton setSelected:YES];
+            [self->_newVersionButton sizeToFit];
 //            [_newVersionButton setAdjustsImageWhenHighlighted:NO];
-            [_newVersionButton addTarget:self action:@selector(newVersionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+            [self->_newVersionButton addTarget:self action:@selector(newVersionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         }
         
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];

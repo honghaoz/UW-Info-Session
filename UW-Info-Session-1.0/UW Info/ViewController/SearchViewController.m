@@ -194,14 +194,14 @@
                          self.navigationController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
                          [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack]}];
 //                         _searchBar.tintColor = [[UWColorSchemeCenter uwBlack] isEqualToColor:[UIColor whiteColor]] ? nil : [UWColorSchemeCenter uwBlack];
-                         _searchBar.tintColor = [UWColorSchemeCenter uwBlack];
-                         UITextField *textSearchField = [_searchBar valueForKey:@"_searchField"];
+                         self->_searchBar.tintColor = [UWColorSchemeCenter uwBlack];
+                         UITextField *textSearchField = [self->_searchBar valueForKey:@"_searchField"];
                          textSearchField.tintColor = [[UWColorSchemeCenter uwBlack] isEqualToColor:[UIColor whiteColor]] ? [UWColorSchemeCenter uwGold] : [UWColorSchemeCenter uwBlack];
-                         _detailLabel.textColor = [UWColorSchemeCenter uwBlack];
-                         _textLabel.textColor = [UWColorSchemeCenter uwBlack];
-                         _statusBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
-                         _searchBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
-                         _searchBar.scopeBarBackgroundImage = [self imageWithColor:[UWColorSchemeCenter uwGold]];
+                         self->_detailLabel.textColor = [UWColorSchemeCenter uwBlack];
+                         self->_textLabel.textColor = [UWColorSchemeCenter uwBlack];
+                         self->_statusBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
+                         self->_searchBarCoverView.backgroundColor = [UWColorSchemeCenter uwGold];
+                         self->_searchBar.scopeBarBackgroundImage = [self imageWithColor:[UWColorSchemeCenter uwGold]];
                      }
                      completion:nil];
 }
@@ -672,25 +672,25 @@
         [UIView animateWithDuration:.3
                          animations:^{
                              // move search bar up
-                             _searchBar.frame = CGRectMake(_searchBar.frame.origin.x,
-                                                           20,
-                                                           _searchBar.frame.size.width,
-                                                           _searchBar.frame.size.height);
+                             self->_searchBar.frame = CGRectMake(self->_searchBar.frame.origin.x,
+                                                                 20,
+                                                                 self->_searchBar.frame.size.width,
+                                                                 self->_searchBar.frame.size.height);
                              // move tableView down
 //                             [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x,
 //                                                                 _searchBar.frame.size.height,
 //                                                                 self.tableView.frame.size.width,
 //                                                                 [UIScreen mainScreen].bounds.size.height - 210)];
                              
-                             _searchBar.barTintColor = [UIColor clearColor];
+                             self->_searchBar.barTintColor = [UIColor clearColor];
 //                             UITextField *textSearchField = [_searchBar valueForKey:@"_searchField"];
-                             UITextField *textSearchField = [self textFieldForSearchBar:_searchBar];
+                             UITextField *textSearchField = [self textFieldForSearchBar:self->_searchBar];
                              NSLog(@"%f, %f", textSearchField.layer.borderWidth, textSearchField.layer.cornerRadius);
                              textSearchField.layer.borderWidth = 0.5f;
                              textSearchField.layer.cornerRadius = 5.0f;
                              textSearchField.layer.borderColor = [UWColorSchemeCenter uwBlack].CGColor;
-                             [_searchBarCoverView addSubview:textSearchField];
-                             _searchBar.scopeBarBackgroundImage = [self imageWithColor:[UWColorSchemeCenter uwGold]];
+                             [self->_searchBarCoverView addSubview:textSearchField];
+                             self->_searchBar.scopeBarBackgroundImage = [self imageWithColor:[UWColorSchemeCenter uwGold]];
                         
                          }
                          completion:^(BOOL finished){
@@ -709,10 +709,10 @@
         [UIView animateWithDuration:.3
                          animations:^{
                              // move search bar down
-                             _searchBar.frame = CGRectMake(_searchBar.frame.origin.x,
-                                                           statusBarHeight + navigationBarHeight,
-                                                           _searchBar.frame.size.width,
-                                                           _searchBar.frame.size.height);
+                             self->_searchBar.frame = CGRectMake(self->_searchBar.frame.origin.x,
+                                                                 statusBarHeight + navigationBarHeight,
+                                                                 self->_searchBar.frame.size.width,
+                                                                 self->_searchBar.frame.size.height);
                              // move table view up
 //                             [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x,
 //                                                                 0,
@@ -721,16 +721,19 @@
                          }
                          completion:^(BOOL finished){
                              //whatever else you may need to do
-                             _searchBar.barTintColor = nil;
-                             [_statusBarCoverView removeFromSuperview];
-                             UITextField *textSearchField = [_searchBar valueForKey:@"_searchField"];
+                             self->_searchBar.barTintColor = nil;
+                             [self->_statusBarCoverView removeFromSuperview];
+                             UITextField *textSearchField = [self->_searchBar valueForKey:@"_searchField"];
                              textSearchField.layer.borderWidth = 0;
                              textSearchField.layer.cornerRadius = 0;
                              textSearchField.layer.borderColor = nil;
-                             [_searchBar addSubview:textSearchField];
-                             [_searchBarCoverView removeFromSuperview];
+                             [self->_searchBar addSubview:textSearchField];
+                             [self->_searchBarCoverView removeFromSuperview];
                              
-                             [_statusBarCoverView setFrame:CGRectMake(_statusBarCoverView.frame.origin.x, _statusBarCoverView.frame.origin.y + 22, _statusBarCoverView.frame.size.width, _statusBarCoverView.frame.size.height - 22)];
+                             [self->_statusBarCoverView setFrame:CGRectMake(self->_statusBarCoverView.frame.origin.x,
+                                                                            self->_statusBarCoverView.frame.origin.y + 22,
+                                                                            self->_statusBarCoverView.frame.size.width,
+                                                                            self->_statusBarCoverView.frame.size.height - 22)];
                          }];
 //        [UIView animateWithDuration:4 animations:^(){
 //            _searchBar.barTintColor = nil;

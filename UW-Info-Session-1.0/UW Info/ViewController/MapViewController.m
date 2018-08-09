@@ -152,7 +152,7 @@
      {
          [self.navigationController.navigationBar setAlpha:1.0];
          //[self.navigationController.toolbar setAlpha:alpha];
-         [_tabBarController showTabBar];
+         [self->_tabBarController showTabBar];
          
      } completion:^(BOOL finished)
      {
@@ -170,7 +170,7 @@
      {
          [self.navigationController.navigationBar setAlpha:0.0];
          //[self.navigationController.toolbar setAlpha:alpha];
-         [_tabBarController hideTabBar];
+         [self->_tabBarController hideTabBar];
      } completion:^(BOOL finished)
      {
          

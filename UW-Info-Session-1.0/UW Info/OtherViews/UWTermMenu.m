@@ -372,9 +372,9 @@
 {
     [self.menu closeWithCompletion:^() {
         [self setTermMenuForYear:year];
-        [self.menu showFromNavigationController:_navigationController];
-        _infoSessionViewController.navigationItem.rightBarButtonItem.enabled = NO;
-        _infoSessionViewController.navigationItem.leftBarButtonItem.enabled = NO;
+        [self.menu showFromNavigationController:self->_navigationController];
+        self->_infoSessionViewController.navigationItem.rightBarButtonItem.enabled = NO;
+        self->_infoSessionViewController.navigationItem.leftBarButtonItem.enabled = NO;
         [self setDetailLabelWithYear:year andTerm:@"" to:@"up"];
     }];
 }
@@ -382,10 +382,10 @@
 - (void)tapTermAction:(NSInteger)year term:(NSString*)term
 {
     [self.menu closeWithCompletion:^() {
-        _infoSessionViewController.navigationItem.rightBarButtonItem.enabled = YES;
-        _infoSessionViewController.navigationItem.leftBarButtonItem.enabled = YES;
+        self->_infoSessionViewController.navigationItem.rightBarButtonItem.enabled = YES;
+        self->_infoSessionViewController.navigationItem.leftBarButtonItem.enabled = YES;
         NSDictionary *yearAndTermDic = [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInteger:year], term] forKeys:@[@"Year", @"Term"]];
-        [_infoSessionViewController reload:yearAndTermDic];
+        [self->_infoSessionViewController reload:yearAndTermDic];
     }];
 }
 

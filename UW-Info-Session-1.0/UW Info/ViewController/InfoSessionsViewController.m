@@ -124,8 +124,8 @@
                      animations:^{
                          self.navigationController.navigationBar.tintColor = [UWColorSchemeCenter uwBlack];
                          [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UWColorSchemeCenter uwBlack]}];
-                         [_termMenu setMenuButtonColor:[UWColorSchemeCenter uwBlack]];
-                         [_todayButton setColor:[UWColorSchemeCenter uwBlack]];
+                         [self->_termMenu setMenuButtonColor:[UWColorSchemeCenter uwBlack]];
+                         [self->_todayButton setColor:[UWColorSchemeCenter uwBlack]];
                      }
                      completion:nil];
 }
@@ -414,9 +414,9 @@
             dateOfFirstObjectOfThisWeek = firstSessionOfThisWeek.date;
         }
         // set components necessary
-        NSCalendar* gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSCalendar* gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         [gregorian setLocale:[NSLocale currentLocale]];
-        NSDateComponents* component = [gregorian components:NSYearCalendarUnit | NSWeekCalendarUnit fromDate:dateOfFirstObjectOfThisWeek];
+        NSDateComponents* component = [gregorian components:NSCalendarUnitYear | NSCalendarUnitWeekOfYear fromDate:dateOfFirstObjectOfThisWeek];
 
         // set component to monday of that week
         [component setWeekOfYear:weekNum]; //Week of the section

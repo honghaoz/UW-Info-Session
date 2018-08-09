@@ -89,8 +89,8 @@
                         options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
                          // Change text view frame and scroll to bottom
-                         [_feedbackTextView setFrame:CGRectMake(10, 10, screenSize.width - 20, screenSize.height - keyboardSize.height - 20)];
-                         [_feedbackTextView scrollRangeToVisible:NSMakeRange(_feedbackTextView.  text.length - 1, 0)];
+                         [self->_feedbackTextView setFrame:CGRectMake(10, 10, screenSize.width - 20, screenSize.height - keyboardSize.height - 20)];
+                         [self->_feedbackTextView scrollRangeToVisible:NSMakeRange(_feedbackTextView.  text.length - 1, 0)];
                      }
                      completion:nil];
     
