@@ -754,46 +754,7 @@
 
 - (void)apiClient:(UWInfoSessionClient*)client didUpdateWithApiKey:(NSString*)apiKey
 {
-    //    NSLog(@"set key %@", apiKey);
     self.apiKey = (NSString*)[apiKey copy];
-    //    NSLog(@"update again");
-    // add key to parseObject
-//    PFQuery* queryForId = [PFQuery queryWithClassName:@"Device"];
-//    [queryForId whereKey:@"Identifier" equalTo:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
-//    [queryForId findObjectsInBackgroundWithBlock:^(NSArray* objects, NSError* error) {
-//        if (!error) {
-//            if (objects.count == 0) {
-//                NSLog(@"never reach");
-//                [UWErrorReport reportErrorWithDescription:@"didUpdateWithApiKey, but identifier not found"];
-//                PFQuery *queryForDeviceName = [PFQuery queryWithClassName:@"Device"];
-//                [queryForDeviceName whereKey:@"Device_Name" equalTo:[[UIDevice currentDevice] name]];
-//                [queryForDeviceName findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-//                    if (!error) {
-//                        if (objects.count == 0) {
-//                            NSLog(@"never never reach");
-//                        } else {
-//                            for (PFObject *object in objects) {
-//                                object[@"Query_Key"] = self.apiKey;
-//                                [object saveEventually];
-//                            }
-//                        }
-//                    } else {
-//                        NSLog(@"Error: %@ %@", error, [error userInfo]);
-//                        [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"didUpdateWithApiKey, device name error: %@ %@", error, [error userInfo]]];
-//                    }
-//                }];
-//            } else {
-//                for (PFObject *object in objects) {
-//                    object[@"Query_Key"] = self.apiKey;
-//                    [object saveEventually];
-//                }
-//            }
-//        } else {
-//            // Log details of the failure
-//            NSLog(@"Error: %@ %@", error, [error userInfo]);
-//            [UWErrorReport reportErrorWithDescription:[NSString stringWithFormat:@"didUpdateWithApiKey, device identifier error: %@ %@", error, [error userInfo]]];
-//        }
-//    }];
     [self updateInfoSessionsWithYear:_year andTerm:_term];
 }
 

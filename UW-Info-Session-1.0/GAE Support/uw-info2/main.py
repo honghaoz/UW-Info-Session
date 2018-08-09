@@ -80,8 +80,8 @@ def get_by_label(label, html):
         return []
 
 def get_others(html):
-    # [audience, br, br, programms, descriptions]
-    return re.findall('<tr><td width="60%" colspan="2"><i>For (.+?(<br />|<br>).+?)(<br />|<br>)(.*?)</i></td></tr>.+?<tr><td width="60%" colspan="2"><i>(.*?)</i></td></tr>', html, re.DOTALL)
+    # [audience, programs, descriptions]
+    return re.findall('<tr><td width="60%" colspan="2"><i>(.+?)<ul>(.+?)</ul></i></td></tr>.*?<tr><td width="60%" colspan="2"><i>(.*?)</i></td></tr>', html, re.DOTALL)
 
 def get_ids(html):
     return re.findall('<a href="sessions_details.php\?id=(\d+)"', html)
@@ -97,6 +97,8 @@ def parse_time(html):
 
 # listOfMonths: [(2017, 5), (2017, 6), (2017, 7), (2017, 8)]
 def renderResponse(year_months):
+    logging.info("year_months: %s" % year_months)
+
     urlfetch.set_default_fetch_deadline(fetch_deadline)
     sessions = [] # stores a list of info session dicts
     numbers = [] # stores numbers of events for months. Aka months
@@ -126,13 +128,13 @@ def renderResponse(year_months):
                     website = map(parse_link, get_by_label("Web Site:", session_html))
                     website = website[0] if len(website) > 0 else ""
                     other = get_others(session_html)
-                    other = other[0] if len(other) > 0 else ("", "", "", "", "")
+                    other = other[0] if len(other) > 0 else ("", "", "")
 
                     session = {}
                     session["id"] = int(session_id)
                     session["employer"] = unicode(employer.strip(), errors = 'ignore')
                     # logging.info("employer: %s" % session["employer"])
-                    session["date"] = unicode(date.strip(), errors = 'ignore')
+                    session["date"] = unicode(" ".join(date.strip().split(" ")[1:]), errors = 'ignore')
                     # logging.info("date: %s" % session["date"])
                     session["start_time"] = unicode(time[0].strip(), errors = 'ignore')
                     # logging.info("start_time: %s" % session["start_time"])
@@ -142,11 +144,11 @@ def renderResponse(year_months):
                     # logging.info("location: %s" % session["location"])
                     session["website"] = unicode(website.strip(), errors = 'ignore')
                     # logging.info("website: %s" % session["website"])
-                    session["audience"] = unicode(other[0].replace('<br/>', ' ').replace('<br />', ' ').replace('<br>', ' ').strip(), errors = 'ignore')
+                    session["audience"] = unicode(other[0].replace('<br>', '\n').replace('<br/>', ' ').replace('<br />', ' ').strip(), errors = 'ignore')
                     # logging.info("audience: %s" % session["audience"])
-                    session["programs"] = unicode(other[3].strip(), errors = 'ignore')
+                    session["programs"] = unicode(other[1].replace('<li>', '').replace('</li>', '\n').strip(), errors = 'ignore')
                     # logging.info("programs: %s" % session["programs"])
-                    session["description"] = unicode(other[4].replace('</p>', '').replace('<p>', '').replace('<br/>', ' ').replace('<br />', ' ').replace('<br>', ' ').replace('</br>', ' ').strip(), errors = 'ignore')
+                    session["description"] = unicode(other[2].replace('</p>', '').replace('<p>', '').replace('<P>', '').replace('<br/>', ' ').replace('<br />', ' ').replace('<br>', ' ').replace('</br>', ' ').strip(), errors = 'ignore')
                     # logging.info("description: %s" % session["description"])
 
                     return session
@@ -250,13 +252,13 @@ def fetchDataInBackground(year_months):
                 website = map(parse_link, get_by_label("Web Site:", session_html))
                 website = website[0] if len(website) > 0 else ""
                 other = get_others(session_html)
-                other = other[0] if len(other) > 0 else ("", "", "", "", "")
+                other = other[0] if len(other) > 0 else ("", "", "")
 
                 session = {}
                 session["id"] = int(session_id)
                 session["employer"] = unicode(employer.strip(), errors = 'ignore')
                 # logging.info("employer: %s" % session["employer"])
-                session["date"] = unicode(date.strip(), errors = 'ignore')
+                session["date"] = unicode(" ".join(date.strip().split(" ")[1:]), errors = 'ignore')
                 # logging.info("date: %s" % session["date"])
                 session["start_time"] = unicode(time[0].strip(), errors = 'ignore')
                 # logging.info("start_time: %s" % session["start_time"])
@@ -266,11 +268,11 @@ def fetchDataInBackground(year_months):
                 # logging.info("location: %s" % session["location"])
                 session["website"] = unicode(website.strip(), errors = 'ignore')
                 # logging.info("website: %s" % session["website"])
-                session["audience"] = unicode(other[0].replace('<br/>', ' ').replace('<br />', ' ').replace('<br>', ' ').strip(), errors = 'ignore')
+                session["audience"] = unicode(other[0].replace('<br>', '\n').replace('<br/>', ' ').replace('<br />', ' ').strip(), errors = 'ignore')
                 # logging.info("audience: %s" % session["audience"])
-                session["programs"] = unicode(other[3].strip(), errors = 'ignore')
+                session["programs"] = unicode(other[1].replace('<li>', '').replace('</li>', '\n').strip(), errors = 'ignore')
                 # logging.info("programs: %s" % session["programs"])
-                session["description"] = unicode(other[4].replace('</p>', '').replace('<p>', '').replace('<br/>', ' ').replace('<br />', ' ').replace('<br>', ' ').replace('</br>', ' ').strip(), errors = 'ignore')
+                session["description"] = unicode(other[2].replace('</p>', '').replace('<p>', '').replace('<br/>', ' ').replace('<br />', ' ').replace('<br>', ' ').replace('</br>', ' ').strip(), errors = 'ignore')
                 # logging.info("description: %s" % session["description"])
 
                 return session
@@ -453,10 +455,6 @@ def logKeyUsage(key):
         #aKey(id = key, uses = newUses).put()
         logging.info("Key: %d, Uses: %d", key, newUses)
 
-# def getKeyUsage():
-    #queryURL = "http://uw-info.appspot.com/logkey"
-    #urllib2.urlopen(queryURL + '?key=' + str(key))
-
 
 class JsonOneMonth(BasicHandler):
     """json format one month"""
@@ -535,160 +533,6 @@ class Json(BasicHandler):
         else:
             self.write(json.dumps(renderResponse([])))
 
-class getKeyUsage(BasicHandler):
-    def get(self):
-        #aKeys = ndb.gql("SELECT * FROM aKey")
-        aKeys = aKey.query()
-        usage = []
-        for each in aKeys.iter():
-            #logging.info(each.key.id())
-            usage.append({"key" : str(each.key.id()), "uses" : each.uses})
-        self.write(json.dumps({'usage': usage, 'status' : 'valid'}))
-
-# Parse related
-def createParseInfoSessionObject(infoSessionDictionary):
-    try:
-        connection = httplib.HTTPSConnection('api.parse.com', 443)
-        connection.connect()
-        connection.request('POST', '/1/classes/InfoSession', json.dumps(infoSessionDictionary), {
-               "X-Parse-Application-Id": "zytbQR05vLnq2h37zHHBDneLWMzaH47qHB978zfx",
-               "X-Parse-REST-API-Key": "93OVEHh2zAc1tz7HIlOENOQJWuB05s1vOXd4KdjB",
-               "Content-Type": "application/json"
-             })
-        result = json.loads(connection.getresponse().read())
-        logging.info(result)
-    except:
-        logging.error("create an object failed")
-        return False
-    return True
-
-parseReUpdateTimes = 0
-
-# Test code
-# testTime = 0
-
-def commitUpdateParse():
-    if parseReUpdateTimes > 3:
-        logging.error("Update Parse more than 3 times")
-        return False
-    global parseReUpdateTimes
-    parseReUpdateTimes += 1
-    logging.info("Re update Parse objects")
-
-    try:
-        # Clean out old data
-        # 1: Collecting objectIds
-        try:
-            connection = httplib.HTTPSConnection('api.parse.com', 443)
-            params = urllib.urlencode({"keys":"", "limit":1000})
-            connection.connect()
-            connection.request('GET', '/1/classes/InfoSession?%s' % params, '', {
-                   "X-Parse-Application-Id": "zytbQR05vLnq2h37zHHBDneLWMzaH47qHB978zfx",
-                   "X-Parse-REST-API-Key": "93OVEHh2zAc1tz7HIlOENOQJWuB05s1vOXd4KdjB"
-                 })
-            result = json.loads(connection.getresponse().read())
-            objectIdsToBeDeleted = []
-            for e in result["results"]:
-                objectIdsToBeDeleted.append(e["objectId"])
-        except:
-            logging.error("Get objectIds failed")
-            return commitUpdateParse()
-
-        logging.info("To delete " + str(len(objectIdsToBeDeleted)) + " objects")
-
-        # 2: Construct delete diction
-        requestDictionary = {}
-        requestDictionary["requests"] = []
-
-        # restNumberToBeDeleted = len(objectIdsToBeDeleted)
-        while len(objectIdsToBeDeleted) > 0:
-            logging.info(len(objectIdsToBeDeleted))
-            requestDictionary["requests"] = []
-            # Delete 50 objects in batch
-            deletedEntryNumber = 0
-            for i in range(0, 50):
-                try:
-                    deleteRequest = {}
-                    deleteRequest["method"] = "DELETE"
-                    deleteRequest["path"] = "/1/classes/InfoSession/%s" % objectIdsToBeDeleted[i]
-                except:
-                    deletedEntryNumber = i
-                    break
-                requestDictionary["requests"].append(deleteRequest)
-                deletedEntryNumber = 50;
-
-            # 3: Delete 50 entries
-            connection = httplib.HTTPSConnection('api.parse.com', 443)
-            connection.connect()
-            connection.request('POST', '/1/batch', json.dumps(requestDictionary), {
-                   "X-Parse-Application-Id": "zytbQR05vLnq2h37zHHBDneLWMzaH47qHB978zfx",
-                   "X-Parse-REST-API-Key": "93OVEHh2zAc1tz7HIlOENOQJWuB05s1vOXd4KdjB",
-                   "Content-Type": "application/json"
-                 })
-            result = json.loads(connection.getresponse().read())
-            logging.info(result)
-            objectIdsToBeDeleted = objectIdsToBeDeleted[deletedEntryNumber:]
-    except:
-        logging.error("Delete Parse Object Failed")
-        return commitUpdateParse()
-
-    logging.info("Delete Parse Object Succeed!")
-
-    # Store new data
-    currentTerm = getCurrentTerm()
-    response = renderResponse(getMonthsOfTerm(currentTerm))
-    # From here, response contains
-    # {"data" : [{
-    #           "audience": "Co-op and Graduating Students",
-    #           "date": "May 6, 2014",
-    #           "description": "",
-    #           "employer": "Enflick",
-    #           "end_time": "1:30 PM",
-    #           "id": "",
-    #           "location": "TC 2218",
-    #           "programs": "ALL - MATH faculty, ALL - ENG faculty",
-    #           "start_time": "11:30 AM",
-    #           "website": ""
-    #           }, {} ...],
-    #   "meta" : {"months": [],
-    #             "term" : "2014 Spring"}}
-    # Store Objects in Parse
-
-    global testTime
-
-    sum = 0
-    for eachInfoSessionDic in response["data"]:
-        infoSessionId = eachInfoSessionDic["id"]
-        eachInfoSessionDic.pop("id", None)
-        eachInfoSessionDic["info_session_id"] = infoSessionId
-
-        # Test code
-        # if sum == 10 and testTime == 0:
-        #     testTime += 1
-        #     logging.error("Test Create Parse Object Failed")
-        #     return commitUpdateParse()
-
-        if not createParseInfoSessionObject(eachInfoSessionDic):
-            logging.error("Create Parse Object Failed")
-            return commitUpdateParse()
-        sum += 1
-    logging.info("Parse updated: %d" % sum)
-    return True
-
-class UpdateParse(BasicHandler):
-    def get(self):
-        key = int(self.request.get("key"))
-        if key <= getMaxNumberOfKeys():
-            global parseReUpdateTimes
-            parseReUpdateTimes = 0
-            result = commitUpdateParse()
-            if result:
-                self.write("Parse updated successfully")
-            else:
-                self.write("Parse updated failed")
-        else:
-            self.write("Invalid key")
-
 class fetchData(BasicHandler):
     def get(self):
         currentTerm = getCurrentTerm()
@@ -699,11 +543,9 @@ class fetchData(BasicHandler):
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/get_key_usage', getKeyUsage),
     ('/set_number_of_keys', setNumberOfKeys),
     ('/infosessions/([0-9]{4}[A-Z]{1}[a-z]{2}).json', JsonOneMonth),
     ('/infosessions/([0-9]{4}[A-Z]{1}[a-z]+).json', JsonOneTerm),
     ('/infosessions.json', Json),
-    ('/updateParse', UpdateParse),
     ('/fetch_data', fetchData)
 ], debug=False)
